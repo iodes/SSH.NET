@@ -494,6 +494,14 @@ namespace Renci.SshNet
                         privateKeyReader.ReadBigInteger(), privateKeyReader.ReadBigInteger());
 
                     break;
+
+                case "ssh-dss":
+                    keyResult = new DsaKey(
+                        privateKeyReader.ReadBigInteger(), privateKeyReader.ReadBigInteger(),
+                        privateKeyReader.ReadBigInteger(), privateKeyReader.ReadBigInteger(),
+                        privateKeyReader.ReadBigInteger());
+
+                    break;
             }
 
             //comment, we don't need this but we could log it, not sure if necessary
