@@ -487,6 +487,16 @@ namespace Renci.SshNet
 
                     break;
 
+#if FEATURE_ECDSA
+                case "ecdsa-sha2-nistp256":
+                case "ecdsa-sha2-nistp384":
+                case "ecdsa-sha2-nistp521":
+                    keyResult = new EcdsaKey(Encoding.ASCII.GetString(privateKeyReader.ReadBytes((int)privateKeyReader.ReadUInt32())),
+                        privateKeyReader.ReadBytes((int)privateKeyReader.ReadUInt32()), privateKeyReader.ReadBytes((int)privateKeyReader.ReadUInt32()));
+
+                    break;
+#endif
+
                 case "ssh-rsa":
                     keyResult = new RsaKey(
                         privateKeyReader.ReadBigInteger(), privateKeyReader.ReadBigInteger(),
