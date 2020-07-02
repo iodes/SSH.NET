@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Renci.SshNet.Abstractions;
 using Renci.SshNet.Security;
@@ -373,7 +374,7 @@ namespace Renci.SshNet
         /// <param name="keyFileData">the key file data (i.e. base64 encoded data between the header/footer)</param>
         /// <param name="passPhrase">passphrase or null if there isn't one</param>
         /// <returns></returns>
-        private ED25519Key ParseOpenSshV1Key(byte [] keyFileData, string passPhrase)
+        private Key ParseOpenSshV1Key(byte [] keyFileData, string passPhrase)
         {
             var keyReader = new SshDataReader(keyFileData);
 
@@ -407,21 +408,12 @@ namespace Renci.SshNet
                 throw new SshException("At this time only one public key in the openssh key is supported.");
             }
 
-            //length of first public key section
-            keyReader.ReadUInt32();
-            var keyType = keyReader.ReadString(Encoding.UTF8);
-            if(keyType != "ssh-ed25519")
-            {
-                throw new SshException("openssh key type: " + keyType + " is not supported");
-            }
-
-            //read public key
-            var publicKeyLength = (int)keyReader.ReadUInt32(); //32
-            var publicKey = keyReader.ReadBytes(publicKeyLength);
-
+            //skip length of first public key section
+            keyReader.ReadBytes((int)keyReader.ReadUInt32());
+            
             //possibly encrypted private key
-            var privateKeyLength = (int)keyReader.ReadUInt32();
-            var privateKeyBytes = keyReader.ReadBytes(privateKeyLength);
+            var privateKeySectionLength = (int)keyReader.ReadUInt32();
+            var privateKeySectionBytes = keyReader.ReadBytes(privateKeySectionLength);
 
             //decrypt private key if necessary
             if (cipherName == "aes256-cbc")
@@ -447,7 +439,7 @@ namespace Renci.SshNet
 
                 //now that we have the key/iv, use a cipher to decrypt the bytes
                 var cipher = new AesCipher(key, new CbcCipherMode(iv), new PKCS7Padding());
-                privateKeyBytes = cipher.Decrypt(privateKeyBytes);
+                privateKeySectionBytes = cipher.Decrypt(privateKeySectionBytes);
             }
             else if (cipherName != "none")
             {
@@ -455,8 +447,8 @@ namespace Renci.SshNet
             }
 
             //validate private key length
-            privateKeyLength = privateKeyBytes.Length;
-            if (privateKeyLength % 8 != 0)
+            privateKeySectionLength = privateKeySectionBytes.Length;
+            if (privateKeySectionLength % 8 != 0)
             {
                 throw new SshException("The private key section must be a multiple of the block size (8)");
             }
@@ -464,7 +456,7 @@ namespace Renci.SshNet
             //now parse the data we called the private key, it actually contains the public key again
             //so we need to parse through it to get the private key bytes, plus there's some
             //validation we need to do.
-            var privateKeyReader = new SshDataReader(privateKeyBytes);
+            var privateKeyReader = new SshDataReader(privateKeySectionBytes);
 
             //check ints should match, they wouldn't match for example if the wrong passphrase was supplied
             int checkInt1 = (int)privateKeyReader.ReadUInt32();
@@ -474,18 +466,35 @@ namespace Renci.SshNet
                 throw new SshException("The checkints differed, the openssh key was not correctly decoded.");
             }
 
-            //key type, we already know it is ssh-ed25519
-            privateKeyReader.ReadString(Encoding.UTF8);
+            //read key type
+            Key keyResult = null;
+            var keyType = privateKeyReader.ReadString(Encoding.UTF8);
 
-            //public key length/bytes (again)
-            var publicKeyLength2 = (int)privateKeyReader.ReadUInt32();
-            privateKeyReader.ReadBytes(publicKeyLength2);
+            switch (keyType)
+            {
+                case "ssh-ed25519":
+                    //public key length/bytes
+                    var publicKeyLength = (int)privateKeyReader.ReadUInt32();
+                    var publicKey = privateKeyReader.ReadBytes(publicKeyLength);
 
-            //length of private and public key (64)
-            privateKeyReader.ReadUInt32();
-            var unencryptedPrivateKey = privateKeyReader.ReadBytes(32);
-            //public key (again)
-            privateKeyReader.ReadBytes(32);
+                    //length of private and public key (64)
+                    privateKeyReader.ReadUInt32();
+                    var unencryptedPrivateKey = privateKeyReader.ReadBytes(32);
+
+                    //public key (again)
+                    privateKeyReader.ReadBytes(32);
+                    keyResult = new ED25519Key(publicKey.Reverse(), unencryptedPrivateKey);
+
+                    break;
+
+                case "ssh-rsa":
+                    keyResult = new RsaKey(
+                        privateKeyReader.ReadBigInteger(), privateKeyReader.ReadBigInteger(),
+                        privateKeyReader.ReadBigInteger(), privateKeyReader.ReadBigInteger(),
+                        privateKeyReader.ReadBigInteger(), privateKeyReader.ReadBigInteger());
+
+                    break;
+            }
 
             //comment, we don't need this but we could log it, not sure if necessary
             var comment = privateKeyReader.ReadString(Encoding.UTF8);
@@ -501,7 +510,7 @@ namespace Renci.SshNet
                 }
             }
 
-            return new ED25519Key(publicKey.Reverse(), unencryptedPrivateKey);
+            return keyResult;
         }
 
         #region IDisposable Members
@@ -594,6 +603,14 @@ namespace Renci.SshNet
                 return new BigInteger(bytesArray.Reverse());
             }
 
+            public BigInteger ReadBigInteger()
+            {
+                var length = (int) base.ReadUInt32();
+                var data = ReadBytes(length);
+
+                return new BigInteger(data);
+            }
+
             protected override void LoadData()
             {
             }
@@ -601,6 +618,19 @@ namespace Renci.SshNet
             protected override void SaveData()
             {
             }
+        }
+
+        private byte[] Combine(params byte[][] arrays)
+        {
+            var rv = new byte[arrays.Sum(a => a.Length)];
+            int offset = 0;
+
+            foreach (byte[] array in arrays) {
+                Buffer.BlockCopy(array, 0, rv, offset, array.Length);
+                offset += array.Length;
+            }
+
+            return rv;
         }
     }
 }
