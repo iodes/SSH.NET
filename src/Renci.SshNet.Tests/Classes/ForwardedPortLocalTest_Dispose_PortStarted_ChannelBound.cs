@@ -41,16 +41,19 @@ namespace Renci.SshNet.Tests.Classes
                 _client.Dispose();
                 _client = null;
             }
+
             if (_forwardedPort != null)
             {
                 _forwardedPort.Dispose();
                 _forwardedPort = null;
             }
+
             if (_channelBindStarted != null)
             {
                 _channelBindStarted.Dispose();
                 _channelBindStarted = null;
             }
+
             if (_channelBindCompleted != null)
             {
                 _channelBindCompleted.Dispose();
@@ -66,7 +69,7 @@ namespace Renci.SshNet.Tests.Classes
             _localEndpoint = new IPEndPoint(IPAddress.Loopback, 8122);
             _remoteEndpoint = new IPEndPoint(IPAddress.Parse("193.168.1.5"), random.Next(IPEndPoint.MinPort, IPEndPoint.MaxPort));
             _bindSleepTime = TimeSpan.FromMilliseconds(random.Next(100, 500));
-            _forwardedPort = new ForwardedPortLocal(_localEndpoint.Address.ToString(), (uint) _localEndpoint.Port, _remoteEndpoint.Address.ToString(), (uint) _remoteEndpoint.Port);
+            _forwardedPort = new ForwardedPortLocal(_localEndpoint.Address.ToString(), (uint)_localEndpoint.Port, _remoteEndpoint.Address.ToString(), (uint)_remoteEndpoint.Port);
             _channelBindStarted = new ManualResetEvent(false);
             _channelBindCompleted = new ManualResetEvent(false);
 
@@ -79,12 +82,14 @@ namespace Renci.SshNet.Tests.Classes
             _sessionMock.Setup(p => p.ConnectionInfo).Returns(_connectionInfoMock.Object);
             _sessionMock.Setup(p => p.CreateChannelDirectTcpip()).Returns(_channelMock.Object);
             _channelMock.Setup(p => p.Open(_forwardedPort.Host, _forwardedPort.Port, _forwardedPort, It.IsAny<Socket>()));
+
             _channelMock.Setup(p => p.Bind()).Callback(() =>
-                {
-                    _channelBindStarted.Set();
-                    Thread.Sleep(_bindSleepTime);
-                    _channelBindCompleted.Set();
-                });
+            {
+                _channelBindStarted.Set();
+                Thread.Sleep(_bindSleepTime);
+                _channelBindCompleted.Set();
+            });
+
             _channelMock.Setup(p => p.Dispose());
 
             _forwardedPort.Closing += (sender, args) => _closingRegister.Add(args);
@@ -93,11 +98,11 @@ namespace Renci.SshNet.Tests.Classes
             _forwardedPort.Start();
 
             _client = new Socket(_localEndpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp)
-                {
-                    ReceiveTimeout = 100,
-                    SendTimeout = 500,
-                    SendBufferSize = 0
-                };
+            {
+                ReceiveTimeout = 100,
+                SendTimeout = 500,
+                SendBufferSize = 0
+            };
 
             _client.Connect(_localEndpoint);
 

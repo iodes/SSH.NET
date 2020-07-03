@@ -52,9 +52,11 @@ namespace Renci.SshNet.Tests.Classes
             var seq = new MockSequence();
             _sessionMock.InSequence(seq).Setup(p => p.CreateChannelSession()).Returns(_channelSessionMock.Object);
             _channelSessionMock.InSequence(seq).Setup(p => p.Open());
+
             _channelSessionMock.InSequence(seq).Setup(p => p.SendExecRequest(_commandText))
                 .Returns(true)
                 .Raises(c => c.Closed += null, new ChannelEventArgs(5));
+
             _channelSessionMock.InSequence(seq).Setup(p => p.Dispose());
 
             _sshCommand = new SshCommand(_sessionMock.Object, _commandText, _encoding);
@@ -62,14 +64,18 @@ namespace Renci.SshNet.Tests.Classes
 
             _channelSessionMock.Raise(c => c.DataReceived += null,
                 new ChannelDataEventArgs(0, _encoding.GetBytes(_dataA)));
+
             _channelSessionMock.Raise(c => c.ExtendedDataReceived += null,
                 new ChannelExtendedDataEventArgs(0, _encoding.GetBytes(_extendedDataA), 0));
+
             _channelSessionMock.Raise(c => c.DataReceived += null,
                 new ChannelDataEventArgs(0, _encoding.GetBytes(_dataB)));
+
             _channelSessionMock.Raise(c => c.ExtendedDataReceived += null,
                 new ChannelExtendedDataEventArgs(0, _encoding.GetBytes(_extendedDataB), 0));
+
             _channelSessionMock.Raise(c => c.RequestReceived += null,
-                new ChannelRequestEventArgs(new ExitStatusRequestInfo((uint) _expectedExitStatus)));
+                new ChannelRequestEventArgs(new ExitStatusRequestInfo((uint)_expectedExitStatus)));
         }
 
         private void Act()
@@ -99,7 +105,7 @@ namespace Renci.SshNet.Tests.Classes
             }
             catch (ArgumentException ex)
             {
-                Assert.AreEqual(typeof (ArgumentException), ex.GetType());
+                Assert.AreEqual(typeof(ArgumentException), ex.GetType());
                 Assert.IsNull(ex.InnerException);
                 Assert.AreEqual("EndExecute can only be called once for each asynchronous operation.", ex.Message);
                 Assert.IsNull(ex.ParamName);
@@ -121,8 +127,8 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethod]
         public void ExtendedOutputStreamShouldContainAllExtendedDataReceived()
         {
-            var extendedDataABytes = _encoding.GetBytes(_extendedDataA);
-            var extendedDataBBytes = _encoding.GetBytes(_extendedDataB);
+            byte[] extendedDataABytes = _encoding.GetBytes(_extendedDataA);
+            byte[] extendedDataBBytes = _encoding.GetBytes(_extendedDataB);
 
             var extendedOutputStream = _sshCommand.ExtendedOutputStream;
             Assert.AreEqual(extendedDataABytes.Length + extendedDataBBytes.Length, extendedOutputStream.Length);

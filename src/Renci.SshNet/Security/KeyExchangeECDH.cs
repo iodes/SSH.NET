@@ -1,7 +1,6 @@
 ﻿using System;
 using Renci.SshNet.Common;
 using Renci.SshNet.Messages.Transport;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Crypto.Generators;
 using Renci.SshNet.Security.Org.BouncyCastle.Crypto.Parameters;
 using Renci.SshNet.Security.Org.BouncyCastle.Security;
@@ -38,10 +37,10 @@ namespace Renci.SshNet.Security
             Session.KeyExchangeEcdhReplyMessageReceived += Session_KeyExchangeEcdhReplyMessageReceived;
 
             DomainParameters = new ECDomainParameters(CurveParameter.Curve,
-                                                      CurveParameter.G,
-                                                      CurveParameter.N,
-                                                      CurveParameter.H,
-                                                      CurveParameter.GetSeed());
+                CurveParameter.G,
+                CurveParameter.N,
+                CurveParameter.H,
+                CurveParameter.GetSeed());
 
             var g = new ECKeyPairGenerator();
             g.Init(new ECKeyGenerationParameters(DomainParameters, new SecureRandom()));

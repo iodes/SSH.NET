@@ -48,13 +48,7 @@ namespace Renci.SshNet.Common
         /// <value>
         /// <c>true</c> if this instance is end of data; otherwise, <c>false</c>.
         /// </value>
-        public bool IsEndOfData
-        {
-            get
-            {
-                return Position >= Length;
-            }
-        }
+        public bool IsEndOfData => Position >= Length;
 
         /// <summary>
         /// Writes an <see cref="uint"/> to the SSH data stream.
@@ -62,7 +56,7 @@ namespace Renci.SshNet.Common
         /// <param name="value"><see cref="uint"/> data to write.</param>
         public void Write(uint value)
         {
-            var bytes = Pack.UInt32ToBigEndian(value);
+            byte[] bytes = Pack.UInt32ToBigEndian(value);
             Write(bytes, 0, bytes.Length);
         }
 
@@ -72,7 +66,7 @@ namespace Renci.SshNet.Common
         /// <param name="value"><see cref="ulong"/> data to write.</param>
         public void Write(ulong value)
         {
-            var bytes = Pack.UInt64ToBigEndian(value);
+            byte[] bytes = Pack.UInt64ToBigEndian(value);
             Write(bytes, 0, bytes.Length);
         }
 
@@ -82,7 +76,7 @@ namespace Renci.SshNet.Common
         /// <param name="data">The <see cref="BigInteger" /> to write.</param>
         public void Write(BigInteger data)
         {
-            var bytes = data.ToByteArray().Reverse();
+            byte[] bytes = data.ToByteArray().Reverse();
             WriteBinary(bytes, 0, bytes.Length);
         }
 
@@ -141,7 +135,7 @@ namespace Renci.SshNet.Common
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> or <paramref name="count"/> is negative.</exception>
         public void WriteBinary(byte[] buffer, int offset, int count)
         {
-            Write((uint) count);
+            Write((uint)count);
             Write(buffer, offset, count);
         }
 
@@ -157,7 +151,7 @@ namespace Renci.SshNet.Common
             if (encoding == null)
                 throw new ArgumentNullException("encoding");
 
-            var bytes = encoding.GetBytes(s);
+            byte[] bytes = encoding.GetBytes(s);
             WriteBinary(bytes, 0, bytes.Length);
         }
 
@@ -170,7 +164,7 @@ namespace Renci.SshNet.Common
         public BigInteger ReadBigInt()
         {
             var length = ReadUInt32();
-            var data = ReadBytes((int) length);
+            byte[] data = ReadBytes((int)length);
             return new BigInteger(data.Reverse());
         }
 
@@ -182,7 +176,7 @@ namespace Renci.SshNet.Common
         /// </returns>
         public uint ReadUInt32()
         {
-            var data = ReadBytes(4);
+            byte[] data = ReadBytes(4);
             return Pack.BigEndianToUInt32(data);
         }
 
@@ -194,7 +188,7 @@ namespace Renci.SshNet.Common
         /// </returns>
         public ulong ReadUInt64()
         {
-            var data = ReadBytes(8);
+            byte[] data = ReadBytes(8);
             return Pack.BigEndianToUInt64(data);
         }
 
@@ -213,7 +207,7 @@ namespace Renci.SshNet.Common
                 throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture, "Strings longer than {0} is not supported.", int.MaxValue));
             }
 
-            var bytes = ReadBytes((int) length);
+            byte[] bytes = ReadBytes((int)length);
             return encoding.GetString(bytes, 0, bytes.Length);
         }
 
@@ -260,6 +254,7 @@ namespace Renci.SshNet.Common
                     return buffer.Array;
 #endif
             }
+
             return base.ToArray();
         }
     }

@@ -36,6 +36,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp
                 ResponseId = _responseId,
                 Handle = _handle
             };
+
             return sftpHandleResponse;
         }
     }

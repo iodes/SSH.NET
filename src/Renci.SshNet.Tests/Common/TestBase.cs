@@ -40,7 +40,8 @@ namespace Renci.SshNet.Tests.Common
             using (var testFile = File.Create(fileName))
             {
                 var random = new Random();
-                for (int i = 0; i < 1024 * size; i++)
+
+                for (var i = 0; i < 1024 * size; i++)
                 {
                     var buffer = new byte[1024];
                     random.NextBytes(buffer);

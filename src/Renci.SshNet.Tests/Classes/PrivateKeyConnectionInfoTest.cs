@@ -19,10 +19,11 @@ namespace Renci.SshNet.Tests.Classes
         {
             var host = Resources.HOST;
             var username = Resources.USERNAME;
-            MemoryStream keyFileStream = new MemoryStream(Encoding.ASCII.GetBytes(Resources.RSA_KEY_WITHOUT_PASS));
+            var keyFileStream = new MemoryStream(Encoding.ASCII.GetBytes(Resources.RSA_KEY_WITHOUT_PASS));
 
             #region Example PrivateKeyConnectionInfo PrivateKeyFile
             var connectionInfo = new PrivateKeyConnectionInfo(host, username, new PrivateKeyFile(keyFileStream));
+
             using (var client = new SshClient(connectionInfo))
             {
                 client.Connect();
@@ -41,13 +42,14 @@ namespace Renci.SshNet.Tests.Classes
         {
             var host = Resources.HOST;
             var username = Resources.USERNAME;
-            MemoryStream keyFileStream1 = new MemoryStream(Encoding.ASCII.GetBytes(Resources.RSA_KEY_WITHOUT_PASS));
-            MemoryStream keyFileStream2 = new MemoryStream(Encoding.ASCII.GetBytes(Resources.RSA_KEY_WITHOUT_PASS));
+            var keyFileStream1 = new MemoryStream(Encoding.ASCII.GetBytes(Resources.RSA_KEY_WITHOUT_PASS));
+            var keyFileStream2 = new MemoryStream(Encoding.ASCII.GetBytes(Resources.RSA_KEY_WITHOUT_PASS));
 
             #region Example PrivateKeyConnectionInfo PrivateKeyFile Multiple
-            var connectionInfo = new PrivateKeyConnectionInfo(host, username, 
-                new PrivateKeyFile(keyFileStream1), 
+            var connectionInfo = new PrivateKeyConnectionInfo(host, username,
+                new PrivateKeyFile(keyFileStream1),
                 new PrivateKeyFile(keyFileStream2));
+
             using (var client = new SshClient(connectionInfo))
             {
                 client.Connect();
@@ -66,10 +68,10 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void DisposeTest()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             PrivateKeyFile[] keyFiles = null; // TODO: Initialize to an appropriate value
-            PrivateKeyConnectionInfo target = new PrivateKeyConnectionInfo(host, username, keyFiles); // TODO: Initialize to an appropriate value
+            var target = new PrivateKeyConnectionInfo(host, username, keyFiles); // TODO: Initialize to an appropriate value
             target.Dispose();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -81,16 +83,16 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PrivateKeyConnectionInfoConstructorTest()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            string proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
-            string proxyPassword = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPassword = string.Empty; // TODO: Initialize to an appropriate value
             PrivateKeyFile[] keyFiles = null; // TODO: Initialize to an appropriate value
-            PrivateKeyConnectionInfo target = new PrivateKeyConnectionInfo(host, port, username, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword, keyFiles);
+            var target = new PrivateKeyConnectionInfo(host, port, username, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword, keyFiles);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -101,15 +103,15 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PrivateKeyConnectionInfoConstructorTest1()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            string proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
-            string proxyPassword = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPassword = string.Empty; // TODO: Initialize to an appropriate value
             PrivateKeyFile[] keyFiles = null; // TODO: Initialize to an appropriate value
-            PrivateKeyConnectionInfo target = new PrivateKeyConnectionInfo(host, username, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword, keyFiles);
+            var target = new PrivateKeyConnectionInfo(host, username, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword, keyFiles);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -120,14 +122,14 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PrivateKeyConnectionInfoConstructorTest2()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            string proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
             PrivateKeyFile[] keyFiles = null; // TODO: Initialize to an appropriate value
-            PrivateKeyConnectionInfo target = new PrivateKeyConnectionInfo(host, username, proxyType, proxyHost, proxyPort, proxyUsername, keyFiles);
+            var target = new PrivateKeyConnectionInfo(host, username, proxyType, proxyHost, proxyPort, proxyUsername, keyFiles);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -138,13 +140,13 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PrivateKeyConnectionInfoConstructorTest3()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
             PrivateKeyFile[] keyFiles = null; // TODO: Initialize to an appropriate value
-            PrivateKeyConnectionInfo target = new PrivateKeyConnectionInfo(host, username, proxyType, proxyHost, proxyPort, keyFiles);
+            var target = new PrivateKeyConnectionInfo(host, username, proxyType, proxyHost, proxyPort, keyFiles);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -155,15 +157,15 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PrivateKeyConnectionInfoConstructorTest4()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            string proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
             PrivateKeyFile[] keyFiles = null; // TODO: Initialize to an appropriate value
-            PrivateKeyConnectionInfo target = new PrivateKeyConnectionInfo(host, port, username, proxyType, proxyHost, proxyPort, proxyUsername, keyFiles);
+            var target = new PrivateKeyConnectionInfo(host, port, username, proxyType, proxyHost, proxyPort, proxyUsername, keyFiles);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -174,14 +176,14 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PrivateKeyConnectionInfoConstructorTest5()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
             PrivateKeyFile[] keyFiles = null; // TODO: Initialize to an appropriate value
-            PrivateKeyConnectionInfo target = new PrivateKeyConnectionInfo(host, port, username, proxyType, proxyHost, proxyPort, keyFiles);
+            var target = new PrivateKeyConnectionInfo(host, port, username, proxyType, proxyHost, proxyPort, keyFiles);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -192,11 +194,11 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PrivateKeyConnectionInfoConstructorTest6()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             PrivateKeyFile[] keyFiles = null; // TODO: Initialize to an appropriate value
-            PrivateKeyConnectionInfo target = new PrivateKeyConnectionInfo(host, port, username, keyFiles);
+            var target = new PrivateKeyConnectionInfo(host, port, username, keyFiles);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -207,10 +209,10 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PrivateKeyConnectionInfoConstructorTest7()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             PrivateKeyFile[] keyFiles = null; // TODO: Initialize to an appropriate value
-            PrivateKeyConnectionInfo target = new PrivateKeyConnectionInfo(host, username, keyFiles);
+            var target = new PrivateKeyConnectionInfo(host, username, keyFiles);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

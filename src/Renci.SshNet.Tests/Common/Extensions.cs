@@ -12,7 +12,8 @@ namespace Renci.SshNet.Tests.Common
             if (exceptionEvents.Count == 0)
                 return string.Empty;
 
-            string reportedExceptions = string.Empty;
+            var reportedExceptions = string.Empty;
+
             foreach (var exceptionEvent in exceptionEvents)
                 reportedExceptions += exceptionEvent.Exception.ToString();
 
@@ -39,7 +40,8 @@ namespace Renci.SshNet.Tests.Common
             if (value.Extensions != null)
             {
                 clonedExtensions = new Dictionary<string, string>(value.Extensions.Count);
-                foreach (var entry in value.Extensions)
+
+                foreach (KeyValuePair<string, string> entry in value.Extensions)
                 {
                     clonedExtensions.Add(entry.Key, entry.Value);
                 }
@@ -50,12 +52,12 @@ namespace Renci.SshNet.Tests.Common
             }
 
             return new SftpFileAttributes(value.LastAccessTime,
-                                          value.LastWriteTime,
-                                          value.Size,
-                                          value.UserId,
-                                          value.GroupId,
-                                          value.Permissions,
-                                          clonedExtensions);
+                value.LastWriteTime,
+                value.Size,
+                value.UserId,
+                value.GroupId,
+                value.Permissions,
+                clonedExtensions);
         }
     }
 }

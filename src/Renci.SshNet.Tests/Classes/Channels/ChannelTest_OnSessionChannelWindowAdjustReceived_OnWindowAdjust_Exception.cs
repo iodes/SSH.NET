@@ -25,13 +25,13 @@ namespace Renci.SshNet.Tests.Classes.Channels
         {
             var random = new Random();
 
-            _localChannelNumber = (uint) random.Next(0, int.MaxValue);
-            _localWindowSize = (uint) random.Next(1000, int.MaxValue);
+            _localChannelNumber = (uint)random.Next(0, int.MaxValue);
+            _localWindowSize = (uint)random.Next(1000, int.MaxValue);
             _localPacketSize = _localWindowSize - 1;
-            _remoteChannelNumber = (uint) random.Next(0, int.MaxValue);
-            _remoteWindowSize = (uint) random.Next(1000, int.MaxValue);
+            _remoteChannelNumber = (uint)random.Next(0, int.MaxValue);
+            _remoteWindowSize = (uint)random.Next(1000, int.MaxValue);
             _remotePacketSize = _localWindowSize - 1;
-            _bytesToAdd = (uint) random.Next(0, int.MaxValue);
+            _bytesToAdd = (uint)random.Next(0, int.MaxValue);
             _onWindowAdjustException = new SystemException();
             _channelExceptionRegister = new List<ExceptionEventArgs>();
         }
@@ -53,7 +53,7 @@ namespace Renci.SshNet.Tests.Classes.Channels
         protected override void Act()
         {
             SessionMock.Raise(s => s.ChannelWindowAdjustReceived += null,
-                               new MessageEventArgs<ChannelWindowAdjustMessage>(new ChannelWindowAdjustMessage(_localChannelNumber, _bytesToAdd)));
+                new MessageEventArgs<ChannelWindowAdjustMessage>(new ChannelWindowAdjustMessage(_localChannelNumber, _bytesToAdd)));
         }
 
         [TestMethod]

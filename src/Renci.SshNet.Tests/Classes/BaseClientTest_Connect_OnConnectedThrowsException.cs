@@ -51,7 +51,8 @@ namespace Renci.SshNet.Tests.Classes
         private void SetupMocks()
         {
             _serviceFactoryMock.Setup(p => p.CreateSession(_connectionInfo))
-                               .Returns(_sessionMock.Object);
+                .Returns(_sessionMock.Object);
+
             _sessionMock.Setup(p => p.Connect());
             _sessionMock.Setup(p => p.Dispose());
         }
@@ -63,9 +64,9 @@ namespace Renci.SshNet.Tests.Classes
             SetupMocks();
 
             _client = new MyClient(_connectionInfo, false, _serviceFactoryMock.Object)
-                {
-                    OnConnectedException = _onConnectException
-                };
+            {
+                OnConnectedException = _onConnectException
+            };
         }
 
         protected void Act()
@@ -149,7 +150,7 @@ namespace Renci.SshNet.Tests.Classes
             using (var s = executingAssembly.GetManifestResourceStream(string.Format("Renci.SshNet.Tests.Data.{0}", "Key.RSA.txt")))
             {
                 var privateKey = new PrivateKeyFile(s);
-                return (KeyHostAlgorithm) privateKey.HostKey;
+                return (KeyHostAlgorithm)privateKey.HostKey;
             }
         }
 
@@ -175,7 +176,5 @@ namespace Renci.SshNet.Tests.Classes
                 }
             }
         }
-
-
     }
 }

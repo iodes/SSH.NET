@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Renci.SshNet.Tests.Classes
 {
-    class SubsystemSession_SendData_Disconnected
+    internal class SubsystemSession_SendData_Disconnected
     {
     }
 }

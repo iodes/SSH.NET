@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Renci.SshNet.Tests.Properties;
 using System.Diagnostics;
 using System.IO;
@@ -22,12 +23,12 @@ namespace Renci.SshNet.Tests.Classes
             {
                 sftp.Connect();
 
-                string uploadedFileName = Path.GetTempFileName();
+                var uploadedFileName = Path.GetTempFileName();
 
-                string sourceDir = Path.GetDirectoryName(uploadedFileName);
-                string destDir = "/";
-                string searchPattern = Path.GetFileName(uploadedFileName);
-                var upLoadedFiles = sftp.SynchronizeDirectories(sourceDir, destDir, searchPattern);
+                var sourceDir = Path.GetDirectoryName(uploadedFileName);
+                var destDir = "/";
+                var searchPattern = Path.GetFileName(uploadedFileName);
+                IEnumerable<FileInfo> upLoadedFiles = sftp.SynchronizeDirectories(sourceDir, destDir, searchPattern);
 
                 Assert.IsTrue(upLoadedFiles.Count() > 0);
 
@@ -51,11 +52,11 @@ namespace Renci.SshNet.Tests.Classes
             {
                 sftp.Connect();
 
-                string uploadedFileName = Path.GetTempFileName();
+                var uploadedFileName = Path.GetTempFileName();
 
-                string sourceDir = Path.GetDirectoryName(uploadedFileName);
-                string destDir = "/";
-                string searchPattern = Path.GetFileName(uploadedFileName);
+                var sourceDir = Path.GetDirectoryName(uploadedFileName);
+                var destDir = "/";
+                var searchPattern = Path.GetFileName(uploadedFileName);
 
                 var asyncResult = sftp.BeginSynchronizeDirectories(sourceDir,
                     destDir,
@@ -67,7 +68,7 @@ namespace Renci.SshNet.Tests.Classes
                 // Wait for the WaitHandle to become signaled.
                 asyncResult.AsyncWaitHandle.WaitOne(1000);
 
-                var upLoadedFiles = sftp.EndSynchronizeDirectories(asyncResult);
+                IEnumerable<FileInfo> upLoadedFiles = sftp.EndSynchronizeDirectories(asyncResult);
 
                 Assert.IsTrue(upLoadedFiles.Count() > 0);
 

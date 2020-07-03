@@ -18,7 +18,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void SshPassPhraseNullOrEmptyExceptionConstructorTest()
         {
-            SshPassPhraseNullOrEmptyException target = new SshPassPhraseNullOrEmptyException();
+            var target = new SshPassPhraseNullOrEmptyException();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -28,8 +28,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void SshPassPhraseNullOrEmptyExceptionConstructorTest1()
         {
-            string message = string.Empty; // TODO: Initialize to an appropriate value
-            SshPassPhraseNullOrEmptyException target = new SshPassPhraseNullOrEmptyException(message);
+            var message = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SshPassPhraseNullOrEmptyException(message);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -39,9 +39,9 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void SshPassPhraseNullOrEmptyExceptionConstructorTest2()
         {
-            string message = string.Empty; // TODO: Initialize to an appropriate value
+            var message = string.Empty; // TODO: Initialize to an appropriate value
             Exception innerException = null; // TODO: Initialize to an appropriate value
-            SshPassPhraseNullOrEmptyException target = new SshPassPhraseNullOrEmptyException(message, innerException);
+            var target = new SshPassPhraseNullOrEmptyException(message, innerException);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

@@ -18,7 +18,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Asn1.X9
         public X9ECPoint(ECPoint p, bool compressed)
         {
             this.p = p.Normalize();
-            this.encoding = p.GetEncoded(compressed);
+            encoding = p.GetEncoded(compressed);
         }
 
         public X9ECPoint(ECCurve c, byte[] encoding)

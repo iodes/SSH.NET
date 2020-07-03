@@ -5,10 +5,7 @@ namespace Renci.SshNet.Sftp.Requests
 {
     internal class SftpUnblockRequest : SftpRequest
     {
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.Unblock; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.Unblock;
 
         public byte[] Handle { get; private set; }
 
@@ -35,7 +32,7 @@ namespace Renci.SshNet.Sftp.Requests
             }
         }
 
-        public SftpUnblockRequest(uint protocolVersion, uint requestId, byte[] handle, UInt64 offset, UInt64 length, Action<SftpStatusResponse> statusAction)
+        public SftpUnblockRequest(uint protocolVersion, uint requestId, byte[] handle, ulong offset, ulong length, Action<SftpStatusResponse> statusAction)
             : base(protocolVersion, requestId, statusAction)
         {
             Handle = handle;

@@ -56,8 +56,8 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void DisposeTest()
         {
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            NoneAuthenticationMethod target = new NoneAuthenticationMethod(username); // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new NoneAuthenticationMethod(username); // TODO: Initialize to an appropriate value
             target.Dispose();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -69,10 +69,10 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void AuthenticateTest()
         {
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            NoneAuthenticationMethod target = new NoneAuthenticationMethod(username); // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new NoneAuthenticationMethod(username); // TODO: Initialize to an appropriate value
             Session session = null; // TODO: Initialize to an appropriate value
-            AuthenticationResult expected = new AuthenticationResult(); // TODO: Initialize to an appropriate value
+            var expected = new AuthenticationResult(); // TODO: Initialize to an appropriate value
             AuthenticationResult actual;
             actual = target.Authenticate(session);
             Assert.AreEqual(expected, actual);
@@ -86,8 +86,8 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void NoneAuthenticationMethodConstructorTest()
         {
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            NoneAuthenticationMethod target = new NoneAuthenticationMethod(username);
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new NoneAuthenticationMethod(username);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

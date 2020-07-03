@@ -1,5 +1,4 @@
 using System;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Math;
 using Renci.SshNet.Security.Org.BouncyCastle.Security;
 
@@ -41,7 +40,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
             if (bytes.Length == length)
                 return bytes;
 
-            byte[] tmp = new byte[length];
+            var tmp = new byte[length];
             Array.Copy(bytes, 0, tmp, tmp.Length - bytes.Length, bytes.Length);
             return tmp;
         }
@@ -55,12 +54,13 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
         * @return a random BigInteger value in the range [min,max]
         */
         public static BigInteger CreateRandomInRange(
-            BigInteger		min,
-            BigInteger		max,
+            BigInteger min,
+            BigInteger max,
             // TODO Should have been just Random class
-            SecureRandom	random)
+            SecureRandom random)
         {
-            int cmp = min.CompareTo(max);
+            var cmp = min.CompareTo(max);
+
             if (cmp >= 0)
             {
                 if (cmp > 0)
@@ -74,9 +74,10 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
                 return CreateRandomInRange(BigInteger.Zero, max.Subtract(min), random).Add(min);
             }
 
-            for (int i = 0; i < MaxIterations; ++i)
+            for (var i = 0; i < MaxIterations; ++i)
             {
-                BigInteger x = new BigInteger(max.BitLength, random);
+                var x = new BigInteger(max.BitLength, random);
+
                 if (x.CompareTo(min) >= 0 && x.CompareTo(max) <= 0)
                 {
                     return x;

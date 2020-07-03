@@ -2,10 +2,7 @@
 {
     internal class SftpAttrsResponse : SftpResponse
     {
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.Attrs; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.Attrs;
 
         public SftpFileAttributes Attributes { get; private set; }
 

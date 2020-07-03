@@ -17,8 +17,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Responses
         public void Init()
         {
             _random = new Random();
-            _protocolVersion = (uint) _random.Next(0, int.MaxValue);
-            _responseId = (uint) _random.Next(0, int.MaxValue);
+            _protocolVersion = (uint)_random.Next(0, int.MaxValue);
+            _responseId = (uint)_random.Next(0, int.MaxValue);
         }
 
         [TestMethod]
@@ -27,7 +27,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Responses
             var target = new SftpExtendedReplyResponse(_protocolVersion);
 
             Assert.AreEqual(_protocolVersion, target.ProtocolVersion);
-            Assert.AreEqual((uint) 0, target.ResponseId);
+            Assert.AreEqual((uint)0, target.ResponseId);
             Assert.AreEqual(SftpMessageTypes.ExtendedReply, target.SftpMessageType);
         }
 
@@ -49,16 +49,16 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Responses
         [TestMethod]
         public void GetReply_StatVfsReplyInfo()
         {
-            var bsize = (ulong) _random.Next(0, int.MaxValue);
-            var frsize = (ulong) _random.Next(0, int.MaxValue);
-            var blocks = (ulong) _random.Next(0, int.MaxValue);
-            var bfree = (ulong) _random.Next(0, int.MaxValue);
-            var bavail = (ulong) _random.Next(0, int.MaxValue);
-            var files = (ulong) _random.Next(0, int.MaxValue);
-            var ffree = (ulong) _random.Next(0, int.MaxValue);
-            var favail = (ulong) _random.Next(0, int.MaxValue);
-            var sid = (ulong) _random.Next(0, int.MaxValue);
-            var namemax = (ulong) _random.Next(0, int.MaxValue);
+            var bsize = (ulong)_random.Next(0, int.MaxValue);
+            var frsize = (ulong)_random.Next(0, int.MaxValue);
+            var blocks = (ulong)_random.Next(0, int.MaxValue);
+            var bfree = (ulong)_random.Next(0, int.MaxValue);
+            var bavail = (ulong)_random.Next(0, int.MaxValue);
+            var files = (ulong)_random.Next(0, int.MaxValue);
+            var ffree = (ulong)_random.Next(0, int.MaxValue);
+            var favail = (ulong)_random.Next(0, int.MaxValue);
+            var sid = (ulong)_random.Next(0, int.MaxValue);
+            var namemax = (ulong)_random.Next(0, int.MaxValue);
 
             var sshDataStream = new SshDataStream(4 + 1 + 4 + 88);
             sshDataStream.Position = 4; // skip 4 bytes for SSH packet length
@@ -73,10 +73,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Responses
             sshDataStream.Write(ffree);
             sshDataStream.Write(favail);
             sshDataStream.Write(sid);
-            sshDataStream.Write((ulong) 0x2);
+            sshDataStream.Write((ulong)0x2);
             sshDataStream.Write(namemax);
 
-            var sshData = sshDataStream.ToArray();
+            byte[] sshData = sshDataStream.ToArray();
 
             var target = new SftpExtendedReplyResponse(_protocolVersion);
             target.Load(sshData, 5, sshData.Length - 5);

@@ -5,10 +5,7 @@ namespace Renci.SshNet.Sftp.Requests
 {
     internal class SftpCloseRequest : SftpRequest
     {
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.Close; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.Close;
 
         public byte[] Handle { get; private set; }
 

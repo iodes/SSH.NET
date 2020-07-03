@@ -6,15 +6,19 @@ namespace Renci.SshNet.Security.Chaos.NaCl
 {
     internal class Sha512
     {
-        private Array8<UInt64> _state;
+        private Array8<ulong> _state;
         private readonly byte[] _buffer;
         private ulong _totalBytes;
         public const int BlockSize = 128;
-        private static readonly byte[] _padding = new byte[] { 0x80 };
+
+        private static readonly byte[] _padding = new byte[]
+        {
+            0x80
+        };
 
         public Sha512()
         {
-            _buffer = new byte[BlockSize];//todo: remove allocation
+            _buffer = new byte[BlockSize]; //todo: remove allocation
             Init();
         }
 
@@ -28,6 +32,7 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (data.Array == null)
                 throw new ArgumentNullException("data.Array");
+
             Update(data.Array, data.Offset, data.Count);
         }
 
@@ -35,19 +40,23 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (data == null)
                 throw new ArgumentNullException("data");
+
             if (offset < 0)
                 throw new ArgumentOutOfRangeException("offset");
+
             if (count < 0)
                 throw new ArgumentOutOfRangeException("count");
+
             if (data.Length - offset < count)
                 throw new ArgumentException("Requires offset + count <= data.Length");
 
             Array16<ulong> block;
-            int bytesInBuffer = (int)_totalBytes & (BlockSize - 1);
+            var bytesInBuffer = (int)_totalBytes & (BlockSize - 1);
             _totalBytes += (uint)count;
 
             if (_totalBytes >= ulong.MaxValue / 8)
                 throw new InvalidOperationException("Too much data");
+
             // Fill existing buffer
             if (bytesInBuffer != 0)
             {
@@ -56,6 +65,7 @@ namespace Renci.SshNet.Security.Chaos.NaCl
                 offset += toCopy;
                 count -= toCopy;
                 bytesInBuffer += toCopy;
+
                 if (bytesInBuffer == BlockSize)
                 {
                     ByteIntegerConverter.Array16LoadBigEndian64(out block, _buffer, 0);
@@ -64,6 +74,7 @@ namespace Renci.SshNet.Security.Chaos.NaCl
                     bytesInBuffer = 0;
                 }
             }
+
             // Hash complete blocks without copying
             while (count >= BlockSize)
             {
@@ -72,6 +83,7 @@ namespace Renci.SshNet.Security.Chaos.NaCl
                 offset += BlockSize;
                 count -= BlockSize;
             }
+
             // Copy remainder into buffer
             if (count > 0)
             {
@@ -83,6 +95,7 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (output.Array == null)
                 throw new ArgumentNullException("output.Array");
+
             if (output.Count != 64)
                 throw new ArgumentException("output.Count must be 64");
 
@@ -90,12 +103,14 @@ namespace Renci.SshNet.Security.Chaos.NaCl
             Array16<ulong> block;
             ByteIntegerConverter.Array16LoadBigEndian64(out block, _buffer, 0);
             CryptoBytes.InternalWipe(_buffer, 0, _buffer.Length);
-            int bytesInBuffer = (int)_totalBytes & (BlockSize - 1);
+            var bytesInBuffer = (int)_totalBytes & (BlockSize - 1);
+
             if (bytesInBuffer > BlockSize - 16)
             {
                 Sha512Internal.Core(out _state, ref _state, ref block);
                 block = default(Array16<ulong>);
             }
+
             block.x15 = (_totalBytes - 1) * 8;
             Sha512Internal.Core(out _state, ref _state, ref block);
 

@@ -34,12 +34,12 @@ namespace Renci.SshNet.Channels
                                        uint remoteWindowSize,
                                        uint remotePacketSize)
             : base(session,
-                   localChannelNumber,
-                   localWindowSize,
-                   localPacketSize,
-                   remoteChannelNumber,
-                   remoteWindowSize,
-                   remotePacketSize)
+                localChannelNumber,
+                localWindowSize,
+                localPacketSize,
+                remoteChannelNumber,
+                remoteWindowSize,
+                remotePacketSize)
         {
         }
 
@@ -49,10 +49,7 @@ namespace Renci.SshNet.Channels
         /// <value>
         /// The type of the channel.
         /// </value>
-        public override ChannelTypes ChannelType
-        {
-            get { return ChannelTypes.ForwardedTcpip; }
-        }
+        public override ChannelTypes ChannelType => ChannelTypes.ForwardedTcpip;
 
         /// <summary>
         /// Binds the channel to the specified endpoint.
@@ -125,6 +122,7 @@ namespace Renci.SshNet.Channels
             lock (_socketShutdownAndCloseLock)
             {
                 var socket = _socket;
+
                 if (!socket.IsConnected())
                     return;
 
@@ -151,6 +149,7 @@ namespace Renci.SshNet.Channels
             lock (_socketShutdownAndCloseLock)
             {
                 var socket = _socket;
+
                 if (socket != null)
                 {
                     _socket = null;
@@ -165,6 +164,7 @@ namespace Renci.SshNet.Channels
         protected override void Close()
         {
             var forwardedPort = _forwardedPort;
+
             if (forwardedPort != null)
             {
                 forwardedPort.Closing -= ForwardedPort_Closing;
@@ -193,6 +193,7 @@ namespace Renci.SshNet.Channels
             base.OnData(data);
 
             var socket = _socket;
+
             if (socket.IsConnected())
             {
                 SocketAbstraction.Send(socket, data, 0, data.Length);

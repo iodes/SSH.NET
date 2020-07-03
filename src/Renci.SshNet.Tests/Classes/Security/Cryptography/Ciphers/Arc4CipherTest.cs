@@ -21,7 +21,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
         public void Arc4CipherConstructorTest()
         {
             byte[] key = null; // TODO: Initialize to an appropriate value
-            Arc4Cipher target = new Arc4Cipher(key, true);
+            var target = new Arc4Cipher(key, true);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -32,9 +32,13 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
             const string expectedPlainText = "Plaintext";
             var encoding = Encoding.ASCII;
             var cipher = new Arc4Cipher(encoding.GetBytes(key), false);
-            var cipherText = new byte[] { 0xBB, 0xF3, 0x16, 0xE8, 0xD9, 0x40, 0xAF, 0x0A, 0xD3 };
 
-            var actualPlainText = cipher.Decrypt(cipherText);
+            var cipherText = new byte[]
+            {
+                0xBB, 0xF3, 0x16, 0xE8, 0xD9, 0x40, 0xAF, 0x0A, 0xD3
+            };
+
+            byte[] actualPlainText = cipher.Decrypt(cipherText);
 
             Assert.AreEqual(expectedPlainText, encoding.GetString(actualPlainText));
         }
@@ -46,9 +50,13 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
             const string expectedPlainText = "pedia";
             var encoding = Encoding.ASCII;
             var cipher = new Arc4Cipher(encoding.GetBytes(key), false);
-            var cipherText = new byte[] { 0x10, 0X21, 0xBF, 0x04, 0x20 };
 
-            var actualPlainText = cipher.Decrypt(cipherText);
+            var cipherText = new byte[]
+            {
+                0x10, 0X21, 0xBF, 0x04, 0x20
+            };
+
+            byte[] actualPlainText = cipher.Decrypt(cipherText);
 
             Assert.AreEqual(expectedPlainText, encoding.GetString(actualPlainText));
         }
@@ -60,9 +68,13 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
             const string expectedPlainText = "Plaintext";
             var encoding = Encoding.ASCII;
             var cipher = new Arc4Cipher(encoding.GetBytes(key), false);
-            var cipherText = new byte[] { 0x0A, 0x0f, 0xBB, 0xF3, 0x16, 0xE8, 0xD9, 0x40, 0xAF, 0x0A, 0xD3, 0x0d, 0x05 };
 
-            var actualPlainText = cipher.Decrypt(cipherText, 2, cipherText.Length - 4);
+            var cipherText = new byte[]
+            {
+                0x0A, 0x0f, 0xBB, 0xF3, 0x16, 0xE8, 0xD9, 0x40, 0xAF, 0x0A, 0xD3, 0x0d, 0x05
+            };
+
+            byte[] actualPlainText = cipher.Decrypt(cipherText, 2, cipherText.Length - 4);
 
             Assert.AreEqual(expectedPlainText, encoding.GetString(actualPlainText));
         }
@@ -75,13 +87,13 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
         public void DecryptBlockTest()
         {
             byte[] key = null; // TODO: Initialize to an appropriate value
-            Arc4Cipher target = new Arc4Cipher(key, true); // TODO: Initialize to an appropriate value
+            var target = new Arc4Cipher(key, true); // TODO: Initialize to an appropriate value
             byte[] inputBuffer = null; // TODO: Initialize to an appropriate value
-            int inputOffset = 0; // TODO: Initialize to an appropriate value
-            int inputCount = 0; // TODO: Initialize to an appropriate value
+            var inputOffset = 0; // TODO: Initialize to an appropriate value
+            var inputCount = 0; // TODO: Initialize to an appropriate value
             byte[] outputBuffer = null; // TODO: Initialize to an appropriate value
-            int outputOffset = 0; // TODO: Initialize to an appropriate value
-            int expected = 0; // TODO: Initialize to an appropriate value
+            var outputOffset = 0; // TODO: Initialize to an appropriate value
+            var expected = 0; // TODO: Initialize to an appropriate value
             int actual;
             actual = target.DecryptBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
             Assert.AreEqual(expected, actual);
@@ -95,9 +107,13 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
             const string plainText = "Plaintext";
             var encoding = Encoding.ASCII;
             var cipher = new Arc4Cipher(encoding.GetBytes(key), false);
-            var expectedCipherText = new byte[] { 0xBB, 0xF3, 0x16, 0xE8, 0xD9, 0x40, 0xAF, 0x0A, 0xD3 };
 
-            var actualCipherText = cipher.Encrypt(encoding.GetBytes(plainText));
+            var expectedCipherText = new byte[]
+            {
+                0xBB, 0xF3, 0x16, 0xE8, 0xD9, 0x40, 0xAF, 0x0A, 0xD3
+            };
+
+            byte[] actualCipherText = cipher.Encrypt(encoding.GetBytes(plainText));
 
             Assert.IsNotNull(actualCipherText);
             Assert.IsTrue(expectedCipherText.IsEqualTo(actualCipherText));
@@ -110,9 +126,13 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
             const string plainText = "pedia";
             var encoding = Encoding.ASCII;
             var cipher = new Arc4Cipher(encoding.GetBytes(key), false);
-            var expectedCipherText = new byte[] { 0x10, 0X21, 0xBF, 0x04, 0x20 };
 
-            var actualCipherText = cipher.Encrypt(encoding.GetBytes(plainText));
+            var expectedCipherText = new byte[]
+            {
+                0x10, 0X21, 0xBF, 0x04, 0x20
+            };
+
+            byte[] actualCipherText = cipher.Encrypt(encoding.GetBytes(plainText));
 
             Assert.IsNotNull(actualCipherText);
             Assert.IsTrue(expectedCipherText.IsEqualTo(actualCipherText));
@@ -125,10 +145,14 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
             const string plainText = "NOpediaNO";
             var encoding = Encoding.ASCII;
             var cipher = new Arc4Cipher(encoding.GetBytes(key), false);
-            var plainTextBytes = encoding.GetBytes(plainText);
-            var expectedCipherText = new byte[] { 0x10, 0X21, 0xBF, 0x04, 0x20 };
+            byte[] plainTextBytes = encoding.GetBytes(plainText);
 
-            var actualCipherText = cipher.Encrypt(plainTextBytes, 2, plainTextBytes.Length - 4);
+            var expectedCipherText = new byte[]
+            {
+                0x10, 0X21, 0xBF, 0x04, 0x20
+            };
+
+            byte[] actualCipherText = cipher.Encrypt(plainTextBytes, 2, plainTextBytes.Length - 4);
 
             Assert.IsNotNull(actualCipherText);
             Assert.IsTrue(expectedCipherText.IsEqualTo(actualCipherText));
@@ -144,13 +168,13 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
         public void EncryptBlockTest()
         {
             byte[] key = null; // TODO: Initialize to an appropriate value
-            Arc4Cipher target = new Arc4Cipher(key, true); // TODO: Initialize to an appropriate value
+            var target = new Arc4Cipher(key, true); // TODO: Initialize to an appropriate value
             byte[] inputBuffer = null; // TODO: Initialize to an appropriate value
-            int inputOffset = 0; // TODO: Initialize to an appropriate value
-            int inputCount = 0; // TODO: Initialize to an appropriate value
+            var inputOffset = 0; // TODO: Initialize to an appropriate value
+            var inputCount = 0; // TODO: Initialize to an appropriate value
             byte[] outputBuffer = null; // TODO: Initialize to an appropriate value
-            int outputOffset = 0; // TODO: Initialize to an appropriate value
-            int expected = 0; // TODO: Initialize to an appropriate value
+            var outputOffset = 0; // TODO: Initialize to an appropriate value
+            var expected = 0; // TODO: Initialize to an appropriate value
             int actual;
             actual = target.EncryptBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
             Assert.AreEqual(expected, actual);
@@ -190,6 +214,5 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
                 client.Disconnect();
             }
         }
-
     }
 }

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("SSH.NET is a Secure Shell (SSH) library for .NET, optimized for parallelism.")]
 [assembly: AssemblyCompany("Renci")]
 [assembly: AssemblyProduct("SSH.NET")]
-[assembly: AssemblyCopyright("Copyright © Renci 2010-2017")]
+[assembly: AssemblyCopyright("Copyright ?Renci 2010-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -18,7 +18,6 @@ using System.Runtime.InteropServices;
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
-
 
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]

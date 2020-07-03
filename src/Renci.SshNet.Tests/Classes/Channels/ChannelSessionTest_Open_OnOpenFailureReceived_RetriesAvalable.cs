@@ -32,18 +32,18 @@ namespace Renci.SshNet.Tests.Classes.Channels
         {
             var random = new Random();
 
-            _localChannelNumber = (uint) random.Next(0, int.MaxValue);
-            _localWindowSize = (uint) random.Next(2000, 3000);
-            _localPacketSize = (uint) random.Next(1000, 2000);
-            _remoteChannelNumber = (uint) random.Next(0, int.MaxValue);
-            _remoteWindowSize = (uint) random.Next(0, int.MaxValue);
-            _remotePacketSize = (uint) random.Next(0, int.MaxValue);
+            _localChannelNumber = (uint)random.Next(0, int.MaxValue);
+            _localWindowSize = (uint)random.Next(2000, 3000);
+            _localPacketSize = (uint)random.Next(1000, 2000);
+            _remoteChannelNumber = (uint)random.Next(0, int.MaxValue);
+            _remoteWindowSize = (uint)random.Next(0, int.MaxValue);
+            _remotePacketSize = (uint)random.Next(0, int.MaxValue);
             _initialSessionSemaphoreCount = random.Next(10, 20);
             _sessionSemaphore = new SemaphoreLight(_initialSessionSemaphoreCount);
             _channelClosedRegister = new List<ChannelEventArgs>();
             _channelExceptionRegister = new List<ExceptionEventArgs>();
 
-            _failureReasonCode = (uint) random.Next(0, int.MaxValue);
+            _failureReasonCode = (uint)random.Next(0, int.MaxValue);
             _failureDescription = random.Next().ToString(CultureInfo.InvariantCulture);
             _failureLanguage = random.Next().ToString(CultureInfo.InvariantCulture);
         }
@@ -55,58 +55,65 @@ namespace Renci.SshNet.Tests.Classes.Channels
             SessionMock.InSequence(sequence).Setup(p => p.ConnectionInfo).Returns(ConnectionInfoMock.Object);
             ConnectionInfoMock.InSequence(sequence).Setup(p => p.RetryAttempts).Returns(2);
             SessionMock.Setup(p => p.SessionSemaphore).Returns(_sessionSemaphore);
+
             SessionMock.InSequence(sequence)
-                        .Setup(
-                            p =>
-                                p.SendMessage(
-                                    It.Is<ChannelOpenMessage>(
-                                        m =>
-                                            m.LocalChannelNumber == _localChannelNumber &&
-                                            m.InitialWindowSize == _localWindowSize && m.MaximumPacketSize == _localPacketSize &&
-                                            m.Info is SessionChannelOpenInfo)));
+                .Setup(
+                    p =>
+                        p.SendMessage(
+                            It.Is<ChannelOpenMessage>(
+                                m =>
+                                    m.LocalChannelNumber == _localChannelNumber &&
+                                    m.InitialWindowSize == _localWindowSize && m.MaximumPacketSize == _localPacketSize &&
+                                    m.Info is SessionChannelOpenInfo)));
+
             SessionMock.InSequence(sequence)
-                        .Setup(p => p.WaitOnHandle(It.IsNotNull<WaitHandle>()))
-                        .Callback<WaitHandle>(
-                            w =>
-                            {
-                                SessionMock.Raise(
-                                    s => s.ChannelOpenFailureReceived += null,
-                                    new MessageEventArgs<ChannelOpenFailureMessage>(
-                                        new ChannelOpenFailureMessage(
-                                            _localChannelNumber,
-                                            _failureDescription,
-                                            _failureReasonCode,
-                                            _failureLanguage
-                                        )));
-                                w.WaitOne();
-                            });
+                .Setup(p => p.WaitOnHandle(It.IsNotNull<WaitHandle>()))
+                .Callback<WaitHandle>(
+                    w =>
+                    {
+                        SessionMock.Raise(
+                            s => s.ChannelOpenFailureReceived += null,
+                            new MessageEventArgs<ChannelOpenFailureMessage>(
+                                new ChannelOpenFailureMessage(
+                                    _localChannelNumber,
+                                    _failureDescription,
+                                    _failureReasonCode,
+                                    _failureLanguage
+                                )));
+
+                        w.WaitOne();
+                    });
+
             SessionMock.InSequence(sequence).Setup(p => p.ConnectionInfo).Returns(ConnectionInfoMock.Object);
             ConnectionInfoMock.InSequence(sequence).Setup(p => p.RetryAttempts).Returns(2);
             SessionMock.Setup(p => p.SessionSemaphore).Returns(_sessionSemaphore);
+
             SessionMock.InSequence(sequence)
-                        .Setup(
-                            p =>
-                                p.SendMessage(
-                                    It.Is<ChannelOpenMessage>(
-                                        m =>
-                                            m.LocalChannelNumber == _localChannelNumber &&
-                                            m.InitialWindowSize == _localWindowSize && m.MaximumPacketSize == _localPacketSize &&
-                                            m.Info is SessionChannelOpenInfo)));
+                .Setup(
+                    p =>
+                        p.SendMessage(
+                            It.Is<ChannelOpenMessage>(
+                                m =>
+                                    m.LocalChannelNumber == _localChannelNumber &&
+                                    m.InitialWindowSize == _localWindowSize && m.MaximumPacketSize == _localPacketSize &&
+                                    m.Info is SessionChannelOpenInfo)));
+
             SessionMock.InSequence(sequence)
-                        .Setup(p => p.WaitOnHandle(It.IsNotNull<WaitHandle>()))
-                        .Callback<WaitHandle>(
-                            w =>
-                            {
-                                SessionMock.Raise(
-                                    s => s.ChannelOpenConfirmationReceived += null,
-                                    new MessageEventArgs<ChannelOpenConfirmationMessage>(
-                                        new ChannelOpenConfirmationMessage(
-                                            _localChannelNumber,
-                                            _remoteWindowSize,
-                                            _remotePacketSize,
-                                            _remoteChannelNumber)));
-                                w.WaitOne();
-                            });
+                .Setup(p => p.WaitOnHandle(It.IsNotNull<WaitHandle>()))
+                .Callback<WaitHandle>(
+                    w =>
+                    {
+                        SessionMock.Raise(
+                            s => s.ChannelOpenConfirmationReceived += null,
+                            new MessageEventArgs<ChannelOpenConfirmationMessage>(
+                                new ChannelOpenConfirmationMessage(
+                                    _localChannelNumber,
+                                    _remoteWindowSize,
+                                    _remotePacketSize,
+                                    _remoteChannelNumber)));
+
+                        w.WaitOne();
+                    });
         }
 
         protected override void Arrange()

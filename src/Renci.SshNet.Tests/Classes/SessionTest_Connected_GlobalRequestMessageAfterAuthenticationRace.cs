@@ -26,7 +26,7 @@ namespace Renci.SshNet.Tests.Classes
 
         protected override void ClientAuthentication_Callback()
         {
-            var globalRequest = _globalRequestMessage.GetPacket(8, null);
+            byte[] globalRequest = _globalRequestMessage.GetPacket(8, null);
             ServerSocket.Send(globalRequest, 4, globalRequest.Length - 4, SocketFlags.None);
         }
 

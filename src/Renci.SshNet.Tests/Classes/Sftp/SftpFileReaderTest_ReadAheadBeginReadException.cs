@@ -1,6 +1,6 @@
 ﻿namespace Renci.SshNet.Tests.Classes.Sftp
 {
-    class SftpFileReaderTest_ReadAheadBeginReadException
+    internal class SftpFileReaderTest_ReadAheadBeginReadException
     {
     }
 }

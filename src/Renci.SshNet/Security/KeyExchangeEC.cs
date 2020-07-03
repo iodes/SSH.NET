@@ -53,16 +53,16 @@ namespace Renci.SshNet.Security
         protected override byte[] CalculateHash()
         {
             var hashData = new KeyExchangeHashData
-                {
-                    ClientVersion = Session.ClientVersion,
-                    ServerVersion = Session.ServerVersion,
-                    ClientPayload = _clientPayload,
-                    ServerPayload = _serverPayload,
-                    HostKey = _hostKey,
-                    ClientExchangeValue = _clientExchangeValue,
-                    ServerExchangeValue = _serverExchangeValue,
-                    SharedKey = SharedKey,
-                };
+            {
+                ClientVersion = Session.ClientVersion,
+                ServerVersion = Session.ServerVersion,
+                ClientPayload = _clientPayload,
+                ServerPayload = _serverPayload,
+                HostKey = _hostKey,
+                ClientExchangeValue = _clientExchangeValue,
+                ServerExchangeValue = _serverExchangeValue,
+                SharedKey = SharedKey
+            };
 
             return Hash(hashData.GetBytes());
         }
@@ -75,7 +75,7 @@ namespace Renci.SshNet.Security
         /// </returns>
         protected override bool ValidateExchangeHash()
         {
-            var exchangeHash = CalculateHash();
+            byte[] exchangeHash = CalculateHash();
 
             var length = Pack.BigEndianToUInt32(_hostKey);
             var algorithmName = Encoding.UTF8.GetString(_hostKey, 4, (int)length);
@@ -87,6 +87,7 @@ namespace Renci.SshNet.Security
             {
                 return key.VerifySignature(exchangeHash, _signature);
             }
+
             return false;
         }
 
@@ -102,5 +103,5 @@ namespace Renci.SshNet.Security
             _serverPayload = message.GetBytes();
             _clientPayload = Session.ClientInitMessage.GetBytes();
         }
-   }
+    }
 }

@@ -46,16 +46,21 @@ namespace Renci.SshNet.Tests.Classes
 
             NoneAuthenticationMethodMock.InSequence(seq).Setup(p => p.Authenticate(SessionMock.Object))
                 .Returns(AuthenticationResult.Failure);
+
             ConnectionInfoMock.InSequence(seq)
-                              .Setup(p => p.AuthenticationMethods)
-                              .Returns(new List<IAuthenticationMethod>
-                                  {
-                                      PublicKeyAuthenticationMethodMock.Object,
-                                      PasswordAuthenticationMethodMock.Object
-                                  });
+                .Setup(p => p.AuthenticationMethods)
+                .Returns(new List<IAuthenticationMethod>
+                {
+                    PublicKeyAuthenticationMethodMock.Object,
+                    PasswordAuthenticationMethodMock.Object
+                });
+
             NoneAuthenticationMethodMock.InSequence(seq)
-                                        .Setup(p => p.AllowedAuthentications)
-                                        .Returns(new[] {"password"});
+                .Setup(p => p.AllowedAuthentications)
+                .Returns(new[]
+                {
+                    "password"
+                });
 
             /* Enumerate supported authentication methods */
 
@@ -65,11 +70,15 @@ namespace Renci.SshNet.Tests.Classes
             /* 2 */
 
             PasswordAuthenticationMethodMock.InSequence(seq)
-                                            .Setup(p => p.Authenticate(SessionMock.Object))
-                                            .Returns(AuthenticationResult.PartialSuccess);
+                .Setup(p => p.Authenticate(SessionMock.Object))
+                .Returns(AuthenticationResult.PartialSuccess);
+
             PasswordAuthenticationMethodMock.InSequence(seq)
-                                            .Setup(p => p.AllowedAuthentications)
-                                            .Returns(new[] {"password"});
+                .Setup(p => p.AllowedAuthentications)
+                .Returns(new[]
+                {
+                    "password"
+                });
 
             /* Enumerate supported authentication methods */
 
@@ -79,8 +88,8 @@ namespace Renci.SshNet.Tests.Classes
             /* 3 */
 
             PasswordAuthenticationMethodMock.InSequence(seq)
-                                            .Setup(p => p.Authenticate(SessionMock.Object))
-                                            .Returns(AuthenticationResult.Success);
+                .Setup(p => p.Authenticate(SessionMock.Object))
+                .Returns(AuthenticationResult.Success);
 
             SessionMock.InSequence(seq).Setup(p => p.UnRegisterMessage("SSH_MSG_USERAUTH_FAILURE"));
             SessionMock.InSequence(seq).Setup(p => p.UnRegisterMessage("SSH_MSG_USERAUTH_SUCCESS"));

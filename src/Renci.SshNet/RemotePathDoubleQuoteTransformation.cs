@@ -58,12 +58,15 @@ namespace Renci.SshNet
             var transformed = new StringBuilder(path.Length);
 
             transformed.Append('"');
+
             foreach (var c in path)
             {
                 if (c == '"')
                     transformed.Append('\\');
+
                 transformed.Append(c);
             }
+
             transformed.Append('"');
 
             return transformed.ToString();

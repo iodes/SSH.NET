@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -40,10 +41,10 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldReturnEmptyByteArrayWhenCountIsZero()
         {
-            var value = CreateBuffer(16);
+            byte[] value = CreateBuffer(16);
             const int count = 0;
 
-            var actual = Extensions.Take(value, count);
+            byte[] actual = Extensions.Take(value, count);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(0, actual.Length);
@@ -52,10 +53,10 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldReturnValueWhenCountIsEqualToLengthOfValue()
         {
-            var value = CreateBuffer(16);
+            byte[] value = CreateBuffer(16);
             var count = value.Length;
 
-            var actual = Extensions.Take(value, count);
+            byte[] actual = Extensions.Take(value, count);
 
             Assert.IsNotNull(actual);
             Assert.AreSame(value, actual);
@@ -64,10 +65,10 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldReturnLeadingBytesWhenCountIsLessThanLengthOfValue()
         {
-            var value = CreateBuffer(16);
+            byte[] value = CreateBuffer(16);
             const int count = 5;
 
-            var actual = Extensions.Take(value, count);
+            byte[] actual = Extensions.Take(value, count);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(count, actual.Length);
@@ -81,7 +82,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldThrowArgumentExceptionWhenCountIsGreaterThanLengthOfValue()
         {
-            var value = CreateBuffer(16);
+            byte[] value = CreateBuffer(16);
             var count = value.Length + 1;
 
             try
@@ -99,7 +100,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestCategory("Performance")]
         public void Performance_LargeArray_All()
         {
-            var value = CreateBuffer(50000);
+            byte[] value = CreateBuffer(50000);
             var count = value.Length;
             const int runs = 10000;
 
@@ -111,7 +112,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestCategory("Performance")]
         public void Performance_LargeArray_LargeCount()
         {
-            var value = CreateBuffer(50000);
+            byte[] value = CreateBuffer(50000);
             const int count = 40000;
             const int runs = 1000000;
 
@@ -123,7 +124,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestCategory("Performance")]
         public void Performance_LargeArray_SmallCount()
         {
-            var value = CreateBuffer(50000);
+            byte[] value = CreateBuffer(50000);
             const int count = 50;
             const int runs = 1000000;
 
@@ -134,7 +135,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestCategory("Performance")]
         public void Performance_LargeArray_ZeroCount()
         {
-            var value = CreateBuffer(50000);
+            byte[] value = CreateBuffer(50000);
             const int count = 0;
             const int runs = 1000000;
 
@@ -153,7 +154,7 @@ namespace Renci.SshNet.Tests.Classes.Common
 
             for (var i = 0; i < runs; i++)
             {
-                var result = Extensions.Take(value, count);
+                byte[] result = Extensions.Take(value, count);
                 var resultLength = result.Length;
             }
 
@@ -170,7 +171,7 @@ namespace Renci.SshNet.Tests.Classes.Common
 
             for (var i = 0; i < runs; i++)
             {
-                var result = Enumerable.Take(value, count);
+                IEnumerable<byte> result = Enumerable.Take(value, count);
                 var resultLength = result.ToArray().Length;
             }
 

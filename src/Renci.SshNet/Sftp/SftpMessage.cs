@@ -12,15 +12,10 @@ namespace Renci.SshNet.Sftp
         /// <value>
         /// The size of the messages in bytes.
         /// </value>
-        protected override int BufferCapacity
-        {
-            get
-            {
-                // 4 bytes for the length of the SFTP data
-                // 1 byte for the SFTP message type
-                return 5;
-            }
-        }
+        protected override int BufferCapacity =>
+            // 4 bytes for the length of the SFTP data
+            // 1 byte for the SFTP message type
+            5;
 
         public abstract SftpMessageTypes SftpMessageType { get; }
 
@@ -30,7 +25,7 @@ namespace Renci.SshNet.Sftp
 
         protected override void SaveData()
         {
-            Write((byte) SftpMessageType);
+            Write((byte)SftpMessageType);
         }
 
         /// <summary>
@@ -58,7 +53,7 @@ namespace Renci.SshNet.Sftp
             // write the length of the SFTP message where we were positioned before we started
             // writing the SFTP message data
             stream.Position = startPosition;
-            stream.Write((uint) dataLength);
+            stream.Write((uint)dataLength);
 
             // move back to we were positioned when we finished writing the SFTP message data
             stream.Position = endPosition;

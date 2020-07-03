@@ -20,14 +20,19 @@ namespace Renci.SshNet
             InitializePendingChannelCountdown();
 
             var ip = IPAddress.Any;
+
             if (!string.IsNullOrEmpty(BoundHost))
             {
                 ip = DnsAbstraction.GetHostAddresses(BoundHost)[0];
             }
 
-            var ep = new IPEndPoint(ip, (int) BoundPort);
+            var ep = new IPEndPoint(ip, (int)BoundPort);
 
-            _listener = new Socket(ep.AddressFamily, SocketType.Stream, ProtocolType.Tcp) {NoDelay = true};
+            _listener = new Socket(ep.AddressFamily, SocketType.Stream, ProtocolType.Tcp)
+            {
+                NoDelay = true
+            };
+
             _listener.Bind(ep);
             _listener.Listen(5);
 
@@ -170,6 +175,7 @@ namespace Renci.SshNet
         private void InitializePendingChannelCountdown()
         {
             var original = Interlocked.Exchange(ref _pendingChannelCountdown, new CountdownEvent(1));
+
             if (original != null)
             {
                 original.Dispose();
@@ -187,15 +193,19 @@ namespace Renci.SshNet
             try
             {
                 var version = SocketAbstraction.ReadByte(clientSocket, timeout);
+
                 switch (version)
                 {
                     case -1:
                         // SOCKS client closed connection
                         return false;
+
                     case 4:
                         return HandleSocks4(clientSocket, channel, timeout);
+
                     case 5:
                         return HandleSocks5(clientSocket, channel, timeout);
+
                     default:
                         throw new NotSupportedException(string.Format("SOCKS version {0} is not supported.", version));
                 }
@@ -208,6 +218,7 @@ namespace Renci.SshNet
                 {
                     RaiseExceptionEvent(ex);
                 }
+
                 return false;
             }
             finally
@@ -216,7 +227,6 @@ namespace Renci.SshNet
                 // or no longer necessary
                 Closing -= closeClientSocket;
             }
-
         }
 
         private static void CloseClientSocket(Socket clientSocket)
@@ -243,6 +253,7 @@ namespace Renci.SshNet
         {
             // close listener socket
             var listener = _listener;
+
             if (listener != null)
             {
                 listener.Dispose();
@@ -250,6 +261,7 @@ namespace Renci.SshNet
 
             // unsubscribe from session events
             var session = Session;
+
             if (session != null)
             {
                 session.ErrorOccured -= Session_ErrorOccured;
@@ -264,12 +276,12 @@ namespace Renci.SshNet
         partial void InternalStop(TimeSpan timeout)
         {
             _pendingChannelCountdown.Signal();
+
             if (!_pendingChannelCountdown.Wait(timeout))
             {
                 // TODO: log as warning
                 DiagnosticAbstraction.Log("Timeout waiting for pending channels in dynamic forwarded port to close.");
             }
-
         }
 
         partial void InternalDispose(bool disposing)
@@ -277,6 +289,7 @@ namespace Renci.SshNet
             if (disposing)
             {
                 var listener = _listener;
+
                 if (listener != null)
                 {
                     _listener = null;
@@ -284,6 +297,7 @@ namespace Renci.SshNet
                 }
 
                 var pendingRequestsCountdown = _pendingChannelCountdown;
+
                 if (pendingRequestsCountdown != null)
                 {
                     _pendingChannelCountdown = null;
@@ -295,6 +309,7 @@ namespace Renci.SshNet
         private void Session_Disconnected(object sender, EventArgs e)
         {
             var session = Session;
+
             if (session != null)
             {
                 StopPort(session.ConnectionInfo.Timeout);
@@ -304,6 +319,7 @@ namespace Renci.SshNet
         private void Session_ErrorOccured(object sender, ExceptionEventArgs e)
         {
             var session = Session;
+
             if (session != null)
             {
                 StopPort(session.ConnectionInfo.Timeout);
@@ -318,6 +334,7 @@ namespace Renci.SshNet
         private bool HandleSocks4(Socket socket, IChannelDirectTcpip channel, TimeSpan timeout)
         {
             var commandCode = SocketAbstraction.ReadByte(socket, timeout);
+
             if (commandCode == -1)
             {
                 // SOCKS client closed connection
@@ -327,6 +344,7 @@ namespace Renci.SshNet
             //  TODO:   See what need to be done depends on the code
 
             var portBuffer = new byte[2];
+
             if (SocketAbstraction.Read(socket, portBuffer, 0, portBuffer.Length, timeout) == 0)
             {
                 // SOCKS client closed connection
@@ -336,6 +354,7 @@ namespace Renci.SshNet
             var port = Pack.BigEndianToUInt16(portBuffer);
 
             var ipBuffer = new byte[4];
+
             if (SocketAbstraction.Read(socket, ipBuffer, 0, ipBuffer.Length, timeout) == 0)
             {
                 // SOCKS client closed connection
@@ -345,6 +364,7 @@ namespace Renci.SshNet
             var ipAddress = new IPAddress(ipBuffer);
 
             var username = ReadString(socket, timeout);
+
             if (username == null)
             {
                 // SOCKS client closed connection
@@ -375,6 +395,7 @@ namespace Renci.SshNet
         private bool HandleSocks5(Socket socket, IChannelDirectTcpip channel, TimeSpan timeout)
         {
             var authenticationMethodsCount = SocketAbstraction.ReadByte(socket, timeout);
+
             if (authenticationMethodsCount == -1)
             {
                 // SOCKS client closed connection
@@ -382,6 +403,7 @@ namespace Renci.SshNet
             }
 
             var authenticationMethods = new byte[authenticationMethodsCount];
+
             if (SocketAbstraction.Read(socket, authenticationMethods, 0, authenticationMethods.Length, timeout) == 0)
             {
                 // SOCKS client closed connection
@@ -392,12 +414,18 @@ namespace Renci.SshNet
             {
                 // no user authentication is one of the authentication methods supported
                 // by the SOCKS client
-                SocketAbstraction.Send(socket, new byte[] {0x05, 0x00}, 0, 2);
+                SocketAbstraction.Send(socket, new byte[]
+                {
+                    0x05, 0x00
+                }, 0, 2);
             }
             else
             {
                 // the SOCKS client requires authentication, which we currently do not support
-                SocketAbstraction.Send(socket, new byte[] {0x05, 0xFF}, 0, 2);
+                SocketAbstraction.Send(socket, new byte[]
+                {
+                    0x05, 0xFF
+                }, 0, 2);
 
                 // we continue business as usual but expect the client to close the connection
                 // so one of the subsequent reads should return -1 signaling that the client
@@ -405,6 +433,7 @@ namespace Renci.SshNet
             }
 
             var version = SocketAbstraction.ReadByte(socket, timeout);
+
             if (version == -1)
             {
                 // SOCKS client closed connection
@@ -415,6 +444,7 @@ namespace Renci.SshNet
                 throw new ProxyException("SOCKS5: Version 5 is expected.");
 
             var commandCode = SocketAbstraction.ReadByte(socket, timeout);
+
             if (commandCode == -1)
             {
                 // SOCKS client closed connection
@@ -422,6 +452,7 @@ namespace Renci.SshNet
             }
 
             var reserved = SocketAbstraction.ReadByte(socket, timeout);
+
             if (reserved == -1)
             {
                 // SOCKS client closed connection
@@ -434,6 +465,7 @@ namespace Renci.SshNet
             }
 
             var addressType = SocketAbstraction.ReadByte(socket, timeout);
+
             if (addressType == -1)
             {
                 // SOCKS client closed connection
@@ -441,6 +473,7 @@ namespace Renci.SshNet
             }
 
             var host = GetSocks5Host(addressType, socket, timeout);
+
             if (host == null)
             {
                 // SOCKS client closed connection
@@ -448,6 +481,7 @@ namespace Renci.SshNet
             }
 
             var portBuffer = new byte[2];
+
             if (SocketAbstraction.Read(socket, portBuffer, 0, portBuffer.Length, timeout) == 0)
             {
                 // SOCKS client closed connection
@@ -460,7 +494,7 @@ namespace Renci.SshNet
 
             channel.Open(host, port, this, socket);
 
-            var socksReply = CreateSocks5Reply(channel.IsOpen);
+            byte[] socksReply = CreateSocks5Reply(channel.IsOpen);
 
             SocketAbstraction.Send(socket, socksReply, 0, socksReply.Length);
 
@@ -472,47 +506,55 @@ namespace Renci.SshNet
             switch (addressType)
             {
                 case 0x01: // IPv4
-                    {
-                        var addressBuffer = new byte[4];
-                        if (SocketAbstraction.Read(socket, addressBuffer, 0, 4, timeout) == 0)
-                        {
-                            // SOCKS client closed connection
-                            return null;
-                        }
+                {
+                    var addressBuffer = new byte[4];
 
-                        var ipv4 = new IPAddress(addressBuffer);
-                        return ipv4.ToString();
+                    if (SocketAbstraction.Read(socket, addressBuffer, 0, 4, timeout) == 0)
+                    {
+                        // SOCKS client closed connection
+                        return null;
                     }
+
+                    var ipv4 = new IPAddress(addressBuffer);
+                    return ipv4.ToString();
+                }
+
                 case 0x03: // Domain name
-                    {
-                        var length = SocketAbstraction.ReadByte(socket, timeout);
-                        if (length == -1)
-                        {
-                            // SOCKS client closed connection
-                            return null;
-                        }
-                        var addressBuffer = new byte[length];
-                        if (SocketAbstraction.Read(socket, addressBuffer, 0, addressBuffer.Length, timeout) == 0)
-                        {
-                            // SOCKS client closed connection
-                            return null;
-                        }
+                {
+                    var length = SocketAbstraction.ReadByte(socket, timeout);
 
-                        var hostName = SshData.Ascii.GetString(addressBuffer, 0, addressBuffer.Length);
-                        return hostName;
+                    if (length == -1)
+                    {
+                        // SOCKS client closed connection
+                        return null;
                     }
+
+                    var addressBuffer = new byte[length];
+
+                    if (SocketAbstraction.Read(socket, addressBuffer, 0, addressBuffer.Length, timeout) == 0)
+                    {
+                        // SOCKS client closed connection
+                        return null;
+                    }
+
+                    var hostName = SshData.Ascii.GetString(addressBuffer, 0, addressBuffer.Length);
+                    return hostName;
+                }
+
                 case 0x04: // IPv6
-                    {
-                        var addressBuffer = new byte[16];
-                        if (SocketAbstraction.Read(socket, addressBuffer, 0, 16, timeout) == 0)
-                        {
-                            // SOCKS client closed connection
-                            return null;
-                        }
+                {
+                    var addressBuffer = new byte[16];
 
-                        var ipv6 = new IPAddress(addressBuffer);
-                        return ipv6.ToString();
+                    if (SocketAbstraction.Read(socket, addressBuffer, 0, 16, timeout) == 0)
+                    {
+                        // SOCKS client closed connection
+                        return null;
                     }
+
+                    var ipv6 = new IPAddress(addressBuffer);
+                    return ipv6.ToString();
+                }
+
                 default:
                     throw new ProxyException(string.Format("SOCKS5: Address type '{0}' is not supported.", addressType));
             }
@@ -521,20 +563,20 @@ namespace Renci.SshNet
         private static byte[] CreateSocks5Reply(bool channelOpen)
         {
             var socksReply = new byte
-                [
-                    // SOCKS version
-                    1 +
-                    // Reply field
-                    1 +
-                    // Reserved; fixed: 0x00
-                    1 +
-                    // Address type; fixed: 0x01
-                    1 +
-                    // IPv4 server bound address; fixed: {0x00, 0x00, 0x00, 0x00}
-                    4 +
-                    // server bound port; fixed: {0x00, 0x00}
-                    2
-                ];
+            [
+                // SOCKS version
+                1 +
+                // Reply field
+                1 +
+                // Reserved; fixed: 0x00
+                1 +
+                // Address type; fixed: 0x01
+                1 +
+                // IPv4 server bound address; fixed: {0x00, 0x00, 0x00, 0x00}
+                4 +
+                // server bound port; fixed: {0x00, 0x00}
+                2
+            ];
 
             socksReply[0] = 0x05;
 
@@ -568,6 +610,7 @@ namespace Renci.SshNet
         {
             var text = new StringBuilder();
             var buffer = new byte[1];
+
             while (true)
             {
                 if (SocketAbstraction.Read(socket, buffer, 0, 1, timeout) == 0)
@@ -577,17 +620,18 @@ namespace Renci.SshNet
                 }
 
                 var byteRead = buffer[0];
+
                 if (byteRead == 0)
                 {
                     // end of the string
                     break;
                 }
 
-                var c = (char) byteRead;
+                var c = (char)byteRead;
                 text.Append(c);
             }
+
             return text.ToString();
         }
     }
 }
-

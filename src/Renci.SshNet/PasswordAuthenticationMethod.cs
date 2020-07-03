@@ -23,10 +23,7 @@ namespace Renci.SshNet
         /// <summary>
         /// Gets authentication method name
         /// </summary>
-        public override string Name
-        {
-            get { return _requestMessage.MethodName; }
-        }
+        public override string Name => _requestMessage.MethodName;
 
         /// <summary>
         /// Gets the password as a sequence of bytes.
@@ -34,10 +31,7 @@ namespace Renci.SshNet
         /// <value>
         /// The password as a sequence of bytes.
         /// </value>
-        internal byte[] Password
-        {
-            get { return _password; }
-        }
+        internal byte[] Password => _password;
 
         /// <summary>
         /// Occurs when user's password has expired and needs to be changed.
@@ -98,7 +92,7 @@ namespace Renci.SshNet
                 session.SendMessage(_requestMessage);
                 session.WaitOnHandle(_authenticationCompleted);
             }
-            finally 
+            finally
             {
                 session.UnRegisterMessage("SSH_MSG_USERAUTH_PASSWD_CHANGEREQ");
                 session.UserAuthenticationSuccessReceived -= Session_UserAuthenticationSuccessReceived;
@@ -160,7 +154,6 @@ namespace Renci.SshNet
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -180,10 +173,11 @@ namespace Renci.SshNet
         {
             if (_isDisposed)
                 return;
-           
+
             if (disposing)
             {
                 var authenticationCompleted = _authenticationCompleted;
+
                 if (authenticationCompleted != null)
                 {
                     authenticationCompleted.Dispose();
@@ -202,7 +196,6 @@ namespace Renci.SshNet
         {
             Dispose(false);
         }
-
         #endregion
     }
 }

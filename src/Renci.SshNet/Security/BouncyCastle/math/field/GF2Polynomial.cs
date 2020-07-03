@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Utilities;
 
 namespace Renci.SshNet.Security.Org.BouncyCastle.Math.Field
@@ -14,10 +13,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.Field
             this.exponents = Arrays.Clone(exponents);
         }
 
-        public virtual int Degree
-        {
-            get { return exponents[exponents.Length - 1]; }
-        }
+        public virtual int Degree => exponents[exponents.Length - 1];
 
         public virtual int[] GetExponentsPresent()
         {
@@ -30,11 +26,14 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.Field
             {
                 return true;
             }
-            GF2Polynomial other = obj as GF2Polynomial;
+
+            var other = obj as GF2Polynomial;
+
             if (null == other)
             {
                 return false;
             }
+
             return Arrays.AreEqual(exponents, other.exponents);
         }
 

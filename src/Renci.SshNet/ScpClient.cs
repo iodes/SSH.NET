@@ -30,8 +30,16 @@ namespace Renci.SshNet
     public partial class ScpClient : BaseClient
     {
         private static readonly Regex FileInfoRe = new Regex(@"C(?<mode>\d{4}) (?<length>\d+) (?<filename>.+)");
-        private static readonly byte[] SuccessConfirmationCode = {0};
-        private static readonly byte[] ErrorConfirmationCode = { 1 };
+
+        private static readonly byte[] SuccessConfirmationCode =
+        {
+            0
+        };
+
+        private static readonly byte[] ErrorConfirmationCode =
+        {
+            1
+        };
 
         private IRemotePathTransformation _remotePathTransformation;
 
@@ -71,11 +79,12 @@ namespace Renci.SshNet
         /// </remarks>
         public IRemotePathTransformation RemotePathTransformation
         {
-            get { return _remotePathTransformation; }
+            get => _remotePathTransformation;
             set
             {
                 if (value == null)
                     throw new ArgumentNullException("value");
+
                 _remotePathTransformation = value;
             }
         }
@@ -91,7 +100,6 @@ namespace Renci.SshNet
         public event EventHandler<ScpUploadEventArgs> Uploading;
 
         #region Constructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ScpClient"/> class.
         /// </summary>
@@ -194,7 +202,6 @@ namespace Renci.SshNet
             BufferSize = 1024 * 16;
             _remotePathTransformation = serviceFactory.CreateRemotePathDoubleQuoteTransformation();
         }
-
         #endregion
 
         /// <summary>
@@ -222,6 +229,7 @@ namespace Renci.SshNet
                 {
                     throw SecureExecutionRequestRejectedException();
                 }
+
                 CheckReturnCode(input);
 
                 UploadFileModeAndName(channel, input, source.Length, posixPath.File);
@@ -257,6 +265,7 @@ namespace Renci.SshNet
                 {
                     throw SecureExecutionRequestRejectedException();
                 }
+
                 SendSuccessConfirmation(channel); //  Send reply
 
                 var message = ReadString(input);
@@ -341,15 +350,14 @@ namespace Renci.SshNet
 
             do
             {
-                var read = input.Read(buffer, 0, (int) Math.Min(needToRead, BufferSize));
+                var read = input.Read(buffer, 0, (int)Math.Min(needToRead, BufferSize));
 
                 output.Write(buffer, 0, read);
 
                 RaiseDownloadingEvent(filename, length, length - needToRead);
 
                 needToRead -= read;
-            }
-            while (needToRead > 0);
+            } while (needToRead > 0);
 
             output.Flush();
 
@@ -423,8 +431,10 @@ namespace Renci.SshNet
         private static int ReadByte(Stream stream)
         {
             var b = stream.ReadByte();
+
             if (b == -1)
                 throw new SshException("Stream has been closed.");
+
             return b;
         }
 
@@ -442,6 +452,7 @@ namespace Renci.SshNet
             var buffer = new List<byte>();
 
             var b = ReadByte(stream);
+
             if (b == 1 || b == 2)
             {
                 hasError = true;
@@ -450,14 +461,15 @@ namespace Renci.SshNet
 
             while (b != SshNet.Session.LineFeed)
             {
-                buffer.Add((byte) b);
+                buffer.Add((byte)b);
                 b = ReadByte(stream);
             }
 
-            var readBytes = buffer.ToArray();
+            byte[] readBytes = buffer.ToArray();
 
             if (hasError)
                 throw new ScpException(ConnectionInfo.Encoding.GetString(readBytes, 0, readBytes.Length));
+
             return ConnectionInfo.Encoding.GetString(readBytes, 0, readBytes.Length);
         }
 

@@ -35,9 +35,9 @@ namespace Renci.SshNet.Security.Cryptography
         /// </returns>
         public override bool Verify(byte[] input, byte[] signature)
         {
-            var encryptedSignature = _cipher.Decrypt(signature);
-            var hashData = Hash(input);
-            var expected = DerEncode(hashData);
+            byte[] encryptedSignature = _cipher.Decrypt(signature);
+            byte[] hashData = Hash(input);
+            byte[] expected = DerEncode(hashData);
             return expected.IsEqualTo(encryptedSignature);
         }
 
@@ -51,10 +51,10 @@ namespace Renci.SshNet.Security.Cryptography
         public override byte[] Sign(byte[] input)
         {
             //  Calculate hash value
-            var hashData = Hash(input);
+            byte[] hashData = Hash(input);
 
             //  Calculate DER string
-            var derEncodedHash = DerEncode(hashData);
+            byte[] derEncodedHash = DerEncode(hashData);
 
             return _cipher.Encrypt(derEncodedHash).TrimLeadingZeros();
         }

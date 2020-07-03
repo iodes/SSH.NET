@@ -5,7 +5,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
     * algorithm.
     */
     internal class WNafPreCompInfo
-        : PreCompInfo 
+        : PreCompInfo
     {
         /**
          * Array holding the precomputed <code>ECPoint</code>s used for a Window
@@ -27,20 +27,20 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
         public virtual ECPoint[] PreComp
         {
-            get { return m_preComp; }
-            set { this.m_preComp = value; }
+            get => m_preComp;
+            set => m_preComp = value;
         }
 
         public virtual ECPoint[] PreCompNeg
         {
-            get { return m_preCompNeg; }
-            set { this.m_preCompNeg = value; }
+            get => m_preCompNeg;
+            set => m_preCompNeg = value;
         }
 
         public virtual ECPoint Twice
         {
-            get { return m_twice; }
-            set { this.m_twice = value; }
+            get => m_twice;
+            set => m_twice = value;
         }
     }
 }

@@ -74,6 +74,7 @@
 
             Write(NewPassword != null);
             WriteBinaryString(Password);
+
             if (NewPassword != null)
             {
                 WriteBinaryString(NewPassword);

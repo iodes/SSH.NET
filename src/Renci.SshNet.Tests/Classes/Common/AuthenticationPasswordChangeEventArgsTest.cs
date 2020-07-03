@@ -4,8 +4,6 @@ using Renci.SshNet.Tests.Common;
 
 namespace Renci.SshNet.Tests.Classes.Common
 {
-    
-    
     /// <summary>
     ///This is a test class for AuthenticationPasswordChangeEventArgsTest and is intended
     ///to contain all AuthenticationPasswordChangeEventArgsTest Unit Tests
@@ -19,8 +17,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void AuthenticationPasswordChangeEventArgsConstructorTest()
         {
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            AuthenticationPasswordChangeEventArgs target = new AuthenticationPasswordChangeEventArgs(username);
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new AuthenticationPasswordChangeEventArgs(username);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -30,8 +28,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void NewPasswordTest()
         {
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            AuthenticationPasswordChangeEventArgs target = new AuthenticationPasswordChangeEventArgs(username); // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new AuthenticationPasswordChangeEventArgs(username); // TODO: Initialize to an appropriate value
             byte[] expected = null; // TODO: Initialize to an appropriate value
             byte[] actual;
             target.NewPassword = expected;

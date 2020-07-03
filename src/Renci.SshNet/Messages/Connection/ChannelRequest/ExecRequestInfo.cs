@@ -21,10 +21,7 @@ namespace Renci.SshNet.Messages.Connection
         /// <value>
         /// The name of the request.
         /// </value>
-        public override string RequestName
-        {
-            get { return Name; }
-        }
+        public override string RequestName => Name;
 
         /// <summary>
         /// Gets command to execute.
@@ -32,10 +29,7 @@ namespace Renci.SshNet.Messages.Connection
         /// <value>
         /// The command.
         /// </value>
-        public string Command
-        {
-            get { return Encoding.GetString(_command, 0, _command.Length); }
-        }
+        public string Command => Encoding.GetString(_command, 0, _command.Length);
 
         /// <summary>
         /// Gets the encoding.
@@ -81,6 +75,7 @@ namespace Renci.SshNet.Messages.Connection
         {
             if (command == null)
                 throw new ArgumentNullException("command");
+
             if (encoding == null)
                 throw new ArgumentNullException("encoding");
 

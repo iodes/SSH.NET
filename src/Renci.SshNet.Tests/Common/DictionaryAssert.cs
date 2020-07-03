@@ -18,11 +18,12 @@ namespace Renci.SshNet.Tests.Common
 
             if (expected.Count != actual.Count)
                 throw new AssertFailedException(string.Format("Expected dictionary to contain {0} entries, but was {1}.",
-                                                              expected.Count, actual.Count));
+                    expected.Count, actual.Count));
 
-            foreach (var expectedEntry in expected)
+            foreach (KeyValuePair<TKey, TValue> expectedEntry in expected)
             {
                 TValue actualValue;
+
                 if (!actual.TryGetValue(expectedEntry.Key, out actualValue))
                 {
                     throw new AssertFailedException(string.Format("Dictionary contains no entry with key '{0}'.", expectedEntry.Key));

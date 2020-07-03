@@ -16,10 +16,7 @@
         /// <value>
         /// The name of the request.
         /// </value>
-        public override string RequestName
-        {
-            get { return Name; }
-        }
+        public override string RequestName => Name;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShellRequestInfo"/> class.

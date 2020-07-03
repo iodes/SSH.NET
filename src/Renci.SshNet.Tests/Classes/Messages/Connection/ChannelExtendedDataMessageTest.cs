@@ -19,7 +19,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         [Ignore] // placeholder
         public void ChannelExtendedDataMessageConstructorTest()
         {
-            ChannelExtendedDataMessage target = new ChannelExtendedDataMessage();
+            var target = new ChannelExtendedDataMessage();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 

@@ -20,7 +20,7 @@ namespace Renci.SshNet.Tests.Classes.Compression
         [TestMethod()]
         public void ZlibOpenSshConstructorTest()
         {
-            ZlibOpenSsh target = new ZlibOpenSsh();
+            var target = new ZlibOpenSsh();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -30,7 +30,7 @@ namespace Renci.SshNet.Tests.Classes.Compression
         [TestMethod()]
         public void InitTest()
         {
-            ZlibOpenSsh target = new ZlibOpenSsh(); // TODO: Initialize to an appropriate value
+            var target = new ZlibOpenSsh(); // TODO: Initialize to an appropriate value
             Session session = null; // TODO: Initialize to an appropriate value
             target.Init(session);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -42,7 +42,7 @@ namespace Renci.SshNet.Tests.Classes.Compression
         [TestMethod()]
         public void NameTest()
         {
-            ZlibOpenSsh target = new ZlibOpenSsh(); // TODO: Initialize to an appropriate value
+            var target = new ZlibOpenSsh(); // TODO: Initialize to an appropriate value
             string actual;
             actual = target.Name;
             Assert.Inconclusive("Verify the correctness of this test method.");

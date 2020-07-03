@@ -75,7 +75,7 @@ namespace Renci.SshNet.Tests.Classes
             Assert.IsNotNull(exception);
             Assert.AreEqual(typeof(SshException), exception.GetType());
 
-            var sshException = (SshException) exception;
+            var sshException = (SshException)exception;
             Assert.IsNull(sshException.InnerException);
             Assert.AreEqual("Message type 255 is not supported.", sshException.Message);
         }
@@ -98,6 +98,7 @@ namespace Renci.SshNet.Tests.Classes
             var buffer = new byte[1];
 
             ServerSocket.ReceiveTimeout = 500;
+
             try
             {
                 ServerSocket.Receive(buffer, 0, buffer.Length, SocketFlags.None);
@@ -127,7 +128,7 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethod]
         public void ISession_MessageListenerCompletedShouldBeSignaled()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
 
             Assert.IsNotNull(session.MessageListenerCompleted);
             Assert.IsTrue(session.MessageListenerCompleted.WaitOne());
@@ -136,7 +137,7 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethodAttribute]
         public void ISession_SendMessageShouldSendMessageToServer()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
 
             byte[] bytesReceivedByServer = null;
             ServerListener.BytesReceived += (received, socket) => bytesReceivedByServer = received;
@@ -153,7 +154,7 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethod]
         public void ISession_TrySendMessageShouldReturnTrueAndSendMessageToServer()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
 
             byte[] bytesReceivedByServer = null;
             ServerListener.BytesReceived += (received, socket) => bytesReceivedByServer = received;
@@ -172,7 +173,7 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethod]
         public void ISession_WaitOnHandleShouldThrowSshExceptionDetailingError()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
             var waitHandle = new ManualResetEvent(false);
 
             try
@@ -190,7 +191,7 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethod]
         public void ISession_TryWait_WaitHandleAndTimeout_ShouldReturnFailed()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
             var waitHandle = new ManualResetEvent(false);
 
             var result = session.TryWait(waitHandle, Session.InfiniteTimeSpan);
@@ -201,7 +202,7 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethod]
         public void ISession_TryWait_WaitHandleAndTimeoutAndException_ShouldReturnFailed()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
             var waitHandle = new ManualResetEvent(false);
             Exception exception;
 
@@ -222,7 +223,7 @@ namespace Renci.SshNet.Tests.Classes
             byte messageType = 255;
             byte messageLength = 1;
             byte paddingLength = 10;
-            var packetDataLength = (uint) messageLength + paddingLength + 1;
+            var packetDataLength = (uint)messageLength + paddingLength + 1;
 
             var sshDataStream = new SshDataStream(4 + 1 + messageLength + paddingLength);
             sshDataStream.Write(packetDataLength);

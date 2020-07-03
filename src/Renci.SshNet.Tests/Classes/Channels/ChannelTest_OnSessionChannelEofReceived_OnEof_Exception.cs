@@ -24,12 +24,12 @@ namespace Renci.SshNet.Tests.Classes.Channels
         {
             var random = new Random();
 
-            _localWindowSize = (uint) random.Next(0, 1000);
-            _localPacketSize = (uint) random.Next(1001, int.MaxValue);
-            _localChannelNumber = (uint) random.Next(0, int.MaxValue);
-            _remoteChannelNumber = (uint) random.Next(0, int.MaxValue);
-            _remoteWindowSize = (uint) random.Next(0, int.MaxValue);
-            _remotePacketSize = (uint) random.Next(0, int.MaxValue);
+            _localWindowSize = (uint)random.Next(0, 1000);
+            _localPacketSize = (uint)random.Next(1001, int.MaxValue);
+            _localChannelNumber = (uint)random.Next(0, int.MaxValue);
+            _remoteChannelNumber = (uint)random.Next(0, int.MaxValue);
+            _remoteWindowSize = (uint)random.Next(0, int.MaxValue);
+            _remotePacketSize = (uint)random.Next(0, int.MaxValue);
             _onEofException = new SystemException();
             _channelExceptionRegister = new List<ExceptionEventArgs>();
         }
@@ -52,7 +52,7 @@ namespace Renci.SshNet.Tests.Classes.Channels
         protected override void Act()
         {
             SessionMock.Raise(s => s.ChannelEofReceived += null,
-                               new MessageEventArgs<ChannelEofMessage>(new ChannelEofMessage(_localChannelNumber)));
+                new MessageEventArgs<ChannelEofMessage>(new ChannelEofMessage(_localChannelNumber)));
         }
 
         [TestMethod]

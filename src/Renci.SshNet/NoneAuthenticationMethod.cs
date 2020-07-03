@@ -19,10 +19,7 @@ namespace Renci.SshNet
         /// <summary>
         /// Gets connection name
         /// </summary>
-        public override string Name
-        {
-            get { return "none"; }
-        }
+        public override string Name => "none";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NoneAuthenticationMethod"/> class.
@@ -83,9 +80,8 @@ namespace Renci.SshNet
 
             _authenticationCompleted.Set();
         }
-        
-        #region IDisposable Members
 
+        #region IDisposable Members
         private bool _isDisposed;
 
         /// <summary>
@@ -109,6 +105,7 @@ namespace Renci.SshNet
             if (disposing)
             {
                 var authenticationCompleted = _authenticationCompleted;
+
                 if (authenticationCompleted != null)
                 {
                     authenticationCompleted.Dispose();
@@ -127,8 +124,6 @@ namespace Renci.SshNet
         {
             Dispose(false);
         }
-
         #endregion
-
     }
 }

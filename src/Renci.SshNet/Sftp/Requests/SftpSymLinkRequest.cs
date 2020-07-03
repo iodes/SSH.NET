@@ -9,21 +9,18 @@ namespace Renci.SshNet.Sftp.Requests
         private byte[] _newLinkPath;
         private byte[] _existingPath;
 
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.SymLink; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.SymLink;
 
         public string NewLinkPath
         {
-            get { return Encoding.GetString(_newLinkPath, 0, _newLinkPath.Length); }
-            private set { _newLinkPath = Encoding.GetBytes(value); }
+            get => Encoding.GetString(_newLinkPath, 0, _newLinkPath.Length);
+            private set => _newLinkPath = Encoding.GetBytes(value);
         }
 
         public string ExistingPath
         {
-            get { return Encoding.GetString(_existingPath, 0, _existingPath.Length); }
-            private set { _existingPath = Encoding.GetBytes(value); }
+            get => Encoding.GetString(_existingPath, 0, _existingPath.Length);
+            private set => _existingPath = Encoding.GetBytes(value);
         }
 
         public Encoding Encoding { get; set; }

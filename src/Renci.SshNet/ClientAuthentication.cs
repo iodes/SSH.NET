@@ -29,10 +29,7 @@ namespace Renci.SshNet
         /// The number of times an authentication attempt with any given <see cref="IAuthenticationMethod"/> can result
         /// in <see cref="AuthenticationResult.PartialSuccess"/> before it is disregarded.
         /// </value>
-        internal int PartialSuccessLimit
-        {
-            get { return _partialSuccessLimit; }
-        }
+        internal int PartialSuccessLimit => _partialSuccessLimit;
 
         /// <summary>
         /// Attempts to authentication for a given <see cref="ISession"/> using the <see cref="IConnectionInfoInternal.AuthenticationMethods"/>
@@ -44,6 +41,7 @@ namespace Renci.SshNet
         {
             if (connectionInfo == null)
                 throw new ArgumentNullException("connectionInfo");
+
             if (session == null)
                 throw new ArgumentNullException("session");
 
@@ -61,6 +59,7 @@ namespace Renci.SshNet
                 var noneAuthenticationMethod = connectionInfo.CreateNoneAuthenticationMethod();
 
                 var authenticated = noneAuthenticationMethod.Authenticate(session);
+
                 if (authenticated != AuthenticationResult.Success)
                 {
                     if (!TryAuthenticate(session, new AuthenticationState(connectionInfo.AuthenticationMethods), noneAuthenticationMethod.AllowedAuthentications, ref authenticationException))
@@ -92,11 +91,13 @@ namespace Renci.SshNet
             // we want to try authentication methods in the order in which they were
             // passed in the ctor, not the order in which the SSH server returns
             // the allowed authentication methods
-            var matchingAuthenticationMethods = authenticationState.GetSupportedAuthenticationMethods(allowedAuthenticationMethods);
+            List<IAuthenticationMethod> matchingAuthenticationMethods = authenticationState.GetSupportedAuthenticationMethods(allowedAuthenticationMethods);
+
             if (matchingAuthenticationMethods.Count == 0)
             {
                 authenticationException = new SshAuthenticationException(string.Format("No suitable authentication method found to complete authentication ({0}).",
-                                                                                       string.Join(",", allowedAuthenticationMethods)));
+                    string.Join(",", allowedAuthenticationMethods)));
+
                 return false;
             }
 
@@ -109,24 +110,30 @@ namespace Renci.SshNet
                     // TODO Get list of all authentication methods that have reached the partial success limit?
 
                     authenticationException = new SshAuthenticationException(string.Format("Reached authentication attempt limit for method ({0}).",
-                                                                                           authenticationMethod.Name));
+                        authenticationMethod.Name));
+
                     continue;
                 }
 
                 var authenticationResult = authenticationMethod.Authenticate(session);
+
                 switch (authenticationResult)
                 {
                     case AuthenticationResult.PartialSuccess:
                         authenticationState.RecordPartialSuccess(authenticationMethod);
+
                         if (TryAuthenticate(session, authenticationState, authenticationMethod.AllowedAuthentications, ref authenticationException))
                         {
                             authenticationResult = AuthenticationResult.Success;
                         }
+
                         break;
+
                     case AuthenticationResult.Failure:
                         authenticationState.RecordFailure(authenticationMethod);
                         authenticationException = new SshAuthenticationException(string.Format("Permission denied ({0}).", authenticationMethod.Name));
                         break;
+
                     case AuthenticationResult.Success:
                         authenticationException = null;
                         break;
@@ -182,6 +189,7 @@ namespace Renci.SshNet
             public void RecordPartialSuccess(IAuthenticationMethod authenticationMethod)
             {
                 int partialSuccessCount;
+
                 if (_authenticationMethodPartialSuccessRegister.TryGetValue(authenticationMethod, out partialSuccessCount))
                 {
                     _authenticationMethodPartialSuccessRegister[authenticationMethod] = ++partialSuccessCount;
@@ -204,10 +212,12 @@ namespace Renci.SshNet
             public int GetPartialSuccessCount(IAuthenticationMethod authenticationMethod)
             {
                 int partialSuccessCount;
+
                 if (_authenticationMethodPartialSuccessRegister.TryGetValue(authenticationMethod, out partialSuccessCount))
                 {
                     return partialSuccessCount;
                 }
+
                 return 0;
             }
 

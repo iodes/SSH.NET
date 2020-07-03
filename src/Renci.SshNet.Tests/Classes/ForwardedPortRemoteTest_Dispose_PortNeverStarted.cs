@@ -84,6 +84,7 @@ namespace Renci.SshNet.Tests.Classes
             _sessionMock.Setup(
                 p =>
                     p.CreateChannelForwardedTcpip(channelNumberDisposed, initialWindowSizeDisposed, maximumPacketSizeDisposed)).Returns(channelMock.Object);
+
             _sessionMock.Setup(
                 p =>
                     p.SendMessage(new ChannelOpenFailureMessage(channelNumberDisposed, string.Empty,

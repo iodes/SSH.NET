@@ -49,6 +49,7 @@ namespace Renci.SshNet.Security
             der.ReadBigInteger(); // skip version
 
             var keys = new List<BigInteger>();
+
             while (!der.IsEndOfData)
             {
                 keys.Add(der.ReadBigInteger());

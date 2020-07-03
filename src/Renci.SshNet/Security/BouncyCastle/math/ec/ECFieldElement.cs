@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Math.Raw;
 using Renci.SshNet.Security.Org.BouncyCastle.Utilities;
 
@@ -9,32 +8,34 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
     internal abstract class ECFieldElement
     {
         public abstract BigInteger ToBigInteger();
+
         public abstract string FieldName { get; }
+
         public abstract int FieldSize { get; }
+
         public abstract ECFieldElement Add(ECFieldElement b);
+
         public abstract ECFieldElement AddOne();
+
         public abstract ECFieldElement Subtract(ECFieldElement b);
+
         public abstract ECFieldElement Multiply(ECFieldElement b);
+
         public abstract ECFieldElement Divide(ECFieldElement b);
+
         public abstract ECFieldElement Negate();
+
         public abstract ECFieldElement Square();
+
         public abstract ECFieldElement Invert();
+
         public abstract ECFieldElement Sqrt();
 
-        public virtual int BitLength
-        {
-            get { return ToBigInteger().BitLength; }
-        }
+        public virtual int BitLength => ToBigInteger().BitLength;
 
-        public virtual bool IsOne
-        {
-            get { return BitLength == 1; }
-        }
+        public virtual bool IsOne => BitLength == 1;
 
-        public virtual bool IsZero
-        {
-            get { return 0 == ToBigInteger().SignValue; }
-        }
+        public virtual bool IsZero => 0 == ToBigInteger().SignValue;
 
         public virtual ECFieldElement MultiplyMinusProduct(ECFieldElement b, ECFieldElement x, ECFieldElement y)
         {
@@ -58,11 +59,13 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
         public virtual ECFieldElement SquarePow(int pow)
         {
-            ECFieldElement r = this;
-            for (int i = 0; i < pow; ++i)
+            var r = this;
+
+            for (var i = 0; i < pow; ++i)
             {
                 r = r.Square();
             }
+
             return r;
         }
 
@@ -80,8 +83,10 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         {
             if (this == other)
                 return true;
+
             if (null == other)
                 return false;
+
             return ToBigInteger().Equals(other.ToBigInteger());
         }
 
@@ -92,7 +97,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
         public override string ToString()
         {
-            return this.ToBigInteger().ToString(16);
+            return ToBigInteger().ToString(16);
         }
 
         public virtual byte[] GetEncoded()
@@ -113,19 +118,23 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
         internal static BigInteger CalculateResidue(BigInteger p)
         {
-            int bitLength = p.BitLength;
+            var bitLength = p.BitLength;
+
             if (bitLength >= 96)
             {
-                BigInteger firstWord = p.ShiftRight(bitLength - 64);
+                var firstWord = p.ShiftRight(bitLength - 64);
+
                 if (firstWord.LongValue == -1L)
                 {
                     return BigInteger.One.ShiftLeft(bitLength).Subtract(p);
                 }
+
                 if ((bitLength & 7) == 0)
                 {
                     return BigInteger.One.ShiftLeft(bitLength << 1).Divide(p).Negate();
                 }
             }
+
             return null;
         }
 
@@ -155,20 +164,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
          *
          * @return the string "Fp".
          */
-        public override string FieldName
-        {
-            get { return "Fp"; }
-        }
+        public override string FieldName => "Fp";
 
-        public override int FieldSize
-        {
-            get { return q.BitLength; }
-        }
+        public override int FieldSize => q.BitLength;
 
-        public BigInteger Q
-        {
-            get { return q; }
-        }
+        public BigInteger Q => q;
 
         public override ECFieldElement Add(
             ECFieldElement b)
@@ -178,11 +178,13 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
         public override ECFieldElement AddOne()
         {
-            BigInteger x2 = x.Add(BigInteger.One);
+            var x2 = x.Add(BigInteger.One);
+
             if (x2.CompareTo(q) == 0)
             {
                 x2 = BigInteger.Zero;
             }
+
             return new FpFieldElement(q, r, x2);
         }
 
@@ -201,21 +203,23 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         public override ECFieldElement MultiplyMinusProduct(ECFieldElement b, ECFieldElement x, ECFieldElement y)
         {
             BigInteger ax = this.x, bx = b.ToBigInteger(), xx = x.ToBigInteger(), yx = y.ToBigInteger();
-            BigInteger ab = ax.Multiply(bx);
-            BigInteger xy = xx.Multiply(yx);
+            var ab = ax.Multiply(bx);
+            var xy = xx.Multiply(yx);
             return new FpFieldElement(q, r, ModReduce(ab.Subtract(xy)));
         }
 
         public override ECFieldElement MultiplyPlusProduct(ECFieldElement b, ECFieldElement x, ECFieldElement y)
         {
             BigInteger ax = this.x, bx = b.ToBigInteger(), xx = x.ToBigInteger(), yx = y.ToBigInteger();
-            BigInteger ab = ax.Multiply(bx);
-            BigInteger xy = xx.Multiply(yx);
-            BigInteger sum = ab.Add(xy);
-            if (r != null && r.SignValue < 0 && sum.BitLength > (q.BitLength << 1))
+            var ab = ax.Multiply(bx);
+            var xy = xx.Multiply(yx);
+            var sum = ab.Add(xy);
+
+            if (r != null && r.SignValue < 0 && sum.BitLength > q.BitLength << 1)
             {
                 sum = sum.Subtract(q.ShiftLeft(q.BitLength));
             }
+
             return new FpFieldElement(q, r, ModReduce(sum));
         }
 
@@ -238,21 +242,23 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         public override ECFieldElement SquareMinusProduct(ECFieldElement x, ECFieldElement y)
         {
             BigInteger ax = this.x, xx = x.ToBigInteger(), yx = y.ToBigInteger();
-            BigInteger aa = ax.Multiply(ax);
-            BigInteger xy = xx.Multiply(yx);
+            var aa = ax.Multiply(ax);
+            var xy = xx.Multiply(yx);
             return new FpFieldElement(q, r, ModReduce(aa.Subtract(xy)));
         }
 
         public override ECFieldElement SquarePlusProduct(ECFieldElement x, ECFieldElement y)
         {
             BigInteger ax = this.x, xx = x.ToBigInteger(), yx = y.ToBigInteger();
-            BigInteger aa = ax.Multiply(ax);
-            BigInteger xy = xx.Multiply(yx);
-            BigInteger sum = aa.Add(xy);
-            if (r != null && r.SignValue < 0 && sum.BitLength > (q.BitLength << 1))
+            var aa = ax.Multiply(ax);
+            var xy = xx.Multiply(yx);
+            var sum = aa.Add(xy);
+
+            if (r != null && r.SignValue < 0 && sum.BitLength > q.BitLength << 1)
             {
                 sum = sum.Subtract(q.ShiftLeft(q.BitLength));
             }
+
             return new FpFieldElement(q, r, ModReduce(sum));
         }
 
@@ -276,15 +282,15 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
             if (q.TestBit(1)) // q == 4m + 3
             {
-                BigInteger e = q.ShiftRight(2).Add(BigInteger.One);
+                var e = q.ShiftRight(2).Add(BigInteger.One);
                 return CheckSqrt(new FpFieldElement(q, r, x.ModPow(e, q)));
             }
 
             if (q.TestBit(2)) // q == 8m + 5
             {
-                BigInteger t1 = x.ModPow(q.ShiftRight(3), q);
-                BigInteger t2 = ModMult(t1, x);
-                BigInteger t3 = ModMult(t2, t1);
+                var t1 = x.ModPow(q.ShiftRight(3), q);
+                var t2 = ModMult(t1, x);
+                var t3 = ModMult(t2, t1);
 
                 if (t3.Equals(BigInteger.One))
                 {
@@ -292,34 +298,37 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                 }
 
                 // TODO This is constant and could be precomputed
-                BigInteger t4 = BigInteger.Two.ModPow(q.ShiftRight(2), q);
+                var t4 = BigInteger.Two.ModPow(q.ShiftRight(2), q);
 
-                BigInteger y = ModMult(t2, t4);
+                var y = ModMult(t2, t4);
 
                 return CheckSqrt(new FpFieldElement(q, r, y));
             }
 
             // q == 8m + 1
 
-            BigInteger legendreExponent = q.ShiftRight(1);
-            if (!(x.ModPow(legendreExponent, q).Equals(BigInteger.One)))
+            var legendreExponent = q.ShiftRight(1);
+
+            if (!x.ModPow(legendreExponent, q).Equals(BigInteger.One))
                 return null;
 
-            BigInteger X = this.x;
-            BigInteger fourX = ModDouble(ModDouble(X)); ;
+            var X = x;
+            var fourX = ModDouble(ModDouble(X));
+            ;
 
             BigInteger k = legendreExponent.Add(BigInteger.One), qMinusOne = q.Subtract(BigInteger.One);
 
             BigInteger U, V;
+
             do
             {
                 BigInteger P;
+
                 do
                 {
                     P = BigInteger.Arbitrary(q.BitLength);
-                }
-                while (P.CompareTo(q) >= 0
-                    || !ModReduce(P.Multiply(P).Subtract(fourX)).ModPow(legendreExponent, q).Equals(qMinusOne));
+                } while (P.CompareTo(q) >= 0
+                         || !ModReduce(P.Multiply(P).Subtract(fourX)).ModPow(legendreExponent, q).Equals(qMinusOne));
 
                 BigInteger[] result = LucasSequence(P, X, k);
                 U = result[0];
@@ -329,8 +338,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                 {
                     return new FpFieldElement(q, r, ModHalfAbs(V));
                 }
-            }
-            while (U.Equals(BigInteger.One) || U.Equals(qMinusOne));
+            } while (U.Equals(BigInteger.One) || U.Equals(qMinusOne));
 
             return null;
         }
@@ -341,24 +349,24 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         }
 
         private BigInteger[] LucasSequence(
-            BigInteger	P,
-            BigInteger	Q,
-            BigInteger	k)
+            BigInteger P,
+            BigInteger Q,
+            BigInteger k)
         {
             // TODO Research and apply "common-multiplicand multiplication here"
 
-            int n = k.BitLength;
-            int s = k.GetLowestSetBit();
+            var n = k.BitLength;
+            var s = k.GetLowestSetBit();
 
             Debug.Assert(k.TestBit(s));
 
-            BigInteger Uh = BigInteger.One;
-            BigInteger Vl = BigInteger.Two;
-            BigInteger Vh = P;
-            BigInteger Ql = BigInteger.One;
-            BigInteger Qh = BigInteger.One;
+            var Uh = BigInteger.One;
+            var Vl = BigInteger.Two;
+            var Vh = P;
+            var Ql = BigInteger.One;
+            var Qh = BigInteger.One;
 
-            for (int j = n - 1; j >= s + 1; --j)
+            for (var j = n - 1; j >= s + 1; --j)
             {
                 Ql = ModMult(Ql, Qh);
 
@@ -384,33 +392,40 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             Vl = ModReduce(Vh.Multiply(Vl).Subtract(P.Multiply(Ql)));
             Ql = ModMult(Ql, Qh);
 
-            for (int j = 1; j <= s; ++j)
+            for (var j = 1; j <= s; ++j)
             {
                 Uh = ModMult(Uh, Vl);
                 Vl = ModReduce(Vl.Multiply(Vl).Subtract(Ql.ShiftLeft(1)));
                 Ql = ModMult(Ql, Ql);
             }
 
-            return new BigInteger[] { Uh, Vl };
+            return new BigInteger[]
+            {
+                Uh, Vl
+            };
         }
 
         protected virtual BigInteger ModAdd(BigInteger x1, BigInteger x2)
         {
-            BigInteger x3 = x1.Add(x2);
+            var x3 = x1.Add(x2);
+
             if (x3.CompareTo(q) >= 0)
             {
                 x3 = x3.Subtract(q);
             }
+
             return x3;
         }
 
         protected virtual BigInteger ModDouble(BigInteger x)
         {
-            BigInteger _2x = x.ShiftLeft(1);
+            var _2x = x.ShiftLeft(1);
+
             if (_2x.CompareTo(q) >= 0)
             {
                 _2x = _2x.Subtract(q);
             }
+
             return _2x;
         }
 
@@ -420,6 +435,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             {
                 x = q.Add(x);
             }
+
             return x.ShiftRight(1);
         }
 
@@ -429,13 +445,14 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             {
                 x = q.Subtract(x);
             }
+
             return x.ShiftRight(1);
         }
 
         protected virtual BigInteger ModInverse(BigInteger x)
         {
-            int bits = FieldSize;
-            int len = (bits + 31) >> 5;
+            var bits = FieldSize;
+            var len = (bits + 31) >> 5;
             uint[] p = Nat.FromBigInteger(bits, q);
             uint[] n = Nat.FromBigInteger(bits, x);
             uint[] z = Nat.Create(len);
@@ -456,62 +473,74 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             }
             else
             {
-                bool negative = x.SignValue < 0;
+                var negative = x.SignValue < 0;
+
                 if (negative)
                 {
                     x = x.Abs();
                 }
-                int qLen = q.BitLength;
+
+                var qLen = q.BitLength;
+
                 if (r.SignValue > 0)
                 {
-                    BigInteger qMod = BigInteger.One.ShiftLeft(qLen);
-                    bool rIsOne = r.Equals(BigInteger.One);
-                    while (x.BitLength > (qLen + 1))
+                    var qMod = BigInteger.One.ShiftLeft(qLen);
+                    var rIsOne = r.Equals(BigInteger.One);
+
+                    while (x.BitLength > qLen + 1)
                     {
-                        BigInteger u = x.ShiftRight(qLen);
-                        BigInteger v = x.Remainder(qMod);
+                        var u = x.ShiftRight(qLen);
+                        var v = x.Remainder(qMod);
+
                         if (!rIsOne)
                         {
                             u = u.Multiply(r);
                         }
+
                         x = u.Add(v);
                     }
                 }
                 else
                 {
-                    int d = ((qLen - 1) & 31) + 1;
-                    BigInteger mu = r.Negate();
-                    BigInteger u = mu.Multiply(x.ShiftRight(qLen - d));
-                    BigInteger quot = u.ShiftRight(qLen + d);
-                    BigInteger v = quot.Multiply(q);
-                    BigInteger bk1 = BigInteger.One.ShiftLeft(qLen + d);
+                    var d = ((qLen - 1) & 31) + 1;
+                    var mu = r.Negate();
+                    var u = mu.Multiply(x.ShiftRight(qLen - d));
+                    var quot = u.ShiftRight(qLen + d);
+                    var v = quot.Multiply(q);
+                    var bk1 = BigInteger.One.ShiftLeft(qLen + d);
                     v = v.Remainder(bk1);
                     x = x.Remainder(bk1);
                     x = x.Subtract(v);
+
                     if (x.SignValue < 0)
                     {
                         x = x.Add(bk1);
                     }
                 }
+
                 while (x.CompareTo(q) >= 0)
                 {
                     x = x.Subtract(q);
                 }
+
                 if (negative && x.SignValue != 0)
                 {
                     x = q.Subtract(x);
                 }
             }
+
             return x;
         }
 
         protected virtual BigInteger ModSubtract(BigInteger x1, BigInteger x2)
         {
-            BigInteger x3 = x1.Subtract(x2);
+            var x3 = x1.Subtract(x2);
+
             if (x3.SignValue < 0)
             {
                 x3 = x3.Add(q);
             }
+
             return x3;
         }
 
@@ -521,7 +550,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             if (obj == this)
                 return true;
 
-            FpFieldElement other = obj as FpFieldElement;
+            var other = obj as FpFieldElement;
 
             if (other == null)
                 return false;
@@ -542,17 +571,19 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
     }
 
     internal abstract class AbstractF2mFieldElement
-        :   ECFieldElement
+        : ECFieldElement
     {
         public virtual ECFieldElement HalfTrace()
         {
-            int m = FieldSize;
+            var m = FieldSize;
+
             if ((m & 1) == 0)
                 throw new InvalidOperationException("Half-trace only defined for odd m");
 
             ECFieldElement fe = this;
-            ECFieldElement ht = fe;
-            for (int i = 2; i < m; i += 2)
+            var ht = fe;
+
+            for (var i = 2; i < m; i += 2)
             {
                 fe = fe.SquarePow(2);
                 ht = ht.Add(fe);
@@ -563,16 +594,19 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
         public virtual int Trace()
         {
-            int m = FieldSize;
+            var m = FieldSize;
             ECFieldElement fe = this;
-            ECFieldElement tr = fe;
-            for (int i = 1; i < m; ++i)
+            var tr = fe;
+
+            for (var i = 1; i < m; ++i)
             {
                 fe = fe.Square();
                 tr = tr.Add(fe);
             }
+
             if (tr.IsZero)
                 return 0;
+
             if (tr.IsOne)
                 return 1;
 
@@ -588,7 +622,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
      * representation is not supported.
      */
     internal class F2mFieldElement
-        :   AbstractF2mFieldElement
+        : AbstractF2mFieldElement
     {
         /**
          * Indicates gaussian normal basis representation (GNB). Number chosen
@@ -641,29 +675,38 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
          * @param x The BigInteger representing the value of the field element.
          */
         public F2mFieldElement(
-            int			m,
-            int			k1,
-            int			k2,
-            int			k3,
-            BigInteger	x)
+            int m,
+            int k1,
+            int k2,
+            int k3,
+            BigInteger x)
         {
             if (x == null || x.SignValue < 0 || x.BitLength > m)
                 throw new ArgumentException("value invalid in F2m field element", "x");
 
-            if ((k2 == 0) && (k3 == 0))
+            if (k2 == 0 && k3 == 0)
             {
-                this.representation = Tpb;
-                this.ks = new int[] { k1 };
+                representation = Tpb;
+
+                ks = new int[]
+                {
+                    k1
+                };
             }
             else
             {
                 if (k2 >= k3)
                     throw new ArgumentException("k2 must be smaller than k3");
+
                 if (k2 <= 0)
                     throw new ArgumentException("k2 must be larger than 0");
 
-                this.representation = Ppb;
-                this.ks = new int[] { k1, k2, k3 };
+                representation = Ppb;
+
+                ks = new int[]
+                {
+                    k1, k2, k3
+                };
             }
 
             this.m = m;
@@ -680,9 +723,9 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
          * @param x The BigInteger representing the value of the field element.
          */
         public F2mFieldElement(
-            int			m,
-            int			k,
-            BigInteger	x)
+            int m,
+            int k,
+            BigInteger x)
             : this(m, k, 0, 0, x)
         {
             // Set k1 to k, and set k2 and k3 to 0
@@ -691,25 +734,16 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         internal F2mFieldElement(int m, int[] ks, LongArray x)
         {
             this.m = m;
-            this.representation = (ks.Length == 1) ? Tpb : Ppb;
+            representation = ks.Length == 1 ? Tpb : Ppb;
             this.ks = ks;
             this.x = x;
         }
 
-        public override int BitLength
-        {
-            get { return x.Degree(); }
-        }
+        public override int BitLength => x.Degree();
 
-        public override bool IsOne
-        {
-            get { return x.IsOne(); }
-        }
+        public override bool IsOne => x.IsOne();
 
-        public override bool IsZero
-        {
-            get { return x.IsZero(); }
-        }
+        public override bool IsZero => x.IsZero();
 
         public override bool TestBitZero()
         {
@@ -721,15 +755,9 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             return x.ToBigInteger();
         }
 
-        public override string FieldName
-        {
-            get { return "F2m"; }
-        }
+        public override string FieldName => "F2m";
 
-        public override int FieldSize
-        {
-            get { return m; }
-        }
+        public override int FieldSize => m;
 
         /**
         * Checks, if the ECFieldElements <code>a</code> and <code>b</code>
@@ -743,17 +771,17 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         * representation).
         */
         public static void CheckFieldElements(
-            ECFieldElement	a,
-            ECFieldElement	b)
+            ECFieldElement a,
+            ECFieldElement b)
         {
             if (!(a is F2mFieldElement) || !(b is F2mFieldElement))
             {
                 throw new ArgumentException("Field elements are not "
-                    + "both instances of F2mFieldElement");
+                                            + "both instances of F2mFieldElement");
             }
 
-            F2mFieldElement aF2m = (F2mFieldElement)a;
-            F2mFieldElement bF2m = (F2mFieldElement)b;
+            var aF2m = (F2mFieldElement)a;
+            var bF2m = (F2mFieldElement)b;
 
             if (aF2m.representation != bF2m.representation)
             {
@@ -761,7 +789,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                 throw new ArgumentException("One of the F2m field elements has incorrect representation");
             }
 
-            if ((aF2m.m != bF2m.m) || !Arrays.AreEqual(aF2m.ks, bF2m.ks))
+            if (aF2m.m != bF2m.m || !Arrays.AreEqual(aF2m.ks, bF2m.ks))
             {
                 throw new ArgumentException("Field elements are not elements of the same field F2m");
             }
@@ -773,8 +801,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             // No check performed here for performance reasons. Instead the
             // elements involved are checked in ECPoint.F2m
             // checkFieldElements(this, b);
-            LongArray iarrClone = this.x.Copy();
-            F2mFieldElement bF2m = (F2mFieldElement)b;
+            var iarrClone = x.Copy();
+            var bF2m = (F2mFieldElement)b;
             iarrClone.AddShiftedByWords(bF2m.x, 0);
             return new F2mFieldElement(m, ks, iarrClone);
         }
@@ -813,8 +841,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         {
             LongArray ax = this.x, bx = ((F2mFieldElement)b).x, xx = ((F2mFieldElement)x).x, yx = ((F2mFieldElement)y).x;
 
-            LongArray ab = ax.Multiply(bx, m, ks);
-            LongArray xy = xx.Multiply(yx, m, ks);
+            var ab = ax.Multiply(bx, m, ks);
+            var xy = xx.Multiply(yx, m, ks);
 
             if (ab == ax || ab == bx)
             {
@@ -831,7 +859,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             ECFieldElement b)
         {
             // There may be more efficient implementations
-            ECFieldElement bInv = b.Invert();
+            var bInv = b.Invert();
             return Multiply(bInv);
         }
 
@@ -855,8 +883,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         {
             LongArray ax = this.x, xx = ((F2mFieldElement)x).x, yx = ((F2mFieldElement)y).x;
 
-            LongArray aa = ax.Square(m, ks);
-            LongArray xy = xx.Multiply(yx, m, ks);
+            var aa = ax.Square(m, ks);
+            var xy = xx.Multiply(yx, m, ks);
 
             if (aa == ax)
             {
@@ -876,12 +904,12 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
         public override ECFieldElement Invert()
         {
-            return new F2mFieldElement(this.m, this.ks, this.x.ModInverse(m, ks));
+            return new F2mFieldElement(m, ks, x.ModInverse(m, ks));
         }
 
         public override ECFieldElement Sqrt()
         {
-            return (x.IsZero() || x.IsOne()) ? this : SquarePow(m - 1);
+            return x.IsZero() || x.IsOne() ? this : SquarePow(m - 1);
         }
 
         /**
@@ -892,19 +920,13 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             * {@link F2mFieldElement.Ppb} (pentanomial
             * basis representation).
             */
-        public int Representation
-        {
-            get { return this.representation; }
-        }
+        public int Representation => representation;
 
         /**
             * @return the degree <code>m</code> of the reduction polynomial
             * <code>f(z)</code>.
             */
-        public int M
-        {
-            get { return this.m; }
-        }
+        public int M => m;
 
         /**
             * @return Tpb: The integer <code>k</code> where <code>x<sup>m</sup> +
@@ -914,10 +936,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             * x<sup>k3</sup> + x<sup>k2</sup> + x<sup>k1</sup> + 1</code>
             * represents the reduction polynomial <code>f(z)</code>.<br/>
             */
-        public int K1
-        {
-            get { return this.ks[0]; }
-        }
+        public int K1 => ks[0];
 
         /**
             * @return Tpb: Always returns <code>0</code><br/>
@@ -925,10 +944,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             * x<sup>k3</sup> + x<sup>k2</sup> + x<sup>k1</sup> + 1</code>
             * represents the reduction polynomial <code>f(z)</code>.<br/>
             */
-        public int K2
-        {
-            get { return this.ks.Length >= 2 ? this.ks[1] : 0; }
-        }
+        public int K2 => ks.Length >= 2 ? ks[1] : 0;
 
         /**
             * @return Tpb: Always set to <code>0</code><br/>
@@ -936,10 +952,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             * x<sup>k3</sup> + x<sup>k2</sup> + x<sup>k1</sup> + 1</code>
             * represents the reduction polynomial <code>f(z)</code>.<br/>
             */
-        public int K3
-        {
-            get { return this.ks.Length >= 3 ? this.ks[2] : 0; }
-        }
+        public int K3 => ks.Length >= 3 ? ks[2] : 0;
 
         public override bool Equals(
             object obj)
@@ -947,7 +960,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             if (obj == this)
                 return true;
 
-            F2mFieldElement other = obj as F2mFieldElement;
+            var other = obj as F2mFieldElement;
 
             if (other == null)
                 return false;
@@ -958,10 +971,10 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         public virtual bool Equals(
             F2mFieldElement other)
         {
-            return ((this.m == other.m)
-                && (this.representation == other.representation)
-                && Arrays.AreEqual(this.ks, other.ks)
-                && (this.x.Equals(other.x)));
+            return m == other.m
+                   && representation == other.representation
+                   && Arrays.AreEqual(ks, other.ks)
+                   && x.Equals(other.x);
         }
 
         public override int GetHashCode()

@@ -10,10 +10,7 @@ namespace Renci.SshNet.Compression
         /// <summary>
         /// Gets algorithm name.
         /// </summary>
-        public override string Name
-        {
-            get { return "zlib@openssh.org"; }
-        }
+        public override string Name => "zlib@openssh.org";
 
         /// <summary>
         /// Initializes the algorithm

@@ -12,57 +12,27 @@ namespace Renci.SshNet.Security
         /// <summary>
         /// Gets the P.
         /// </summary>
-        public BigInteger P
-        {
-            get
-            {
-                return _privateKey[0];
-            }
-        }
+        public BigInteger P => _privateKey[0];
 
         /// <summary>
         /// Gets the Q.
         /// </summary>
-        public BigInteger Q
-        {
-            get
-            {
-                return _privateKey[1];
-            }
-        }
+        public BigInteger Q => _privateKey[1];
 
         /// <summary>
         /// Gets the G.
         /// </summary>
-        public BigInteger G
-        {
-            get
-            {
-                return _privateKey[2];
-            }
-        }
+        public BigInteger G => _privateKey[2];
 
         /// <summary>
         /// Gets public key Y.
         /// </summary>
-        public BigInteger Y
-        {
-            get
-            {
-                return _privateKey[3];
-            }
-        }
+        public BigInteger Y => _privateKey[3];
 
         /// <summary>
         /// Gets private key X.
         /// </summary>
-        public BigInteger X
-        {
-            get
-            {
-                return _privateKey[4];
-            }
-        }
+        public BigInteger X => _privateKey[4];
 
         /// <summary>
         /// Gets the length of the key.
@@ -70,15 +40,10 @@ namespace Renci.SshNet.Security
         /// <value>
         /// The length of the key.
         /// </value>
-        public override int KeyLength
-        {
-            get
-            {
-                return P.BitLength;
-            }
-        }
+        public override int KeyLength => P.BitLength;
 
         private DsaDigitalSignature _digitalSignature;
+
         /// <summary>
         /// Gets the digital signature.
         /// </summary>
@@ -90,6 +55,7 @@ namespace Renci.SshNet.Security
                 {
                     _digitalSignature = new DsaDigitalSignature(this);
                 }
+
                 return _digitalSignature;
             }
         }
@@ -104,7 +70,10 @@ namespace Renci.SshNet.Security
         {
             get
             {
-                return new[] { P, Q, G, Y };
+                return new[]
+                {
+                    P, Q, G, Y
+                };
             }
             set
             {
@@ -153,7 +122,6 @@ namespace Renci.SshNet.Security
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -177,6 +145,7 @@ namespace Renci.SshNet.Security
             if (disposing)
             {
                 var digitalSignature = _digitalSignature;
+
                 if (digitalSignature != null)
                 {
                     digitalSignature.Dispose();
@@ -195,7 +164,6 @@ namespace Renci.SshNet.Security
         {
             Dispose(false);
         }
-
         #endregion
     }
 }

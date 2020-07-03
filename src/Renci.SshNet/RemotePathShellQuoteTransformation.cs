@@ -101,9 +101,11 @@ namespace Renci.SshNet
                                 // Start quoted string
                                 sb.Append('"');
                                 break;
+
                             case ShellQuoteState.Quoted:
                                 // Continue quoted string
                                 break;
+
                             case ShellQuoteState.SingleQuoted:
                                 // Close single-quoted string
                                 sb.Append('\'');
@@ -111,8 +113,10 @@ namespace Renci.SshNet
                                 sb.Append('"');
                                 break;
                         }
+
                         state = ShellQuoteState.Quoted;
                         break;
+
                     case '!':
                         // In C-Shell, an exclamatation point can only be protected from shell interpretation
                         // when escaped by a backslash
@@ -124,19 +128,23 @@ namespace Renci.SshNet
                             case ShellQuoteState.Unquoted:
                                 sb.Append('\\');
                                 break;
+
                             case ShellQuoteState.Quoted:
                                 // Close quoted string
                                 sb.Append('"');
                                 sb.Append('\\');
                                 break;
+
                             case ShellQuoteState.SingleQuoted:
                                 // Close single quoted string
                                 sb.Append('\'');
                                 sb.Append('\\');
                                 break;
                         }
+
                         state = ShellQuoteState.Unquoted;
                         break;
+
                     default:
                         switch (state)
                         {
@@ -144,16 +152,19 @@ namespace Renci.SshNet
                                 // Start single-quoted string
                                 sb.Append('\'');
                                 break;
+
                             case ShellQuoteState.Quoted:
                                 // Close quoted string
                                 sb.Append('"');
                                 // Start single-quoted string
                                 sb.Append('\'');
                                 break;
+
                             case ShellQuoteState.SingleQuoted:
                                 // Continue single-quoted string
                                 break;
                         }
+
                         state = ShellQuoteState.SingleQuoted;
                         break;
                 }
@@ -165,10 +176,12 @@ namespace Renci.SshNet
             {
                 case ShellQuoteState.Unquoted:
                     break;
+
                 case ShellQuoteState.Quoted:
                     // Close quoted string
                     sb.Append('"');
                     break;
+
                 case ShellQuoteState.SingleQuoted:
                     // Close single-quoted string
                     sb.Append('\'');

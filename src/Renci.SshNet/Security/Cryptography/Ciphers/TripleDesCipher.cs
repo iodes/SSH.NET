@@ -39,10 +39,10 @@ namespace Renci.SshNet.Security.Cryptography.Ciphers
         /// </returns>
         public override int EncryptBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
         {
-            if ((inputOffset + BlockSize) > inputBuffer.Length)
+            if (inputOffset + BlockSize > inputBuffer.Length)
                 throw new IndexOutOfRangeException("input buffer too short");
 
-            if ((outputOffset + BlockSize) > outputBuffer.Length)
+            if (outputOffset + BlockSize > outputBuffer.Length)
                 throw new IndexOutOfRangeException("output buffer too short");
 
             if (_encryptionKey1 == null || _encryptionKey2 == null || _encryptionKey3 == null)
@@ -70,7 +70,7 @@ namespace Renci.SshNet.Security.Cryptography.Ciphers
                 }
             }
 
-            byte[] temp = new byte[BlockSize];
+            var temp = new byte[BlockSize];
 
             DesFunc(_encryptionKey1, inputBuffer, inputOffset, temp, 0);
             DesFunc(_encryptionKey2, temp, 0, temp, 0);
@@ -92,10 +92,10 @@ namespace Renci.SshNet.Security.Cryptography.Ciphers
         /// </returns>
         public override int DecryptBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
         {
-            if ((inputOffset + BlockSize) > inputBuffer.Length)
+            if (inputOffset + BlockSize > inputBuffer.Length)
                 throw new IndexOutOfRangeException("input buffer too short");
 
-            if ((outputOffset + BlockSize) > outputBuffer.Length)
+            if (outputOffset + BlockSize > outputBuffer.Length)
                 throw new IndexOutOfRangeException("output buffer too short");
 
             if (_decryptionKey1 == null || _decryptionKey2 == null || _decryptionKey3 == null)
@@ -122,7 +122,7 @@ namespace Renci.SshNet.Security.Cryptography.Ciphers
                 }
             }
 
-            byte[] temp = new byte[BlockSize];
+            var temp = new byte[BlockSize];
 
             DesFunc(_decryptionKey3, inputBuffer, inputOffset, temp, 0);
             DesFunc(_decryptionKey2, temp, 0, temp, 0);

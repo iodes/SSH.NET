@@ -69,68 +69,78 @@ namespace Renci.SshNet.Tests.Classes.Sftp
             _seq = new MockSequence();
 
             SftpSessionMock.InSequence(_seq)
-                           .Setup(p => p.CreateWaitHandleArray(It.IsNotNull<WaitHandle>(), It.IsNotNull<WaitHandle>()))
-                           .Returns<WaitHandle, WaitHandle>((disposingWaitHandle, semaphoreAvailableWaitHandle) =>
-                           {
-                               _waitHandleArray[0] = disposingWaitHandle;
-                               _waitHandleArray[1] = semaphoreAvailableWaitHandle;
-                               return _waitHandleArray;
-                           });
-            SftpSessionMock.InSequence(_seq).Setup(p => p.OperationTimeout).Returns(_operationTimeout);
-            SftpSessionMock.InSequence(_seq)
-                           .Setup(p => p.WaitAny(_waitHandleArray, _operationTimeout))
-                           .Returns(() => WaitAny(_waitHandleArray, _operationTimeout));
-            SftpSessionMock.InSequence(_seq)
-                           .Setup(p => p.BeginRead(_handle, 0, ChunkLength, It.IsNotNull<AsyncCallback>(), It.IsAny<BufferedRead>()))
-                           .Callback<byte[], ulong, uint, AsyncCallback, object>((handle, offset, length, callback, state) =>
-                           {
-                               var asyncResult = new SftpReadAsyncResult(callback, state);
-                               asyncResult.SetAsCompleted(_chunk1, false);
-                           })
-                           .Returns((SftpReadAsyncResult)null);
-            SftpSessionMock.InSequence(_seq).Setup(p => p.OperationTimeout).Returns(_operationTimeout);
-            SftpSessionMock.InSequence(_seq)
-                           .Setup(p => p.WaitAny(_waitHandleArray, _operationTimeout))
-                           .Returns(() => WaitAny(_waitHandleArray, _operationTimeout));
-            SftpSessionMock.InSequence(_seq)
-                            .Setup(p => p.BeginRead(_handle, ChunkLength, ChunkLength, It.IsNotNull<AsyncCallback>(), It.IsAny<BufferedRead>()))
-                            .Callback<byte[], ulong, uint, AsyncCallback, object>((handle, offset, length, callback, state) =>
-                            {
-                                ThreadAbstraction.ExecuteThread(() =>
-                                {
-                                    // wait until the read-ahead for chunk3 has completed; this should allow
-                                    // the read-ahead of chunk4 to start
-                                    _readAheadChunk3Completed.WaitOne(TimeSpan.FromSeconds(3));
-                                    // wait until the semaphore wait to start with chunk4 has started
-                                    _waitingForSemaphoreAfterCompletingChunk3.WaitOne(TimeSpan.FromSeconds(7));
-                                    // complete async read of chunk2 with exception
-                                    var asyncResult = new SftpReadAsyncResult(callback, state);
-                                    asyncResult.SetAsCompleted(_exception, false);
-                                    // signal that read-ahead of chunk 2 has completed
-                                    _readAheadChunk2Completed.Set();
-                                });
-                            })
-                           .Returns((SftpReadAsyncResult)null);
-            SftpSessionMock.InSequence(_seq).Setup(p => p.OperationTimeout).Returns(_operationTimeout);
-            SftpSessionMock.InSequence(_seq)
-                           .Setup(p => p.WaitAny(_waitHandleArray, _operationTimeout))
-                           .Returns(() => WaitAny(_waitHandleArray, _operationTimeout));
-            SftpSessionMock.InSequence(_seq)
-                            .Setup(p => p.BeginRead(_handle, 2 * ChunkLength, ChunkLength, It.IsNotNull<AsyncCallback>(), It.IsAny<BufferedRead>()))
-                            .Callback<byte[], ulong, uint, AsyncCallback, object>((handle, offset, length, callback, state) =>
-                            {
-                                var asyncResult = new SftpReadAsyncResult(callback, state);
-                                asyncResult.SetAsCompleted(_chunk3, false);
-                                // signal that we've completed the read-ahead for chunk3
-                                _readAheadChunk3Completed.Set();
-                            })
-                            .Returns((SftpReadAsyncResult)null);
-            SftpSessionMock.InSequence(_seq).Setup(p => p.OperationTimeout).Returns(_operationTimeout);
-            SftpSessionMock.InSequence(_seq)
-                           .Setup(p => p.WaitAny(_waitHandleArray, _operationTimeout))
-                           .Callback(() => _waitingForSemaphoreAfterCompletingChunk3.Set())
-                           .Returns(() => WaitAny(_waitHandleArray, _operationTimeout));
+                .Setup(p => p.CreateWaitHandleArray(It.IsNotNull<WaitHandle>(), It.IsNotNull<WaitHandle>()))
+                .Returns<WaitHandle, WaitHandle>((disposingWaitHandle, semaphoreAvailableWaitHandle) =>
+                {
+                    _waitHandleArray[0] = disposingWaitHandle;
+                    _waitHandleArray[1] = semaphoreAvailableWaitHandle;
+                    return _waitHandleArray;
+                });
 
+            SftpSessionMock.InSequence(_seq).Setup(p => p.OperationTimeout).Returns(_operationTimeout);
+
+            SftpSessionMock.InSequence(_seq)
+                .Setup(p => p.WaitAny(_waitHandleArray, _operationTimeout))
+                .Returns(() => WaitAny(_waitHandleArray, _operationTimeout));
+
+            SftpSessionMock.InSequence(_seq)
+                .Setup(p => p.BeginRead(_handle, 0, ChunkLength, It.IsNotNull<AsyncCallback>(), It.IsAny<BufferedRead>()))
+                .Callback<byte[], ulong, uint, AsyncCallback, object>((handle, offset, length, callback, state) =>
+                {
+                    var asyncResult = new SftpReadAsyncResult(callback, state);
+                    asyncResult.SetAsCompleted(_chunk1, false);
+                })
+                .Returns((SftpReadAsyncResult)null);
+
+            SftpSessionMock.InSequence(_seq).Setup(p => p.OperationTimeout).Returns(_operationTimeout);
+
+            SftpSessionMock.InSequence(_seq)
+                .Setup(p => p.WaitAny(_waitHandleArray, _operationTimeout))
+                .Returns(() => WaitAny(_waitHandleArray, _operationTimeout));
+
+            SftpSessionMock.InSequence(_seq)
+                .Setup(p => p.BeginRead(_handle, ChunkLength, ChunkLength, It.IsNotNull<AsyncCallback>(), It.IsAny<BufferedRead>()))
+                .Callback<byte[], ulong, uint, AsyncCallback, object>((handle, offset, length, callback, state) =>
+                {
+                    ThreadAbstraction.ExecuteThread(() =>
+                    {
+                        // wait until the read-ahead for chunk3 has completed; this should allow
+                        // the read-ahead of chunk4 to start
+                        _readAheadChunk3Completed.WaitOne(TimeSpan.FromSeconds(3));
+                        // wait until the semaphore wait to start with chunk4 has started
+                        _waitingForSemaphoreAfterCompletingChunk3.WaitOne(TimeSpan.FromSeconds(7));
+                        // complete async read of chunk2 with exception
+                        var asyncResult = new SftpReadAsyncResult(callback, state);
+                        asyncResult.SetAsCompleted(_exception, false);
+                        // signal that read-ahead of chunk 2 has completed
+                        _readAheadChunk2Completed.Set();
+                    });
+                })
+                .Returns((SftpReadAsyncResult)null);
+
+            SftpSessionMock.InSequence(_seq).Setup(p => p.OperationTimeout).Returns(_operationTimeout);
+
+            SftpSessionMock.InSequence(_seq)
+                .Setup(p => p.WaitAny(_waitHandleArray, _operationTimeout))
+                .Returns(() => WaitAny(_waitHandleArray, _operationTimeout));
+
+            SftpSessionMock.InSequence(_seq)
+                .Setup(p => p.BeginRead(_handle, 2 * ChunkLength, ChunkLength, It.IsNotNull<AsyncCallback>(), It.IsAny<BufferedRead>()))
+                .Callback<byte[], ulong, uint, AsyncCallback, object>((handle, offset, length, callback, state) =>
+                {
+                    var asyncResult = new SftpReadAsyncResult(callback, state);
+                    asyncResult.SetAsCompleted(_chunk3, false);
+                    // signal that we've completed the read-ahead for chunk3
+                    _readAheadChunk3Completed.Set();
+                })
+                .Returns((SftpReadAsyncResult)null);
+
+            SftpSessionMock.InSequence(_seq).Setup(p => p.OperationTimeout).Returns(_operationTimeout);
+
+            SftpSessionMock.InSequence(_seq)
+                .Setup(p => p.WaitAny(_waitHandleArray, _operationTimeout))
+                .Callback(() => _waitingForSemaphoreAfterCompletingChunk3.Set())
+                .Returns(() => WaitAny(_waitHandleArray, _operationTimeout));
         }
 
         protected override void Arrange()

@@ -27,9 +27,9 @@ namespace Renci.SshNet.Tests.Classes.Channels
         {
             var random = new Random();
 
-            _localChannelNumber = (uint) random.Next(0, int.MaxValue);
-            _localWindowSize = (uint) random.Next(2000, 3000);
-            _localPacketSize = (uint) random.Next(1000, 2000);
+            _localChannelNumber = (uint)random.Next(0, int.MaxValue);
+            _localWindowSize = (uint)random.Next(2000, 3000);
+            _localPacketSize = (uint)random.Next(1000, 2000);
             _initialSessionSemaphoreCount = random.Next(10, 20);
             _sessionSemaphore = new SemaphoreLight(_initialSessionSemaphoreCount);
             _channelClosedRegister = new List<ChannelEventArgs>();
@@ -44,18 +44,20 @@ namespace Renci.SshNet.Tests.Classes.Channels
             SessionMock.InSequence(sequence).Setup(p => p.ConnectionInfo).Returns(ConnectionInfoMock.Object);
             ConnectionInfoMock.InSequence(sequence).Setup(p => p.RetryAttempts).Returns(2);
             SessionMock.Setup(p => p.SessionSemaphore).Returns(_sessionSemaphore);
+
             SessionMock.InSequence(sequence)
-                        .Setup(
-                            p =>
-                                p.SendMessage(
-                                    It.Is<ChannelOpenMessage>(
-                                        m =>
-                                            m.LocalChannelNumber == _localChannelNumber &&
-                                            m.InitialWindowSize == _localWindowSize && m.MaximumPacketSize == _localPacketSize &&
-                                            m.Info is SessionChannelOpenInfo)));
+                .Setup(
+                    p =>
+                        p.SendMessage(
+                            It.Is<ChannelOpenMessage>(
+                                m =>
+                                    m.LocalChannelNumber == _localChannelNumber &&
+                                    m.InitialWindowSize == _localWindowSize && m.MaximumPacketSize == _localPacketSize &&
+                                    m.Info is SessionChannelOpenInfo)));
+
             SessionMock.InSequence(sequence)
-                        .Setup(p => p.WaitOnHandle(It.IsNotNull<WaitHandle>()))
-                        .Throws(_waitOnConfirmationException);
+                .Setup(p => p.WaitOnHandle(It.IsNotNull<WaitHandle>()))
+                .Throws(_waitOnConfirmationException);
         }
 
         protected override void Arrange()

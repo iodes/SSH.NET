@@ -62,8 +62,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
 
         public SftpOpenRequest Build()
         {
-            var handleAction = _handleAction ?? ((handleResponse) => { });
-            var statusAction = _statusAction ?? ((statusResponse) => { });
+            Action<SftpHandleResponse> handleAction = _handleAction ?? ((handleResponse) => { });
+            Action<SftpStatusResponse> statusAction = _statusAction ?? ((statusResponse) => { });
 
             return new SftpOpenRequest(_protocolVersion, _requestId, _fileName, _encoding, _flags, handleAction, statusAction);
         }

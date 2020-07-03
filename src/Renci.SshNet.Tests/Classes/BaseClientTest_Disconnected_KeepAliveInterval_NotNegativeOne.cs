@@ -48,11 +48,13 @@ namespace Renci.SshNet.Tests.Classes
         private void SetupMocks()
         {
             _serviceFactoryMock.Setup(p => p.CreateSession(_connectionInfo))
-                               .Returns(_sessionMock.Object);
+                .Returns(_sessionMock.Object);
+
             _sessionMock.Setup(p => p.Connect());
             _sessionMock.Setup(p => p.IsConnected).Returns(false);
+
             _sessionMock.Setup(p => p.TrySendMessage(It.IsAny<IgnoreMessage>()))
-                        .Returns(true);
+                .Returns(true);
         }
 
         protected void Arrange()

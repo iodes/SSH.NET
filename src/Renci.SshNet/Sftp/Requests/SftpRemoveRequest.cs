@@ -8,15 +8,12 @@ namespace Renci.SshNet.Sftp.Requests
     {
         private byte[] _fileName;
 
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.Remove; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.Remove;
 
         public string Filename
         {
-            get { return Encoding.GetString(_fileName, 0, _fileName.Length); }
-            private set { _fileName = Encoding.GetBytes(value); }
+            get => Encoding.GetString(_fileName, 0, _fileName.Length);
+            private set => _fileName = Encoding.GetBytes(value);
         }
 
         public Encoding Encoding { get; private set; }

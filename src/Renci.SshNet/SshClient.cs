@@ -31,16 +31,9 @@ namespace Renci.SshNet
         /// <summary>
         /// Gets the list of forwarded ports.
         /// </summary>
-        public IEnumerable<ForwardedPort> ForwardedPorts
-        {
-            get
-            {
-                return _forwardedPorts.AsReadOnly();
-            }
-        }
+        public IEnumerable<ForwardedPort> ForwardedPorts => _forwardedPorts.AsReadOnly();
 
         #region Constructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SshClient" /> class.
         /// </summary>
@@ -158,7 +151,6 @@ namespace Renci.SshNet
         {
             _forwardedPorts = new List<ForwardedPort>();
         }
-
         #endregion
 
         /// <summary>
@@ -189,6 +181,7 @@ namespace Renci.SshNet
         {
             if (port == null)
                 throw new ArgumentNullException("port");
+
             EnsureSessionIsOpen();
 
             AttachForwardedPort(port);

@@ -74,7 +74,7 @@ namespace Renci.SshNet.Tests.Classes
 
             var connectionInfo = new PasswordAuthenticationMethod(Resources.USERNAME, Resources.PASSWORD);
 
-            using (SftpClient client = new SftpClient(Resources.HOST, int.Parse(Resources.PORT), Resources.USERNAME, Resources.PASSWORD))
+            using (var client = new SftpClient(Resources.HOST, int.Parse(Resources.PORT), Resources.USERNAME, Resources.PASSWORD))
             {
                 client.Connect();
                 Assert.AreEqual<bool>(true, client.IsConnected, "IsConnected is not true after Connect() was called.");
@@ -92,9 +92,9 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void NameTest()
         {
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             byte[] password = null; // TODO: Initialize to an appropriate value
-            PasswordAuthenticationMethod target = new PasswordAuthenticationMethod(username, password); // TODO: Initialize to an appropriate value
+            var target = new PasswordAuthenticationMethod(username, password); // TODO: Initialize to an appropriate value
             string actual;
             actual = target.Name;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -107,9 +107,9 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void DisposeTest()
         {
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             byte[] password = null; // TODO: Initialize to an appropriate value
-            PasswordAuthenticationMethod target = new PasswordAuthenticationMethod(username, password); // TODO: Initialize to an appropriate value
+            var target = new PasswordAuthenticationMethod(username, password); // TODO: Initialize to an appropriate value
             target.Dispose();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -121,11 +121,11 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void AuthenticateTest()
         {
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             byte[] password = null; // TODO: Initialize to an appropriate value
-            PasswordAuthenticationMethod target = new PasswordAuthenticationMethod(username, password); // TODO: Initialize to an appropriate value
+            var target = new PasswordAuthenticationMethod(username, password); // TODO: Initialize to an appropriate value
             Session session = null; // TODO: Initialize to an appropriate value
-            AuthenticationResult expected = new AuthenticationResult(); // TODO: Initialize to an appropriate value
+            var expected = new AuthenticationResult(); // TODO: Initialize to an appropriate value
             AuthenticationResult actual;
             actual = target.Authenticate(session);
             Assert.AreEqual(expected, actual);
@@ -139,9 +139,9 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordAuthenticationMethodConstructorTest()
         {
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             byte[] password = null; // TODO: Initialize to an appropriate value
-            PasswordAuthenticationMethod target = new PasswordAuthenticationMethod(username, password);
+            var target = new PasswordAuthenticationMethod(username, password);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -152,9 +152,9 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordAuthenticationMethodConstructorTest1()
         {
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            PasswordAuthenticationMethod target = new PasswordAuthenticationMethod(username, password);
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var password = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new PasswordAuthenticationMethod(username, password);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

@@ -20,7 +20,7 @@ namespace Renci.SshNet.Tests.Classes
         private IList<EventArgs> _disconnectedRegister;
         private IList<ExceptionEventArgs> _errorOccurredRegister;
         private ExceptionEventArgs _channelExceptionEventArgs;
-            
+
         [TestInitialize]
         public void Setup()
         {
@@ -50,6 +50,7 @@ namespace Renci.SshNet.Tests.Classes
                 _sessionMock.Object,
                 _subsystemName,
                 _operationTimeout);
+
             _subsystemSession.Disconnected += (sender, args) => _disconnectedRegister.Add(args);
             _subsystemSession.ErrorOccurred += (sender, args) => _errorOccurredRegister.Add(args);
             _subsystemSession.Connect();

@@ -18,7 +18,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ProxyExceptionConstructorTest()
         {
-            ProxyException target = new ProxyException();
+            var target = new ProxyException();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -28,8 +28,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ProxyExceptionConstructorTest1()
         {
-            string message = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyException target = new ProxyException(message);
+            var message = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new ProxyException(message);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -39,9 +39,9 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ProxyExceptionConstructorTest2()
         {
-            string message = string.Empty; // TODO: Initialize to an appropriate value
+            var message = string.Empty; // TODO: Initialize to an appropriate value
             Exception innerException = null; // TODO: Initialize to an appropriate value
-            ProxyException target = new ProxyException(message, innerException);
+            var target = new ProxyException(message, innerException);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

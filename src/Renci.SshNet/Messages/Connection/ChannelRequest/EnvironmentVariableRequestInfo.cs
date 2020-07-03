@@ -19,10 +19,7 @@
         /// <value>
         /// The name of the request.
         /// </value>
-        public override string RequestName
-        {
-            get { return Name; }
-        }
+        public override string RequestName => Name;
 
         /// <summary>
         /// Gets or sets the name of the variable.
@@ -30,10 +27,7 @@
         /// <value>
         /// The name of the variable.
         /// </value>
-        public string VariableName
-        {
-            get { return Utf8.GetString(_variableName, 0, _variableName.Length); }
-        }
+        public string VariableName => Utf8.GetString(_variableName, 0, _variableName.Length);
 
         /// <summary>
         /// Gets or sets the variable value.
@@ -41,10 +35,7 @@
         /// <value>
         /// The variable value.
         /// </value>
-        public string VariableValue
-        {
-            get { return Utf8.GetString(_variableValue, 0, _variableValue.Length); }
-        }
+        public string VariableValue => Utf8.GetString(_variableValue, 0, _variableValue.Length);
 
         /// <summary>
         /// Gets the size of the message in bytes.

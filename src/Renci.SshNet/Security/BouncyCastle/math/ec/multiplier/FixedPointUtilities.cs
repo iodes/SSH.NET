@@ -8,7 +8,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
         public static int GetCombSize(ECCurve c)
         {
-            BigInteger order = c.Order;
+            var order = c.Order;
             return order == null ? c.FieldSize + 1 : order.BitLength;
         }
 
@@ -29,26 +29,27 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
             internal FixedPointCallback(ECPoint p)
             {
-                this.m_p = p;
+                m_p = p;
             }
 
             public PreCompInfo Precompute(PreCompInfo existing)
             {
-                FixedPointPreCompInfo existingFP = (existing is FixedPointPreCompInfo) ? (FixedPointPreCompInfo)existing : null;
+                var existingFP = existing is FixedPointPreCompInfo ? (FixedPointPreCompInfo)existing : null;
 
-                ECCurve c = m_p.Curve;
-                int bits = FixedPointUtilities.GetCombSize(c);
-                int minWidth = bits > 250 ? 6 : 5;
-                int n = 1 << minWidth;
+                var c = m_p.Curve;
+                var bits = GetCombSize(c);
+                var minWidth = bits > 250 ? 6 : 5;
+                var n = 1 << minWidth;
 
                 if (CheckExisting(existingFP, n))
                     return existingFP;
 
-                int d = (bits + minWidth - 1) / minWidth;
+                var d = (bits + minWidth - 1) / minWidth;
 
-                ECPoint[] pow2Table = new ECPoint[minWidth + 1];
+                var pow2Table = new ECPoint[minWidth + 1];
                 pow2Table[0] = m_p;
-                for (int i = 1; i < minWidth; ++i)
+
+                for (var i = 1; i < minWidth; ++i)
                 {
                     pow2Table[i] = pow2Table[i - 1].TimesPow2(d);
                 }
@@ -58,15 +59,16 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
                 c.NormalizeAll(pow2Table);
 
-                ECPoint[] lookupTable = new ECPoint[n];
+                var lookupTable = new ECPoint[n];
                 lookupTable[0] = pow2Table[0];
 
-                for (int bit = minWidth - 1; bit >= 0; --bit)
+                for (var bit = minWidth - 1; bit >= 0; --bit)
                 {
-                    ECPoint pow2 = pow2Table[bit];
+                    var pow2 = pow2Table[bit];
 
-                    int step = 1 << bit;
-                    for (int i = step; i < n; i += (step << 1))
+                    var step = 1 << bit;
+
+                    for (var i = step; i < n; i += step << 1)
                     {
                         lookupTable[i] = lookupTable[i - step].Add(pow2);
                     }
@@ -74,7 +76,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
                 c.NormalizeAll(lookupTable);
 
-                FixedPointPreCompInfo result = new FixedPointPreCompInfo();
+                var result = new FixedPointPreCompInfo();
                 result.LookupTable = c.CreateCacheSafeLookupTable(lookupTable, 0, lookupTable.Length);
                 result.Offset = pow2Table[minWidth];
                 result.Width = minWidth;

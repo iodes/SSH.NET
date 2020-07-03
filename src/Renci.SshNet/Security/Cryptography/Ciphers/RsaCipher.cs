@@ -40,6 +40,7 @@ namespace Renci.SshNet.Security.Cryptography.Ciphers
             var paddedBlock = new byte[bitLength / 8 + (bitLength % 8 > 0 ? 1 : 0) - 1];
 
             paddedBlock[0] = 0x01;
+
             for (var i = 1; i < paddedBlock.Length - length - 1; i++)
             {
                 paddedBlock[i] = 0xFF;
@@ -77,14 +78,16 @@ namespace Renci.SshNet.Security.Cryptography.Ciphers
         /// <exception cref="NotSupportedException">Thrown when decrypted block type is not supported.</exception>
         public override byte[] Decrypt(byte[] data, int offset, int length)
         {
-            var paddedBlock = Transform(data, offset, length);
+            byte[] paddedBlock = Transform(data, offset, length);
 
             if (paddedBlock[0] != 1 && paddedBlock[0] != 2)
                 throw new NotSupportedException("Only block type 01 or 02 are supported.");
 
             var position = 1;
+
             while (position < paddedBlock.Length && paddedBlock[position] != 0)
                 position++;
+
             position++;
 
             var result = new byte[paddedBlock.Length - position];
@@ -122,21 +125,21 @@ namespace Renci.SshNet.Security.Cryptography.Ciphers
                     random = BigInteger.Random(bitLength);
                 }
 
-                var blindedInput = BigInteger.PositiveMod((BigInteger.ModPow(random, _key.Exponent, _key.Modulus) * input), _key.Modulus);
+                var blindedInput = BigInteger.PositiveMod(BigInteger.ModPow(random, _key.Exponent, _key.Modulus) * input, _key.Modulus);
 
                 // mP = ((input Mod p) ^ dP)) Mod p
-                var mP = BigInteger.ModPow((blindedInput % _key.P), _key.DP, _key.P);
+                var mP = BigInteger.ModPow(blindedInput % _key.P, _key.DP, _key.P);
 
                 // mQ = ((input Mod q) ^ dQ)) Mod q
-                var mQ = BigInteger.ModPow((blindedInput % _key.Q), _key.DQ, _key.Q);
+                var mQ = BigInteger.ModPow(blindedInput % _key.Q, _key.DQ, _key.Q);
 
-                var h = BigInteger.PositiveMod(((mP - mQ) * _key.InverseQ), _key.P);
+                var h = BigInteger.PositiveMod((mP - mQ) * _key.InverseQ, _key.P);
 
                 var m = h * _key.Q + mQ;
 
                 var rInv = BigInteger.ModInverse(random, _key.Modulus);
 
-                result = BigInteger.PositiveMod((m * rInv), _key.Modulus);
+                result = BigInteger.PositiveMod(m * rInv, _key.Modulus);
             }
             else
             {

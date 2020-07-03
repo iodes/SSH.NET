@@ -46,8 +46,9 @@ namespace Renci.SshNet.Tests.Classes
             _channelMock.InSequence(_sequence).Setup(p => p.IsOpen).Returns(true);
 
             _subsystemSession = new SubsystemSessionStub(_sessionMock.Object,
-                                                         _subsystemName,
-                                                         _operationTimeout);
+                _subsystemName,
+                _operationTimeout);
+
             _subsystemSession.Disconnected += (sender, args) => _disconnectedRegister.Add(args);
             _subsystemSession.ErrorOccurred += (sender, args) => _errorOccurredRegister.Add(args);
             _subsystemSession.Connect();
@@ -64,7 +65,6 @@ namespace Renci.SshNet.Tests.Classes
             {
                 _actualException = ex;
             }
-
         }
 
         [TestMethod]

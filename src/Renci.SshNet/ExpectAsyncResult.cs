@@ -13,7 +13,7 @@ namespace Renci.SshNet
         /// </summary>
         /// <param name="asyncCallback">The async callback.</param>
         /// <param name="state">The state.</param>
-        internal ExpectAsyncResult(AsyncCallback asyncCallback, Object state)
+        internal ExpectAsyncResult(AsyncCallback asyncCallback, object state)
             : base(asyncCallback, state)
         {
         }

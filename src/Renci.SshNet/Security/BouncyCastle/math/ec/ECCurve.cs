@@ -24,8 +24,10 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
         public static int[] GetAllCoordinateSystems()
         {
-            return new int[]{ COORD_AFFINE, COORD_HOMOGENEOUS, COORD_JACOBIAN, COORD_JACOBIAN_CHUDNOVSKY,
-                COORD_JACOBIAN_MODIFIED, COORD_LAMBDA_AFFINE, COORD_LAMBDA_PROJECTIVE, COORD_SKEWED };
+            return new int[]
+            {
+                COORD_AFFINE, COORD_HOMOGENEOUS, COORD_JACOBIAN, COORD_JACOBIAN_CHUDNOVSKY, COORD_JACOBIAN_MODIFIED, COORD_LAMBDA_AFFINE, COORD_LAMBDA_PROJECTIVE, COORD_SKEWED
+            };
         }
 
         internal class Config
@@ -68,7 +70,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                     throw new InvalidOperationException("unsupported coordinate system");
                 }
 
-                ECCurve c = outer.CloneCurve();
+                var c = outer.CloneCurve();
+
                 if (c == outer)
                 {
                     throw new InvalidOperationException("implementation returned current curve");
@@ -92,35 +95,41 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
         protected ECCurve(IFiniteField field)
         {
-            this.m_field = field;
+            m_field = field;
         }
 
         public abstract int FieldSize { get; }
+
         public abstract ECFieldElement FromBigInteger(BigInteger x);
+
         public abstract bool IsValidFieldElement(BigInteger x);
 
         public virtual Config Configure()
         {
-            return new Config(this, this.m_coord, this.m_endomorphism, this.m_multiplier);
+            return new Config(this, m_coord, m_endomorphism, m_multiplier);
         }
 
         public virtual ECPoint ValidatePoint(BigInteger x, BigInteger y)
         {
-            ECPoint p = CreatePoint(x, y);
+            var p = CreatePoint(x, y);
+
             if (!p.IsValid())
             {
                 throw new ArgumentException("Invalid point coordinates");
             }
+
             return p;
         }
 
         public virtual ECPoint ValidatePoint(BigInteger x, BigInteger y, bool withCompression)
         {
-            ECPoint p = CreatePoint(x, y, withCompression);
+            var p = CreatePoint(x, y, withCompression);
+
             if (!p.IsValid())
             {
                 throw new ArgumentException("Invalid point coordinates");
             }
+
             return p;
         }
 
@@ -142,7 +151,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
         protected virtual ECMultiplier CreateDefaultMultiplier()
         {
-            GlvEndomorphism glvEndomorphism = m_endomorphism as GlvEndomorphism;
+            var glvEndomorphism = m_endomorphism as GlvEndomorphism;
+
             if (glvEndomorphism != null)
             {
                 return new GlvMultiplier(this, glvEndomorphism);
@@ -161,6 +171,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             CheckPoint(point);
 
             IDictionary table;
+
             lock (point)
             {
                 table = point.m_preCompTable;
@@ -192,9 +203,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             CheckPoint(point);
 
             IDictionary table;
+
             lock (point)
             {
                 table = point.m_preCompTable;
+
                 if (null == table)
                 {
                     point.m_preCompTable = table = new Dictionary<object, object>(4);
@@ -203,8 +216,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
             lock (table)
             {
-                PreCompInfo existing = (PreCompInfo)table[name];
-                PreCompInfo result = callback.Precompute(existing);
+                var existing = (PreCompInfo)table[name];
+                var result = callback.Precompute(existing);
 
                 if (result != existing)
                 {
@@ -221,6 +234,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             {
                 return p;
             }
+
             if (p.IsInfinity)
             {
                 return Infinity;
@@ -269,10 +283,10 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         {
             CheckPoints(points, off, len);
 
-            switch (this.CoordinateSystem)
+            switch (CoordinateSystem)
             {
-                case ECCurve.COORD_AFFINE:
-                case ECCurve.COORD_LAMBDA_AFFINE:
+                case COORD_AFFINE:
+                case COORD_LAMBDA_AFFINE:
                 {
                     if (iso != null)
                         throw new ArgumentException("not valid for affine coordinates", "iso");
@@ -284,12 +298,14 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             /*
              * Figure out which of the points actually need to be normalized
              */
-            ECFieldElement[] zs = new ECFieldElement[len];
-            int[] indices = new int[len];
-            int count = 0;
-            for (int i = 0; i < len; ++i)
+            var zs = new ECFieldElement[len];
+            var indices = new int[len];
+            var count = 0;
+
+            for (var i = 0; i < len; ++i)
             {
-                ECPoint p = points[off + i];
+                var p = points[off + i];
+
                 if (null != p && (iso != null || !p.IsNormalized()))
                 {
                     zs[count] = p.GetZCoord(0);
@@ -304,44 +320,26 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
             ECAlgorithms.MontgomeryTrick(zs, 0, count, iso);
 
-            for (int j = 0; j < count; ++j)
+            for (var j = 0; j < count; ++j)
             {
-                int index = indices[j];
+                var index = indices[j];
                 points[index] = points[index].Normalize(zs[j]);
             }
         }
 
         public abstract ECPoint Infinity { get; }
 
-        public virtual IFiniteField Field
-        {
-            get { return m_field; }
-        }
+        public virtual IFiniteField Field => m_field;
 
-        public virtual ECFieldElement A
-        {
-            get { return m_a; }
-        }
+        public virtual ECFieldElement A => m_a;
 
-        public virtual ECFieldElement B
-        {
-            get { return m_b; }
-        }
+        public virtual ECFieldElement B => m_b;
 
-        public virtual BigInteger Order
-        {
-            get { return m_order; }
-        }
+        public virtual BigInteger Order => m_order;
 
-        public virtual BigInteger Cofactor
-        {
-            get { return m_cofactor; }
-        }
+        public virtual BigInteger Cofactor => m_cofactor;
 
-        public virtual int CoordinateSystem
-        {
-            get { return m_coord; }
-        }
+        public virtual int CoordinateSystem => m_coord;
 
         /**
          * Create a cache-safe lookup table for the specified sequence of points. All the points MUST
@@ -349,21 +347,25 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
          */
         public virtual ECLookupTable CreateCacheSafeLookupTable(ECPoint[] points, int off, int len)
         {
-            int FE_BYTES = (FieldSize + 7) / 8;
-            byte[] table = new byte[len * FE_BYTES * 2];
+            var FE_BYTES = (FieldSize + 7) / 8;
+            var table = new byte[len * FE_BYTES * 2];
+
             {
-                int pos = 0;
-                for (int i = 0; i < len; ++i)
+                var pos = 0;
+
+                for (var i = 0; i < len; ++i)
                 {
-                    ECPoint p = points[off + i];
+                    var p = points[off + i];
                     byte[] px = p.RawXCoord.ToBigInteger().ToByteArray();
                     byte[] py = p.RawYCoord.ToBigInteger().ToByteArray();
 
                     int pxStart = px.Length > FE_BYTES ? 1 : 0, pxLen = px.Length - pxStart;
                     int pyStart = py.Length > FE_BYTES ? 1 : 0, pyLen = py.Length - pyStart;
 
-                    Array.Copy(px, pxStart, table, pos + FE_BYTES - pxLen, pxLen); pos += FE_BYTES;
-                    Array.Copy(py, pyStart, table, pos + FE_BYTES - pyLen, pyLen); pos += FE_BYTES;
+                    Array.Copy(px, pxStart, table, pos + FE_BYTES - pxLen, pxLen);
+                    pos += FE_BYTES;
+                    Array.Copy(py, pyStart, table, pos + FE_BYTES - pyLen, pyLen);
+                    pos += FE_BYTES;
                 }
             }
 
@@ -372,7 +374,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
         protected virtual void CheckPoint(ECPoint point)
         {
-            if (null == point || (this != point.Curve))
+            if (null == point || this != point.Curve)
                 throw new ArgumentException("must be non-null and on this curve", "point");
         }
 
@@ -385,12 +387,14 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         {
             if (points == null)
                 throw new ArgumentNullException("points");
-            if (off < 0 || len < 0 || (off > (points.Length - len)))
+
+            if (off < 0 || len < 0 || off > points.Length - len)
                 throw new ArgumentException("invalid range specified", "points");
 
-            for (int i = 0; i < len; ++i)
+            for (var i = 0; i < len; ++i)
             {
-                ECPoint point = points[off + i];
+                var point = points[off + i];
+
                 if (null != point && this != point.Curve)
                     throw new ArgumentException("entries must be null or on this curve", "points");
             }
@@ -400,14 +404,16 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         {
             if (this == other)
                 return true;
+
             if (null == other)
                 return false;
+
             return Field.Equals(other.Field)
-                && A.ToBigInteger().Equals(other.A.ToBigInteger())
-                && B.ToBigInteger().Equals(other.B.ToBigInteger());
+                   && A.ToBigInteger().Equals(other.A.ToBigInteger())
+                   && B.ToBigInteger().Equals(other.B.ToBigInteger());
         }
 
-        public override bool Equals(object obj) 
+        public override bool Equals(object obj)
         {
             return Equals(obj as ECCurve);
         }
@@ -415,8 +421,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         public override int GetHashCode()
         {
             return Field.GetHashCode()
-                ^ Integers.RotateLeft(A.ToBigInteger().GetHashCode(), 8)
-                ^ Integers.RotateLeft(B.ToBigInteger().GetHashCode(), 16);
+                   ^ Integers.RotateLeft(A.ToBigInteger().GetHashCode(), 8)
+                   ^ Integers.RotateLeft(B.ToBigInteger().GetHashCode(), 16);
         }
 
         protected abstract ECPoint DecompressPoint(int yTilde, BigInteger X1);
@@ -433,11 +439,12 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         {
             lock (this)
             {
-                if (this.m_multiplier == null)
+                if (m_multiplier == null)
                 {
-                    this.m_multiplier = CreateDefaultMultiplier();
+                    m_multiplier = CreateDefaultMultiplier();
                 }
-                return this.m_multiplier;
+
+                return m_multiplier;
             }
         }
 
@@ -450,9 +457,10 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         public virtual ECPoint DecodePoint(byte[] encoded)
         {
             ECPoint p = null;
-            int expectedLength = (FieldSize + 7) / 8;
+            var expectedLength = (FieldSize + 7) / 8;
 
-            byte type = encoded[0];
+            var type = encoded[0];
+
             switch (type)
             {
                 case 0x00: // infinity
@@ -467,13 +475,14 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                 case 0x02: // compressed
                 case 0x03: // compressed
                 {
-                    if (encoded.Length != (expectedLength + 1))
+                    if (encoded.Length != expectedLength + 1)
                         throw new ArgumentException("Incorrect length for compressed encoding", "encoded");
 
-                    int yTilde = type & 1;
-                    BigInteger X = new BigInteger(1, encoded, 1, expectedLength);
+                    var yTilde = type & 1;
+                    var X = new BigInteger(1, encoded, 1, expectedLength);
 
                     p = DecompressPoint(yTilde, X);
+
                     if (!p.ImplIsValid(true, true))
                         throw new ArgumentException("Invalid point");
 
@@ -482,11 +491,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
                 case 0x04: // uncompressed
                 {
-                    if (encoded.Length != (2 * expectedLength + 1))
+                    if (encoded.Length != 2 * expectedLength + 1)
                         throw new ArgumentException("Incorrect length for uncompressed encoding", "encoded");
 
-                    BigInteger X = new BigInteger(1, encoded, 1, expectedLength);
-                    BigInteger Y = new BigInteger(1, encoded, 1 + expectedLength, expectedLength);
+                    var X = new BigInteger(1, encoded, 1, expectedLength);
+                    var Y = new BigInteger(1, encoded, 1 + expectedLength, expectedLength);
 
                     p = ValidatePoint(X, Y);
                     break;
@@ -495,11 +504,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                 case 0x06: // hybrid
                 case 0x07: // hybrid
                 {
-                    if (encoded.Length != (2 * expectedLength + 1))
+                    if (encoded.Length != 2 * expectedLength + 1)
                         throw new ArgumentException("Incorrect length for hybrid encoding", "encoded");
 
-                    BigInteger X = new BigInteger(1, encoded, 1, expectedLength);
-                    BigInteger Y = new BigInteger(1, encoded, 1 + expectedLength, expectedLength);
+                    var X = new BigInteger(1, encoded, 1, expectedLength);
+                    var Y = new BigInteger(1, encoded, 1 + expectedLength, expectedLength);
 
                     if (Y.TestBit(0) != (type == 0x07))
                         throw new ArgumentException("Inconsistent Y coordinate in hybrid encoding", "encoded");
@@ -527,37 +536,34 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
             internal DefaultLookupTable(ECCurve outer, byte[] table, int size)
             {
-                this.m_outer = outer;
-                this.m_table = table;
-                this.m_size = size;
+                m_outer = outer;
+                m_table = table;
+                m_size = size;
             }
 
-            public virtual int Size
-            {
-                get { return m_size; }
-            }
+            public virtual int Size => m_size;
 
             public virtual ECPoint Lookup(int index)
             {
-                int FE_BYTES = (m_outer.FieldSize + 7) / 8;
+                var FE_BYTES = (m_outer.FieldSize + 7) / 8;
                 byte[] x = new byte[FE_BYTES], y = new byte[FE_BYTES];
-                int pos = 0;
+                var pos = 0;
 
-                for (int i = 0; i < m_size; ++i)
+                for (var i = 0; i < m_size; ++i)
                 {
-                    byte MASK = (byte)(((i ^ index) - 1) >> 31);
+                    var MASK = (byte)(((i ^ index) - 1) >> 31);
 
-                    for (int j = 0; j < FE_BYTES; ++j)
+                    for (var j = 0; j < FE_BYTES; ++j)
                     {
                         x[j] ^= (byte)(m_table[pos + j] & MASK);
                         y[j] ^= (byte)(m_table[pos + FE_BYTES + j] & MASK);
                     }
 
-                    pos += (FE_BYTES * 2);
+                    pos += FE_BYTES * 2;
                 }
 
-                ECFieldElement X = m_outer.FromBigInteger(new BigInteger(1, x));
-                ECFieldElement Y = m_outer.FromBigInteger(new BigInteger(1, y));
+                var X = m_outer.FromBigInteger(new BigInteger(1, x));
+                var Y = m_outer.FromBigInteger(new BigInteger(1, y));
                 return m_outer.CreateRawPoint(X, Y, false);
             }
         }
@@ -578,9 +584,9 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
         protected override ECPoint DecompressPoint(int yTilde, BigInteger X1)
         {
-            ECFieldElement x = FromBigInteger(X1);
-            ECFieldElement rhs = x.Square().Add(A).Multiply(x).Add(B);
-            ECFieldElement y = rhs.Sqrt();
+            var x = FromBigInteger(X1);
+            var rhs = x.Square().Add(A).Multiply(x).Add(B);
+            var y = rhs.Sqrt();
 
             /*
              * If y is not a square, then we haven't got a point on the curve
@@ -617,15 +623,15 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         public FpCurve(BigInteger q, BigInteger a, BigInteger b, BigInteger order, BigInteger cofactor)
             : base(q)
         {
-            this.m_q = q;
-            this.m_r = FpFieldElement.CalculateResidue(q);
-            this.m_infinity = new FpPoint(this, null, null, false);
+            m_q = q;
+            m_r = FpFieldElement.CalculateResidue(q);
+            m_infinity = new FpPoint(this, null, null, false);
 
-            this.m_a = FromBigInteger(a);
-            this.m_b = FromBigInteger(b);
-            this.m_order = order;
-            this.m_cofactor = cofactor;
-            this.m_coord = FP_DEFAULT_COORDS;
+            m_a = FromBigInteger(a);
+            m_b = FromBigInteger(b);
+            m_order = order;
+            m_cofactor = cofactor;
+            m_coord = FP_DEFAULT_COORDS;
         }
 
         protected FpCurve(BigInteger q, BigInteger r, ECFieldElement a, ECFieldElement b)
@@ -636,15 +642,15 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         protected FpCurve(BigInteger q, BigInteger r, ECFieldElement a, ECFieldElement b, BigInteger order, BigInteger cofactor)
             : base(q)
         {
-            this.m_q = q;
-            this.m_r = r;
-            this.m_infinity = new FpPoint(this, null, null, false);
+            m_q = q;
+            m_r = r;
+            m_infinity = new FpPoint(this, null, null, false);
 
-            this.m_a = a;
-            this.m_b = b;
-            this.m_order = order;
-            this.m_cofactor = cofactor;
-            this.m_coord = FP_DEFAULT_COORDS;
+            m_a = a;
+            m_b = b;
+            m_order = order;
+            m_cofactor = cofactor;
+            m_coord = FP_DEFAULT_COORDS;
         }
 
         protected override ECCurve CloneCurve()
@@ -661,29 +667,21 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                 case COORD_JACOBIAN:
                 case COORD_JACOBIAN_MODIFIED:
                     return true;
+
                 default:
                     return false;
             }
         }
 
-        public virtual BigInteger Q
-        {
-            get { return m_q; }
-        }
+        public virtual BigInteger Q => m_q;
 
-        public override ECPoint Infinity
-        {
-            get { return m_infinity; }
-        }
+        public override ECPoint Infinity => m_infinity;
 
-        public override int FieldSize
-        {
-            get { return m_q.BitLength; }
-        }
+        public override int FieldSize => m_q.BitLength;
 
         public override ECFieldElement FromBigInteger(BigInteger x)
         {
-            return new FpFieldElement(this.m_q, this.m_r, x);
+            return new FpFieldElement(m_q, m_r, x);
         }
 
         protected internal override ECPoint CreateRawPoint(ECFieldElement x, ECFieldElement y, bool withCompression)
@@ -698,7 +696,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
         public override ECPoint ImportPoint(ECPoint p)
         {
-            if (this != p.Curve && this.CoordinateSystem == COORD_JACOBIAN && !p.IsInfinity)
+            if (this != p.Curve && CoordinateSystem == COORD_JACOBIAN && !p.IsInfinity)
             {
                 switch (p.Curve.CoordinateSystem)
                 {
@@ -708,8 +706,12 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                         return new FpPoint(this,
                             FromBigInteger(p.RawXCoord.ToBigInteger()),
                             FromBigInteger(p.RawYCoord.ToBigInteger()),
-                            new ECFieldElement[] { FromBigInteger(p.GetZCoord(0).ToBigInteger()) },
+                            new ECFieldElement[]
+                            {
+                                FromBigInteger(p.GetZCoord(0).ToBigInteger())
+                            },
                             p.IsCompressed);
+
                     default:
                         break;
                 }
@@ -748,7 +750,10 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                     throw new ArgumentException("k3 must be 0 if k2 == 0");
                 }
 
-                return FiniteFields.GetBinaryExtensionField(new int[]{ 0, k1, m });
+                return FiniteFields.GetBinaryExtensionField(new int[]
+                {
+                    0, k1, m
+                });
             }
 
             if (k2 <= k1)
@@ -761,7 +766,10 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                 throw new ArgumentException("k3 must be > k2");
             }
 
-            return FiniteFields.GetBinaryExtensionField(new int[]{ 0, k1, k2, k3, m });
+            return FiniteFields.GetBinaryExtensionField(new int[]
+            {
+                0, k1, k2, k3, m
+            });
         }
 
         protected AbstractF2mCurve(int m, int k1, int k2, int k3)
@@ -778,7 +786,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         {
             ECFieldElement X = FromBigInteger(x), Y = FromBigInteger(y);
 
-            switch (this.CoordinateSystem)
+            switch (CoordinateSystem)
             {
                 case COORD_LAMBDA_AFFINE:
                 case COORD_LAMBDA_PROJECTIVE:
@@ -793,8 +801,10 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                         // Y becomes Lambda (X + Y/X) here
                         Y = Y.Divide(X).Add(X);
                     }
+
                     break;
                 }
+
                 default:
                 {
                     break;
@@ -807,14 +817,15 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
         protected override ECPoint DecompressPoint(int yTilde, BigInteger X1)
         {
             ECFieldElement xp = FromBigInteger(X1), yp = null;
+
             if (xp.IsZero)
             {
                 yp = B.Sqrt();
             }
             else
             {
-                ECFieldElement beta = xp.Square().Invert().Multiply(B).Add(A).Add(xp);
-                ECFieldElement z = SolveQuadraticEquation(beta);
+                var beta = xp.Square().Invert().Multiply(B).Add(A).Add(xp);
+                var z = SolveQuadraticEquation(beta);
 
                 if (z != null)
                 {
@@ -823,7 +834,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                         z = z.AddOne();
                     }
 
-                    switch (this.CoordinateSystem)
+                    switch (CoordinateSystem)
                     {
                         case COORD_LAMBDA_AFFINE:
                         case COORD_LAMBDA_PROJECTIVE:
@@ -831,6 +842,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                             yp = z.Add(xp);
                             break;
                         }
+
                         default:
                         {
                             yp = z.Multiply(xp);
@@ -862,25 +874,28 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
             ECFieldElement gamma, z, zeroElement = FromBigInteger(BigInteger.Zero);
 
-            int m = FieldSize;
+            var m = FieldSize;
+
             do
             {
-                ECFieldElement t = FromBigInteger(BigInteger.Arbitrary(m));
+                var t = FromBigInteger(BigInteger.Arbitrary(m));
                 z = zeroElement;
-                ECFieldElement w = beta;
-                for (int i = 1; i < m; i++)
+                var w = beta;
+
+                for (var i = 1; i < m; i++)
                 {
-                    ECFieldElement w2 = w.Square();
+                    var w2 = w.Square();
                     z = z.Square().Add(w2.Multiply(t));
                     w = w2.Add(beta);
                 }
+
                 if (!w.IsZero)
                 {
                     return null;
                 }
+
                 gamma = z.Square().Add(z);
-            }
-            while (gamma.IsZero);
+            } while (gamma.IsZero);
 
             return z;
         }
@@ -902,6 +917,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                     }
                 }
             }
+
             return si;
         }
 
@@ -909,13 +925,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
          * Returns true if this is a Koblitz curve (ABC curve).
          * @return true if this is a Koblitz curve (ABC curve), false otherwise
          */
-        public virtual bool IsKoblitz
-        {
-            get
-            {
-                return m_order != null && m_cofactor != null && m_b.IsOne && (m_a.IsZero || m_a.IsOne);
-            }
-        }
+        public virtual bool IsKoblitz => m_order != null && m_cofactor != null && m_b.IsOne && (m_a.IsZero || m_a.IsOne);
     }
 
     /**
@@ -979,10 +989,10 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
          */
         [Obsolete("Use constructor taking order/cofactor")]
         public F2mCurve(
-            int			m,
-            int			k,
-            BigInteger	a,
-            BigInteger	b)
+            int m,
+            int k,
+            BigInteger a,
+            BigInteger b)
             : this(m, k, 0, 0, a, b, null, null)
         {
         }
@@ -1005,12 +1015,12 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
          * <code>#E<sub>a</sub>(F<sub>2<sup>m</sup></sub>) = h * n</code>.
          */
         public F2mCurve(
-            int			m, 
-            int			k, 
-            BigInteger	a, 
-            BigInteger	b,
-            BigInteger	order,
-            BigInteger	cofactor)
+            int m,
+            int k,
+            BigInteger a,
+            BigInteger b,
+            BigInteger order,
+            BigInteger cofactor)
             : this(m, k, 0, 0, a, b, order, cofactor)
         {
         }
@@ -1037,12 +1047,12 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
          */
         [Obsolete("Use constructor taking order/cofactor")]
         public F2mCurve(
-            int			m,
-            int			k1,
-            int			k2,
-            int			k3,
-            BigInteger	a,
-            BigInteger	b)
+            int m,
+            int k1,
+            int k2,
+            int k3,
+            BigInteger a,
+            BigInteger b)
             : this(m, k1, k2, k3, a, b, null, null)
         {
         }
@@ -1071,23 +1081,23 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
          * <code>#E<sub>a</sub>(F<sub>2<sup>m</sup></sub>) = h * n</code>.
          */
         public F2mCurve(
-            int			m, 
-            int			k1, 
-            int			k2, 
-            int			k3,
-            BigInteger	a, 
-            BigInteger	b,
-            BigInteger	order,
-            BigInteger	cofactor)
+            int m,
+            int k1,
+            int k2,
+            int k3,
+            BigInteger a,
+            BigInteger b,
+            BigInteger order,
+            BigInteger cofactor)
             : base(m, k1, k2, k3)
         {
             this.m = m;
             this.k1 = k1;
             this.k2 = k2;
             this.k3 = k3;
-            this.m_order = order;
-            this.m_cofactor = cofactor;
-            this.m_infinity = new F2mPoint(this, null, null, false);
+            m_order = order;
+            m_cofactor = cofactor;
+            m_infinity = new F2mPoint(this, null, null, false);
 
             if (k1 == 0)
                 throw new ArgumentException("k1 must be > 0");
@@ -1106,9 +1116,9 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                     throw new ArgumentException("k3 must be > k2");
             }
 
-            this.m_a = FromBigInteger(a);
-            this.m_b = FromBigInteger(b);
-            this.m_coord = F2M_DEFAULT_COORDS;
+            m_a = FromBigInteger(a);
+            m_b = FromBigInteger(b);
+            m_coord = F2M_DEFAULT_COORDS;
         }
 
         protected F2mCurve(int m, int k1, int k2, int k3, ECFieldElement a, ECFieldElement b, BigInteger order, BigInteger cofactor)
@@ -1118,13 +1128,13 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             this.k1 = k1;
             this.k2 = k2;
             this.k3 = k3;
-            this.m_order = order;
-            this.m_cofactor = cofactor;
+            m_order = order;
+            m_cofactor = cofactor;
 
-            this.m_infinity = new F2mPoint(this, null, null, false);
-            this.m_a = a;
-            this.m_b = b;
-            this.m_coord = F2M_DEFAULT_COORDS;
+            m_infinity = new F2mPoint(this, null, null, false);
+            m_a = a;
+            m_b = b;
+            m_coord = F2M_DEFAULT_COORDS;
         }
 
         protected override ECCurve CloneCurve()
@@ -1140,6 +1150,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
                 case COORD_HOMOGENEOUS:
                 case COORD_LAMBDA_PROJECTIVE:
                     return true;
+
                 default:
                     return false;
             }
@@ -1155,14 +1166,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             return base.CreateDefaultMultiplier();
         }
 
-        public override int FieldSize
-        {
-            get { return m; }
-        }
+        public override int FieldSize => m;
 
         public override ECFieldElement FromBigInteger(BigInteger x)
         {
-            return new F2mFieldElement(this.m, this.k1, this.k2, this.k3, x);
+            return new F2mFieldElement(m, k1, k2, k3, x);
         }
 
         protected internal override ECPoint CreateRawPoint(ECFieldElement x, ECFieldElement y, bool withCompression)
@@ -1175,15 +1183,9 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             return new F2mPoint(this, x, y, zs, withCompression);
         }
 
-        public override ECPoint Infinity
-        {
-            get { return m_infinity; }
-        }
+        public override ECPoint Infinity => m_infinity;
 
-        public int M
-        {
-            get { return m; }
-        }
+        public int M => m;
 
         /**
          * Return true if curve uses a Trinomial basis.
@@ -1195,33 +1197,28 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
             return k2 == 0 && k3 == 0;
         }
 
-        public int K1
-        {
-            get { return k1; }
-        }
+        public int K1 => k1;
 
-        public int K2
-        {
-            get { return k2; }
-        }
+        public int K2 => k2;
 
-        public int K3
-        {
-            get { return k3; }
-        }
+        public int K3 => k3;
 
         public override ECLookupTable CreateCacheSafeLookupTable(ECPoint[] points, int off, int len)
         {
-            int FE_LONGS = (m + 63) / 64;
+            var FE_LONGS = (m + 63) / 64;
 
-            long[] table = new long[len * FE_LONGS * 2];
+            var table = new long[len * FE_LONGS * 2];
+
             {
-                int pos = 0;
-                for (int i = 0; i < len; ++i)
+                var pos = 0;
+
+                for (var i = 0; i < len; ++i)
                 {
-                    ECPoint p = points[off + i];
-                    ((F2mFieldElement)p.RawXCoord).x.CopyTo(table, pos); pos += FE_LONGS;
-                    ((F2mFieldElement)p.RawYCoord).x.CopyTo(table, pos); pos += FE_LONGS;
+                    var p = points[off + i];
+                    ((F2mFieldElement)p.RawXCoord).x.CopyTo(table, pos);
+                    pos += FE_LONGS;
+                    ((F2mFieldElement)p.RawYCoord).x.CopyTo(table, pos);
+                    pos += FE_LONGS;
                 }
             }
 
@@ -1237,36 +1234,40 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC
 
             internal DefaultF2mLookupTable(F2mCurve outer, long[] table, int size)
             {
-                this.m_outer = outer;
-                this.m_table = table;
-                this.m_size = size;
+                m_outer = outer;
+                m_table = table;
+                m_size = size;
             }
 
-            public virtual int Size
-            {
-                get { return m_size; }
-            }
+            public virtual int Size => m_size;
 
             public virtual ECPoint Lookup(int index)
             {
-                int m = m_outer.m;
-                int[] ks = m_outer.IsTrinomial() ? new int[]{ m_outer.k1 } : new int[]{ m_outer.k1, m_outer.k2, m_outer.k3 }; 
+                var m = m_outer.m;
 
-                int FE_LONGS = (m_outer.m + 63) / 64;
-                long[] x = new long[FE_LONGS], y = new long[FE_LONGS];
-                int pos = 0;
-
-                for (int i = 0; i < m_size; ++i)
+                int[] ks = m_outer.IsTrinomial() ? new int[]
                 {
-                    long MASK =((i ^ index) - 1) >> 31;
+                    m_outer.k1
+                } : new int[]
+                {
+                    m_outer.k1, m_outer.k2, m_outer.k3
+                };
 
-                    for (int j = 0; j < FE_LONGS; ++j)
+                var FE_LONGS = (m_outer.m + 63) / 64;
+                long[] x = new long[FE_LONGS], y = new long[FE_LONGS];
+                var pos = 0;
+
+                for (var i = 0; i < m_size; ++i)
+                {
+                    long MASK = ((i ^ index) - 1) >> 31;
+
+                    for (var j = 0; j < FE_LONGS; ++j)
                     {
                         x[j] ^= m_table[pos + j] & MASK;
                         y[j] ^= m_table[pos + FE_LONGS + j] & MASK;
                     }
 
-                    pos += (FE_LONGS * 2);
+                    pos += FE_LONGS * 2;
                 }
 
                 ECFieldElement X = new F2mFieldElement(m, ks, new LongArray(x));

@@ -19,7 +19,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
         [Ignore] // placeholder
         public void NewKeysMessageConstructorTest()
         {
-            NewKeysMessage target = new NewKeysMessage();
+            var target = new NewKeysMessage();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

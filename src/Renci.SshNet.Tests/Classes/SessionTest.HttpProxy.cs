@@ -165,6 +165,7 @@ namespace Renci.SshNet.Tests.Classes
                 proxyStub.Start();
 
                 var connectionInfo = CreateConnectionInfoWithProxy(proxyEndPoint, serverEndPoint, "anon");
+
                 using (var session = new Session(connectionInfo, _serviceFactoryMock.Object))
                 {
                     try
@@ -194,6 +195,7 @@ namespace Renci.SshNet.Tests.Classes
                 proxyStub.Start();
 
                 var connectionInfo = CreateConnectionInfoWithProxy(proxyEndPoint, serverEndPoint, string.Empty);
+
                 using (var session = new Session(connectionInfo, _serviceFactoryMock.Object))
                 {
                     try
@@ -222,6 +224,7 @@ namespace Renci.SshNet.Tests.Classes
                 proxyStub.Start();
 
                 var connectionInfo = CreateConnectionInfoWithProxy(proxyEndPoint, serverEndPoint, null);
+
                 using (var session = new Session(connectionInfo, _serviceFactoryMock.Object))
                 {
                     try

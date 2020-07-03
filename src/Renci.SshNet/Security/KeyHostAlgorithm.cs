@@ -16,13 +16,7 @@ namespace Renci.SshNet.Security
         /// <summary>
         /// Gets the public key data.
         /// </summary>
-        public override byte[] Data
-        {
-            get
-            {
-                return new SshKeyData(Name, Key.Public).GetBytes();
-            }
-        }
+        public override byte[] Data => new SshKeyData(Name, Key.Public).GetBytes();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="KeyHostAlgorithm"/> class.
@@ -89,16 +83,19 @@ namespace Renci.SshNet.Security
                 get
                 {
                     var keys = new BigInteger[_keys.Count];
+
                     for (var i = 0; i < _keys.Count; i++)
                     {
-                        var key = _keys[i];
+                        byte[] key = _keys[i];
                         keys[i] = key.ToBigInteger2();
                     }
+
                     return keys;
                 }
                 private set
                 {
                     _keys = new List<byte[]>(value.Length);
+
                     foreach (var key in value)
                     {
                         _keys.Add(key.ToByteArray().Reverse());
@@ -108,8 +105,8 @@ namespace Renci.SshNet.Security
 
             private string Name
             {
-                get { return Utf8.GetString(_name, 0, _name.Length); }
-                set { _name = Utf8.GetBytes(value); }
+                get => Utf8.GetString(_name, 0, _name.Length);
+                set => _name = Utf8.GetBytes(value);
             }
 
             protected override int BufferCapacity
@@ -119,11 +116,13 @@ namespace Renci.SshNet.Security
                     var capacity = base.BufferCapacity;
                     capacity += 4; // Name length
                     capacity += _name.Length; // Name
-                    foreach (var key in _keys)
+
+                    foreach (byte[] key in _keys)
                     {
                         capacity += 4; // Key length
                         capacity += key.Length; // Key
                     }
+
                     return capacity;
                 }
             }
@@ -153,7 +152,7 @@ namespace Renci.SshNet.Security
             {
                 WriteBinaryString(_name);
 
-                foreach (var key in _keys)
+                foreach (byte[] key in _keys)
                 {
                     WriteBinaryString(key);
                 }

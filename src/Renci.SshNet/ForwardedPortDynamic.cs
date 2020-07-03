@@ -26,10 +26,7 @@ namespace Renci.SshNet
         /// <value>
         /// <c>true</c> if port forwarding is started; otherwise, <c>false</c>.
         /// </value>
-        public override bool IsStarted
-        {
-            get { return _status == ForwardedPortStatus.Started; }
-        }
+        public override bool IsStarted => _status == ForwardedPortStatus.Started;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ForwardedPortDynamic"/> class.
@@ -114,7 +111,6 @@ namespace Renci.SshNet
         partial void InternalStop(TimeSpan timeout);
 
         #region IDisposable Members
-
         /// <summary>
         /// Holds a value indicating whether the current instance is disposed.
         /// </summary>
@@ -157,7 +153,6 @@ namespace Renci.SshNet
         {
             Dispose(false);
         }
-
         #endregion
     }
 }

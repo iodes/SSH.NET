@@ -4,7 +4,7 @@ using Renci.SshNet.Common;
 using Renci.SshNet.Tests.Common;
 
 namespace Renci.SshNet.Tests.Classes.Common
-{   
+{
     /// <summary>
     ///This is a test class for ScpExceptionTest and is intended
     ///to contain all ScpExceptionTest Unit Tests
@@ -18,7 +18,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ScpExceptionConstructorTest()
         {
-            ScpException target = new ScpException();
+            var target = new ScpException();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -28,8 +28,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ScpExceptionConstructorTest1()
         {
-            string message = string.Empty; // TODO: Initialize to an appropriate value
-            ScpException target = new ScpException(message);
+            var message = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new ScpException(message);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -39,9 +39,9 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ScpExceptionConstructorTest2()
         {
-            string message = string.Empty; // TODO: Initialize to an appropriate value
+            var message = string.Empty; // TODO: Initialize to an appropriate value
             Exception innerException = null; // TODO: Initialize to an appropriate value
-            ScpException target = new ScpException(message, innerException);
+            var target = new ScpException(message, innerException);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

@@ -18,7 +18,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
         [Ignore] // placeholder
         public void ServiceAcceptMessageConstructorTest()
         {
-            ServiceAcceptMessage target = new ServiceAcceptMessage();
+            var target = new ServiceAcceptMessage();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

@@ -8,26 +8,21 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto
         private readonly AsymmetricKeyParameter privateParameter;
 
         public AsymmetricCipherKeyPair(
-            AsymmetricKeyParameter    publicParameter,
-            AsymmetricKeyParameter    privateParameter)
+            AsymmetricKeyParameter publicParameter,
+            AsymmetricKeyParameter privateParameter)
         {
-			if (publicParameter.IsPrivate)
-				throw new ArgumentException("Expected a public key", "publicParameter");
-			if (!privateParameter.IsPrivate)
-				throw new ArgumentException("Expected a private key", "privateParameter");
+            if (publicParameter.IsPrivate)
+                throw new ArgumentException("Expected a public key", "publicParameter");
 
-			this.publicParameter = publicParameter;
+            if (!privateParameter.IsPrivate)
+                throw new ArgumentException("Expected a private key", "privateParameter");
+
+            this.publicParameter = publicParameter;
             this.privateParameter = privateParameter;
         }
 
-        public AsymmetricKeyParameter Public
-        {
-            get { return publicParameter; }
-        }
+        public AsymmetricKeyParameter Public => publicParameter;
 
-        public AsymmetricKeyParameter Private
-        {
-            get { return privateParameter; }
-        }
+        public AsymmetricKeyParameter Private => privateParameter;
     }
 }

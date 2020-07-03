@@ -19,7 +19,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod()]
         public void SetPermissionsTest()
         {
-            SftpFileAttributes target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
+            var target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
             short mode = 0; // TODO: Initialize to an appropriate value
             target.SetPermissions(mode);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -31,8 +31,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod()]
         public void GroupCanExecuteTest()
         {
-            SftpFileAttributes target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.GroupCanExecute = expected;
             actual = target.GroupCanExecute;
@@ -46,8 +46,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod()]
         public void GroupCanReadTest()
         {
-            SftpFileAttributes target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.GroupCanRead = expected;
             actual = target.GroupCanRead;
@@ -61,8 +61,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod()]
         public void GroupCanWriteTest()
         {
-            SftpFileAttributes target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.GroupCanWrite = expected;
             actual = target.GroupCanWrite;
@@ -76,8 +76,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod()]
         public void GroupIdTest()
         {
-            SftpFileAttributes target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
-            int expected = 0; // TODO: Initialize to an appropriate value
+            var target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
+            var expected = 0; // TODO: Initialize to an appropriate value
             int actual;
             target.GroupId = expected;
             actual = target.GroupId;
@@ -91,8 +91,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod()]
         public void LastAccessTimeTest()
         {
-            SftpFileAttributes target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
-            DateTime expected = new DateTime(); // TODO: Initialize to an appropriate value
+            var target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
+            var expected = new DateTime(); // TODO: Initialize to an appropriate value
             DateTime actual;
             target.LastAccessTime = expected;
             actual = target.LastAccessTime;
@@ -106,8 +106,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod()]
         public void LastWriteTimeTest()
         {
-            SftpFileAttributes target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
-            DateTime expected = new DateTime(); // TODO: Initialize to an appropriate value
+            var target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
+            var expected = new DateTime(); // TODO: Initialize to an appropriate value
             DateTime actual;
             target.LastWriteTime = expected;
             actual = target.LastWriteTime;
@@ -121,8 +121,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod()]
         public void OthersCanExecuteTest()
         {
-            SftpFileAttributes target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.OthersCanExecute = expected;
             actual = target.OthersCanExecute;
@@ -136,8 +136,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod()]
         public void OthersCanReadTest()
         {
-            SftpFileAttributes target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.OthersCanRead = expected;
             actual = target.OthersCanRead;
@@ -151,8 +151,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod()]
         public void OthersCanWriteTest()
         {
-            SftpFileAttributes target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.OthersCanWrite = expected;
             actual = target.OthersCanWrite;
@@ -166,8 +166,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod()]
         public void OwnerCanExecuteTest()
         {
-            SftpFileAttributes target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.OwnerCanExecute = expected;
             actual = target.OwnerCanExecute;
@@ -181,8 +181,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod()]
         public void OwnerCanReadTest()
         {
-            SftpFileAttributes target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.OwnerCanRead = expected;
             actual = target.OwnerCanRead;
@@ -196,8 +196,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod()]
         public void OwnerCanWriteTest()
         {
-            SftpFileAttributes target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.OwnerCanWrite = expected;
             actual = target.OwnerCanWrite;
@@ -211,7 +211,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod()]
         public void SizeTest()
         {
-            SftpFileAttributes target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
+            var target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
             long expected = 0; // TODO: Initialize to an appropriate value
             long actual;
             target.Size = expected;
@@ -226,8 +226,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod()]
         public void UserIdTest()
         {
-            SftpFileAttributes target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
-            int expected = 0; // TODO: Initialize to an appropriate value
+            var target = SftpFileAttributes.Empty; // TODO: Initialize to an appropriate value
+            var expected = 0; // TODO: Initialize to an appropriate value
             int actual;
             target.UserId = expected;
             actual = target.UserId;

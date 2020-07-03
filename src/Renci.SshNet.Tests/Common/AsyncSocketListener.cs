@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Threading;
 #if !FEATURE_SOCKET_DISPOSE
 using Renci.SshNet.Common;
+
 #endif // !FEATURE_SOCKET_DISPOSE
 
 namespace Renci.SshNet.Tests.Common
@@ -17,10 +18,13 @@ namespace Renci.SshNet.Tests.Common
         private bool _started;
 
         public delegate void BytesReceivedHandler(byte[] bytesReceived, Socket socket);
+
         public delegate void ConnectedHandler(Socket socket);
 
         public event BytesReceivedHandler BytesReceived;
+
         public event ConnectedHandler Connected;
+
         public event ConnectedHandler Disconnected;
 
         public AsyncSocketListener(IPEndPoint endPoint)
@@ -56,11 +60,13 @@ namespace Renci.SshNet.Tests.Common
         public void Stop()
         {
             _started = false;
+
             if (_listener != null)
             {
                 _listener.Dispose();
                 _listener = null;
             }
+
             if (_receiveThread != null)
             {
                 _receiveThread.Join();
@@ -77,6 +83,7 @@ namespace Renci.SshNet.Tests.Common
         private void StartListener(object state)
         {
             var listener = (Socket)state;
+
             while (_started)
             {
                 _acceptCallbackDone.Reset();
@@ -92,6 +99,7 @@ namespace Renci.SshNet.Tests.Common
 
             // Get the socket that handles the client request.
             var listener = (Socket)ar.AsyncState;
+
             try
             {
                 var handler = listener.EndAccept(ar);
@@ -110,10 +118,11 @@ namespace Renci.SshNet.Tests.Common
         {
             // Retrieve the state object and the handler socket
             // from the asynchronous state object.
-            var state = (SocketStateObject) ar.AsyncState;
+            var state = (SocketStateObject)ar.AsyncState;
             var handler = state.Socket;
 
             int bytesRead;
+
             try
             {
                 // Read data from the client socket.
@@ -151,6 +160,7 @@ namespace Renci.SshNet.Tests.Common
         private void SignalBytesReceived(byte[] bytesReceived, Socket client)
         {
             var subscribers = BytesReceived;
+
             if (subscribers != null)
                 subscribers(bytesReceived, client);
         }
@@ -158,6 +168,7 @@ namespace Renci.SshNet.Tests.Common
         private void SignalConnected(Socket client)
         {
             var subscribers = Connected;
+
             if (subscribers != null)
                 subscribers(client);
         }
@@ -165,6 +176,7 @@ namespace Renci.SshNet.Tests.Common
         private void SignalDisconnected(Socket client)
         {
             var subscribers = Disconnected;
+
             if (subscribers != null)
                 subscribers(client);
         }

@@ -12,24 +12,12 @@ namespace Renci.SshNet.Security
         /// <summary>
         /// Gets the modulus.
         /// </summary>
-        public BigInteger Modulus
-        {
-            get
-            {
-                return _privateKey[0];
-            }
-        }
+        public BigInteger Modulus => _privateKey[0];
 
         /// <summary>
         /// Gets the exponent.
         /// </summary>
-        public BigInteger Exponent
-        {
-            get
-            {
-                return _privateKey[1];
-            }
-        }
+        public BigInteger Exponent => _privateKey[1];
 
         /// <summary>
         /// Gets the D.
@@ -40,6 +28,7 @@ namespace Renci.SshNet.Security
             {
                 if (_privateKey.Length > 2)
                     return _privateKey[2];
+
                 return BigInteger.Zero;
             }
         }
@@ -53,6 +42,7 @@ namespace Renci.SshNet.Security
             {
                 if (_privateKey.Length > 3)
                     return _privateKey[3];
+
                 return BigInteger.Zero;
             }
         }
@@ -66,6 +56,7 @@ namespace Renci.SshNet.Security
             {
                 if (_privateKey.Length > 4)
                     return _privateKey[4];
+
                 return BigInteger.Zero;
             }
         }
@@ -79,6 +70,7 @@ namespace Renci.SshNet.Security
             {
                 if (_privateKey.Length > 5)
                     return _privateKey[5];
+
                 return BigInteger.Zero;
             }
         }
@@ -92,6 +84,7 @@ namespace Renci.SshNet.Security
             {
                 if (_privateKey.Length > 6)
                     return _privateKey[6];
+
                 return BigInteger.Zero;
             }
         }
@@ -105,6 +98,7 @@ namespace Renci.SshNet.Security
             {
                 if (_privateKey.Length > 7)
                     return _privateKey[7];
+
                 return BigInteger.Zero;
             }
         }
@@ -115,15 +109,10 @@ namespace Renci.SshNet.Security
         /// <value>
         /// The length of the key.
         /// </value>
-        public override int KeyLength
-        {
-            get
-            {
-                return Modulus.BitLength;
-            }
-        }
+        public override int KeyLength => Modulus.BitLength;
 
         private RsaDigitalSignature _digitalSignature;
+
         /// <summary>
         /// Gets the digital signature.
         /// </summary>
@@ -135,6 +124,7 @@ namespace Renci.SshNet.Security
                 {
                     _digitalSignature = new RsaDigitalSignature(this);
                 }
+
                 return _digitalSignature;
             }
         }
@@ -149,14 +139,20 @@ namespace Renci.SshNet.Security
         {
             get
             {
-                return new[] { Exponent, Modulus };
+                return new[]
+                {
+                    Exponent, Modulus
+                };
             }
             set
             {
                 if (value.Length != 2)
                     throw new InvalidOperationException("Invalid private key.");
 
-                _privateKey = new[] { value[1], value[0] };
+                _privateKey = new[]
+                {
+                    value[1], value[0]
+                };
             }
         }
 
@@ -165,7 +161,6 @@ namespace Renci.SshNet.Security
         /// </summary>
         public RsaKey()
         {
-
         }
 
         /// <summary>
@@ -203,12 +198,11 @@ namespace Renci.SshNet.Security
 
         private static BigInteger PrimeExponent(BigInteger privateExponent, BigInteger prime)
         {
-            BigInteger pe = prime - new BigInteger(1);
+            var pe = prime - new BigInteger(1);
             return privateExponent % pe;
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -232,6 +226,7 @@ namespace Renci.SshNet.Security
             if (disposing)
             {
                 var digitalSignature = _digitalSignature;
+
                 if (digitalSignature != null)
                 {
                     digitalSignature.Dispose();
@@ -250,7 +245,6 @@ namespace Renci.SshNet.Security
         {
             Dispose(false);
         }
-
         #endregion
     }
 }

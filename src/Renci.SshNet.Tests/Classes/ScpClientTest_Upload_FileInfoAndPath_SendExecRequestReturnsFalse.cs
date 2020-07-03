@@ -35,7 +35,11 @@ namespace Renci.SshNet.Tests.Classes
         {
             var random = new Random();
 
-            _fileName = CreateTemporaryFile(new byte[] { 1 });
+            _fileName = CreateTemporaryFile(new byte[]
+            {
+                1
+            });
+
             _connectionInfo = new ConnectionInfo("host", 22, "user", new PasswordAuthenticationMethod("user", "pwd"));
             _fileInfo = new FileInfo(_fileName);
             _remoteDirectory = "/home/sshnet";
@@ -50,21 +54,26 @@ namespace Renci.SshNet.Tests.Classes
             var sequence = new MockSequence();
 
             _serviceFactoryMock.InSequence(sequence)
-                               .Setup(p => p.CreateRemotePathDoubleQuoteTransformation())
-                               .Returns(_remotePathTransformationMock.Object);
+                .Setup(p => p.CreateRemotePathDoubleQuoteTransformation())
+                .Returns(_remotePathTransformationMock.Object);
+
             _serviceFactoryMock.InSequence(sequence)
-                               .Setup(p => p.CreateSession(_connectionInfo))
-                               .Returns(_sessionMock.Object);
+                .Setup(p => p.CreateSession(_connectionInfo))
+                .Returns(_sessionMock.Object);
+
             _sessionMock.InSequence(sequence).Setup(p => p.Connect());
             _serviceFactoryMock.InSequence(sequence).Setup(p => p.CreatePipeStream()).Returns(_pipeStreamMock.Object);
             _sessionMock.InSequence(sequence).Setup(p => p.CreateChannelSession()).Returns(_channelSessionMock.Object);
             _channelSessionMock.InSequence(sequence).Setup(p => p.Open());
+
             _remotePathTransformationMock.InSequence(sequence)
-                                         .Setup(p => p.Transform(_remoteDirectory))
-                                         .Returns(_transformedPath);
+                .Setup(p => p.Transform(_remoteDirectory))
+                .Returns(_transformedPath);
+
             _channelSessionMock.InSequence(sequence)
-                               .Setup(p => p.SendExecRequest(string.Format("scp -t -d {0}", _transformedPath)))
-                               .Returns(false);
+                .Setup(p => p.SendExecRequest(string.Format("scp -t -d {0}", _transformedPath)))
+                .Returns(false);
+
             _channelSessionMock.InSequence(sequence).Setup(p => p.Dispose());
             _pipeStreamMock.As<IDisposable>().InSequence(sequence).Setup(p => p.Dispose());
         }
@@ -126,10 +135,12 @@ namespace Renci.SshNet.Tests.Classes
         private string CreateTemporaryFile(byte[] content)
         {
             var tempFile = Path.GetTempFileName();
+
             using (var fs = File.OpenWrite(tempFile))
             {
                 fs.Write(content, 0, content.Length);
             }
+
             return tempFile;
         }
     }

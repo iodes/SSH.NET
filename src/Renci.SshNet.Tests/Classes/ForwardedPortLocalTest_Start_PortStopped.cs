@@ -44,6 +44,7 @@ namespace Renci.SshNet.Tests.Classes
             _closingRegister = new List<EventArgs>();
             _exceptionRegister = new List<ExceptionEventArgs>();
             _localEndpoint = new IPEndPoint(IPAddress.Loopback, 8122);
+
             _remoteEndpoint = new IPEndPoint(IPAddress.Parse("193.168.1.5"),
                 random.Next(IPEndPoint.MinPort, IPEndPoint.MaxPort));
 
@@ -57,6 +58,7 @@ namespace Renci.SshNet.Tests.Classes
 
             _forwardedPort = new ForwardedPortLocal(_localEndpoint.Address.ToString(), (uint)_localEndpoint.Port,
                 _remoteEndpoint.Address.ToString(), (uint)_remoteEndpoint.Port);
+
             _forwardedPort.Closing += (sender, args) => _closingRegister.Add(args);
             _forwardedPort.Exception += (sender, args) => _exceptionRegister.Add(args);
             _forwardedPort.Session = _sessionMock.Object;
@@ -84,11 +86,13 @@ namespace Renci.SshNet.Tests.Classes
 
             _sessionMock.Setup(p => p.CreateChannelDirectTcpip()).Returns(_channelMock.Object);
             _channelMock.Setup(p => p.Open(_forwardedPort.Host, _forwardedPort.Port, _forwardedPort, It.IsAny<Socket>())).Callback<string, uint, IForwardedPort, Socket>((address, port, forwardedPort, socket) => handlerSocket = socket);
+
             _channelMock.Setup(p => p.Bind()).Callback(() =>
             {
                 if (handlerSocket != null && handlerSocket.Connected)
                     handlerSocket.Shutdown(SocketShutdown.Both);
             });
+
             _channelMock.Setup(p => p.Dispose());
 
             using (var client = new Socket(_localEndpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp))

@@ -28,6 +28,7 @@ namespace Renci.SshNet
                 return true;
 
             var forwardedPortStatus = other as ForwardedPortStatus;
+
             if (forwardedPortStatus == null)
                 return false;
 
@@ -40,7 +41,7 @@ namespace Renci.SshNet
             if (ReferenceEquals(left, null))
             {
                 // check if both lhs and rhs are null
-                return (ReferenceEquals(right, null));
+                return ReferenceEquals(right, null);
             }
 
             return left.Equals(right);
@@ -48,7 +49,7 @@ namespace Renci.SshNet
 
         public static bool operator !=(ForwardedPortStatus left, ForwardedPortStatus right)
         {
-            return !(left==right);
+            return !(left == right);
         }
 
         public override int GetHashCode()
@@ -77,6 +78,7 @@ namespace Renci.SshNet
         {
             // attempt to transition from Started to Stopping
             var previousStatus = Interlocked.CompareExchange(ref status, Stopping, Started);
+
             if (previousStatus == Stopping || previousStatus == Stopped)
             {
                 // status is already Stopping or Stopped, so no transition to Stopping is necessary
@@ -89,6 +91,7 @@ namespace Renci.SshNet
 
             // attempt to transition from Starting to Stopping
             previousStatus = Interlocked.CompareExchange(ref status, Stopping, Starting);
+
             if (previousStatus == Stopping || previousStatus == Stopped)
             {
                 // status is already Stopping or Stopped, so no transition to Stopping is necessary
@@ -101,8 +104,8 @@ namespace Renci.SshNet
 
             // there's no valid transition from status to Stopping
             throw new InvalidOperationException(string.Format("Forwarded port cannot transition from '{0}' to '{1}'.",
-                                                              previousStatus,
-                                                              Stopping));
+                previousStatus,
+                Stopping));
         }
 
         /// <summary>
@@ -121,6 +124,7 @@ namespace Renci.SshNet
         {
             // attemp to transition from Stopped to Starting
             var previousStatus = Interlocked.CompareExchange(ref status, Starting, Stopped);
+
             if (previousStatus == Starting || previousStatus == Started)
             {
                 // port is already Starting or Started, so no transition to Starting is necessary
@@ -133,8 +137,8 @@ namespace Renci.SshNet
 
             // there's no valid transition from status to Starting
             throw new InvalidOperationException(string.Format("Forwarded port cannot transition from '{0}' to '{1}'.",
-                                                              previousStatus,
-                                                              Starting));
+                previousStatus,
+                Starting));
         }
     }
 }

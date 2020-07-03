@@ -7,10 +7,7 @@ namespace Renci.SshNet.Sftp.Requests
     {
         private readonly Action<SftpAttrsResponse> _attrsAction;
 
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.FStat; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.FStat;
 
         public byte[] Handle { get; private set; }
 
@@ -53,6 +50,7 @@ namespace Renci.SshNet.Sftp.Requests
         public override void Complete(SftpResponse response)
         {
             var attrsResponse = response as SftpAttrsResponse;
+
             if (attrsResponse != null)
             {
                 _attrsAction(attrsResponse);

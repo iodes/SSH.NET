@@ -66,10 +66,7 @@ namespace Renci.SshNet
         /// <value>
         /// <c>true</c> if this session is open; otherwise, <c>false</c>.
         /// </value>
-        public bool IsOpen
-        {
-            get { return _channel != null && _channel.IsOpen; }
-        }
+        public bool IsOpen => _channel != null && _channel.IsOpen;
 
         /// <summary>
         /// Initializes a new instance of the SubsystemSession class.
@@ -82,6 +79,7 @@ namespace Renci.SshNet
         {
             if (session == null)
                 throw new ArgumentNullException("session");
+
             if (subsystemName == null)
                 throw new ArgumentNullException("subsystemName");
 
@@ -122,10 +120,11 @@ namespace Renci.SshNet
             {
                 // close channel session
                 Disconnect();
+
                 // signal subsystem failure
                 throw new SshException(string.Format(CultureInfo.InvariantCulture,
-                                                     "Subsystem '{0}' could not be executed.",
-                                                     _subsystemName));
+                    "Subsystem '{0}' could not be executed.",
+                    _subsystemName));
             }
 
             OnChannelOpen();
@@ -139,6 +138,7 @@ namespace Renci.SshNet
             UnsubscribeFromSessionEvents(_session);
 
             var channel = _channel;
+
             if (channel != null)
             {
                 _channel = null;
@@ -183,6 +183,7 @@ namespace Renci.SshNet
             DiagnosticAbstraction.Log("Raised exception: " + error);
 
             var errorOccuredWaitHandle = _errorOccuredWaitHandle;
+
             if (errorOccuredWaitHandle != null)
                 errorOccuredWaitHandle.Set();
 
@@ -209,6 +210,7 @@ namespace Renci.SshNet
         private void Channel_Closed(object sender, ChannelEventArgs e)
         {
             var channelClosedWaitHandle = _channelClosedWaitHandle;
+
             if (channelClosedWaitHandle != null)
                 channelClosedWaitHandle.Set();
         }
@@ -223,27 +225,30 @@ namespace Renci.SshNet
         /// <exception cref="SshOperationTimeoutException">The handle did not get signaled within the specified timeout.</exception>
         public void WaitOnHandle(WaitHandle waitHandle, int millisecondsTimeout)
         {
-            var waitHandles = new[]
-                {
-                    _errorOccuredWaitHandle,
-                    _sessionDisconnectedWaitHandle,
-                    _channelClosedWaitHandle,
-                    waitHandle
-                };
+            WaitHandle[] waitHandles = new[]
+            {
+                _errorOccuredWaitHandle, _sessionDisconnectedWaitHandle, _channelClosedWaitHandle, waitHandle
+            };
 
             var result = WaitHandle.WaitAny(waitHandles, millisecondsTimeout);
+
             switch (result)
             {
                 case 0:
                     throw _exception;
+
                 case 1:
                     throw new SshException("Connection was closed by the server.");
+
                 case 2:
                     throw new SshException("Channel was closed.");
+
                 case 3:
                     break;
+
                 case WaitHandle.WaitTimeout:
                     throw new SshOperationTimeoutException("Operation has timed out.");
+
                 default:
                     throw new NotImplementedException(string.Format(CultureInfo.InvariantCulture, "WaitAny return value '{0}' is not implemented.", result));
             }
@@ -268,27 +273,30 @@ namespace Renci.SshNet
         /// </remarks>
         public bool WaitOne(WaitHandle waitHandle, int millisecondsTimeout)
         {
-            var waitHandles = new[]
-                {
-                    _errorOccuredWaitHandle,
-                    _sessionDisconnectedWaitHandle,
-                    _channelClosedWaitHandle,
-                    waitHandle
-                };
+            WaitHandle[] waitHandles = new[]
+            {
+                _errorOccuredWaitHandle, _sessionDisconnectedWaitHandle, _channelClosedWaitHandle, waitHandle
+            };
 
             var result = WaitHandle.WaitAny(waitHandles, millisecondsTimeout);
+
             switch (result)
             {
                 case 0:
                     throw _exception;
+
                 case 1:
                     throw new SshException("Connection was closed by the server.");
+
                 case 2:
                     throw new SshException("Channel was closed.");
+
                 case 3:
                     return true;
+
                 case WaitHandle.WaitTimeout:
                     return false;
+
                 default:
                     throw new NotImplementedException(string.Format(CultureInfo.InvariantCulture, "WaitAny return value '{0}' is not implemented.", result));
             }
@@ -321,30 +329,33 @@ namespace Renci.SshNet
         /// </remarks>
         public int WaitAny(WaitHandle waitHandle1, WaitHandle waitHandle2, int millisecondsTimeout)
         {
-            var waitHandles = new[]
-                {
-                    _errorOccuredWaitHandle,
-                    _sessionDisconnectedWaitHandle,
-                    _channelClosedWaitHandle,
-                    waitHandle1,
-                    waitHandle2
-                };
+            WaitHandle[] waitHandles = new[]
+            {
+                _errorOccuredWaitHandle, _sessionDisconnectedWaitHandle, _channelClosedWaitHandle, waitHandle1, waitHandle2
+            };
 
             var result = WaitHandle.WaitAny(waitHandles, millisecondsTimeout);
+
             switch (result)
             {
                 case 0:
                     throw _exception;
+
                 case 1:
                     throw new SshException("Connection was closed by the server.");
+
                 case 2:
                     throw new SshException("Channel was closed.");
+
                 case 3:
                     return 0;
+
                 case 4:
                     return 1;
+
                 case WaitHandle.WaitTimeout:
                     throw new SshOperationTimeoutException("Operation has timed out.");
+
                 default:
                     throw new NotImplementedException(string.Format(CultureInfo.InvariantCulture, "WaitAny return value '{0}' is not implemented.", result));
             }
@@ -368,16 +379,21 @@ namespace Renci.SshNet
         public int WaitAny(WaitHandle[] waitHandles, int millisecondsTimeout)
         {
             var result = WaitHandle.WaitAny(waitHandles, millisecondsTimeout);
+
             switch (result)
             {
                 case 0:
                     throw _exception;
+
                 case 1:
                     throw new SshException("Connection was closed by the server.");
+
                 case 2:
                     throw new SshException("Channel was closed.");
+
                 case WaitHandle.WaitTimeout:
                     throw new SshOperationTimeoutException("Operation has timed out.");
+
                 default:
                     return result - SystemWaitHandleCount;
             }
@@ -395,13 +411,9 @@ namespace Renci.SshNet
         public WaitHandle[] CreateWaitHandleArray(WaitHandle waitHandle1, WaitHandle waitHandle2)
         {
             return new WaitHandle[]
-                {
-                    _errorOccuredWaitHandle,
-                    _sessionDisconnectedWaitHandle,
-                    _channelClosedWaitHandle,
-                    waitHandle1,
-                    waitHandle2
-                };
+            {
+                _errorOccuredWaitHandle, _sessionDisconnectedWaitHandle, _channelClosedWaitHandle, waitHandle1, waitHandle2
+            };
         }
 
         /// <summary>
@@ -430,6 +442,7 @@ namespace Renci.SshNet
         private void Session_Disconnected(object sender, EventArgs e)
         {
             var sessionDisconnectedWaitHandle = _sessionDisconnectedWaitHandle;
+
             if (sessionDisconnectedWaitHandle != null)
                 sessionDisconnectedWaitHandle.Set();
 
@@ -443,7 +456,8 @@ namespace Renci.SshNet
 
         private void SignalErrorOccurred(Exception error)
         {
-            var errorOccurred = ErrorOccurred;
+            EventHandler<ExceptionEventArgs> errorOccurred = ErrorOccurred;
+
             if (errorOccurred != null)
             {
                 errorOccurred(this, new ExceptionEventArgs(error));
@@ -452,7 +466,8 @@ namespace Renci.SshNet
 
         private void SignalDisconnected()
         {
-            var disconnected = Disconnected;
+            EventHandler<EventArgs> disconnected = Disconnected;
+
             if (disconnected != null)
             {
                 disconnected(this, new EventArgs());
@@ -482,7 +497,6 @@ namespace Renci.SshNet
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -510,6 +524,7 @@ namespace Renci.SshNet
                 _session = null;
 
                 var errorOccuredWaitHandle = _errorOccuredWaitHandle;
+
                 if (errorOccuredWaitHandle != null)
                 {
                     _errorOccuredWaitHandle = null;
@@ -517,6 +532,7 @@ namespace Renci.SshNet
                 }
 
                 var sessionDisconnectedWaitHandle = _sessionDisconnectedWaitHandle;
+
                 if (sessionDisconnectedWaitHandle != null)
                 {
                     _sessionDisconnectedWaitHandle = null;
@@ -524,6 +540,7 @@ namespace Renci.SshNet
                 }
 
                 var channelClosedWaitHandle = _channelClosedWaitHandle;
+
                 if (channelClosedWaitHandle != null)
                 {
                     _channelClosedWaitHandle = null;
@@ -547,7 +564,6 @@ namespace Renci.SshNet
             if (_isDisposed)
                 throw new ObjectDisposedException(GetType().FullName);
         }
-
         #endregion
     }
 }

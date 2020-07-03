@@ -23,14 +23,14 @@ namespace Renci.SshNet.Tests.Classes
             Stream input = null; // TODO: Initialize to an appropriate value
             Stream output = null; // TODO: Initialize to an appropriate value
             Stream extendedOutput = null; // TODO: Initialize to an appropriate value
-            string terminalName = string.Empty; // TODO: Initialize to an appropriate value
+            var terminalName = string.Empty; // TODO: Initialize to an appropriate value
             uint columns = 0; // TODO: Initialize to an appropriate value
             uint rows = 0; // TODO: Initialize to an appropriate value
             uint width = 0; // TODO: Initialize to an appropriate value
             uint height = 0; // TODO: Initialize to an appropriate value
             IDictionary<TerminalModes, uint> terminalModes = null; // TODO: Initialize to an appropriate value
-            int bufferSize = 0; // TODO: Initialize to an appropriate value
-            Shell target = new Shell(session, input, output, extendedOutput, terminalName, columns, rows, width, height, terminalModes, bufferSize); // TODO: Initialize to an appropriate value
+            var bufferSize = 0; // TODO: Initialize to an appropriate value
+            var target = new Shell(session, input, output, extendedOutput, terminalName, columns, rows, width, height, terminalModes, bufferSize); // TODO: Initialize to an appropriate value
             target.Dispose();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -45,14 +45,14 @@ namespace Renci.SshNet.Tests.Classes
             Stream input = null; // TODO: Initialize to an appropriate value
             Stream output = null; // TODO: Initialize to an appropriate value
             Stream extendedOutput = null; // TODO: Initialize to an appropriate value
-            string terminalName = string.Empty; // TODO: Initialize to an appropriate value
+            var terminalName = string.Empty; // TODO: Initialize to an appropriate value
             uint columns = 0; // TODO: Initialize to an appropriate value
             uint rows = 0; // TODO: Initialize to an appropriate value
             uint width = 0; // TODO: Initialize to an appropriate value
             uint height = 0; // TODO: Initialize to an appropriate value
             IDictionary<TerminalModes, uint> terminalModes = null; // TODO: Initialize to an appropriate value
-            int bufferSize = 0; // TODO: Initialize to an appropriate value
-            Shell target = new Shell(session, input, output, extendedOutput, terminalName, columns, rows, width, height, terminalModes, bufferSize); // TODO: Initialize to an appropriate value
+            var bufferSize = 0; // TODO: Initialize to an appropriate value
+            var target = new Shell(session, input, output, extendedOutput, terminalName, columns, rows, width, height, terminalModes, bufferSize); // TODO: Initialize to an appropriate value
             target.Start();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -67,14 +67,14 @@ namespace Renci.SshNet.Tests.Classes
             Stream input = null; // TODO: Initialize to an appropriate value
             Stream output = null; // TODO: Initialize to an appropriate value
             Stream extendedOutput = null; // TODO: Initialize to an appropriate value
-            string terminalName = string.Empty; // TODO: Initialize to an appropriate value
+            var terminalName = string.Empty; // TODO: Initialize to an appropriate value
             uint columns = 0; // TODO: Initialize to an appropriate value
             uint rows = 0; // TODO: Initialize to an appropriate value
             uint width = 0; // TODO: Initialize to an appropriate value
             uint height = 0; // TODO: Initialize to an appropriate value
             IDictionary<TerminalModes, uint> terminalModes = null; // TODO: Initialize to an appropriate value
-            int bufferSize = 0; // TODO: Initialize to an appropriate value
-            Shell target = new Shell(session, input, output, extendedOutput, terminalName, columns, rows, width, height, terminalModes, bufferSize); // TODO: Initialize to an appropriate value
+            var bufferSize = 0; // TODO: Initialize to an appropriate value
+            var target = new Shell(session, input, output, extendedOutput, terminalName, columns, rows, width, height, terminalModes, bufferSize); // TODO: Initialize to an appropriate value
             target.Stop();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }

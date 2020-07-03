@@ -21,9 +21,9 @@ namespace Renci.SshNet.Tests.Classes.Channels
         {
             var random = new Random();
 
-            _localWindowSize = (uint) random.Next(1000, int.MaxValue);
+            _localWindowSize = (uint)random.Next(1000, int.MaxValue);
             _localPacketSize = _localWindowSize - 1;
-            _localChannelNumber = (uint) random.Next(0, int.MaxValue);
+            _localChannelNumber = (uint)random.Next(0, int.MaxValue);
             _onExtendedDataException = new SystemException();
             _channelExceptionRegister = new List<ExceptionEventArgs>();
         }
@@ -44,7 +44,7 @@ namespace Renci.SshNet.Tests.Classes.Channels
         protected override void Act()
         {
             SessionMock.Raise(s => s.ChannelExtendedDataReceived += null,
-                               new MessageEventArgs<ChannelExtendedDataMessage>(new ChannelExtendedDataMessage(_localChannelNumber, 5, new byte[0])));
+                new MessageEventArgs<ChannelExtendedDataMessage>(new ChannelExtendedDataMessage(_localChannelNumber, 5, new byte[0])));
         }
 
         [TestMethod]

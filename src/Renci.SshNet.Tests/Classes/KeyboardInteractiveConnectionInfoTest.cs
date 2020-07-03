@@ -23,9 +23,10 @@ namespace Renci.SshNet.Tests.Classes
 
             #region Example KeyboardInteractiveConnectionInfo AuthenticationPrompt
             var connectionInfo = new KeyboardInteractiveConnectionInfo(host, username);
+
             connectionInfo.AuthenticationPrompt += delegate(object sender, AuthenticationPromptEventArgs e)
             {
-                System.Console.WriteLine(e.Instruction);
+                Console.WriteLine(e.Instruction);
 
                 foreach (var prompt in e.Prompts)
                 {
@@ -53,9 +54,9 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void DisposeTest()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            KeyboardInteractiveConnectionInfo target = new KeyboardInteractiveConnectionInfo(host, username); // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new KeyboardInteractiveConnectionInfo(host, username); // TODO: Initialize to an appropriate value
             target.Dispose();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -67,15 +68,15 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void KeyboardInteractiveConnectionInfoConstructorTest()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            string proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
-            string proxyPassword = string.Empty; // TODO: Initialize to an appropriate value
-            KeyboardInteractiveConnectionInfo target = new KeyboardInteractiveConnectionInfo(host, port, username, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPassword = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new KeyboardInteractiveConnectionInfo(host, port, username, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -86,14 +87,14 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void KeyboardInteractiveConnectionInfoConstructorTest1()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            string proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
-            string proxyPassword = string.Empty; // TODO: Initialize to an appropriate value
-            KeyboardInteractiveConnectionInfo target = new KeyboardInteractiveConnectionInfo(host, username, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPassword = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new KeyboardInteractiveConnectionInfo(host, username, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -104,13 +105,13 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void KeyboardInteractiveConnectionInfoConstructorTest2()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            string proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
-            KeyboardInteractiveConnectionInfo target = new KeyboardInteractiveConnectionInfo(host, username, proxyType, proxyHost, proxyPort, proxyUsername);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new KeyboardInteractiveConnectionInfo(host, username, proxyType, proxyHost, proxyPort, proxyUsername);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -121,12 +122,12 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void KeyboardInteractiveConnectionInfoConstructorTest3()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            KeyboardInteractiveConnectionInfo target = new KeyboardInteractiveConnectionInfo(host, username, proxyType, proxyHost, proxyPort);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var target = new KeyboardInteractiveConnectionInfo(host, username, proxyType, proxyHost, proxyPort);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -137,14 +138,14 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void KeyboardInteractiveConnectionInfoConstructorTest4()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            string proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
-            KeyboardInteractiveConnectionInfo target = new KeyboardInteractiveConnectionInfo(host, port, username, proxyType, proxyHost, proxyPort, proxyUsername);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new KeyboardInteractiveConnectionInfo(host, port, username, proxyType, proxyHost, proxyPort, proxyUsername);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -155,13 +156,13 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void KeyboardInteractiveConnectionInfoConstructorTest5()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            KeyboardInteractiveConnectionInfo target = new KeyboardInteractiveConnectionInfo(host, port, username, proxyType, proxyHost, proxyPort);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var target = new KeyboardInteractiveConnectionInfo(host, port, username, proxyType, proxyHost, proxyPort);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -172,10 +173,10 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void KeyboardInteractiveConnectionInfoConstructorTest6()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            KeyboardInteractiveConnectionInfo target = new KeyboardInteractiveConnectionInfo(host, port, username);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new KeyboardInteractiveConnectionInfo(host, port, username);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -186,9 +187,9 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void KeyboardInteractiveConnectionInfoConstructorTest7()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            KeyboardInteractiveConnectionInfo target = new KeyboardInteractiveConnectionInfo(host, username);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new KeyboardInteractiveConnectionInfo(host, username);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

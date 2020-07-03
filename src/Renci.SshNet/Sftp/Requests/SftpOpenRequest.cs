@@ -10,23 +10,20 @@ namespace Renci.SshNet.Sftp.Requests
         private byte[] _attributes;
         private readonly Action<SftpHandleResponse> _handleAction;
 
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.Open; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.Open;
 
         public string Filename
         {
-            get { return Encoding.GetString(_fileName, 0, _fileName.Length); }
-            private set { _fileName = Encoding.GetBytes(value); }
+            get => Encoding.GetString(_fileName, 0, _fileName.Length);
+            private set => _fileName = Encoding.GetBytes(value);
         }
 
         public Flags Flags { get; private set; }
 
         public SftpFileAttributes Attributes
         {
-            get { return SftpFileAttributes.FromBytes(_attributes); }
-            private set { _attributes = value.GetBytes(); }
+            get => SftpFileAttributes.FromBytes(_attributes);
+            private set => _attributes = value.GetBytes();
         }
 
         public Encoding Encoding { get; private set; }
@@ -77,13 +74,14 @@ namespace Renci.SshNet.Sftp.Requests
             base.SaveData();
 
             WriteBinaryString(_fileName);
-            Write((uint) Flags);
+            Write((uint)Flags);
             Write(_attributes);
         }
 
         public override void Complete(SftpResponse response)
         {
             var handleResponse = response as SftpHandleResponse;
+
             if (handleResponse != null)
             {
                 _handleAction(handleResponse);

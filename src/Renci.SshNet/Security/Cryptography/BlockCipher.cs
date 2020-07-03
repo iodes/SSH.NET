@@ -26,10 +26,7 @@ namespace Renci.SshNet.Security.Cryptography
         /// <value>
         /// The minimum data size.
         /// </value>
-        public override byte MinimumSize
-        {
-            get { return BlockSize; }
-        }
+        public override byte MinimumSize => BlockSize;
 
         /// <summary>
         /// Gets the size of the block.
@@ -37,13 +34,7 @@ namespace Renci.SshNet.Security.Cryptography
         /// <value>
         /// The size of the block.
         /// </value>
-        public byte BlockSize
-        {
-            get
-            {
-                return _blockSize;
-            }
-        }
+        public byte BlockSize => _blockSize;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BlockCipher"/> class.
@@ -79,7 +70,8 @@ namespace Renci.SshNet.Security.Cryptography
                 {
                     throw new ArgumentException("data");
                 }
-                var paddingLength = _blockSize - (length % _blockSize);
+
+                var paddingLength = _blockSize - length % _blockSize;
                 data = _padding.Pad(data, offset, length, paddingLength);
                 length += paddingLength;
                 offset = 0;
@@ -92,11 +84,11 @@ namespace Renci.SshNet.Security.Cryptography
             {
                 if (_mode == null)
                 {
-                    writtenBytes += EncryptBlock(data, offset + (i * _blockSize), _blockSize, output, i * _blockSize);
+                    writtenBytes += EncryptBlock(data, offset + i * _blockSize, _blockSize, output, i * _blockSize);
                 }
                 else
                 {
-                    writtenBytes += _mode.EncryptBlock(data, offset + (i * _blockSize), _blockSize, output, i * _blockSize);
+                    writtenBytes += _mode.EncryptBlock(data, offset + i * _blockSize, _blockSize, output, i * _blockSize);
                 }
             }
 
@@ -135,6 +127,7 @@ namespace Renci.SshNet.Security.Cryptography
                 {
                     throw new ArgumentException("data");
                 }
+
                 data = _padding.Pad(_blockSize, data, offset, length);
                 offset = 0;
                 length = data.Length;
@@ -143,15 +136,16 @@ namespace Renci.SshNet.Security.Cryptography
             var output = new byte[length];
 
             var writtenBytes = 0;
+
             for (var i = 0; i < length / _blockSize; i++)
             {
                 if (_mode == null)
                 {
-                    writtenBytes += DecryptBlock(data, offset + (i * _blockSize), _blockSize, output, i * _blockSize);
+                    writtenBytes += DecryptBlock(data, offset + i * _blockSize, _blockSize, output, i * _blockSize);
                 }
                 else
                 {
-                    writtenBytes += _mode.DecryptBlock(data, offset + (i * _blockSize), _blockSize, output, i * _blockSize);
+                    writtenBytes += _mode.DecryptBlock(data, offset + i * _blockSize, _blockSize, output, i * _blockSize);
                 }
             }
 

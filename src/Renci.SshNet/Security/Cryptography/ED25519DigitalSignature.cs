@@ -52,7 +52,6 @@ namespace Renci.SshNet.Security.Cryptography
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -87,7 +86,6 @@ namespace Renci.SshNet.Security.Cryptography
         {
             Dispose(false);
         }
-
         #endregion
     }
 }

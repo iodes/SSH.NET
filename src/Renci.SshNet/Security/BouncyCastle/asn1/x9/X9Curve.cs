@@ -1,5 +1,4 @@
 using System;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Math.EC;
 using Renci.SshNet.Security.Org.BouncyCastle.Utilities;
 
@@ -17,8 +16,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Asn1.X9
         }
 
         public X9Curve(
-            ECCurve	curve,
-            byte[]	seed)
+            ECCurve curve,
+            byte[] seed)
         {
             if (curve == null)
                 throw new ArgumentNullException("curve");
@@ -27,10 +26,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Asn1.X9
             this.seed = Arrays.Clone(seed);
         }
 
-        public ECCurve Curve
-        {
-            get { return curve; }
-        }
+        public ECCurve Curve => curve;
 
         public byte[] GetSeed()
         {

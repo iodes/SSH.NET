@@ -37,10 +37,7 @@ namespace Renci.SshNet.Sftp
         /// <returns>
         /// <c>true</c> if the stream supports reading; otherwise, <c>false</c>.
         /// </returns>
-        public override bool CanRead
-        {
-            get { return _canRead; }
-        }
+        public override bool CanRead => _canRead;
 
         /// <summary>
         /// Gets a value indicating whether the current stream supports seeking.
@@ -48,10 +45,7 @@ namespace Renci.SshNet.Sftp
         /// <returns>
         /// <c>true</c> if the stream supports seeking; otherwise, <c>false</c>.
         /// </returns>
-        public override bool CanSeek
-        {
-            get { return _canSeek; }
-        }
+        public override bool CanSeek => _canSeek;
 
         /// <summary>
         /// Gets a value indicating whether the current stream supports writing.
@@ -59,10 +53,7 @@ namespace Renci.SshNet.Sftp
         /// <returns>
         /// <c>true</c> if the stream supports writing; otherwise, <c>false</c>.
         /// </returns>
-        public override bool CanWrite
-        {
-            get { return _canWrite; }
-        }
+        public override bool CanWrite => _canWrite;
 
         /// <summary>
         /// Indicates whether timeout properties are usable for <see cref="SftpFileStream"/>.
@@ -70,10 +61,7 @@ namespace Renci.SshNet.Sftp
         /// <value>
         /// <c>true</c> in all cases.
         /// </value>
-        public override bool CanTimeout
-        {
-            get { return true; }
-        }
+        public override bool CanTimeout => true;
 
         /// <summary>
         /// Gets the length in bytes of the stream.
@@ -104,10 +92,12 @@ namespace Renci.SshNet.Sftp
 
                     // obtain file attributes
                     var attributes = _session.RequestFStat(_handle, true);
+
                     if (attributes != null)
                     {
                         return attributes.Size;
                     }
+
                     throw new IOException("Seek operation failed.");
                 }
             }
@@ -125,14 +115,13 @@ namespace Renci.SshNet.Sftp
             get
             {
                 CheckSessionIsOpen();
+
                 if (!CanSeek)
                     throw new NotSupportedException("Seek operation not supported.");
+
                 return _position;
             }
-            set
-            {
-                Seek(value, SeekOrigin.Begin);
-            }
+            set => Seek(value, SeekOrigin.Begin);
         }
 
         /// <summary>
@@ -170,8 +159,10 @@ namespace Renci.SshNet.Sftp
         {
             if (session == null)
                 throw new SshConnectionException("Client not connected.");
+
             if (path == null)
                 throw new ArgumentNullException("path");
+
             if (bufferSize <= 0)
                 throw new ArgumentOutOfRangeException("bufferSize");
 
@@ -191,13 +182,16 @@ namespace Renci.SshNet.Sftp
                 case FileAccess.Read:
                     flags |= Flags.Read;
                     break;
+
                 case FileAccess.Write:
                     flags |= Flags.Write;
                     break;
+
                 case FileAccess.ReadWrite:
                     flags |= Flags.Read;
                     flags |= Flags.Write;
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException("access");
             }
@@ -224,8 +218,10 @@ namespace Renci.SshNet.Sftp
                 case FileMode.Append:
                     flags |= Flags.Append | Flags.CreateNewOrOpen;
                     break;
+
                 case FileMode.Create:
                     _handle = _session.RequestOpen(path, flags | Flags.Truncate, true);
+
                     if (_handle == null)
                     {
                         flags |= Flags.CreateNew;
@@ -234,18 +230,24 @@ namespace Renci.SshNet.Sftp
                     {
                         flags |= Flags.Truncate;
                     }
+
                     break;
+
                 case FileMode.CreateNew:
                     flags |= Flags.CreateNew;
                     break;
+
                 case FileMode.Open:
                     break;
+
                 case FileMode.OpenOrCreate:
                     flags |= Flags.CreateNewOrOpen;
                     break;
+
                 case FileMode.Truncate:
                     flags |= Flags.Truncate;
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException("mode");
             }
@@ -257,8 +259,8 @@ namespace Renci.SshNet.Sftp
             // that ensures we always receive or send the max. number of bytes in a single SSH_FXP_READ
             // or SSH_FXP_WRITE message
 
-            _readBufferSize = (int) session.CalculateOptimalReadLength((uint) bufferSize);
-            _writeBufferSize = (int) session.CalculateOptimalWriteLength((uint) bufferSize, _handle);
+            _readBufferSize = (int)session.CalculateOptimalReadLength((uint)bufferSize);
+            _writeBufferSize = (int)session.CalculateOptimalWriteLength((uint)bufferSize, _handle);
 
             if (mode == FileMode.Append)
             {
@@ -337,11 +339,14 @@ namespace Renci.SshNet.Sftp
 
             if (buffer == null)
                 throw new ArgumentNullException("buffer");
+
             if (offset < 0)
                 throw new ArgumentOutOfRangeException("offset");
+
             if (count < 0)
                 throw new ArgumentOutOfRangeException("count");
-            if ((buffer.Length - offset) < count)
+
+            if (buffer.Length - offset < count)
                 throw new ArgumentException("Invalid array range.");
 
             // Lock down the file stream while we do this.
@@ -357,9 +362,10 @@ namespace Renci.SshNet.Sftp
                 {
                     // How much data do we have available in the buffer?
                     var bytesAvailableInBuffer = _bufferLen - _bufferPosition;
+
                     if (bytesAvailableInBuffer <= 0)
                     {
-                        var data = _session.RequestRead(_handle, (ulong) _position, (uint) _readBufferSize);
+                        byte[] data = _session.RequestRead(_handle, (ulong)_position, (uint)_readBufferSize);
 
                         if (data.Length == 0)
                         {
@@ -370,6 +376,7 @@ namespace Renci.SshNet.Sftp
                         }
 
                         var bytesToWriteToCallerBuffer = count;
+
                         if (bytesToWriteToCallerBuffer >= data.Length)
                         {
                             // write all data read to caller-provided buffer
@@ -462,7 +469,8 @@ namespace Renci.SshNet.Sftp
                 // Read more data into the internal buffer if necessary.
                 if (_bufferPosition >= _bufferLen)
                 {
-                    var data = _session.RequestRead(_handle, (ulong) _position, (uint) _readBufferSize);
+                    byte[] data = _session.RequestRead(_handle, (ulong)_position, (uint)_readBufferSize);
+
                     if (data.Length == 0)
                     {
                         // We've reached EOF.
@@ -514,6 +522,7 @@ namespace Renci.SshNet.Sftp
                 {
                     return offset;
                 }
+
                 if (origin == SeekOrigin.Current && offset == 0)
                 {
                     return _position;
@@ -530,9 +539,11 @@ namespace Renci.SshNet.Sftp
                         case SeekOrigin.Begin:
                             newPosn = offset;
                             break;
+
                         case SeekOrigin.Current:
                             newPosn = _position + offset;
                             break;
+
                         case SeekOrigin.End:
                             var attributes = _session.RequestFStat(_handle, false);
                             newPosn = attributes.Size - offset;
@@ -543,6 +554,7 @@ namespace Renci.SshNet.Sftp
                     {
                         throw new EndOfStreamException("End of stream.");
                     }
+
                     _position = newPosn;
                 }
                 else
@@ -552,7 +564,8 @@ namespace Renci.SshNet.Sftp
                     if (origin == SeekOrigin.Begin)
                     {
                         newPosn = _position - _bufferPosition;
-                        if (offset >= newPosn && offset < (newPosn + _bufferLen))
+
+                        if (offset >= newPosn && offset < newPosn + _bufferLen)
                         {
                             _bufferPosition = (int)(offset - newPosn);
                             _position = offset;
@@ -562,10 +575,11 @@ namespace Renci.SshNet.Sftp
                     else if (origin == SeekOrigin.Current)
                     {
                         newPosn = _position + offset;
-                        if (newPosn >= (_position - _bufferPosition) &&
-                           newPosn < (_position - _bufferPosition + _bufferLen))
+
+                        if (newPosn >= _position - _bufferPosition &&
+                            newPosn < _position - _bufferPosition + _bufferLen)
                         {
-                            _bufferPosition = (int) (newPosn - (_position - _bufferPosition));
+                            _bufferPosition = (int)(newPosn - (_position - _bufferPosition));
                             _position = newPosn;
                             return _position;
                         }
@@ -581,9 +595,11 @@ namespace Renci.SshNet.Sftp
                         case SeekOrigin.Begin:
                             newPosn = offset;
                             break;
+
                         case SeekOrigin.Current:
                             newPosn = _position + offset;
                             break;
+
                         case SeekOrigin.End:
                             var attributes = _session.RequestFStat(_handle, false);
                             newPosn = attributes.Size - offset;
@@ -597,6 +613,7 @@ namespace Renci.SshNet.Sftp
 
                     _position = newPosn;
                 }
+
                 return _position;
             }
         }
@@ -671,11 +688,14 @@ namespace Renci.SshNet.Sftp
         {
             if (buffer == null)
                 throw new ArgumentNullException("buffer");
+
             if (offset < 0)
                 throw new ArgumentOutOfRangeException("offset");
+
             if (count < 0)
                 throw new ArgumentOutOfRangeException("count");
-            if ((buffer.Length - offset) < count)
+
+            if (buffer.Length - offset < count)
                 throw new ArgumentException("Invalid array range.");
 
             // Lock down the file stream while we do this.
@@ -691,6 +711,7 @@ namespace Renci.SshNet.Sftp
                 {
                     // Determine how many bytes we can write to the buffer.
                     var tempLen = _writeBufferSize - _bufferPosition;
+
                     if (tempLen <= 0)
                     {
                         // flush write buffer, and mark it empty
@@ -710,7 +731,7 @@ namespace Renci.SshNet.Sftp
                     {
                         using (var wait = new AutoResetEvent(false))
                         {
-                            _session.RequestWrite(_handle, (ulong) _position, buffer, offset, tempLen, wait);
+                            _session.RequestWrite(_handle, (ulong)_position, buffer, offset, tempLen, wait);
                         }
                     }
                     else
@@ -732,7 +753,7 @@ namespace Renci.SshNet.Sftp
                 {
                     using (var wait = new AutoResetEvent(false))
                     {
-                        _session.RequestWrite(_handle, (ulong) (_position - _bufferPosition), GetOrCreateWriteBuffer(), 0, _bufferPosition, wait);
+                        _session.RequestWrite(_handle, (ulong)(_position - _bufferPosition), GetOrCreateWriteBuffer(), 0, _bufferPosition, wait);
                     }
 
                     _bufferPosition = 0;
@@ -757,14 +778,14 @@ namespace Renci.SshNet.Sftp
                 // Setup the object for writing.
                 SetupWrite();
 
-                var writeBuffer = GetOrCreateWriteBuffer();
+                byte[] writeBuffer = GetOrCreateWriteBuffer();
 
                 // Flush the current buffer if it is full.
                 if (_bufferPosition >= _writeBufferSize)
                 {
                     using (var wait = new AutoResetEvent(false))
                     {
-                        _session.RequestWrite(_handle, (ulong) (_position - _bufferPosition), writeBuffer, 0, _bufferPosition, wait);
+                        _session.RequestWrite(_handle, (ulong)(_position - _bufferPosition), writeBuffer, 0, _bufferPosition, wait);
                     }
 
                     _bufferPosition = 0;
@@ -822,6 +843,7 @@ namespace Renci.SshNet.Sftp
         {
             if (_readBuffer == null)
                 _readBuffer = new byte[_readBufferSize];
+
             return _readBuffer;
         }
 
@@ -829,6 +851,7 @@ namespace Renci.SshNet.Sftp
         {
             if (_writeBuffer == null)
                 _writeBuffer = new byte[_writeBufferSize];
+
             return _writeBuffer;
         }
 
@@ -850,7 +873,7 @@ namespace Renci.SshNet.Sftp
             {
                 using (var wait = new AutoResetEvent(false))
                 {
-                    _session.RequestWrite(_handle, (ulong) (_position - _bufferPosition), _writeBuffer, 0, _bufferPosition, wait);
+                    _session.RequestWrite(_handle, (ulong)(_position - _bufferPosition), _writeBuffer, 0, _bufferPosition, wait);
                 }
 
                 _bufferPosition = 0;
@@ -877,7 +900,7 @@ namespace Renci.SshNet.Sftp
         /// </summary>
         private void SetupWrite()
         {
-            if ((!CanWrite))
+            if (!CanWrite)
                 throw new NotSupportedException("Write not supported.");
 
             if (!_bufferOwnedByWrite)
@@ -891,6 +914,7 @@ namespace Renci.SshNet.Sftp
         {
             if (_session == null)
                 throw new ObjectDisposedException(GetType().FullName);
+
             if (!_session.IsOpen)
                 throw new ObjectDisposedException(GetType().FullName, "Cannot access a closed SFTP session.");
         }

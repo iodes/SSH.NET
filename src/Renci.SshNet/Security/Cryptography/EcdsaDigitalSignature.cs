@@ -58,7 +58,7 @@ namespace Renci.SshNet.Security.Cryptography
         public override byte[] Sign(byte[] input)
         {
 #if NETSTANDARD2_0
-            var signed = _key.Ecdsa.SignData(input, _key.HashAlgorithm);
+            byte[] signed = _key.Ecdsa.SignData(input, _key.HashAlgorithm);
 #else
             var ecdsa = (ECDsaCng)_key.Ecdsa;
             ecdsa.HashAlgorithm = _key.HashAlgorithm;
@@ -70,7 +70,6 @@ namespace Renci.SshNet.Security.Cryptography
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -105,11 +104,10 @@ namespace Renci.SshNet.Security.Cryptography
         {
             Dispose(false);
         }
-
         #endregion
     }
 
-    class SshDataSignature : SshData
+    internal class SshDataSignature : SshData
     {
         private int _signature_size;
 

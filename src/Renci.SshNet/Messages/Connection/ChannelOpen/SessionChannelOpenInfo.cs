@@ -18,10 +18,7 @@ namespace Renci.SshNet.Messages.Connection
         /// <value>
         /// The type of the channel to open.
         /// </value>
-        public override string ChannelType
-        {
-            get { return Name; }
-        }
+        public override string ChannelType => Name;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SessionChannelOpenInfo"/> class.

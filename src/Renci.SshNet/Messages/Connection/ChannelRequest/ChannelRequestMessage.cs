@@ -17,7 +17,7 @@
         /// </value>
         public string RequestName
         {
-            get { return _requestName; }
+            get => _requestName;
             private set
             {
                 _requestName = value;

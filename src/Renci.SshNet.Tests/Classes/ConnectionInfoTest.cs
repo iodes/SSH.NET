@@ -36,6 +36,7 @@ namespace Renci.SshNet.Tests.Classes
                 new ConnectionInfo(Resources.HOST, int.Parse(Resources.PORT), Resources.USERNAME, ProxyTypes.Http, null,
                     int.Parse(Resources.PORT), Resources.USERNAME, Resources.PASSWORD,
                     new KeyboardInteractiveAuthenticationMethod(Resources.USERNAME));
+
                 Assert.Fail();
             }
             catch (ArgumentNullException ex)
@@ -114,8 +115,8 @@ namespace Renci.SshNet.Tests.Classes
             const string proxyUsername = null;
 
             var connectionInfo = new ConnectionInfo(Resources.HOST, int.Parse(Resources.PORT), Resources.USERNAME, ProxyTypes.Http,
-                    Resources.PROXY_HOST, int.Parse(Resources.PORT), proxyUsername, Resources.PASSWORD,
-                    new KeyboardInteractiveAuthenticationMethod(Resources.USERNAME));
+                Resources.PROXY_HOST, int.Parse(Resources.PORT), proxyUsername, Resources.PASSWORD,
+                new KeyboardInteractiveAuthenticationMethod(Resources.USERNAME));
 
             Assert.IsNull(connectionInfo.ProxyUsername);
         }
@@ -185,6 +186,7 @@ namespace Renci.SshNet.Tests.Classes
             {
                 new ConnectionInfo(Resources.HOST, port, Resources.USERNAME, ProxyTypes.None, Resources.HOST,
                     int.Parse(Resources.PORT), Resources.USERNAME, Resources.PASSWORD, null);
+
                 Assert.Fail();
             }
             catch (ArgumentOutOfRangeException ex)
@@ -204,6 +206,7 @@ namespace Renci.SshNet.Tests.Classes
             {
                 new ConnectionInfo(Resources.HOST, port, Resources.USERNAME, ProxyTypes.None, Resources.HOST,
                     int.Parse(Resources.PORT), Resources.USERNAME, Resources.PASSWORD, null);
+
                 Assert.Fail();
             }
             catch (ArgumentOutOfRangeException ex)
@@ -237,6 +240,7 @@ namespace Renci.SshNet.Tests.Classes
                 new ConnectionInfo(Resources.HOST, int.Parse(Resources.PORT), username, ProxyTypes.Http, Resources.USERNAME,
                     int.Parse(Resources.PORT), Resources.USERNAME, Resources.PASSWORD,
                     new KeyboardInteractiveAuthenticationMethod(Resources.USERNAME));
+
                 Assert.Fail();
             }
             catch (ArgumentNullException ex)
@@ -257,6 +261,7 @@ namespace Renci.SshNet.Tests.Classes
                 new ConnectionInfo(Resources.HOST, int.Parse(Resources.PORT), username, ProxyTypes.Http, Resources.USERNAME,
                     int.Parse(Resources.PORT), Resources.USERNAME, Resources.PASSWORD,
                     new KeyboardInteractiveAuthenticationMethod(Resources.USERNAME));
+
                 Assert.Fail();
             }
             catch (ArgumentException ex)
@@ -278,11 +283,12 @@ namespace Renci.SshNet.Tests.Classes
                 new ConnectionInfo(Resources.HOST, int.Parse(Resources.PORT), username, ProxyTypes.Http, Resources.USERNAME,
                     int.Parse(Resources.PORT), Resources.USERNAME, Resources.PASSWORD,
                     new KeyboardInteractiveAuthenticationMethod(Resources.USERNAME));
+
                 Assert.Fail();
             }
             catch (ArgumentException ex)
             {
-                Assert.AreEqual(typeof (ArgumentException), ex.GetType());
+                Assert.AreEqual(typeof(ArgumentException), ex.GetType());
                 Assert.IsNull(ex.InnerException);
                 Assert.AreEqual("username", ex.ParamName);
             }
@@ -296,6 +302,7 @@ namespace Renci.SshNet.Tests.Classes
             {
                 new ConnectionInfo(Resources.HOST, int.Parse(Resources.PORT), Resources.USERNAME, ProxyTypes.None, Resources.HOST,
                     int.Parse(Resources.PORT), Resources.USERNAME, Resources.PASSWORD, null);
+
                 Assert.Fail();
             }
             catch (ArgumentNullException ex)
@@ -313,6 +320,7 @@ namespace Renci.SshNet.Tests.Classes
             {
                 new ConnectionInfo(Resources.HOST, int.Parse(Resources.PORT), Resources.USERNAME, ProxyTypes.None, Resources.HOST,
                     int.Parse(Resources.PORT), Resources.USERNAME, Resources.PASSWORD, new AuthenticationMethod[0]);
+
                 Assert.Fail();
             }
             catch (ArgumentException ex)
@@ -329,6 +337,7 @@ namespace Renci.SshNet.Tests.Classes
             var connectionInfo = new ConnectionInfo(Resources.HOST, int.Parse(Resources.PORT), Resources.USERNAME, ProxyTypes.None,
                 Resources.HOST, int.Parse(Resources.PORT), Resources.USERNAME, Resources.PASSWORD,
                 new KeyboardInteractiveAuthenticationMethod(Resources.USERNAME));
+
             var session = new Mock<ISession>(MockBehavior.Strict).Object;
             IServiceFactory serviceFactory = null;
 
@@ -343,5 +352,5 @@ namespace Renci.SshNet.Tests.Classes
                 Assert.AreEqual("serviceFactory", ex.ParamName);
             }
         }
-   }
+    }
 }

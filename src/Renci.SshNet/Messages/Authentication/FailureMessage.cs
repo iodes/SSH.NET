@@ -36,6 +36,7 @@ namespace Renci.SshNet.Messages.Authentication
         {
             AllowedAuthentications = ReadNamesList();
             PartialSuccess = ReadBoolean();
+
             if (PartialSuccess)
             {
                 Message = string.Join(",", AllowedAuthentications);

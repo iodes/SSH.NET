@@ -15,8 +15,10 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (signature.Count != SignatureSizeInBytes)
                 throw new ArgumentException(string.Format("Signature size must be {0}", SignatureSizeInBytes), "signature.Count");
+
             if (publicKey.Count != PublicKeySizeInBytes)
                 throw new ArgumentException(string.Format("Public key size must be {0}", PublicKeySizeInBytes), "publicKey.Count");
+
             return Ed25519Operations.crypto_sign_verify(signature.Array, signature.Offset, message.Array, message.Offset, message.Count, publicKey.Array, publicKey.Offset);
         }
 
@@ -24,14 +26,19 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (signature == null)
                 throw new ArgumentNullException("signature");
+
             if (message == null)
                 throw new ArgumentNullException("message");
+
             if (publicKey == null)
                 throw new ArgumentNullException("publicKey");
+
             if (signature.Length != SignatureSizeInBytes)
                 throw new ArgumentException(string.Format("Signature size must be {0}", SignatureSizeInBytes), "signature.Length");
+
             if (publicKey.Length != PublicKeySizeInBytes)
                 throw new ArgumentException(string.Format("Public key size must be {0}", PublicKeySizeInBytes), "publicKey.Length");
+
             return Ed25519Operations.crypto_sign_verify(signature, 0, message, 0, message.Length, publicKey, 0);
         }
 
@@ -39,14 +46,19 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (signature.Array == null)
                 throw new ArgumentNullException("signature.Array");
+
             if (signature.Count != SignatureSizeInBytes)
                 throw new ArgumentException("signature.Count");
+
             if (expandedPrivateKey.Array == null)
                 throw new ArgumentNullException("expandedPrivateKey.Array");
+
             if (expandedPrivateKey.Count != ExpandedPrivateKeySizeInBytes)
                 throw new ArgumentException("expandedPrivateKey.Count");
+
             if (message.Array == null)
                 throw new ArgumentNullException("message.Array");
+
             Ed25519Operations.crypto_sign2(signature.Array, signature.Offset, message.Array, message.Offset, message.Count, expandedPrivateKey.Array, expandedPrivateKey.Offset);
         }
 
@@ -79,8 +91,10 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (privateKeySeed == null)
                 throw new ArgumentNullException("privateKeySeed");
+
             if (privateKeySeed.Length != PrivateKeySeedSizeInBytes)
                 throw new ArgumentException("privateKeySeed");
+
             var pk = new byte[PublicKeySizeInBytes];
             var sk = new byte[ExpandedPrivateKeySizeInBytes];
             Ed25519Operations.crypto_sign_keypair(pk, 0, sk, 0, privateKeySeed, 0);
@@ -92,16 +106,22 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (publicKey.Array == null)
                 throw new ArgumentNullException("publicKey.Array");
+
             if (expandedPrivateKey.Array == null)
                 throw new ArgumentNullException("expandedPrivateKey.Array");
+
             if (privateKeySeed.Array == null)
                 throw new ArgumentNullException("privateKeySeed.Array");
+
             if (publicKey.Count != PublicKeySizeInBytes)
                 throw new ArgumentException("publicKey.Count");
+
             if (expandedPrivateKey.Count != ExpandedPrivateKeySizeInBytes)
                 throw new ArgumentException("expandedPrivateKey.Count");
+
             if (privateKeySeed.Count != PrivateKeySeedSizeInBytes)
                 throw new ArgumentException("privateKeySeed.Count");
+
             Ed25519Operations.crypto_sign_keypair(
                 publicKey.Array, publicKey.Offset,
                 expandedPrivateKey.Array, expandedPrivateKey.Offset,
@@ -121,14 +141,19 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (sharedKey.Array == null)
                 throw new ArgumentNullException("sharedKey.Array");
+
             if (publicKey.Array == null)
                 throw new ArgumentNullException("publicKey.Array");
+
             if (privateKey.Array == null)
                 throw new ArgumentNullException("privateKey");
+
             if (sharedKey.Count != 32)
                 throw new ArgumentException("sharedKey.Count != 32");
+
             if (publicKey.Count != 32)
                 throw new ArgumentException("publicKey.Count != 32");
+
             if (privateKey.Count != 64)
                 throw new ArgumentException("privateKey.Count != 64");
 
@@ -136,7 +161,7 @@ namespace Renci.SshNet.Security.Chaos.NaCl
             FieldOperations.fe_frombytes(out edwardsY, publicKey.Array, publicKey.Offset);
             FieldOperations.fe_1(out edwardsZ);
             MontgomeryCurve25519.EdwardsToMontgomeryX(out montgomeryX, ref edwardsY, ref edwardsZ);
-            byte[] h = Sha512.Hash(privateKey.Array, privateKey.Offset, 32);//ToDo: Remove alloc
+            byte[] h = Sha512.Hash(privateKey.Array, privateKey.Offset, 32); //ToDo: Remove alloc
             ScalarOperations.sc_clamp(h, 0);
             MontgomeryOperations.scalarmult(out sharedMontgomeryX, h, 0, ref montgomeryX);
             CryptoBytes.Wipe(h);

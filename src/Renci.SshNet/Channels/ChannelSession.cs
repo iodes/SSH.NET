@@ -54,10 +54,7 @@ namespace Renci.SshNet.Channels
         /// <value>
         /// The type of the channel.
         /// </value>
-        public override ChannelTypes ChannelType
-        {
-            get { return ChannelTypes.Session; }
-        }
+        public override ChannelTypes ChannelType => ChannelTypes.Session;
 
         /// <summary>
         /// Opens the channel.
@@ -68,6 +65,7 @@ namespace Renci.SshNet.Channels
             while (!IsOpen && _failedOpenAttempts < ConnectionInfo.RetryAttempts)
             {
                 SendChannelOpenMessage();
+
                 try
                 {
                     WaitOnHandle(_channelOpenResponseWaitHandle);
@@ -336,6 +334,7 @@ namespace Renci.SshNet.Channels
             _channelRequestSucces = true;
 
             var channelRequestResponse = _channelRequestResponse;
+
             if (channelRequestResponse != null)
                 channelRequestResponse.Set();
         }
@@ -349,6 +348,7 @@ namespace Renci.SshNet.Channels
             _channelRequestSucces = false;
 
             var channelRequestResponse = _channelRequestResponse;
+
             if (channelRequestResponse != null)
                 channelRequestResponse.Set();
         }
@@ -399,10 +399,11 @@ namespace Renci.SshNet.Channels
             if (Interlocked.CompareExchange(ref _sessionSemaphoreObtained, 1, 0) == 0)
             {
                 SessionSemaphore.Wait();
+
                 SendMessage(new ChannelOpenMessage(LocalChannelNumber,
-                                                   LocalWindowSize,
-                                                   LocalPacketSize,
-                                                   new SessionChannelOpenInfo()));
+                    LocalWindowSize,
+                    LocalPacketSize,
+                    new SessionChannelOpenInfo()));
             }
         }
 
@@ -417,6 +418,7 @@ namespace Renci.SshNet.Channels
             if (disposing)
             {
                 var channelOpenResponseWaitHandle = _channelOpenResponseWaitHandle;
+
                 if (channelOpenResponseWaitHandle != null)
                 {
                     _channelOpenResponseWaitHandle = null;
@@ -424,6 +426,7 @@ namespace Renci.SshNet.Channels
                 }
 
                 var channelRequestResponse = _channelRequestResponse;
+
                 if (channelRequestResponse != null)
                 {
                     _channelRequestResponse = null;

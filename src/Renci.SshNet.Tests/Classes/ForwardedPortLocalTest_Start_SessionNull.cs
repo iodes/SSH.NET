@@ -44,6 +44,7 @@ namespace Renci.SshNet.Tests.Classes
             _closingRegister = new List<EventArgs>();
             _exceptionRegister = new List<ExceptionEventArgs>();
             _localEndpoint = new IPEndPoint(IPAddress.Loopback, 8122);
+
             _remoteEndpoint = new IPEndPoint(IPAddress.Parse("193.168.1.5"),
                 random.Next(IPEndPoint.MinPort, IPEndPoint.MaxPort));
 
@@ -55,6 +56,7 @@ namespace Renci.SshNet.Tests.Classes
 
             _forwardedPort = new ForwardedPortLocal(_localEndpoint.Address.ToString(), (uint)_localEndpoint.Port,
                 _remoteEndpoint.Address.ToString(), (uint)_remoteEndpoint.Port);
+
             _forwardedPort.Closing += (sender, args) => _closingRegister.Add(args);
             _forwardedPort.Exception += (sender, args) => _exceptionRegister.Add(args);
         }

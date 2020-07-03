@@ -9,15 +9,12 @@ namespace Renci.SshNet.Sftp.Requests
         private byte[] _path;
         private byte[] _attributesBytes;
 
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.MkDir; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.MkDir;
 
         public string Path
         {
-            get { return Encoding.GetString(_path, 0, _path.Length); }
-            private set { _path = Encoding.GetBytes(value); }
+            get => Encoding.GetString(_path, 0, _path.Length);
+            private set => _path = Encoding.GetBytes(value);
         }
 
         public Encoding Encoding { get; private set; }
@@ -32,6 +29,7 @@ namespace Renci.SshNet.Sftp.Requests
                 {
                     _attributesBytes = Attributes.GetBytes();
                 }
+
                 return _attributesBytes;
             }
         }

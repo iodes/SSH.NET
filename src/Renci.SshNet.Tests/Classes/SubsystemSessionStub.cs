@@ -16,10 +16,7 @@ namespace Renci.SshNet.Tests.Classes
             OnDataReceivedInvocations = new List<ChannelDataEventArgs>();
         }
 
-        public int OnChannelOpenInvocationCount
-        {
-            get { return _onChannelOpenInvocationCount; }
-        }
+        public int OnChannelOpenInvocationCount => _onChannelOpenInvocationCount;
 
         public IList<ChannelDataEventArgs> OnDataReceivedInvocations { get; private set; }
 

@@ -19,8 +19,8 @@
         /// </summary>
         public string Description
         {
-            get { return Utf8.GetString(_description, 0, _description.Length); }
-            private set { _description = Utf8.GetBytes(value); }
+            get => Utf8.GetString(_description, 0, _description.Length);
+            private set => _description = Utf8.GetBytes(value);
         }
 
         /// <summary>
@@ -28,8 +28,8 @@
         /// </summary>
         public string Language
         {
-            get { return Utf8.GetString(_language, 0, _language.Length); }
-            private set { _language = Utf8.GetBytes(value); }
+            get => Utf8.GetString(_language, 0, _language.Length);
+            private set => _language = Utf8.GetBytes(value);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@
         /// </summary>
         protected override void LoadData()
         {
-            ReasonCode = (DisconnectReason) ReadUInt32();
+            ReasonCode = (DisconnectReason)ReadUInt32();
             _description = ReadBinary();
             _language = ReadBinary();
         }
@@ -86,7 +86,7 @@
         /// </summary>
         protected override void SaveData()
         {
-            Write((uint) ReasonCode);
+            Write((uint)ReasonCode);
             WriteBinaryString(_description);
             WriteBinaryString(_language);
         }

@@ -11,7 +11,6 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
     [TestClass]
     public class RsaDigitalSignatureTest : TestBase
     {
-
         /// <summary>
         ///A test for RsaDigitalSignature Constructor
         ///</summary>
@@ -20,7 +19,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         public void RsaDigitalSignatureConstructorTest()
         {
             RsaKey rsaKey = null; // TODO: Initialize to an appropriate value
-            RsaDigitalSignature target = new RsaDigitalSignature(rsaKey);
+            var target = new RsaDigitalSignature(rsaKey);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -32,7 +31,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         public void DisposeTest()
         {
             RsaKey rsaKey = null; // TODO: Initialize to an appropriate value
-            RsaDigitalSignature target = new RsaDigitalSignature(rsaKey); // TODO: Initialize to an appropriate value
+            var target = new RsaDigitalSignature(rsaKey); // TODO: Initialize to an appropriate value
             target.Dispose();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }

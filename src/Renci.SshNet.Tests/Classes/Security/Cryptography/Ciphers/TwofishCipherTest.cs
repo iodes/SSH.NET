@@ -20,7 +20,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
             byte[] key = null; // TODO: Initialize to an appropriate value
             CipherMode mode = null; // TODO: Initialize to an appropriate value
             CipherPadding padding = null; // TODO: Initialize to an appropriate value
-            TwofishCipher target = new TwofishCipher(key, mode, padding);
+            var target = new TwofishCipher(key, mode, padding);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -34,13 +34,13 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
             byte[] key = null; // TODO: Initialize to an appropriate value
             CipherMode mode = null; // TODO: Initialize to an appropriate value
             CipherPadding padding = null; // TODO: Initialize to an appropriate value
-            TwofishCipher target = new TwofishCipher(key, mode, padding); // TODO: Initialize to an appropriate value
+            var target = new TwofishCipher(key, mode, padding); // TODO: Initialize to an appropriate value
             byte[] inputBuffer = null; // TODO: Initialize to an appropriate value
-            int inputOffset = 0; // TODO: Initialize to an appropriate value
-            int inputCount = 0; // TODO: Initialize to an appropriate value
+            var inputOffset = 0; // TODO: Initialize to an appropriate value
+            var inputCount = 0; // TODO: Initialize to an appropriate value
             byte[] outputBuffer = null; // TODO: Initialize to an appropriate value
-            int outputOffset = 0; // TODO: Initialize to an appropriate value
-            int expected = 0; // TODO: Initialize to an appropriate value
+            var outputOffset = 0; // TODO: Initialize to an appropriate value
+            var expected = 0; // TODO: Initialize to an appropriate value
             int actual;
             actual = target.DecryptBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
             Assert.AreEqual(expected, actual);
@@ -57,13 +57,13 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
             byte[] key = null; // TODO: Initialize to an appropriate value
             CipherMode mode = null; // TODO: Initialize to an appropriate value
             CipherPadding padding = null; // TODO: Initialize to an appropriate value
-            TwofishCipher target = new TwofishCipher(key, mode, padding); // TODO: Initialize to an appropriate value
+            var target = new TwofishCipher(key, mode, padding); // TODO: Initialize to an appropriate value
             byte[] inputBuffer = null; // TODO: Initialize to an appropriate value
-            int inputOffset = 0; // TODO: Initialize to an appropriate value
-            int inputCount = 0; // TODO: Initialize to an appropriate value
+            var inputOffset = 0; // TODO: Initialize to an appropriate value
+            var inputCount = 0; // TODO: Initialize to an appropriate value
             byte[] outputBuffer = null; // TODO: Initialize to an appropriate value
-            int outputOffset = 0; // TODO: Initialize to an appropriate value
-            int expected = 0; // TODO: Initialize to an appropriate value
+            var outputOffset = 0; // TODO: Initialize to an appropriate value
+            var expected = 0; // TODO: Initialize to an appropriate value
             int actual;
             actual = target.EncryptBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
             Assert.AreEqual(expected, actual);

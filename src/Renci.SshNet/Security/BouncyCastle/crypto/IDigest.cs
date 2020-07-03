@@ -14,21 +14,21 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto
          */
         string AlgorithmName { get; }
 
-		/**
+        /**
          * return the size, in bytes, of the digest produced by this message digest.
          *
          * @return the size, in bytes, of the digest produced by this message digest.
          */
-		int GetDigestSize();
+        int GetDigestSize();
 
-		/**
+        /**
          * return the size, in bytes, of the internal buffer used by this digest.
          *
          * @return the size, in bytes, of the internal buffer used by this digest.
          */
-		int GetByteLength();
+        int GetByteLength();
 
-		/**
+        /**
          * update the message digest with a single byte.
          *
          * @param inByte the input byte to be entered.

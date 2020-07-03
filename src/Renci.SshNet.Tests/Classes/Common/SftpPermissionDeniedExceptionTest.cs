@@ -18,7 +18,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void SftpPermissionDeniedExceptionConstructorTest()
         {
-            SftpPermissionDeniedException target = new SftpPermissionDeniedException();
+            var target = new SftpPermissionDeniedException();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -28,8 +28,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void SftpPermissionDeniedExceptionConstructorTest1()
         {
-            string message = string.Empty; // TODO: Initialize to an appropriate value
-            SftpPermissionDeniedException target = new SftpPermissionDeniedException(message);
+            var message = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpPermissionDeniedException(message);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -39,9 +39,9 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void SftpPermissionDeniedExceptionConstructorTest2()
         {
-            string message = string.Empty; // TODO: Initialize to an appropriate value
+            var message = string.Empty; // TODO: Initialize to an appropriate value
             Exception innerException = null; // TODO: Initialize to an appropriate value
-            SftpPermissionDeniedException target = new SftpPermissionDeniedException(message, innerException);
+            var target = new SftpPermissionDeniedException(message, innerException);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

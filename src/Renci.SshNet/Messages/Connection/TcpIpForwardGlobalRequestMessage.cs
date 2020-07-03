@@ -18,8 +18,8 @@ namespace Renci.SshNet.Messages.Connection
         /// </summary>
         public string AddressToBind
         {
-            get { return Utf8.GetString(_addressToBind, 0, _addressToBind.Length); }
-            private set { _addressToBind = Utf8.GetBytes(value); }
+            get => Utf8.GetString(_addressToBind, 0, _addressToBind.Length);
+            private set => _addressToBind = Utf8.GetBytes(value);
         }
 
         /// <summary>

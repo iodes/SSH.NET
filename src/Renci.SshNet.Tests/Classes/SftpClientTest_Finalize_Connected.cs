@@ -37,11 +37,15 @@ namespace Renci.SshNet.Tests.Classes
 
             _serviceFactoryMock.Setup(p => p.CreateSession(_connectionInfo))
                 .Returns(_sessionMock.Object);
+
             _sessionMock.Setup(p => p.Connect());
+
             _serviceFactoryMock.Setup(p => p.CreateSftpResponseFactory())
-                               .Returns(_sftpResponseFactoryMock.Object);
+                .Returns(_sftpResponseFactoryMock.Object);
+
             _serviceFactoryMock.Setup(p => p.CreateSftpSession(_sessionMock.Object, _operationTimeout, _connectionInfo.Encoding, _sftpResponseFactoryMock.Object))
-                               .Returns(_sftpSessionMock.Object);
+                .Returns(_sftpSessionMock.Object);
+
             _sftpSessionMock.Setup(p => p.Connect());
 
             _sftpClient.Connect();

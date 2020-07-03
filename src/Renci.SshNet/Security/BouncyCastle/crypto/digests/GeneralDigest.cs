@@ -1,18 +1,17 @@
 using System;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Utilities;
 
 namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Digests
 {
     internal abstract class GeneralDigest
-		: IDigest, IMemoable
+        : IDigest, IMemoable
     {
         private const int BYTE_LENGTH = 64;
 
-        private byte[]  xBuf;
-        private int     xBufOff;
+        private byte[] xBuf;
+        private int xBufOff;
 
-        private long    byteCount;
+        private long byteCount;
 
         internal GeneralDigest()
         {
@@ -20,13 +19,13 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Digests
         }
 
         internal GeneralDigest(GeneralDigest t)
-		{
-			xBuf = new byte[t.xBuf.Length];
-			CopyIn(t);
-		}
+        {
+            xBuf = new byte[t.xBuf.Length];
+            CopyIn(t);
+        }
 
-		protected void CopyIn(GeneralDigest t)
-		{
+        protected void CopyIn(GeneralDigest t)
+        {
             Array.Copy(t.xBuf, 0, xBuf, 0, t.xBuf.Length);
 
             xBufOff = t.xBufOff;
@@ -47,21 +46,23 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Digests
         }
 
         public void BlockUpdate(
-            byte[]  input,
-            int     inOff,
-            int     length)
+            byte[] input,
+            int inOff,
+            int length)
         {
             length = System.Math.Max(0, length);
 
             //
             // fill the current word
             //
-            int i = 0;
+            var i = 0;
+
             if (xBufOff != 0)
             {
                 while (i < length)
                 {
                     xBuf[xBufOff++] = input[inOff + i++];
+
                     if (xBufOff == 4)
                     {
                         ProcessWord(xBuf, 0);
@@ -74,7 +75,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Digests
             //
             // process whole words.
             //
-            int limit = ((length - i) & ~3) + i;
+            var limit = ((length - i) & ~3) + i;
+
             for (; i < limit; i += 4)
             {
                 ProcessWord(input, inOff + i);
@@ -93,7 +95,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Digests
 
         public void Finish()
         {
-            long    bitLength = (byteCount << 3);
+            var bitLength = byteCount << 3;
 
             //
             // add the pad bytes.
@@ -109,21 +111,28 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Digests
         {
             byteCount = 0;
             xBufOff = 0;
-			Array.Clear(xBuf, 0, xBuf.Length);
+            Array.Clear(xBuf, 0, xBuf.Length);
         }
 
-		public int GetByteLength()
-		{
-			return BYTE_LENGTH;
-		}
+        public int GetByteLength()
+        {
+            return BYTE_LENGTH;
+        }
 
-		internal abstract void ProcessWord(byte[] input, int inOff);
+        internal abstract void ProcessWord(byte[] input, int inOff);
+
         internal abstract void ProcessLength(long bitLength);
+
         internal abstract void ProcessBlock();
+
         public abstract string AlgorithmName { get; }
-		public abstract int GetDigestSize();
+
+        public abstract int GetDigestSize();
+
         public abstract int DoFinal(byte[] output, int outOff);
-		public abstract IMemoable Copy();
-		public abstract void Reset(IMemoable t);
+
+        public abstract IMemoable Copy();
+
+        public abstract void Reset(IMemoable t);
     }
 }

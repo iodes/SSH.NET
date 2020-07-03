@@ -2,8 +2,10 @@
 using Renci.SshNet.Common;
 using Renci.SshNet.Tests.Properties;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Renci.SshNet.Sftp;
 
 namespace Renci.SshNet.Tests.Classes
 {
@@ -19,7 +21,8 @@ namespace Renci.SshNet.Tests.Classes
         {
             using (var sftp = new SftpClient(Resources.HOST, Resources.USERNAME, Resources.PASSWORD))
             {
-                var files = sftp.ListDirectory(".");
+                IEnumerable<SftpFile> files = sftp.ListDirectory(".");
+
                 foreach (var file in files)
                 {
                     Debug.WriteLine(file.FullName);
@@ -37,7 +40,8 @@ namespace Renci.SshNet.Tests.Classes
             {
                 sftp.Connect();
 
-                var files = sftp.ListDirectory("/root");
+                IEnumerable<SftpFile> files = sftp.ListDirectory("/root");
+
                 foreach (var file in files)
                 {
                     Debug.WriteLine(file.FullName);
@@ -57,7 +61,8 @@ namespace Renci.SshNet.Tests.Classes
             {
                 sftp.Connect();
 
-                var files = sftp.ListDirectory("/asdfgh");
+                IEnumerable<SftpFile> files = sftp.ListDirectory("/asdfgh");
+
                 foreach (var file in files)
                 {
                     Debug.WriteLine(file.FullName);
@@ -76,7 +81,7 @@ namespace Renci.SshNet.Tests.Classes
             {
                 sftp.Connect();
 
-                var files = sftp.ListDirectory(".");
+                IEnumerable<SftpFile> files = sftp.ListDirectory(".");
 
                 Assert.IsTrue(files.Count() > 0);
 
@@ -98,7 +103,7 @@ namespace Renci.SshNet.Tests.Classes
             {
                 sftp.Connect();
 
-                var files = sftp.ListDirectory(string.Empty);
+                IEnumerable<SftpFile> files = sftp.ListDirectory(string.Empty);
 
                 Assert.IsTrue(files.Count() > 0);
 
@@ -122,7 +127,7 @@ namespace Renci.SshNet.Tests.Classes
             {
                 sftp.Connect();
 
-                var files = sftp.ListDirectory(null);
+                IEnumerable<SftpFile> files = sftp.ListDirectory(null);
 
                 Assert.IsTrue(files.Count() > 0);
 
@@ -145,13 +150,13 @@ namespace Renci.SshNet.Tests.Classes
                 sftp.Connect();
 
                 //  Create 10000 directory items
-                for (int i = 0; i < 10000; i++)
+                for (var i = 0; i < 10000; i++)
                 {
                     sftp.CreateDirectory(string.Format("test_{0}", i));
                     Debug.WriteLine("Created " + i);
                 }
 
-                var files = sftp.ListDirectory(".");
+                IEnumerable<SftpFile> files = sftp.ListDirectory(".");
 
                 //  Ensure that directory has at least 10000 items
                 Assert.IsTrue(files.Count() > 10000);
@@ -183,7 +188,7 @@ namespace Renci.SshNet.Tests.Classes
                 sftp.CreateDirectory("test1_2");
                 sftp.CreateDirectory("test1_3");
 
-                var files = sftp.ListDirectory(".");
+                IEnumerable<SftpFile> files = sftp.ListDirectory(".");
 
                 Assert.IsTrue(files.First().FullName.StartsWith(string.Format("{0}", sftp.WorkingDirectory)));
 
@@ -260,8 +265,8 @@ namespace Renci.SshNet.Tests.Classes
             {
                 sftp.Connect();
                 var ar = sftp.BeginListDirectory("/", null, null);
-                var result = sftp.EndListDirectory(ar);
-                var result1 = sftp.EndListDirectory(ar);
+                IEnumerable<SftpFile> result = sftp.EndListDirectory(ar);
+                IEnumerable<SftpFile> result1 = sftp.EndListDirectory(ar);
             }
         }
     }

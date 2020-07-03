@@ -20,6 +20,7 @@ namespace Renci.SshNet.Tests.Common
         {
             for (var i = 0; i < length; i++)
                 _buffer.Add(array[index + i]);
+
             return this;
         }
 

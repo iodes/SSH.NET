@@ -11,6 +11,7 @@ namespace Renci.SshNet.Tests.Classes
         {
             var connectionInfo = new ConnectionInfo("invalid.", 40, "user",
                 new KeyboardInteractiveAuthenticationMethod("user"));
+
             var sftpClient = new SftpClient(connectionInfo);
 
             try
@@ -20,7 +21,7 @@ namespace Renci.SshNet.Tests.Classes
             }
             catch (SocketException ex)
             {
-                Assert.AreEqual(ex.ErrorCode, (int) SocketError.HostNotFound);
+                Assert.AreEqual(ex.ErrorCode, (int)SocketError.HostNotFound);
             }
         }
 
@@ -29,6 +30,7 @@ namespace Renci.SshNet.Tests.Classes
         {
             var connectionInfo = new ConnectionInfo("localhost", 40, "user", ProxyTypes.Http, "invalid.", 80,
                 "proxyUser", "proxyPwd", new KeyboardInteractiveAuthenticationMethod("user"));
+
             var sftpClient = new SftpClient(connectionInfo);
 
             try

@@ -19,8 +19,8 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
         [Ignore] // placeholder
         public void ServiceRequestMessageConstructorTest()
         {
-            ServiceName serviceName = new ServiceName(); // TODO: Initialize to an appropriate value
-            ServiceRequestMessage target = new ServiceRequestMessage(serviceName);
+            var serviceName = new ServiceName(); // TODO: Initialize to an appropriate value
+            var target = new ServiceRequestMessage(serviceName);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

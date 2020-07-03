@@ -24,6 +24,7 @@ namespace Renci.SshNet.Tests.Classes
 
             #region Example PasswordConnectionInfo
             var connectionInfo = new PasswordConnectionInfo(host, username, password);
+
             using (var client = new SftpClient(connectionInfo))
             {
                 client.Connect();
@@ -48,6 +49,7 @@ namespace Renci.SshNet.Tests.Classes
             #region Example PasswordConnectionInfo PasswordExpired
             var connectionInfo = new PasswordConnectionInfo("host", "username", "password");
             var encoding = SshData.Ascii;
+
             connectionInfo.PasswordExpired += delegate(object sender, AuthenticationPasswordChangeEventArgs e)
             {
                 e.NewPassword = encoding.GetBytes("123456");
@@ -63,6 +65,7 @@ namespace Renci.SshNet.Tests.Classes
 
             Assert.Inconclusive();
         }
+
         [TestMethod]
         [TestCategory("PasswordConnectionInfo")]
         [TestCategory("integration")]
@@ -74,10 +77,12 @@ namespace Renci.SshNet.Tests.Classes
 
             #region Example PasswordConnectionInfo AuthenticationBanner
             var connectionInfo = new PasswordConnectionInfo(host, username, password);
+
             connectionInfo.AuthenticationBanner += delegate(object sender, AuthenticationBannerEventArgs e)
             {
                 Console.WriteLine(e.BannerMessage);
             };
+
             using (var client = new SftpClient(connectionInfo))
             {
                 client.Connect();
@@ -90,8 +95,8 @@ namespace Renci.SshNet.Tests.Classes
             Assert.AreEqual(connectionInfo.Username, Resources.USERNAME);
         }
 
-
-        [WorkItem(703), TestMethod]
+        [WorkItem(703)]
+        [TestMethod]
         [TestCategory("PasswordConnectionInfo")]
         public void Test_ConnectionInfo_Host_Is_Null()
         {
@@ -105,10 +110,10 @@ namespace Renci.SshNet.Tests.Classes
                 Assert.IsNull(ex.InnerException);
                 Assert.AreEqual("host", ex.ParamName);
             }
-
         }
 
-        [WorkItem(703), TestMethod]
+        [WorkItem(703)]
+        [TestMethod]
         [TestCategory("PasswordConnectionInfo")]
         [ExpectedException(typeof(ArgumentException))]
         public void Test_ConnectionInfo_Username_Is_Null()
@@ -116,7 +121,8 @@ namespace Renci.SshNet.Tests.Classes
             var connectionInfo = new PasswordConnectionInfo(Resources.HOST, null, Resources.PASSWORD);
         }
 
-        [WorkItem(703), TestMethod]
+        [WorkItem(703)]
+        [TestMethod]
         [TestCategory("PasswordConnectionInfo")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Test_ConnectionInfo_Password_Is_Null()
@@ -133,7 +139,8 @@ namespace Renci.SshNet.Tests.Classes
             var connectionInfo = new PasswordConnectionInfo(Resources.HOST, " ", Resources.PASSWORD);
         }
 
-        [WorkItem(703), TestMethod]
+        [WorkItem(703)]
+        [TestMethod]
         [TestCategory("PasswordConnectionInfo")]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void Test_ConnectionInfo_SmallPortNumber()
@@ -141,7 +148,8 @@ namespace Renci.SshNet.Tests.Classes
             var connectionInfo = new PasswordConnectionInfo(Resources.HOST, IPEndPoint.MinPort - 1, Resources.USERNAME, Resources.PASSWORD);
         }
 
-        [WorkItem(703), TestMethod]
+        [WorkItem(703)]
+        [TestMethod]
         [TestCategory("PasswordConnectionInfo")]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void Test_ConnectionInfo_BigPortNumber()
@@ -157,6 +165,7 @@ namespace Renci.SshNet.Tests.Classes
         public void Test_Ssh_Connect_Via_Socks4()
         {
             var connInfo = new PasswordConnectionInfo(Resources.HOST, Resources.USERNAME, Resources.PASSWORD, ProxyTypes.Socks4, Resources.PROXY_HOST, int.Parse(Resources.PROXY_PORT));
+
             using (var client = new SshClient(connInfo))
             {
                 client.Connect();
@@ -175,6 +184,7 @@ namespace Renci.SshNet.Tests.Classes
         public void Test_Ssh_Connect_Via_TcpSocks5()
         {
             var connInfo = new PasswordConnectionInfo(Resources.HOST, Resources.USERNAME, Resources.PASSWORD, ProxyTypes.Socks5, Resources.PROXY_HOST, int.Parse(Resources.PROXY_PORT));
+
             using (var client = new SshClient(connInfo))
             {
                 client.Connect();
@@ -192,6 +202,7 @@ namespace Renci.SshNet.Tests.Classes
         public void Test_Ssh_Connect_Via_HttpProxy()
         {
             var connInfo = new PasswordConnectionInfo(Resources.HOST, Resources.USERNAME, Resources.PASSWORD, ProxyTypes.Http, Resources.PROXY_HOST, int.Parse(Resources.PROXY_PORT));
+
             using (var client = new SshClient(connInfo))
             {
                 client.Connect();
@@ -209,10 +220,10 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void DisposeTest()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             byte[] password = null; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, username, password); // TODO: Initialize to an appropriate value
+            var target = new PasswordConnectionInfo(host, username, password); // TODO: Initialize to an appropriate value
             target.Dispose();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -224,16 +235,16 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordConnectionInfoConstructorTest()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             byte[] password = null; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            string proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
-            string proxyPassword = string.Empty; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, port, username, password, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword);
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPassword = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new PasswordConnectionInfo(host, port, username, password, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -244,15 +255,15 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordConnectionInfoConstructorTest1()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             byte[] password = null; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            string proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
-            string proxyPassword = string.Empty; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, username, password, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword);
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPassword = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new PasswordConnectionInfo(host, username, password, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -263,14 +274,14 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordConnectionInfoConstructorTest2()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             byte[] password = null; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            string proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, username, password, proxyType, proxyHost, proxyPort, proxyUsername);
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new PasswordConnectionInfo(host, username, password, proxyType, proxyHost, proxyPort, proxyUsername);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -281,13 +292,13 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordConnectionInfoConstructorTest3()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             byte[] password = null; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, username, password, proxyType, proxyHost, proxyPort);
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var target = new PasswordConnectionInfo(host, username, password, proxyType, proxyHost, proxyPort);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -298,15 +309,15 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordConnectionInfoConstructorTest4()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             byte[] password = null; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            string proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, port, username, password, proxyType, proxyHost, proxyPort, proxyUsername);
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new PasswordConnectionInfo(host, port, username, password, proxyType, proxyHost, proxyPort, proxyUsername);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -317,14 +328,14 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordConnectionInfoConstructorTest5()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             byte[] password = null; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, port, username, password, proxyType, proxyHost, proxyPort);
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var target = new PasswordConnectionInfo(host, port, username, password, proxyType, proxyHost, proxyPort);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -335,11 +346,11 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordConnectionInfoConstructorTest6()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             byte[] password = null; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, port, username, password);
+            var target = new PasswordConnectionInfo(host, port, username, password);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -350,10 +361,10 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordConnectionInfoConstructorTest7()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             byte[] password = null; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, username, password);
+            var target = new PasswordConnectionInfo(host, username, password);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -364,15 +375,15 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordConnectionInfoConstructorTest8()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            string proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
-            string proxyPassword = string.Empty; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, username, password, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var password = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPassword = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new PasswordConnectionInfo(host, username, password, proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -383,14 +394,14 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordConnectionInfoConstructorTest9()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            string proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, username, password, proxyType, proxyHost, proxyPort, proxyUsername);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var password = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new PasswordConnectionInfo(host, username, password, proxyType, proxyHost, proxyPort, proxyUsername);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -401,13 +412,13 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordConnectionInfoConstructorTest10()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, username, password, proxyType, proxyHost, proxyPort);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var password = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var target = new PasswordConnectionInfo(host, username, password, proxyType, proxyHost, proxyPort);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -418,15 +429,15 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordConnectionInfoConstructorTest11()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            string proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, port, username, password, proxyType, proxyHost, proxyPort, proxyUsername);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var password = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var proxyUsername = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new PasswordConnectionInfo(host, port, username, password, proxyType, proxyHost, proxyPort, proxyUsername);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -437,14 +448,14 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordConnectionInfoConstructorTest12()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            ProxyTypes proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
-            string proxyHost = string.Empty; // TODO: Initialize to an appropriate value
-            int proxyPort = 0; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, port, username, password, proxyType, proxyHost, proxyPort);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var password = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyType = new ProxyTypes(); // TODO: Initialize to an appropriate value
+            var proxyHost = string.Empty; // TODO: Initialize to an appropriate value
+            var proxyPort = 0; // TODO: Initialize to an appropriate value
+            var target = new PasswordConnectionInfo(host, port, username, password, proxyType, proxyHost, proxyPort);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -455,11 +466,11 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordConnectionInfoConstructorTest13()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, port, username, password);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var password = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new PasswordConnectionInfo(host, port, username, password);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -470,12 +481,11 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void PasswordConnectionInfoConstructorTest14()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            PasswordConnectionInfo target = new PasswordConnectionInfo(host, username, password);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var password = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new PasswordConnectionInfo(host, username, password);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
-
     }
 }

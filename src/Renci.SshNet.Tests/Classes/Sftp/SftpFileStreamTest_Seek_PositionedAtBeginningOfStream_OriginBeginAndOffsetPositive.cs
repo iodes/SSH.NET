@@ -39,14 +39,17 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         protected override void SetupMocks()
         {
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.RequestOpen(_path, Flags.Read | Flags.CreateNewOrOpen, false))
-                           .Returns(_handle);
+                .Setup(p => p.RequestOpen(_path, Flags.Read | Flags.CreateNewOrOpen, false))
+                .Returns(_handle);
+
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.CalculateOptimalReadLength((uint)_bufferSize))
-                           .Returns(_readBufferSize);
+                .Setup(p => p.CalculateOptimalReadLength((uint)_bufferSize))
+                .Returns(_readBufferSize);
+
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.CalculateOptimalWriteLength((uint)_bufferSize, _handle))
-                           .Returns(_writeBufferSize);
+                .Setup(p => p.CalculateOptimalWriteLength((uint)_bufferSize, _handle))
+                .Returns(_writeBufferSize);
+
             SftpSessionMock.InSequence(MockSequence).Setup(p => p.IsOpen).Returns(true);
         }
 

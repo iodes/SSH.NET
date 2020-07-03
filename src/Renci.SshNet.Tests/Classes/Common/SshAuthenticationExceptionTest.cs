@@ -17,7 +17,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void SshAuthenticationExceptionConstructorTest()
         {
-            SshAuthenticationException target = new SshAuthenticationException();
+            var target = new SshAuthenticationException();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -27,8 +27,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void SshAuthenticationExceptionConstructorTest1()
         {
-            string message = string.Empty; // TODO: Initialize to an appropriate value
-            SshAuthenticationException target = new SshAuthenticationException(message);
+            var message = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SshAuthenticationException(message);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -38,9 +38,9 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void SshAuthenticationExceptionConstructorTest2()
         {
-            string message = string.Empty; // TODO: Initialize to an appropriate value
+            var message = string.Empty; // TODO: Initialize to an appropriate value
             Exception innerException = null; // TODO: Initialize to an appropriate value
-            SshAuthenticationException target = new SshAuthenticationException(message, innerException);
+            var target = new SshAuthenticationException(message, innerException);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

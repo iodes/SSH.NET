@@ -17,8 +17,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
         public virtual AbstractF2mPoint[] PreComp
         {
-            get { return m_preComp; }
-            set { this.m_preComp = value; }
+            get => m_preComp;
+            set => m_preComp = value;
         }
     }
 }

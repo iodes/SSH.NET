@@ -26,8 +26,8 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         [TestMethod()]
         public void ToStringTest()
         {
-            ChannelMessage target = CreateChannelMessage(); // TODO: Initialize to an appropriate value
-            string expected = string.Empty; // TODO: Initialize to an appropriate value
+            var target = CreateChannelMessage(); // TODO: Initialize to an appropriate value
+            var expected = string.Empty; // TODO: Initialize to an appropriate value
             string actual;
             actual = target.ToString();
             Assert.AreEqual(expected, actual);

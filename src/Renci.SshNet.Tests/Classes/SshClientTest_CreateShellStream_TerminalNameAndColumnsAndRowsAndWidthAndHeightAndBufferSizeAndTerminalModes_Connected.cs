@@ -39,10 +39,10 @@ namespace Renci.SshNet.Tests.Classes
             _connectionInfo = new ConnectionInfo("host", "user", new NoneAuthenticationMethod("userauth"));
 
             _terminalName = random.Next().ToString();
-            _widthColumns = (uint) random.Next();
-            _heightRows = (uint) random.Next();
-            _widthPixels = (uint) random.Next();
-            _heightPixels = (uint) random.Next();
+            _widthColumns = (uint)random.Next();
+            _heightRows = (uint)random.Next();
+            _widthPixels = (uint)random.Next();
+            _heightPixels = (uint)random.Next();
             _terminalModes = new Dictionary<TerminalModes, uint>();
             _bufferSize = random.Next(100, 1000);
 
@@ -60,20 +60,22 @@ namespace Renci.SshNet.Tests.Classes
             var sequence = new MockSequence();
 
             _serviceFactoryMock.InSequence(sequence)
-                               .Setup(p => p.CreateSession(_connectionInfo))
-                               .Returns(_sessionMock.Object);
+                .Setup(p => p.CreateSession(_connectionInfo))
+                .Returns(_sessionMock.Object);
+
             _sessionMock.InSequence(sequence)
-                        .Setup(p => p.Connect());
+                .Setup(p => p.Connect());
+
             _serviceFactoryMock.InSequence(sequence)
-                               .Setup(p => p.CreateShellStream(_sessionMock.Object,
-                                                               _terminalName,
-                                                               _widthColumns,
-                                                               _heightRows,
-                                                               _widthPixels,
-                                                               _heightPixels,
-                                                               _terminalModes,
-                                                               _bufferSize))
-                               .Returns(_expected);
+                .Setup(p => p.CreateShellStream(_sessionMock.Object,
+                    _terminalName,
+                    _widthColumns,
+                    _heightRows,
+                    _widthPixels,
+                    _heightPixels,
+                    _terminalModes,
+                    _bufferSize))
+                .Returns(_expected);
         }
 
         private void Arrange()
@@ -89,26 +91,26 @@ namespace Renci.SshNet.Tests.Classes
         protected void Act()
         {
             _actual = _sshClient.CreateShellStream(_terminalName,
-                                                   _widthColumns,
-                                                   _heightRows,
-                                                   _widthPixels,
-                                                   _heightPixels,
-                                                   _bufferSize,
-                                                   _terminalModes);
+                _widthColumns,
+                _heightRows,
+                _widthPixels,
+                _heightPixels,
+                _bufferSize,
+                _terminalModes);
         }
 
         [TestMethod]
         public void CreateShellStreamOnServiceFactoryShouldBeInvokedOnce()
         {
             _serviceFactoryMock.Verify(p => p.CreateShellStream(_sessionMock.Object,
-                                                                _terminalName,
-                                                                _widthColumns,
-                                                                _heightRows,
-                                                                _widthPixels,
-                                                                _heightPixels,
-                                                                _terminalModes,
-                                                                _bufferSize),
-                                       Times.Once);
+                    _terminalName,
+                    _widthColumns,
+                    _heightRows,
+                    _widthPixels,
+                    _heightPixels,
+                    _terminalModes,
+                    _bufferSize),
+                Times.Once);
         }
 
         [TestMethod]
@@ -124,28 +126,32 @@ namespace Renci.SshNet.Tests.Classes
             var channelSessionMock = new Mock<IChannelSession>(MockBehavior.Strict);
 
             sessionMock.Setup(p => p.ConnectionInfo)
-                       .Returns(new ConnectionInfo("A", "B", new PasswordAuthenticationMethod("A", "B")));
+                .Returns(new ConnectionInfo("A", "B", new PasswordAuthenticationMethod("A", "B")));
+
             sessionMock.Setup(p => p.CreateChannelSession())
-                       .Returns(channelSessionMock.Object);
+                .Returns(channelSessionMock.Object);
+
             channelSessionMock.Setup(p => p.Open());
+
             channelSessionMock.Setup(p => p.SendPseudoTerminalRequest(_terminalName,
-                                                                      _widthColumns,
-                                                                      _heightRows,
-                                                                      _widthPixels,
-                                                                      _heightPixels,
-                                                                      _terminalModes))
-                              .Returns(true);
+                    _widthColumns,
+                    _heightRows,
+                    _widthPixels,
+                    _heightPixels,
+                    _terminalModes))
+                .Returns(true);
+
             channelSessionMock.Setup(p => p.SendShellRequest())
-                              .Returns(true);
+                .Returns(true);
 
             return new ShellStream(sessionMock.Object,
-                                   _terminalName,
-                                   _widthColumns,
-                                   _heightRows,
-                                   _widthPixels,
-                                   _heightPixels,
-                                   _terminalModes,
-                                   1);
+                _terminalName,
+                _widthColumns,
+                _heightRows,
+                _widthPixels,
+                _heightPixels,
+                _terminalModes,
+                1);
         }
     }
 }

@@ -52,7 +52,10 @@ namespace Renci.SshNet.Tests.Classes
                 {
                     hostKeyValidated = true;
 
-                    if (e.FingerPrint.SequenceEqual(new byte[] { 0x00, 0x01, 0x02, 0x03 }))
+                    if (e.FingerPrint.SequenceEqual(new byte[]
+                    {
+                        0x00, 0x01, 0x02, 0x03
+                    }))
                     {
                         e.CanTrust = true;
                     }
@@ -61,6 +64,7 @@ namespace Renci.SshNet.Tests.Classes
                         e.CanTrust = false;
                     }
                 };
+
                 client.Connect();
                 //  Do something here
                 client.Disconnect();
@@ -91,6 +95,7 @@ namespace Renci.SshNet.Tests.Classes
                 client.Disconnect();
             }
             #endregion
+
             Assert.Inconclusive();
         }
 
@@ -118,6 +123,7 @@ namespace Renci.SshNet.Tests.Classes
                 client.Disconnect();
             }
             #endregion
+
             Assert.IsTrue(exceptionOccured);
         }
 
@@ -141,7 +147,7 @@ namespace Renci.SshNet.Tests.Classes
         {
             var host = Resources.HOST;
             var username = Resources.USERNAME;
-            MemoryStream keyFileStream = new MemoryStream(Encoding.ASCII.GetBytes(Resources.RSA_KEY_WITHOUT_PASS));
+            var keyFileStream = new MemoryStream(Encoding.ASCII.GetBytes(Resources.RSA_KEY_WITHOUT_PASS));
 
             #region Example SshClient(host, username) Connect PrivateKeyFile
             using (var client = new SshClient(host, username, new PrivateKeyFile(keyFileStream)))
@@ -160,7 +166,7 @@ namespace Renci.SshNet.Tests.Classes
             var host = Resources.HOST;
             var username = Resources.USERNAME;
             var passphrase = Resources.PASSWORD;
-            MemoryStream keyFileStream = new MemoryStream(Encoding.ASCII.GetBytes(Resources.RSA_KEY_WITH_PASS));
+            var keyFileStream = new MemoryStream(Encoding.ASCII.GetBytes(Resources.RSA_KEY_WITH_PASS));
 
             #region Example SshClient(host, username) Connect PrivateKeyFile PassPhrase
             using (var client = new SshClient(host, username, new PrivateKeyFile(keyFileStream, passphrase)))
@@ -177,7 +183,8 @@ namespace Renci.SshNet.Tests.Classes
         [ExpectedException(typeof(SshPassPhraseNullOrEmptyException))]
         public void Test_Connect_Using_Key_With_Empty_PassPhrase()
         {
-            MemoryStream keyFileStream = new MemoryStream(Encoding.ASCII.GetBytes(Resources.RSA_KEY_WITH_PASS));
+            var keyFileStream = new MemoryStream(Encoding.ASCII.GetBytes(Resources.RSA_KEY_WITH_PASS));
+
             using (var client = new SshClient(Resources.HOST, Resources.USERNAME, new PrivateKeyFile(keyFileStream, null)))
             {
                 client.Connect();
@@ -190,7 +197,8 @@ namespace Renci.SshNet.Tests.Classes
         [TestCategory("integration")]
         public void Test_Connect_Using_DsaKey_Without_PassPhrase()
         {
-            MemoryStream keyFileStream = new MemoryStream(Encoding.ASCII.GetBytes(Resources.DSA_KEY_WITHOUT_PASS));
+            var keyFileStream = new MemoryStream(Encoding.ASCII.GetBytes(Resources.DSA_KEY_WITHOUT_PASS));
+
             using (var client = new SshClient(Resources.HOST, Resources.USERNAME, new PrivateKeyFile(keyFileStream)))
             {
                 client.Connect();
@@ -203,7 +211,8 @@ namespace Renci.SshNet.Tests.Classes
         [TestCategory("integration")]
         public void Test_Connect_Using_DsaKey_With_PassPhrase()
         {
-            MemoryStream keyFileStream = new MemoryStream(Encoding.ASCII.GetBytes(Resources.DSA_KEY_WITH_PASS));
+            var keyFileStream = new MemoryStream(Encoding.ASCII.GetBytes(Resources.DSA_KEY_WITH_PASS));
+
             using (var client = new SshClient(Resources.HOST, Resources.USERNAME, new PrivateKeyFile(keyFileStream, Resources.PASSWORD)))
             {
                 client.Connect();
@@ -217,7 +226,8 @@ namespace Renci.SshNet.Tests.Classes
         [ExpectedException(typeof(SshAuthenticationException))]
         public void Test_Connect_Using_Invalid_PrivateKey()
         {
-            MemoryStream keyFileStream = new MemoryStream(Encoding.ASCII.GetBytes(Resources.INVALID_KEY));
+            var keyFileStream = new MemoryStream(Encoding.ASCII.GetBytes(Resources.INVALID_KEY));
+
             using (var client = new SshClient(Resources.HOST, Resources.USERNAME, new PrivateKeyFile(keyFileStream)))
             {
                 client.Connect();
@@ -236,7 +246,7 @@ namespace Renci.SshNet.Tests.Classes
                 new PrivateKeyFile(new MemoryStream(Encoding.ASCII.GetBytes(Resources.RSA_KEY_WITH_PASS)), Resources.PASSWORD),
                 new PrivateKeyFile(new MemoryStream(Encoding.ASCII.GetBytes(Resources.RSA_KEY_WITHOUT_PASS))),
                 new PrivateKeyFile(new MemoryStream(Encoding.ASCII.GetBytes(Resources.DSA_KEY_WITHOUT_PASS)))
-                ))
+            ))
             {
                 client.Connect();
                 client.Disconnect();
@@ -316,13 +326,13 @@ namespace Renci.SshNet.Tests.Classes
         public void CreateShellStreamTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string terminalName = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var terminalName = string.Empty; // TODO: Initialize to an appropriate value
             uint columns = 0; // TODO: Initialize to an appropriate value
             uint rows = 0; // TODO: Initialize to an appropriate value
             uint width = 0; // TODO: Initialize to an appropriate value
             uint height = 0; // TODO: Initialize to an appropriate value
-            int bufferSize = 0; // TODO: Initialize to an appropriate value
+            var bufferSize = 0; // TODO: Initialize to an appropriate value
             IDictionary<TerminalModes, uint> terminalModeValues = null; // TODO: Initialize to an appropriate value
             ShellStream expected = null; // TODO: Initialize to an appropriate value
             ShellStream actual;
@@ -339,13 +349,13 @@ namespace Renci.SshNet.Tests.Classes
         public void CreateShellStreamTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string terminalName = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var terminalName = string.Empty; // TODO: Initialize to an appropriate value
             uint columns = 0; // TODO: Initialize to an appropriate value
             uint rows = 0; // TODO: Initialize to an appropriate value
             uint width = 0; // TODO: Initialize to an appropriate value
             uint height = 0; // TODO: Initialize to an appropriate value
-            int bufferSize = 0; // TODO: Initialize to an appropriate value
+            var bufferSize = 0; // TODO: Initialize to an appropriate value
             ShellStream expected = null; // TODO: Initialize to an appropriate value
             ShellStream actual;
             actual = target.CreateShellStream(terminalName, columns, rows, width, height, bufferSize);
@@ -362,7 +372,6 @@ namespace Renci.SshNet.Tests.Classes
                 const string input = "INPUT";
                 var output = new MemoryStream();
                 var extendedOutput = new MemoryStream();
-
 
                 try
                 {
@@ -406,6 +415,7 @@ namespace Renci.SshNet.Tests.Classes
                         width,
                         height,
                         terminalModes);
+
                     Assert.Fail();
                 }
                 catch (SshConnectionException ex)
@@ -435,7 +445,6 @@ namespace Renci.SshNet.Tests.Classes
 
                 try
                 {
-
                     client.CreateShell(
                         encoding,
                         input,
@@ -448,6 +457,7 @@ namespace Renci.SshNet.Tests.Classes
                         height,
                         terminalModes,
                         bufferSize);
+
                     Assert.Fail();
                 }
                 catch (SshConnectionException ex)
@@ -469,7 +479,6 @@ namespace Renci.SshNet.Tests.Classes
 
                 try
                 {
-
                     client.CreateShell(input, output, extendedOutput);
                     Assert.Fail();
                 }
@@ -508,6 +517,7 @@ namespace Renci.SshNet.Tests.Classes
                         width,
                         height,
                         terminalModes);
+
                     Assert.Fail();
                 }
                 catch (SshConnectionException ex)
@@ -536,7 +546,6 @@ namespace Renci.SshNet.Tests.Classes
 
                 try
                 {
-
                     client.CreateShell(
                         input,
                         output,
@@ -548,6 +557,7 @@ namespace Renci.SshNet.Tests.Classes
                         height,
                         terminalModes,
                         bufferSize);
+
                     Assert.Fail();
                 }
                 catch (SshConnectionException ex)
@@ -566,9 +576,9 @@ namespace Renci.SshNet.Tests.Classes
         public void CreateShellTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
             Encoding encoding = null; // TODO: Initialize to an appropriate value
-            string input = string.Empty; // TODO: Initialize to an appropriate value
+            var input = string.Empty; // TODO: Initialize to an appropriate value
             Stream output = null; // TODO: Initialize to an appropriate value
             Stream extendedOutput = null; // TODO: Initialize to an appropriate value
             Shell expected = null; // TODO: Initialize to an appropriate value
@@ -586,12 +596,12 @@ namespace Renci.SshNet.Tests.Classes
         public void CreateShellTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
             Encoding encoding = null; // TODO: Initialize to an appropriate value
-            string input = string.Empty; // TODO: Initialize to an appropriate value
+            var input = string.Empty; // TODO: Initialize to an appropriate value
             Stream output = null; // TODO: Initialize to an appropriate value
             Stream extendedOutput = null; // TODO: Initialize to an appropriate value
-            string terminalName = string.Empty; // TODO: Initialize to an appropriate value
+            var terminalName = string.Empty; // TODO: Initialize to an appropriate value
             uint columns = 0; // TODO: Initialize to an appropriate value
             uint rows = 0; // TODO: Initialize to an appropriate value
             uint width = 0; // TODO: Initialize to an appropriate value
@@ -612,18 +622,18 @@ namespace Renci.SshNet.Tests.Classes
         public void CreateShellTest2()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
             Encoding encoding = null; // TODO: Initialize to an appropriate value
-            string input = string.Empty; // TODO: Initialize to an appropriate value
+            var input = string.Empty; // TODO: Initialize to an appropriate value
             Stream output = null; // TODO: Initialize to an appropriate value
             Stream extendedOutput = null; // TODO: Initialize to an appropriate value
-            string terminalName = string.Empty; // TODO: Initialize to an appropriate value
+            var terminalName = string.Empty; // TODO: Initialize to an appropriate value
             uint columns = 0; // TODO: Initialize to an appropriate value
             uint rows = 0; // TODO: Initialize to an appropriate value
             uint width = 0; // TODO: Initialize to an appropriate value
             uint height = 0; // TODO: Initialize to an appropriate value
             IDictionary<TerminalModes, uint> terminalModes = null; // TODO: Initialize to an appropriate value
-            int bufferSize = 0; // TODO: Initialize to an appropriate value
+            var bufferSize = 0; // TODO: Initialize to an appropriate value
             Shell expected = null; // TODO: Initialize to an appropriate value
             Shell actual;
             actual = target.CreateShell(encoding, input, output, extendedOutput, terminalName, columns, rows, width, height, terminalModes, bufferSize);
@@ -639,7 +649,7 @@ namespace Renci.SshNet.Tests.Classes
         public void CreateShellTest3()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
             Stream input = null; // TODO: Initialize to an appropriate value
             Stream output = null; // TODO: Initialize to an appropriate value
             Stream extendedOutput = null; // TODO: Initialize to an appropriate value
@@ -658,11 +668,11 @@ namespace Renci.SshNet.Tests.Classes
         public void CreateShellTest4()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
             Stream input = null; // TODO: Initialize to an appropriate value
             Stream output = null; // TODO: Initialize to an appropriate value
             Stream extendedOutput = null; // TODO: Initialize to an appropriate value
-            string terminalName = string.Empty; // TODO: Initialize to an appropriate value
+            var terminalName = string.Empty; // TODO: Initialize to an appropriate value
             uint columns = 0; // TODO: Initialize to an appropriate value
             uint rows = 0; // TODO: Initialize to an appropriate value
             uint width = 0; // TODO: Initialize to an appropriate value
@@ -683,17 +693,17 @@ namespace Renci.SshNet.Tests.Classes
         public void CreateShellTest5()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
             Stream input = null; // TODO: Initialize to an appropriate value
             Stream output = null; // TODO: Initialize to an appropriate value
             Stream extendedOutput = null; // TODO: Initialize to an appropriate value
-            string terminalName = string.Empty; // TODO: Initialize to an appropriate value
+            var terminalName = string.Empty; // TODO: Initialize to an appropriate value
             uint columns = 0; // TODO: Initialize to an appropriate value
             uint rows = 0; // TODO: Initialize to an appropriate value
             uint width = 0; // TODO: Initialize to an appropriate value
             uint height = 0; // TODO: Initialize to an appropriate value
             IDictionary<TerminalModes, uint> terminalModes = null; // TODO: Initialize to an appropriate value
-            int bufferSize = 0; // TODO: Initialize to an appropriate value
+            var bufferSize = 0; // TODO: Initialize to an appropriate value
             Shell expected = null; // TODO: Initialize to an appropriate value
             Shell actual;
             actual = target.CreateShell(input, output, extendedOutput, terminalName, columns, rows, width, height, terminalModes, bufferSize);
@@ -745,8 +755,8 @@ namespace Renci.SshNet.Tests.Classes
         public void CreateCommandTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string commandText = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var commandText = string.Empty; // TODO: Initialize to an appropriate value
             Encoding encoding = null; // TODO: Initialize to an appropriate value
             SshCommand expected = null; // TODO: Initialize to an appropriate value
             SshCommand actual;
@@ -763,15 +773,14 @@ namespace Renci.SshNet.Tests.Classes
         public void CreateCommandTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string commandText = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var commandText = string.Empty; // TODO: Initialize to an appropriate value
             SshCommand expected = null; // TODO: Initialize to an appropriate value
             SshCommand actual;
             actual = target.CreateCommand(commandText);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
-
 
         [TestMethod]
         public void AddForwardedPort_NeverConnected()
@@ -793,7 +802,6 @@ namespace Renci.SshNet.Tests.Classes
             }
         }
 
-
         /// <summary>
         ///A test for AddForwardedPort
         ///</summary>
@@ -802,7 +810,7 @@ namespace Renci.SshNet.Tests.Classes
         public void AddForwardedPortTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
             ForwardedPort port = null; // TODO: Initialize to an appropriate value
             target.AddForwardedPort(port);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -815,10 +823,10 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void SshClientConstructorTest()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             PrivateKeyFile[] keyFiles = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(host, username, keyFiles);
+            var target = new SshClient(host, username, keyFiles);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -829,11 +837,11 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void SshClientConstructorTest1()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             PrivateKeyFile[] keyFiles = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(host, port, username, keyFiles);
+            var target = new SshClient(host, port, username, keyFiles);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -844,10 +852,10 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void SshClientConstructorTest2()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(host, username, password);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var password = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SshClient(host, username, password);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -858,11 +866,11 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void SshClientConstructorTest3()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(host, port, username, password);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var password = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SshClient(host, port, username, password);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -874,7 +882,7 @@ namespace Renci.SshNet.Tests.Classes
         public void SshClientConstructorTest4()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(connectionInfo);
+            var target = new SshClient(connectionInfo);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -886,7 +894,7 @@ namespace Renci.SshNet.Tests.Classes
         public void RemoveForwardedPortTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
             ForwardedPort port = null; // TODO: Initialize to an appropriate value
             target.RemoveForwardedPort(port);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -918,8 +926,8 @@ namespace Renci.SshNet.Tests.Classes
         public void RunCommandTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string commandText = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var commandText = string.Empty; // TODO: Initialize to an appropriate value
             SshCommand expected = null; // TODO: Initialize to an appropriate value
             SshCommand actual;
             actual = target.RunCommand(commandText);
@@ -935,11 +943,10 @@ namespace Renci.SshNet.Tests.Classes
         public void ForwardedPortsTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SshClient target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SshClient(connectionInfo); // TODO: Initialize to an appropriate value
             IEnumerable<ForwardedPort> actual;
             actual = target.ForwardedPorts;
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
-
     }
 }

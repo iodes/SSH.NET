@@ -4,6 +4,7 @@ using System.Threading;
 using Renci.SshNet.Channels;
 using Renci.SshNet.Common;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Renci.SshNet.Abstractions;
 
 namespace Renci.SshNet
@@ -121,6 +122,7 @@ namespace Renci.SshNet
 
             //  Start input stream listener
             _dataReaderTaskCompleted = new ManualResetEvent(false);
+
             ThreadAbstraction.ExecuteThread(() =>
             {
                 try
@@ -130,10 +132,13 @@ namespace Renci.SshNet
                     while (_channel.IsOpen)
                     {
 #if FEATURE_STREAM_TAP
-                        var readTask = _input.ReadAsync(buffer, 0, buffer.Length);
-                        var readWaitHandle = ((IAsyncResult) readTask).AsyncWaitHandle;
+                        Task<int> readTask = _input.ReadAsync(buffer, 0, buffer.Length);
+                        var readWaitHandle = ((IAsyncResult)readTask).AsyncWaitHandle;
 
-                        if (WaitHandle.WaitAny(new[] {readWaitHandle, _channelClosedWaitHandle}) == 0)
+                        if (WaitHandle.WaitAny(new[]
+                        {
+                            readWaitHandle, _channelClosedWaitHandle
+                        }) == 0)
                         {
                             var read = readTask.GetAwaiter().GetResult();
                             _channel.SendData(buffer, 0, read);
@@ -202,7 +207,8 @@ namespace Renci.SshNet
 
         private void RaiseError(ExceptionEventArgs e)
         {
-            var handler = ErrorOccurred;
+            EventHandler<ExceptionEventArgs> handler = ErrorOccurred;
+
             if (handler != null)
             {
                 handler(this, e);
@@ -280,7 +286,6 @@ namespace Renci.SshNet
         }
 
         #region IDisposable Members
-
         private bool _disposed;
 
         /// <summary>
@@ -306,6 +311,7 @@ namespace Renci.SshNet
                 UnsubscribeFromSessionEvents(_session);
 
                 var channelClosedWaitHandle = _channelClosedWaitHandle;
+
                 if (channelClosedWaitHandle != null)
                 {
                     channelClosedWaitHandle.Dispose();
@@ -313,6 +319,7 @@ namespace Renci.SshNet
                 }
 
                 var channel = _channel;
+
                 if (channel != null)
                 {
                     channel.Dispose();
@@ -320,6 +327,7 @@ namespace Renci.SshNet
                 }
 
                 var dataReaderTaskCompleted = _dataReaderTaskCompleted;
+
                 if (dataReaderTaskCompleted != null)
                 {
                     dataReaderTaskCompleted.Dispose();
@@ -338,8 +346,6 @@ namespace Renci.SshNet
         {
             Dispose(false);
         }
-
         #endregion
-
     }
 }

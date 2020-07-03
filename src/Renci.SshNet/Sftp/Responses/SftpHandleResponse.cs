@@ -2,10 +2,7 @@
 {
     internal class SftpHandleResponse : SftpResponse
     {
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.Handle; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.Handle;
 
         public byte[] Handle { get; set; }
 
@@ -17,7 +14,7 @@
         protected override void LoadData()
         {
             base.LoadData();
-            
+
             Handle = ReadBinary();
         }
 

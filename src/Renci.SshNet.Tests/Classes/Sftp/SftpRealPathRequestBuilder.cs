@@ -52,8 +52,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
 
         public SftpRealPathRequest Build()
         {
-            var nameAction = _nameAction ?? ((nameResponse) => { });
-            var statusAction = _statusAction ?? ((statusResponse) => { });
+            Action<SftpNameResponse> nameAction = _nameAction ?? ((nameResponse) => { });
+            Action<SftpStatusResponse> statusAction = _statusAction ?? ((statusResponse) => { });
 
             return new SftpRealPathRequest(_protocolVersion, _requestId, _path, _encoding, nameAction, statusAction);
         }

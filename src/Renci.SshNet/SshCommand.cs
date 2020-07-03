@@ -67,6 +67,7 @@ namespace Renci.SshNet
         public Stream ExtendedOutputStream { get; private set; }
 
         private StringBuilder _result;
+
         /// <summary>
         /// Gets the command execution result.
         /// </summary>
@@ -94,6 +95,7 @@ namespace Renci.SshNet
         }
 
         private StringBuilder _error;
+
         /// <summary>
         /// Gets the command execution error.
         /// </summary>
@@ -120,6 +122,7 @@ namespace Renci.SshNet
 
                     return _error.ToString();
                 }
+
                 return string.Empty;
             }
         }
@@ -135,8 +138,10 @@ namespace Renci.SshNet
         {
             if (session == null)
                 throw new ArgumentNullException("session");
+
             if (commandText == null)
                 throw new ArgumentNullException("commandText");
+
             if (encoding == null)
                 throw new ArgumentNullException("encoding");
 
@@ -215,11 +220,11 @@ namespace Renci.SshNet
 
             //  Create new AsyncResult object
             _asyncResult = new CommandAsyncResult
-                {
-                    AsyncWaitHandle = new ManualResetEvent(false),
-                    IsCompleted = false,
-                    AsyncState = state,
-                };
+            {
+                AsyncWaitHandle = new ManualResetEvent(false),
+                IsCompleted = false,
+                AsyncState = state
+            };
 
             //  When command re-executed again, create a new channel
             if (_channel != null)
@@ -231,6 +236,7 @@ namespace Renci.SshNet
                 throw new ArgumentException("CommandText property is empty.");
 
             var outputStream = OutputStream;
+
             if (outputStream != null)
             {
                 outputStream.Dispose();
@@ -238,6 +244,7 @@ namespace Renci.SshNet
             }
 
             var extendedOutputStream = ExtendedOutputStream;
+
             if (extendedOutputStream != null)
             {
                 extendedOutputStream.Dispose();
@@ -295,6 +302,7 @@ namespace Renci.SshNet
             }
 
             var commandAsyncResult = asyncResult as CommandAsyncResult;
+
             if (commandAsyncResult == null || _asyncResult != commandAsyncResult)
             {
                 throw new ArgumentException(string.Format("The {0} object was not returned from the corresponding asynchronous method on this class.", typeof(IAsyncResult).Name));
@@ -396,12 +404,14 @@ namespace Renci.SshNet
         private void Channel_Closed(object sender, ChannelEventArgs e)
         {
             var outputStream = OutputStream;
+
             if (outputStream != null)
             {
                 outputStream.Flush();
             }
 
             var extendedOutputStream = ExtendedOutputStream;
+
             if (extendedOutputStream != null)
             {
                 extendedOutputStream.Flush();
@@ -414,15 +424,17 @@ namespace Renci.SshNet
                 //  Execute callback on different thread
                 ThreadAbstraction.ExecuteThread(() => _callback(_asyncResult));
             }
-            ((EventWaitHandle) _asyncResult.AsyncWaitHandle).Set();
+
+            ((EventWaitHandle)_asyncResult.AsyncWaitHandle).Set();
         }
 
         private void Channel_RequestReceived(object sender, ChannelRequestEventArgs e)
         {
             var exitStatusInfo = e.Info as ExitStatusRequestInfo;
+
             if (exitStatusInfo != null)
             {
-                ExitStatus = (int) exitStatusInfo.ExitStatus;
+                ExitStatus = (int)exitStatusInfo.ExitStatus;
 
                 if (exitStatusInfo.WantReply)
                 {
@@ -475,16 +487,16 @@ namespace Renci.SshNet
         /// <remarks>The actual command will be included in the exception message.</remarks>
         private void WaitOnHandle(WaitHandle waitHandle)
         {
-            var waitHandles = new[]
-                {
-                    _sessionErrorOccuredWaitHandle,
-                    waitHandle
-                };
+            WaitHandle[] waitHandles = new[]
+            {
+                _sessionErrorOccuredWaitHandle, waitHandle
+            };
 
             switch (WaitHandle.WaitAny(waitHandles, CommandTimeout))
             {
                 case 0:
                     throw _exception;
+
                 case WaitHandle.WaitTimeout:
                     throw new SshOperationTimeoutException(string.Format(CultureInfo.CurrentCulture, "Command '{0}' has timed out.", CommandText));
             }
@@ -515,7 +527,6 @@ namespace Renci.SshNet
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -541,6 +552,7 @@ namespace Renci.SshNet
                 // unsubscribe from session events to ensure other objects that we're going to dispose
                 // are not accessed while disposing
                 var session = _session;
+
                 if (session != null)
                 {
                     session.Disconnected -= Session_Disconnected;
@@ -551,6 +563,7 @@ namespace Renci.SshNet
                 // unsubscribe from channel events to ensure other objects that we're going to dispose
                 // are not accessed while disposing
                 var channel = _channel;
+
                 if (channel != null)
                 {
                     UnsubscribeFromEventsAndDisposeChannel(channel);
@@ -558,6 +571,7 @@ namespace Renci.SshNet
                 }
 
                 var outputStream = OutputStream;
+
                 if (outputStream != null)
                 {
                     outputStream.Dispose();
@@ -565,6 +579,7 @@ namespace Renci.SshNet
                 }
 
                 var extendedOutputStream = ExtendedOutputStream;
+
                 if (extendedOutputStream != null)
                 {
                     extendedOutputStream.Dispose();
@@ -572,6 +587,7 @@ namespace Renci.SshNet
                 }
 
                 var sessionErrorOccuredWaitHandle = _sessionErrorOccuredWaitHandle;
+
                 if (sessionErrorOccuredWaitHandle != null)
                 {
                     sessionErrorOccuredWaitHandle.Dispose();
@@ -590,7 +606,6 @@ namespace Renci.SshNet
         {
             Dispose(false);
         }
-
         #endregion
     }
 }

@@ -26,7 +26,7 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void SignTest()
         {
-            Key target = CreateKey(); // TODO: Initialize to an appropriate value
+            var target = CreateKey(); // TODO: Initialize to an appropriate value
             byte[] data = null; // TODO: Initialize to an appropriate value
             byte[] expected = null; // TODO: Initialize to an appropriate value
             byte[] actual;
@@ -42,10 +42,10 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void VerifySignatureTest()
         {
-            Key target = CreateKey(); // TODO: Initialize to an appropriate value
+            var target = CreateKey(); // TODO: Initialize to an appropriate value
             byte[] data = null; // TODO: Initialize to an appropriate value
             byte[] signature = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.VerifySignature(data, signature);
             Assert.AreEqual(expected, actual);
@@ -59,7 +59,7 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void KeyLengthTest()
         {
-            Key target = CreateKey(); // TODO: Initialize to an appropriate value
+            var target = CreateKey(); // TODO: Initialize to an appropriate value
             int actual;
             actual = target.KeyLength;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -72,7 +72,7 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void PublicTest()
         {
-            Key target = CreateKey(); // TODO: Initialize to an appropriate value
+            var target = CreateKey(); // TODO: Initialize to an appropriate value
             BigInteger[] expected = null; // TODO: Initialize to an appropriate value
             BigInteger[] actual;
             target.Public = expected;

@@ -17,10 +17,10 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ScpDownloadEventArgsConstructorTest()
         {
-            string filename = string.Empty; // TODO: Initialize to an appropriate value
+            var filename = string.Empty; // TODO: Initialize to an appropriate value
             long size = 0; // TODO: Initialize to an appropriate value
             long downloaded = 0; // TODO: Initialize to an appropriate value
-            ScpDownloadEventArgs target = new ScpDownloadEventArgs(filename, size, downloaded);
+            var target = new ScpDownloadEventArgs(filename, size, downloaded);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

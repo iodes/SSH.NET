@@ -69,11 +69,17 @@ namespace Renci.SshNet.Tests.Classes.Common
 
             var writeToStreamThread = new Thread(
                 () =>
+                {
+                    Thread.Sleep(sleepTime);
+
+                    var writeBuffer = new byte[]
                     {
-                        Thread.Sleep(sleepTime);
-                        var writeBuffer = new byte[] {0x05, 0x03};
-                        target.Write(writeBuffer, 0, writeBuffer.Length);
-                    });
+                        0x05, 0x03
+                    };
+
+                    target.Write(writeBuffer, 0, writeBuffer.Length);
+                });
+
             writeToStreamThread.Start();
 
             readBuffer = new byte[2];
@@ -98,7 +104,6 @@ namespace Renci.SshNet.Tests.Classes.Common
             catch (NotSupportedException)
             {
             }
-
         }
 
         [TestMethod]
@@ -121,10 +126,18 @@ namespace Renci.SshNet.Tests.Classes.Common
         {
             var target = new PipeStream();
 
-            var writeBuffer = new byte[] {0x0a, 0x05, 0x0d};
+            var writeBuffer = new byte[]
+            {
+                0x0a, 0x05, 0x0d
+            };
+
             target.Write(writeBuffer, 0, 2);
 
-            writeBuffer = new byte[] { 0x02, 0x04, 0x03, 0x06, 0x09 };
+            writeBuffer = new byte[]
+            {
+                0x02, 0x04, 0x03, 0x06, 0x09
+            };
+
             target.Write(writeBuffer, 1, 2);
 
             var readBuffer = new byte[6];
@@ -165,7 +178,12 @@ namespace Renci.SshNet.Tests.Classes.Common
         {
             var target = new PipeStream();
             Assert.AreEqual(0L, target.Length);
-            target.Write(new byte[] { 0x0a, 0x05, 0x0d }, 0, 2);
+
+            target.Write(new byte[]
+            {
+                0x0a, 0x05, 0x0d
+            }, 0, 2);
+
             Assert.AreEqual(2L, target.Length);
             target.WriteByte(0x0a);
             Assert.AreEqual(3L, target.Length);

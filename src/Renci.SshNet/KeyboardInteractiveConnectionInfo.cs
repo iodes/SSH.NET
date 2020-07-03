@@ -29,7 +29,6 @@ namespace Renci.SshNet
         public KeyboardInteractiveConnectionInfo(string host, string username)
             : this(host, DefaultPort, username, ProxyTypes.None, string.Empty, 0, string.Empty, string.Empty)
         {
-
         }
 
         /// <summary>
@@ -41,7 +40,6 @@ namespace Renci.SshNet
         public KeyboardInteractiveConnectionInfo(string host, int port, string username)
             : this(host, port, username, ProxyTypes.None, string.Empty, 0, string.Empty, string.Empty)
         {
-
         }
 
         /// <summary>
@@ -132,12 +130,12 @@ namespace Renci.SshNet
             foreach (var authenticationMethod in AuthenticationMethods)
             {
                 var kbdInteractive = authenticationMethod as KeyboardInteractiveAuthenticationMethod;
+
                 if (kbdInteractive != null)
                 {
                     kbdInteractive.AuthenticationPrompt += AuthenticationMethod_AuthenticationPrompt;
                 }
             }
-
         }
 
         private void AuthenticationMethod_AuthenticationPrompt(object sender, AuthenticationPromptEventArgs e)
@@ -148,9 +146,7 @@ namespace Renci.SshNet
             }
         }
 
-
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -178,6 +174,7 @@ namespace Renci.SshNet
                     foreach (var authenticationMethods in AuthenticationMethods)
                     {
                         var disposable = authenticationMethods as IDisposable;
+
                         if (disposable != null)
                         {
                             disposable.Dispose();
@@ -197,7 +194,6 @@ namespace Renci.SshNet
         {
             Dispose(false);
         }
-
         #endregion
     }
 }

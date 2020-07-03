@@ -30,10 +30,12 @@ namespace Renci.SshNet.Tests.Classes
         /// <summary>
         /// A test for <see cref="PrivateKeyFile(string)"/> ctor.
         ///</summary>
-        [WorkItem(703), TestMethod]
+        [WorkItem(703)]
+        [TestMethod]
         public void ConstructorWithFileNameShouldThrowArgumentNullExceptionWhenFileNameIsEmpty()
         {
             var fileName = string.Empty;
+
             try
             {
                 new PrivateKeyFile(fileName);
@@ -49,10 +51,12 @@ namespace Renci.SshNet.Tests.Classes
         /// <summary>
         /// A test for <see cref="PrivateKeyFile(string)"/> ctor.
         ///</summary>
-        [WorkItem(703), TestMethod]
+        [WorkItem(703)]
+        [TestMethod]
         public void ConstructorWithFileNameShouldThrowArgumentNullExceptionWhenFileNameIsNull()
         {
             var fileName = string.Empty;
+
             try
             {
                 new PrivateKeyFile(fileName);
@@ -68,10 +72,12 @@ namespace Renci.SshNet.Tests.Classes
         /// <summary>
         /// A test for <see cref="PrivateKeyFile(string, string)"/> ctor.
         ///</summary>
-        [WorkItem(703), TestMethod]
+        [WorkItem(703)]
+        [TestMethod]
         public void ConstructorWithFileNameAndPassphraseShouldThrowArgumentNullExceptionWhenFileNameIsEmpty()
         {
             var fileName = string.Empty;
+
             try
             {
                 new PrivateKeyFile(fileName, "12345");
@@ -87,10 +93,12 @@ namespace Renci.SshNet.Tests.Classes
         /// <summary>
         /// A test for <see cref="PrivateKeyFile(string, string)"/> ctor.
         ///</summary>
-        [WorkItem(703), TestMethod]
+        [WorkItem(703)]
+        [TestMethod]
         public void ConstructorWithFileNameAndPassphraseShouldThrowArgumentNullExceptionWhenFileNameIsNull()
         {
             var fileName = string.Empty;
+
             try
             {
                 new PrivateKeyFile(fileName, "12345");
@@ -103,10 +111,12 @@ namespace Renci.SshNet.Tests.Classes
             }
         }
 
-        [WorkItem(703), TestMethod]
+        [WorkItem(703)]
+        [TestMethod]
         public void ConstructorWithPrivateKeyShouldThrowArgumentNullExceptionWhenPrivateKeyIsNull()
         {
             Stream privateKey = null;
+
             try
             {
                 new PrivateKeyFile(privateKey);
@@ -119,10 +129,12 @@ namespace Renci.SshNet.Tests.Classes
             }
         }
 
-        [WorkItem(703), TestMethod]
+        [WorkItem(703)]
+        [TestMethod]
         public void ConstructorWithPrivateKeyAndPassphraseShouldThrowArgumentNullExceptionWhenPrivateKeyIsNull()
         {
             Stream privateKey = null;
+
             try
             {
                 new PrivateKeyFile(privateKey, "12345");
@@ -580,6 +592,7 @@ namespace Renci.SshNet.Tests.Classes
             using (var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
             {
                 var bytesRead = stream.Read(buffer, 0, buffer.Length);
+
                 while (bytesRead > 0)
                 {
                     fs.Write(buffer, 0, bytesRead);

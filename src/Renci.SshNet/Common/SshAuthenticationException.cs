@@ -1,4 +1,5 @@
 ﻿using System;
+
 #if FEATURE_BINARY_SERIALIZATION
 using System.Runtime.Serialization;
 #endif // FEATURE_BINARY_SERIALIZATION
@@ -18,7 +19,6 @@ namespace Renci.SshNet.Common
         /// </summary>
         public SshAuthenticationException()
         {
-
         }
 
         /// <summary>
@@ -28,7 +28,6 @@ namespace Renci.SshNet.Common
         public SshAuthenticationException(string message)
             : base(message)
         {
-
         }
 
         /// <summary>

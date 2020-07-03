@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Math.Raw;
 
 namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
@@ -9,8 +8,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
     {
         protected override ECPoint MultiplyPositive(ECPoint p, BigInteger k)
         {
-            ECCurve c = p.Curve;
-            int size = FixedPointUtilities.GetCombSize(c);
+            var c = p.Curve;
+            var size = FixedPointUtilities.GetCombSize(c);
 
             if (k.BitLength > size)
             {
@@ -23,31 +22,32 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
                 throw new InvalidOperationException("fixed-point comb doesn't support scalars larger than the curve order");
             }
 
-            FixedPointPreCompInfo info = FixedPointUtilities.Precompute(p);
-            ECLookupTable lookupTable = info.LookupTable;
-            int width = info.Width;
+            var info = FixedPointUtilities.Precompute(p);
+            var lookupTable = info.LookupTable;
+            var width = info.Width;
 
-            int d = (size + width - 1) / width;
+            var d = (size + width - 1) / width;
 
-            ECPoint R = c.Infinity;
+            var R = c.Infinity;
 
-            int fullComb = d * width;
+            var fullComb = d * width;
             uint[] K = Nat.FromBigInteger(fullComb, k);
 
-            int top = fullComb - 1;
-            for (int i = 0; i < d; ++i)
+            var top = fullComb - 1;
+
+            for (var i = 0; i < d; ++i)
             {
                 uint secretIndex = 0;
 
-                for (int j = top - i; j >= 0; j -= d)
+                for (var j = top - i; j >= 0; j -= d)
                 {
-                    uint secretBit = K[j >> 5] >> (j & 0x1F);
+                    var secretBit = K[j >> 5] >> (j & 0x1F);
                     secretIndex ^= secretBit >> 1;
                     secretIndex <<= 1;
                     secretIndex ^= secretBit;
                 }
 
-                ECPoint add = lookupTable.Lookup((int)secretIndex);
+                var add = lookupTable.Lookup((int)secretIndex);
 
                 R = R.TwicePlus(add);
             }

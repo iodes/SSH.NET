@@ -13,7 +13,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.Field
             {
                 throw new ArgumentException("Irreducible polynomials in GF(2) must have constant term", "exponents");
             }
-            for (int i = 1; i < exponents.Length; ++i)
+
+            for (var i = 1; i < exponents.Length; ++i)
             {
                 if (exponents[i] <= exponents[i - 1])
                 {
@@ -24,14 +25,15 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.Field
             return new GenericPolynomialExtensionField(GF_2, new GF2Polynomial(exponents));
         }
 
-    //    public static IPolynomialExtensionField GetTernaryExtensionField(Term[] terms)
-    //    {
-    //        return new GenericPolynomialExtensionField(GF_3, new GF3Polynomial(terms));
-    //    }
+        //    public static IPolynomialExtensionField GetTernaryExtensionField(Term[] terms)
+        //    {
+        //        return new GenericPolynomialExtensionField(GF_3, new GF3Polynomial(terms));
+        //    }
 
         public static IFiniteField GetPrimeField(BigInteger characteristic)
         {
-            int bitLength = characteristic.BitLength;
+            var bitLength = characteristic.BitLength;
+
             if (characteristic.SignValue <= 0 || bitLength < 2)
             {
                 throw new ArgumentException("Must be >= 2", "characteristic");
@@ -41,10 +43,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.Field
             {
                 switch (characteristic.IntValue)
                 {
-                case 2:
-                    return GF_2;
-                case 3:
-                    return GF_3;
+                    case 2:
+                        return GF_2;
+
+                    case 3:
+                        return GF_3;
                 }
             }
 

@@ -44,8 +44,8 @@ namespace Renci.SshNet.Messages.Transport
         /// </summary>
         public KeyExchangeEcdhInitMessage(BigInteger d, BigInteger q)
         {
-            var dBytes = d.ToByteArray().Reverse();
-            var qBytes = q.ToByteArray().Reverse();
+            byte[] dBytes = d.ToByteArray().Reverse();
+            byte[] qBytes = q.ToByteArray().Reverse();
 
             var data = new byte[dBytes.Length + qBytes.Length + 1];
             data[0] = 0x04;

@@ -11,14 +11,14 @@ namespace Renci.SshNet.Sftp.Requests
 
         public string OldPath
         {
-            get { return Encoding.GetString(_oldPath, 0, _oldPath.Length); }
-            private set { _oldPath = Encoding.GetBytes(value); }
+            get => Encoding.GetString(_oldPath, 0, _oldPath.Length);
+            private set => _oldPath = Encoding.GetBytes(value);
         }
 
         public string NewPath
         {
-            get { return Encoding.GetString(_newPath, 0, _newPath.Length); }
-            private set { _newPath = Encoding.GetBytes(value); }
+            get => Encoding.GetString(_newPath, 0, _newPath.Length);
+            private set => _newPath = Encoding.GetBytes(value);
         }
 
         public Encoding Encoding { get; private set; }

@@ -80,23 +80,25 @@ namespace Renci.SshNet.Tests.Classes
             _bindEndpoint = new IPEndPoint(IPAddress.Any, random.Next(IPEndPoint.MinPort, IPEndPoint.MaxPort));
             _remoteEndpoint = new IPEndPoint(IPAddress.Parse("193.168.1.5"), random.Next(IPEndPoint.MinPort, IPEndPoint.MaxPort));
             _bindSleepTime = TimeSpan.FromMilliseconds(random.Next(100, 500));
-            _remoteChannelNumberWhileClosing = (uint) random.Next(0, 1000);
-            _remoteWindowSizeWhileClosing = (uint) random.Next(0, int.MaxValue);
-            _remotePacketSizeWhileClosing = (uint) random.Next(0, int.MaxValue);
-            _remoteChannelNumberStarted = (uint) random.Next(0, 1000);
-            _remoteWindowSizeStarted = (uint) random.Next(0, int.MaxValue);
-            _remotePacketSizeStarted = (uint) random.Next(0, int.MaxValue);
+            _remoteChannelNumberWhileClosing = (uint)random.Next(0, 1000);
+            _remoteWindowSizeWhileClosing = (uint)random.Next(0, int.MaxValue);
+            _remotePacketSizeWhileClosing = (uint)random.Next(0, int.MaxValue);
+            _remoteChannelNumberStarted = (uint)random.Next(0, 1000);
+            _remoteWindowSizeStarted = (uint)random.Next(0, int.MaxValue);
+            _remotePacketSizeStarted = (uint)random.Next(0, int.MaxValue);
             _originatorAddress = random.Next().ToString(CultureInfo.InvariantCulture);
-            _originatorPort = (uint) random.Next(0, int.MaxValue);
+            _originatorPort = (uint)random.Next(0, int.MaxValue);
             _channelBindStarted = new ManualResetEvent(false);
             _channelBindCompleted = new ManualResetEvent(false);
 
             ForwardedPort = new ForwardedPortRemote(_bindEndpoint.Address, (uint)_bindEndpoint.Port, _remoteEndpoint.Address, (uint)_remoteEndpoint.Port);
+
             ForwardedPort.Closing += (sender, args) =>
-                {
-                    _closingRegister.Add(args);
-                    _sessionMock.Raise(p => p.ChannelOpenReceived += null, new MessageEventArgs<ChannelOpenMessage>(new ChannelOpenMessage(_remoteChannelNumberWhileClosing, _remoteWindowSizeWhileClosing, _remotePacketSizeWhileClosing, new ForwardedTcpipChannelInfo(ForwardedPort.BoundHost, ForwardedPort.BoundPort, _originatorAddress, _originatorPort))));
-                };
+            {
+                _closingRegister.Add(args);
+                _sessionMock.Raise(p => p.ChannelOpenReceived += null, new MessageEventArgs<ChannelOpenMessage>(new ChannelOpenMessage(_remoteChannelNumberWhileClosing, _remoteWindowSizeWhileClosing, _remotePacketSizeWhileClosing, new ForwardedTcpipChannelInfo(ForwardedPort.BoundHost, ForwardedPort.BoundPort, _originatorAddress, _originatorPort))));
+            };
+
             ForwardedPort.Exception += (sender, args) => _exceptionRegister.Add(args);
             ForwardedPort.Session = _sessionMock.Object;
         }
@@ -109,43 +111,49 @@ namespace Renci.SshNet.Tests.Classes
             _sessionMock.Setup(p => p.RegisterMessage("SSH_MSG_REQUEST_FAILURE"));
             _sessionMock.Setup(p => p.RegisterMessage("SSH_MSG_REQUEST_SUCCESS"));
             _sessionMock.Setup(p => p.RegisterMessage("SSH_MSG_CHANNEL_OPEN"));
+
             _sessionMock.Setup(
-                p =>
-                    p.SendMessage(
-                        It.Is<TcpIpForwardGlobalRequestMessage>(
-                            g =>
-                                g.AddressToBind == ForwardedPort.BoundHost &&
-                                g.PortToBind == ForwardedPort.BoundPort)))
+                    p =>
+                        p.SendMessage(
+                            It.Is<TcpIpForwardGlobalRequestMessage>(
+                                g =>
+                                    g.AddressToBind == ForwardedPort.BoundHost &&
+                                    g.PortToBind == ForwardedPort.BoundPort)))
                 .Callback(
                     () =>
                         _sessionMock.Raise(s => s.RequestSuccessReceived += null,
                             new MessageEventArgs<RequestSuccessMessage>(new RequestSuccessMessage())));
+
             _sessionMock.Setup(p => p.WaitOnHandle(It.IsAny<WaitHandle>()));
             _sessionMock.Setup(p => p.SendMessage(It.Is<ChannelOpenFailureMessage>(c => c.LocalChannelNumber == _remoteChannelNumberWhileClosing && c.ReasonCode == ChannelOpenFailureMessage.AdministrativelyProhibited && c.Description == string.Empty && c.Language == "en")));
             _sessionMock.Setup(p => p.CreateChannelForwardedTcpip(_remoteChannelNumberStarted, _remoteWindowSizeStarted, _remotePacketSizeStarted)).Returns(_channelMock.Object);
+
             _channelMock.Setup(
                 p =>
                     p.Bind(
                         It.Is<IPEndPoint>(
                             ep => ep.Address.Equals(_remoteEndpoint.Address) && ep.Port == _remoteEndpoint.Port),
                         ForwardedPort)).Callback(() =>
-                            {
-                                _channelBindStarted.Set();
-                                Thread.Sleep(_bindSleepTime);
-                                _channelBindCompleted.Set();
-                            });
+            {
+                _channelBindStarted.Set();
+                Thread.Sleep(_bindSleepTime);
+                _channelBindCompleted.Set();
+            });
+
             _channelMock.Setup(p => p.Dispose());
+
             _sessionMock.Setup(
                 p =>
                     p.SendMessage(
                         It.Is<CancelTcpIpForwardGlobalRequestMessage>(
                             g =>
                                 g.AddressToBind == ForwardedPort.BoundHost && g.PortToBind == ForwardedPort.BoundPort))).Callback(
-                                    () =>
-                                        {
-                                            // raise event confirming that forwarded port was cancelled
-                                            _sessionMock.Raise(p => p.RequestSuccessReceived += null, new MessageEventArgs<RequestSuccessMessage>(new RequestSuccessMessage()));
-                                        });
+                () =>
+                {
+                    // raise event confirming that forwarded port was cancelled
+                    _sessionMock.Raise(p => p.RequestSuccessReceived += null, new MessageEventArgs<RequestSuccessMessage>(new RequestSuccessMessage()));
+                });
+
             _sessionMock.Setup(p => p.MessageListenerCompleted).Returns(new ManualResetEvent(false));
         }
 
@@ -184,7 +192,7 @@ namespace Renci.SshNet.Tests.Classes
         public void ForwardedPortShouldRejectChannelOpenMessagesThatAreReceivedWhileTheSuccessMessageForTheCancelOfTheForwardedPortIsNotReceived()
         {
             _sessionMock.Verify(p => p.SendMessage(new ChannelOpenFailureMessage(_remoteChannelNumberWhileClosing, string.Empty,
-                        ChannelOpenFailureMessage.AdministrativelyProhibited)), Times.Never);
+                ChannelOpenFailureMessage.AdministrativelyProhibited)), Times.Never);
         }
 
         [TestMethod]
@@ -200,6 +208,7 @@ namespace Renci.SshNet.Tests.Classes
             _sessionMock.Setup(
                 p =>
                     p.CreateChannelForwardedTcpip(channelNumberDisposed, initialWindowSizeDisposed, maximumPacketSizeDisposed)).Returns(channelMock.Object);
+
             _sessionMock.Setup(
                 p =>
                     p.SendMessage(new ChannelOpenFailureMessage(channelNumberDisposed, string.Empty,

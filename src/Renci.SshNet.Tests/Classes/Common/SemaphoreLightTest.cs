@@ -54,7 +54,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void WaitTest()
         {
-            const int sleepTime = 200; 
+            const int sleepTime = 200;
             const int initialCount = 2;
             var target = new SemaphoreLight(initialCount);
 
@@ -67,10 +67,11 @@ namespace Renci.SshNet.Tests.Classes.Common
 
             var releaseThread = new Thread(
                 () =>
-                    {
-                        Thread.Sleep(sleepTime);
-                        target.Release();
-                    });
+                {
+                    Thread.Sleep(sleepTime);
+                    target.Release();
+                });
+
             releaseThread.Start();
 
             target.Wait();

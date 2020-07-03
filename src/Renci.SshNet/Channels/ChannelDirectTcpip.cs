@@ -38,15 +38,13 @@ namespace Renci.SshNet.Channels
         /// <value>
         /// The type of the channel.
         /// </value>
-        public override ChannelTypes ChannelType
-        {
-            get { return ChannelTypes.DirectTcpip; }
-        }
+        public override ChannelTypes ChannelType => ChannelTypes.DirectTcpip;
 
         public void Open(string remoteHost, uint port, IForwardedPort forwardedPort, Socket socket)
         {
             if (IsOpen)
                 throw new SshException("Channel is already open.");
+
             if (!IsConnected)
                 throw new SshException("Session is not connected.");
 
@@ -54,11 +52,12 @@ namespace Renci.SshNet.Channels
             _forwardedPort = forwardedPort;
             _forwardedPort.Closing += ForwardedPort_Closing;
 
-            var ep = (IPEndPoint) socket.RemoteEndPoint;
+            var ep = (IPEndPoint)socket.RemoteEndPoint;
 
             // open channel
             SendMessage(new ChannelOpenMessage(LocalChannelNumber, LocalWindowSize, LocalPacketSize,
-                new DirectTcpipChannelInfo(remoteHost, port, ep.Address.ToString(), (uint) ep.Port)));
+                new DirectTcpipChannelInfo(remoteHost, port, ep.Address.ToString(), (uint)ep.Port)));
+
             //  Wait for channel to open
             WaitOnHandle(_channelOpen);
         }
@@ -150,6 +149,7 @@ namespace Renci.SshNet.Channels
         protected override void Close()
         {
             var forwardedPort = _forwardedPort;
+
             if (forwardedPort != null)
             {
                 forwardedPort.Closing -= ForwardedPort_Closing;
@@ -272,6 +272,7 @@ namespace Renci.SshNet.Channels
                     lock (_socketLock)
                     {
                         var socket = _socket;
+
                         if (socket != null)
                         {
                             _socket = null;
@@ -281,6 +282,7 @@ namespace Renci.SshNet.Channels
                 }
 
                 var channelOpen = _channelOpen;
+
                 if (channelOpen != null)
                 {
                     _channelOpen = null;
@@ -288,6 +290,7 @@ namespace Renci.SshNet.Channels
                 }
 
                 var channelData = _channelData;
+
                 if (channelData != null)
                 {
                     _channelData = null;

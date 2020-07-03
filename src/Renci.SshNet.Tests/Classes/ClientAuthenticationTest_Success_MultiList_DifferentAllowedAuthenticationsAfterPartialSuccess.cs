@@ -49,16 +49,21 @@ namespace Renci.SshNet.Tests.Classes
 
             NoneAuthenticationMethodMock.InSequence(seq).Setup(p => p.Authenticate(SessionMock.Object))
                 .Returns(AuthenticationResult.Failure);
+
             ConnectionInfoMock.InSequence(seq).Setup(p => p.AuthenticationMethods)
-                            .Returns(new List<IAuthenticationMethod>
+                .Returns(new List<IAuthenticationMethod>
                 {
                     PasswordAuthenticationMethodMock.Object,
                     PublicKeyAuthenticationMethodMock.Object,
-                    KeyboardInteractiveAuthenticationMethodMock.Object,
+                    KeyboardInteractiveAuthenticationMethodMock.Object
                 });
+
             NoneAuthenticationMethodMock.InSequence(seq)
-                                        .Setup(p => p.AllowedAuthentications)
-                                        .Returns(new[] {"publickey", "password"});
+                .Setup(p => p.AllowedAuthentications)
+                .Returns(new[]
+                {
+                    "publickey", "password"
+                });
 
             /* Enumerate supported authentication methods */
 
@@ -70,8 +75,12 @@ namespace Renci.SshNet.Tests.Classes
 
             PasswordAuthenticationMethodMock.InSequence(seq).Setup(p => p.Authenticate(SessionMock.Object))
                 .Returns(AuthenticationResult.PartialSuccess);
+
             PasswordAuthenticationMethodMock.InSequence(seq).Setup(p => p.AllowedAuthentications)
-                                            .Returns(new[] {"keyboard-interactive", "publickey"});
+                .Returns(new[]
+                {
+                    "keyboard-interactive", "publickey"
+                });
 
             /* Enumerate supported authentication methods */
 
@@ -82,8 +91,8 @@ namespace Renci.SshNet.Tests.Classes
             /* 3 */
 
             PublicKeyAuthenticationMethodMock.InSequence(seq)
-                                             .Setup(p => p.Authenticate(SessionMock.Object))
-                                             .Returns(AuthenticationResult.Success);
+                .Setup(p => p.Authenticate(SessionMock.Object))
+                .Returns(AuthenticationResult.Success);
 
             SessionMock.InSequence(seq).Setup(p => p.UnRegisterMessage("SSH_MSG_USERAUTH_FAILURE"));
             SessionMock.InSequence(seq).Setup(p => p.UnRegisterMessage("SSH_MSG_USERAUTH_SUCCESS"));

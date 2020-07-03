@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Renci.SshNet.Tests.Common;
 
 namespace Renci.SshNet.Tests.Classes.Compression
-{   
+{
     /// <summary>
     ///This is a test class for CompressorTest and is intended
     ///to contain all CompressorTest Unit Tests
@@ -25,7 +25,7 @@ namespace Renci.SshNet.Tests.Classes.Compression
         [TestMethod()]
         public void CompressTest()
         {
-            Compressor target = CreateCompressor(); // TODO: Initialize to an appropriate value
+            var target = CreateCompressor(); // TODO: Initialize to an appropriate value
             byte[] data = null; // TODO: Initialize to an appropriate value
             byte[] expected = null; // TODO: Initialize to an appropriate value
             byte[] actual;
@@ -40,7 +40,7 @@ namespace Renci.SshNet.Tests.Classes.Compression
         [TestMethod()]
         public void DecompressTest()
         {
-            Compressor target = CreateCompressor(); // TODO: Initialize to an appropriate value
+            var target = CreateCompressor(); // TODO: Initialize to an appropriate value
             byte[] data = null; // TODO: Initialize to an appropriate value
             byte[] expected = null; // TODO: Initialize to an appropriate value
             byte[] actual;
@@ -55,7 +55,7 @@ namespace Renci.SshNet.Tests.Classes.Compression
         [TestMethod()]
         public void DisposeTest()
         {
-            Compressor target = CreateCompressor(); // TODO: Initialize to an appropriate value
+            var target = CreateCompressor(); // TODO: Initialize to an appropriate value
             target.Dispose();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -66,7 +66,7 @@ namespace Renci.SshNet.Tests.Classes.Compression
         [TestMethod()]
         public void InitTest()
         {
-            Compressor target = CreateCompressor(); // TODO: Initialize to an appropriate value
+            var target = CreateCompressor(); // TODO: Initialize to an appropriate value
             Session session = null; // TODO: Initialize to an appropriate value
             target.Init(session);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");

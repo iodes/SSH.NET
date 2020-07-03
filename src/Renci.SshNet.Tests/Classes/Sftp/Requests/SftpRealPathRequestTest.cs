@@ -25,8 +25,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Requests
         {
             var random = new Random();
 
-            _protocolVersion = (uint) random.Next(0, int.MaxValue);
-            _requestId = (uint) random.Next(0, int.MaxValue);
+            _protocolVersion = (uint)random.Next(0, int.MaxValue);
+            _requestId = (uint)random.Next(0, int.MaxValue);
             _encoding = Encoding.Unicode;
             _path = random.Next().ToString(CultureInfo.InvariantCulture);
             _pathBytes = _encoding.GetBytes(_path);
@@ -107,6 +107,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Requests
             var nameActionInvocations = new List<SftpNameResponse>();
             Action<SftpStatusResponse> statusAction = statusActionInvocations.Add;
             Action<SftpNameResponse> nameAction = nameActionInvocations.Add;
+
             var request = new SftpRealPathRequest(
                 _protocolVersion,
                 _requestId,
@@ -115,7 +116,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Requests
                 nameAction,
                 statusAction);
 
-            var bytes = request.GetBytes();
+            byte[] bytes = request.GetBytes();
 
             var expectedBytesLength = 0;
             expectedBytesLength += 4; // Length
@@ -128,11 +129,11 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Requests
 
             var sshDataStream = new SshDataStream(bytes);
 
-            Assert.AreEqual((uint) bytes.Length - 4, sshDataStream.ReadUInt32());
-            Assert.AreEqual((byte) SftpMessageTypes.RealPath, sshDataStream.ReadByte());
+            Assert.AreEqual((uint)bytes.Length - 4, sshDataStream.ReadUInt32());
+            Assert.AreEqual((byte)SftpMessageTypes.RealPath, sshDataStream.ReadByte());
             Assert.AreEqual(_requestId, sshDataStream.ReadUInt32());
 
-            Assert.AreEqual((uint) _pathBytes.Length, sshDataStream.ReadUInt32());
+            Assert.AreEqual((uint)_pathBytes.Length, sshDataStream.ReadUInt32());
             var actualPath = new byte[_pathBytes.Length];
             sshDataStream.Read(actualPath, 0, actualPath.Length);
             Assert.IsTrue(_pathBytes.SequenceEqual(actualPath));

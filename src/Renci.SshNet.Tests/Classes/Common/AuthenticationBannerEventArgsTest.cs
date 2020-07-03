@@ -4,8 +4,6 @@ using Renci.SshNet.Tests.Common;
 
 namespace Renci.SshNet.Tests.Classes.Common
 {
-    
-    
     /// <summary>
     ///This is a test class for AuthenticationBannerEventArgsTest and is intended
     ///to contain all AuthenticationBannerEventArgsTest Unit Tests
@@ -19,10 +17,10 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void AuthenticationBannerEventArgsConstructorTest()
         {
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            string message = string.Empty; // TODO: Initialize to an appropriate value
-            string language = string.Empty; // TODO: Initialize to an appropriate value
-            AuthenticationBannerEventArgs target = new AuthenticationBannerEventArgs(username, message, language);
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var message = string.Empty; // TODO: Initialize to an appropriate value
+            var language = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new AuthenticationBannerEventArgs(username, message, language);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

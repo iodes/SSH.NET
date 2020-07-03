@@ -15,7 +15,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         {
             var value = new byte[0];
 
-            var actual = Extensions.Reverse(value);
+            byte[] actual = Extensions.Reverse(value);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(0, actual.Length);
@@ -41,9 +41,12 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void Small()
         {
-            var value = new[] {0, 1, 4, 3, 7, 9};
+            var value = new[]
+            {
+                0, 1, 4, 3, 7, 9
+            };
 
-            var actual = Extensions.Reverse(value);
+            int[] actual = Extensions.Reverse(value);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(6, actual.Length);
@@ -81,4 +84,3 @@ namespace Renci.SshNet.Tests.Classes.Common
         }
     }
 }
-

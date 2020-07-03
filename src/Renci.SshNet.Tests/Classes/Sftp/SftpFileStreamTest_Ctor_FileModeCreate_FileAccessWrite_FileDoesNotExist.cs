@@ -37,26 +37,29 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         protected override void SetupMocks()
         {
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.RequestOpen(_path, Flags.Write | Flags.Truncate, true))
-                           .Returns((byte[]) null);
+                .Setup(p => p.RequestOpen(_path, Flags.Write | Flags.Truncate, true))
+                .Returns((byte[])null);
+
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.RequestOpen(_path, Flags.Write | Flags.CreateNew, false))
-                           .Returns(_handle);
+                .Setup(p => p.RequestOpen(_path, Flags.Write | Flags.CreateNew, false))
+                .Returns(_handle);
+
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.CalculateOptimalReadLength((uint) _bufferSize))
-                           .Returns(_readBufferSize);
+                .Setup(p => p.CalculateOptimalReadLength((uint)_bufferSize))
+                .Returns(_readBufferSize);
+
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.CalculateOptimalWriteLength((uint) _bufferSize, _handle))
-                           .Returns(_writeBufferSize);
+                .Setup(p => p.CalculateOptimalWriteLength((uint)_bufferSize, _handle))
+                .Returns(_writeBufferSize);
         }
 
         protected override void Act()
         {
             _target = new SftpFileStream(SftpSessionMock.Object,
-                                         _path,
-                                         _fileMode,
-                                         _fileAccess,
-                                         _bufferSize);
+                _path,
+                _fileMode,
+                _fileAccess,
+                _bufferSize);
         }
 
         [TestMethod]

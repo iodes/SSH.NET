@@ -6,8 +6,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities.Encoders
     {
         protected readonly byte[] encodingTable =
         {
-            (byte)'0', (byte)'1', (byte)'2', (byte)'3', (byte)'4', (byte)'5', (byte)'6', (byte)'7',
-            (byte)'8', (byte)'9', (byte)'a', (byte)'b', (byte)'c', (byte)'d', (byte)'e', (byte)'f'
+            (byte)'0', (byte)'1', (byte)'2', (byte)'3', (byte)'4', (byte)'5', (byte)'6', (byte)'7', (byte)'8', (byte)'9', (byte)'a', (byte)'b', (byte)'c', (byte)'d', (byte)'e', (byte)'f'
         };
 
         /*
@@ -19,7 +18,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities.Encoders
         {
             Arrays.Fill(decodingTable, (byte)0xff);
 
-            for (int i = 0; i < encodingTable.Length; i++)
+            for (var i = 0; i < encodingTable.Length; i++)
             {
                 decodingTable[encodingTable[i]] = (byte)i;
             }
@@ -43,12 +42,12 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities.Encoders
         * @return the number of bytes produced.
         */
         public int Encode(
-            byte[]	data,
-            int		off,
-            int		length,
-            Stream	outStream)
+            byte[] data,
+            int off,
+            int length,
+            Stream outStream)
         {
-            for (int i = off; i < (off + length); i++)
+            for (var i = off; i < off + length; i++)
             {
                 int v = data[i];
 
@@ -61,7 +60,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities.Encoders
 
         private static bool Ignore(char c)
         {
-            return c == '\n' || c =='\r' || c == '\t' || c == ' ';
+            return c == '\n' || c == '\r' || c == '\t' || c == ' ';
         }
 
         /**
@@ -71,14 +70,14 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities.Encoders
         * @return the number of bytes produced.
         */
         public int Decode(
-            byte[]	data,
-            int		off,
-            int		length,
-            Stream	outStream)
+            byte[] data,
+            int off,
+            int length,
+            Stream outStream)
         {
             byte b1, b2;
-            int outLen = 0;
-            int end = off + length;
+            var outLen = 0;
+            var end = off + length;
 
             while (end > off)
             {
@@ -90,7 +89,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities.Encoders
                 end--;
             }
 
-            int i = off;
+            var i = off;
+
             while (i < end)
             {
                 while (i < end && Ignore((char)data[i]))
@@ -125,13 +125,13 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities.Encoders
         * @return the number of bytes produced.
         */
         public int DecodeString(
-            string	data,
-            Stream	outStream)
+            string data,
+            Stream outStream)
         {
-            byte    b1, b2;
-            int     length = 0;
+            byte b1, b2;
+            var length = 0;
 
-            int     end = data.Length;
+            var end = data.Length;
 
             while (end > 0)
             {
@@ -143,7 +143,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities.Encoders
                 end--;
             }
 
-            int i = 0;
+            var i = 0;
+
             while (i < end)
             {
                 while (i < end && Ignore(data[i]))

@@ -26,8 +26,8 @@ namespace Renci.SshNet
         /// </summary>
         event EventHandler IForwardedPort.Closing
         {
-            add { Closing += value; }
-            remove { Closing -= value; }
+            add => Closing += value;
+            remove => Closing -= value;
         }
 
         /// <summary>
@@ -57,8 +57,10 @@ namespace Renci.SshNet
 
             if (IsStarted)
                 throw new InvalidOperationException("Forwarded port is already started.");
+
             if (Session == null)
                 throw new InvalidOperationException("Forwarded port is not added to a client.");
+
             if (!Session.IsConnected)
                 throw new SshConnectionException("Client not connected.");
 
@@ -92,6 +94,7 @@ namespace Renci.SshNet
             RaiseClosing();
 
             var session = Session;
+
             if (session != null)
             {
                 session.ErrorOccured -= Session_ErrorOccured;
@@ -107,6 +110,7 @@ namespace Renci.SshNet
             if (disposing)
             {
                 var session = Session;
+
                 if (session != null)
                 {
                     StopPort(session.ConnectionInfo.Timeout);
@@ -127,7 +131,8 @@ namespace Renci.SshNet
         /// <param name="exception">The exception.</param>
         protected void RaiseExceptionEvent(Exception exception)
         {
-            var handlers = Exception;
+            EventHandler<ExceptionEventArgs> handlers = Exception;
+
             if (handlers != null)
             {
                 handlers(this, new ExceptionEventArgs(exception));
@@ -141,7 +146,8 @@ namespace Renci.SshNet
         /// <param name="port">Request originator port.</param>
         protected void RaiseRequestReceived(string host, uint port)
         {
-            var handlers = RequestReceived;
+            EventHandler<PortForwardEventArgs> handlers = RequestReceived;
+
             if (handlers != null)
             {
                 handlers(this, new PortForwardEventArgs(host, port));
@@ -154,6 +160,7 @@ namespace Renci.SshNet
         private void RaiseClosing()
         {
             var handlers = Closing;
+
             if (handlers != null)
             {
                 handlers(this, EventArgs.Empty);

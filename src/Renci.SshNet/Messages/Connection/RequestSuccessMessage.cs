@@ -22,8 +22,10 @@
             get
             {
                 var capacity = base.BufferCapacity;
+
                 if (BoundPort.HasValue)
                     capacity += 4; // BoundPort
+
                 return capacity;
             }
         }
@@ -33,7 +35,6 @@
         /// </summary>
         public RequestSuccessMessage()
         {
-
         }
 
         /// <summary>

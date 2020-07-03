@@ -23,12 +23,13 @@ namespace Renci.SshNet.Tests.Classes
         [Description("Test if calling Stop on ForwardedPortLocal instance causes wait.")]
         public void Test_PortForwarding_Local_Stop_Hangs_On_Wait()
         {
-            using (var client = new SshClient(Resources.HOST, Int32.Parse(Resources.PORT), Resources.USERNAME, Resources.PASSWORD))
+            using (var client = new SshClient(Resources.HOST, int.Parse(Resources.PORT), Resources.USERNAME, Resources.PASSWORD))
             {
                 client.Connect();
 
                 var port1 = new ForwardedPortLocal("localhost", 8084, "www.google.com", 80);
                 client.AddForwardedPort(port1);
+
                 port1.Exception += delegate(object sender, ExceptionEventArgs e)
                 {
                     Assert.Fail(e.Exception.ToString());
@@ -36,15 +37,16 @@ namespace Renci.SshNet.Tests.Classes
 
                 port1.Start();
 
-                bool hasTestedTunnel = false;
-                System.Threading.ThreadPool.QueueUserWorkItem(delegate(object state)
+                var hasTestedTunnel = false;
+
+                ThreadPool.QueueUserWorkItem(delegate(object state)
                 {
                     try
                     {
                         var url = "http://www.google.com/";
                         Debug.WriteLine("Starting web request to \"" + url + "\"");
-                        HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
-                        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                        var request = (HttpWebRequest)WebRequest.Create(url);
+                        var response = (HttpWebResponse)request.GetResponse();
 
                         Assert.IsNotNull(response);
 
@@ -63,20 +65,21 @@ namespace Renci.SshNet.Tests.Classes
                 // Wait for the web request to complete.
                 while (!hasTestedTunnel)
                 {
-                    System.Threading.Thread.Sleep(1000);
+                    Thread.Sleep(1000);
                 }
 
                 try
                 {
                     // Try stop the port forwarding, wait 3 seconds and fail if it is still started.
-                    System.Threading.ThreadPool.QueueUserWorkItem(delegate(object state)
+                    ThreadPool.QueueUserWorkItem(delegate(object state)
                     {
                         Debug.WriteLine("Trying to stop port forward.");
                         port1.Stop();
                         Debug.WriteLine("Port forwarding stopped.");
                     });
 
-                    System.Threading.Thread.Sleep(3000);
+                    Thread.Sleep(3000);
+
                     if (port1.IsStarted)
                     {
                         Assert.Fail("Port forwarding not stopped.");
@@ -86,6 +89,7 @@ namespace Renci.SshNet.Tests.Classes
                 {
                     Assert.Fail(ex.ToString());
                 }
+
                 client.Disconnect();
                 Debug.WriteLine("Success.");
             }
@@ -174,10 +178,12 @@ namespace Renci.SshNet.Tests.Classes
                 client.Connect();
                 var port = new ForwardedPortLocal(8082, "www.cnn.com", 80);
                 client.AddForwardedPort(port);
+
                 port.Exception += delegate(object sender, ExceptionEventArgs e)
                 {
                     Console.WriteLine(e.Exception.ToString());
                 };
+
                 port.Start();
 
                 Thread.Sleep(1000 * 60 * 20); //	Wait 20 minutes for port to be forwarded
@@ -185,6 +191,7 @@ namespace Renci.SshNet.Tests.Classes
                 port.Stop();
                 #endregion
             }
+
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -198,10 +205,12 @@ namespace Renci.SshNet.Tests.Classes
             {
                 var port1 = new ForwardedPortLocal("localhost", 8084, "www.renci.org", 80);
                 client.AddForwardedPort(port1);
-                port1.Exception += delegate (object sender, ExceptionEventArgs e)
+
+                port1.Exception += delegate(object sender, ExceptionEventArgs e)
                 {
                     Assert.Fail(e.Exception.ToString());
                 };
+
                 port1.Start();
 
                 System.Threading.Tasks.Parallel.For(0, 100,
@@ -213,13 +222,14 @@ namespace Renci.SshNet.Tests.Classes
                     (counter) =>
                     {
                         var start = DateTime.Now;
-                        var req = HttpWebRequest.Create("http://localhost:8084");
+                        var req = WebRequest.Create("http://localhost:8084");
+
                         using (var response = req.GetResponse())
                         {
-                            var data = ReadStream(response.GetResponseStream());
+                            byte[] data = ReadStream(response.GetResponseStream());
                             var end = DateTime.Now;
 
-                            Debug.WriteLine(string.Format("Request# {2}: Lenght: {0} Time: {1}", data.Length, (end - start), counter));
+                            Debug.WriteLine(string.Format("Request# {2}: Lenght: {0} Time: {1}", data.Length, end - start, counter));
                         }
                     }
                 );
@@ -235,10 +245,12 @@ namespace Renci.SshNet.Tests.Classes
                 client.Connect();
                 var port1 = new ForwardedPortLocal("localhost", 8084, "www.renci.org", 80);
                 client.AddForwardedPort(port1);
-                port1.Exception += delegate (object sender, ExceptionEventArgs e)
+
+                port1.Exception += delegate(object sender, ExceptionEventArgs e)
                 {
                     Assert.Fail(e.Exception.ToString());
                 };
+
                 port1.Start();
 
                 System.Threading.Tasks.Parallel.For(0, 100,
@@ -250,13 +262,14 @@ namespace Renci.SshNet.Tests.Classes
                     (counter) =>
                     {
                         var start = DateTime.Now;
-                        var req = HttpWebRequest.Create("http://localhost:8084");
+                        var req = WebRequest.Create("http://localhost:8084");
+
                         using (var response = req.GetResponse())
                         {
-                            var data = ReadStream(response.GetResponseStream());
+                            byte[] data = ReadStream(response.GetResponseStream());
                             var end = DateTime.Now;
 
-                            Debug.WriteLine(string.Format("Request# {2}: Length: {0} Time: {1}", data.Length, (end - start), counter));
+                            Debug.WriteLine(string.Format("Request# {2}: Length: {0} Time: {1}", data.Length, end - start, counter));
                         }
                     }
                 );
@@ -265,12 +278,14 @@ namespace Renci.SshNet.Tests.Classes
 
         private static byte[] ReadStream(System.IO.Stream stream)
         {
-            byte[] buffer = new byte[1024];
+            var buffer = new byte[1024];
+
             using (var ms = new System.IO.MemoryStream())
             {
                 while (true)
                 {
-                    int read = stream.Read(buffer, 0, buffer.Length);
+                    var read = stream.Read(buffer, 0, buffer.Length);
+
                     if (read > 0)
                         ms.Write(buffer, 0, read);
                     else

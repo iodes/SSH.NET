@@ -15,9 +15,13 @@ namespace Renci.SshNet
         partial void InternalStart()
         {
             var addr = DnsAbstraction.GetHostAddresses(BoundHost)[0];
-            var ep = new IPEndPoint(addr, (int) BoundPort);
+            var ep = new IPEndPoint(addr, (int)BoundPort);
 
-            _listener = new Socket(ep.AddressFamily, SocketType.Stream, ProtocolType.Tcp) {NoDelay = true};
+            _listener = new Socket(ep.AddressFamily, SocketType.Stream, ProtocolType.Tcp)
+            {
+                NoDelay = true
+            };
+
             _listener.Bind(ep);
             _listener.Listen(5);
 
@@ -115,7 +119,7 @@ namespace Renci.SshNet
 
             try
             {
-                var originatorEndPoint = (IPEndPoint) clientSocket.RemoteEndPoint;
+                var originatorEndPoint = (IPEndPoint)clientSocket.RemoteEndPoint;
 
                 RaiseRequestReceived(originatorEndPoint.Address.ToString(),
                     (uint)originatorEndPoint.Port);
@@ -163,6 +167,7 @@ namespace Renci.SshNet
         private void InitializePendingChannelCountdown()
         {
             var original = Interlocked.Exchange(ref _pendingChannelCountdown, new CountdownEvent(1));
+
             if (original != null)
             {
                 original.Dispose();
@@ -193,6 +198,7 @@ namespace Renci.SshNet
         {
             // close listener socket
             var listener = _listener;
+
             if (listener != null)
             {
                 listener.Dispose();
@@ -200,6 +206,7 @@ namespace Renci.SshNet
 
             // unsubscribe from session events
             var session = Session;
+
             if (session != null)
             {
                 session.ErrorOccured -= Session_ErrorOccured;
@@ -214,6 +221,7 @@ namespace Renci.SshNet
         partial void InternalStop(TimeSpan timeout)
         {
             _pendingChannelCountdown.Signal();
+
             if (!_pendingChannelCountdown.Wait(timeout))
             {
                 // TODO: log as warning
@@ -226,6 +234,7 @@ namespace Renci.SshNet
             if (disposing)
             {
                 var listener = _listener;
+
                 if (listener != null)
                 {
                     _listener = null;
@@ -233,6 +242,7 @@ namespace Renci.SshNet
                 }
 
                 var pendingRequestsCountdown = _pendingChannelCountdown;
+
                 if (pendingRequestsCountdown != null)
                 {
                     _pendingChannelCountdown = null;
@@ -244,6 +254,7 @@ namespace Renci.SshNet
         private void Session_Disconnected(object sender, EventArgs e)
         {
             var session = Session;
+
             if (session != null)
             {
                 StopPort(session.ConnectionInfo.Timeout);
@@ -253,6 +264,7 @@ namespace Renci.SshNet
         private void Session_ErrorOccured(object sender, ExceptionEventArgs e)
         {
             var session = Session;
+
             if (session != null)
             {
                 StopPort(session.ConnectionInfo.Timeout);

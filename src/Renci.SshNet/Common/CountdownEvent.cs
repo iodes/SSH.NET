@@ -1,5 +1,4 @@
 ﻿#if !FEATURE_THREAD_COUNTDOWNEVENT
-
 using System;
 using System.Threading;
 

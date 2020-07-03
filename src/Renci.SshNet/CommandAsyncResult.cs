@@ -28,7 +28,6 @@ namespace Renci.SshNet
         public int BytesSent { get; set; }
 
         #region IAsyncResult Members
-
         /// <summary>
         /// Gets a user-defined object that qualifies or contains information about an asynchronous operation.
         /// </summary>
@@ -52,7 +51,6 @@ namespace Renci.SshNet
         /// </summary>
         /// <returns>true if the operation is complete; otherwise, false.</returns>
         public bool IsCompleted { get; internal set; }
-
         #endregion
 
         /// <summary>

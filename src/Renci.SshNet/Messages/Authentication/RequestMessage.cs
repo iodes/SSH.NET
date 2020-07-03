@@ -22,10 +22,7 @@ namespace Renci.SshNet.Messages.Authentication
         /// <summary>
         /// Gets authentication username as UTF-8 encoded byte array.
         /// </summary>
-        public byte[] Username
-        {
-            get { return _userName; }
-        }
+        public byte[] Username => _userName;
 
         /// <summary>
         /// Gets the name of the service as ASCII encoded byte array.
@@ -33,10 +30,7 @@ namespace Renci.SshNet.Messages.Authentication
         /// <value>
         /// The name of the service.
         /// </value>
-        public byte[] ServiceName
-        {
-            get { return _serviceName; }
-        }
+        public byte[] ServiceName => _serviceName;
 
         /// <summary>
         /// Gets the name of the authentication method.
@@ -44,10 +38,7 @@ namespace Renci.SshNet.Messages.Authentication
         /// <value>
         /// The name of the method.
         /// </value>
-        public virtual string MethodName
-        {
-            get { return _methodName; }
-        }
+        public virtual string MethodName => _methodName;
 
         /// <summary>
         /// Gets the size of the message in bytes.
@@ -108,4 +99,3 @@ namespace Renci.SshNet.Messages.Authentication
         }
     }
 }
-

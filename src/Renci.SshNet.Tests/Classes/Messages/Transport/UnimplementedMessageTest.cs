@@ -19,7 +19,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
         [Ignore] // placeholder
         public void UnimplementedMessageConstructorTest()
         {
-            UnimplementedMessage target = new UnimplementedMessage();
+            var target = new UnimplementedMessage();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

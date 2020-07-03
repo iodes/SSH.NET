@@ -25,7 +25,7 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void SignTest()
         {
-            HostAlgorithm target = CreateHostAlgorithm(); // TODO: Initialize to an appropriate value
+            var target = CreateHostAlgorithm(); // TODO: Initialize to an appropriate value
             byte[] data = null; // TODO: Initialize to an appropriate value
             byte[] expected = null; // TODO: Initialize to an appropriate value
             byte[] actual;
@@ -41,10 +41,10 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void VerifySignatureTest()
         {
-            HostAlgorithm target = CreateHostAlgorithm(); // TODO: Initialize to an appropriate value
+            var target = CreateHostAlgorithm(); // TODO: Initialize to an appropriate value
             byte[] data = null; // TODO: Initialize to an appropriate value
             byte[] signature = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.VerifySignature(data, signature);
             Assert.AreEqual(expected, actual);
@@ -58,7 +58,7 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void DataTest()
         {
-            HostAlgorithm target = CreateHostAlgorithm(); // TODO: Initialize to an appropriate value
+            var target = CreateHostAlgorithm(); // TODO: Initialize to an appropriate value
             byte[] actual;
             actual = target.Data;
             Assert.Inconclusive("Verify the correctness of this test method.");

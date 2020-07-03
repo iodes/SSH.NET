@@ -16,10 +16,7 @@
         /// <value>
         /// The name of the request.
         /// </value>
-        public override string RequestName
-        {
-            get { return Name; }
-        }
+        public override string RequestName => Name;
 
         /// <summary>
         /// Gets the exit status number.
@@ -30,7 +27,7 @@
         {
             get
             {
-                 var capacity = base.BufferCapacity;
+                var capacity = base.BufferCapacity;
                 capacity += 4; // ExitStatus
                 return capacity;
             }

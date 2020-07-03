@@ -54,20 +54,25 @@ namespace Renci.SshNet.Tests.Classes
             var sequence = new MockSequence();
 
             _serviceFactoryMock.InSequence(sequence)
-                               .Setup(p => p.CreateSession(_connectionInfo))
-                               .Returns(_sessionMock.Object);
+                .Setup(p => p.CreateSession(_connectionInfo))
+                .Returns(_sessionMock.Object);
+
             _sessionMock.InSequence(sequence)
-                        .Setup(p => p.Connect());
+                .Setup(p => p.Connect());
+
             _serviceFactoryMock.InSequence(sequence)
-                               .Setup(p => p.CreateNetConfSession(_sessionMock.Object, -1))
-                               .Returns(_netConfSessionMock.Object);
+                .Setup(p => p.CreateNetConfSession(_sessionMock.Object, -1))
+                .Returns(_netConfSessionMock.Object);
+
             _netConfSessionMock.InSequence(sequence)
-                            .Setup(p => p.Connect())
-                            .Throws(_netConfSessionConnectionException);
+                .Setup(p => p.Connect())
+                .Throws(_netConfSessionConnectionException);
+
             _netConfSessionMock.InSequence(sequence)
-                            .Setup(p => p.Dispose());
+                .Setup(p => p.Dispose());
+
             _sessionMock.InSequence(sequence)
-                        .Setup(p => p.Dispose());
+                .Setup(p => p.Dispose());
         }
 
         private void Act()

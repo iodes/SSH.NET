@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Utilities;
 
 namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
@@ -8,26 +7,31 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
     {
         public static readonly string PRECOMP_NAME = "bc_wnaf";
 
-        private static readonly int[] DEFAULT_WINDOW_SIZE_CUTOFFS = new int[]{ 13, 41, 121, 337, 897, 2305 };
+        private static readonly int[] DEFAULT_WINDOW_SIZE_CUTOFFS = new int[]
+        {
+            13, 41, 121, 337, 897, 2305
+        };
 
         private static readonly ECPoint[] EMPTY_POINTS = new ECPoint[0];
 
         public static int[] GenerateCompactNaf(BigInteger k)
         {
-            if ((k.BitLength >> 16) != 0)
+            if (k.BitLength >> 16 != 0)
                 throw new ArgumentException("must have bitlength < 2^16", "k");
+
             if (k.SignValue == 0)
                 return Arrays.EmptyInts;
 
-            BigInteger _3k = k.ShiftLeft(1).Add(k);
+            var _3k = k.ShiftLeft(1).Add(k);
 
-            int bits = _3k.BitLength;
-            int[] naf = new int[bits >> 1];
+            var bits = _3k.BitLength;
+            var naf = new int[bits >> 1];
 
-            BigInteger diff = _3k.Xor(k);
+            var diff = _3k.Xor(k);
 
             int highBit = bits - 1, length = 0, zeroes = 0;
-            for (int i = 1; i < highBit; ++i)
+
+            for (var i = 1; i < highBit; ++i)
             {
                 if (!diff.TestBit(i))
                 {
@@ -35,7 +39,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
                     continue;
                 }
 
-                int digit = k.TestBit(i) ? -1 : 1;
+                var digit = k.TestBit(i) ? -1 : 1;
                 naf[length++] = (digit << 16) | zeroes;
                 zeroes = 1;
                 ++i;
@@ -60,19 +64,21 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
             if (width < 2 || width > 16)
                 throw new ArgumentException("must be in the range [2, 16]", "width");
-            if ((k.BitLength >> 16) != 0)
+
+            if (k.BitLength >> 16 != 0)
                 throw new ArgumentException("must have bitlength < 2^16", "k");
+
             if (k.SignValue == 0)
                 return Arrays.EmptyInts;
 
-            int[] wnaf = new int[k.BitLength / width + 1];
+            var wnaf = new int[k.BitLength / width + 1];
 
             // 2^width and a mask and sign bit set accordingly
-            int pow2 = 1 << width;
-            int mask = pow2 - 1;
-            int sign = pow2 >> 1;
+            var pow2 = 1 << width;
+            var mask = pow2 - 1;
+            var sign = pow2 >> 1;
 
-            bool carry = false;
+            var carry = false;
             int length = 0, pos = 0;
 
             while (pos <= k.BitLength)
@@ -85,19 +91,21 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
                 k = k.ShiftRight(pos);
 
-                int digit = k.IntValue & mask;
+                var digit = k.IntValue & mask;
+
                 if (carry)
                 {
                     ++digit;
                 }
 
                 carry = (digit & sign) != 0;
+
                 if (carry)
                 {
                     digit -= pow2;
                 }
 
-                int zeroes = length > 0 ? pos - 1 : pos;
+                var zeroes = length > 0 ? pos - 1 : pos;
                 wnaf[length++] = (digit << 16) | zeroes;
                 pos = width;
             }
@@ -113,43 +121,49 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
         public static byte[] GenerateJsf(BigInteger g, BigInteger h)
         {
-            int digits = System.Math.Max(g.BitLength, h.BitLength) + 1;
-            byte[] jsf = new byte[digits];
+            var digits = System.Math.Max(g.BitLength, h.BitLength) + 1;
+            var jsf = new byte[digits];
 
             BigInteger k0 = g, k1 = h;
             int j = 0, d0 = 0, d1 = 0;
 
-            int offset = 0;
+            var offset = 0;
+
             while ((d0 | d1) != 0 || k0.BitLength > offset || k1.BitLength > offset)
             {
-                int n0 = ((int)((uint)k0.IntValue >> offset) + d0) & 7;
-                int n1 = ((int)((uint)k1.IntValue >> offset) + d1) & 7;
+                var n0 = ((int)((uint)k0.IntValue >> offset) + d0) & 7;
+                var n1 = ((int)((uint)k1.IntValue >> offset) + d1) & 7;
 
-                int u0 = n0 & 1;
+                var u0 = n0 & 1;
+
                 if (u0 != 0)
                 {
-                    u0 -= (n0 & 2);
-                    if ((n0 + u0) == 4 && (n1 & 3) == 2)
+                    u0 -= n0 & 2;
+
+                    if (n0 + u0 == 4 && (n1 & 3) == 2)
                     {
                         u0 = -u0;
                     }
                 }
 
-                int u1 = n1 & 1;
+                var u1 = n1 & 1;
+
                 if (u1 != 0)
                 {
-                    u1 -= (n1 & 2);
-                    if ((n1 + u1) == 4 && (n0 & 3) == 2)
+                    u1 -= n1 & 2;
+
+                    if (n1 + u1 == 4 && (n0 & 3) == 2)
                     {
                         u1 = -u1;
                     }
                 }
 
-                if ((d0 << 1) == 1 + u0)
+                if (d0 << 1 == 1 + u0)
                 {
                     d0 ^= 1;
                 }
-                if ((d1 << 1) == 1 + u1)
+
+                if (d1 << 1 == 1 + u1)
                 {
                     d1 ^= 1;
                 }
@@ -178,14 +192,14 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
             if (k.SignValue == 0)
                 return Arrays.EmptyBytes;
 
-            BigInteger _3k = k.ShiftLeft(1).Add(k);
+            var _3k = k.ShiftLeft(1).Add(k);
 
-            int digits = _3k.BitLength - 1;
-            byte[] naf = new byte[digits];
+            var digits = _3k.BitLength - 1;
+            var naf = new byte[digits];
 
-            BigInteger diff = _3k.Xor(k);
+            var diff = _3k.Xor(k);
 
-            for (int i = 1; i < digits; ++i)
+            for (var i = 1; i < digits; ++i)
             {
                 if (diff.TestBit(i))
                 {
@@ -220,17 +234,18 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
             if (width < 2 || width > 8)
                 throw new ArgumentException("must be in the range [2, 8]", "width");
+
             if (k.SignValue == 0)
                 return Arrays.EmptyBytes;
 
-            byte[] wnaf = new byte[k.BitLength + 1];
+            var wnaf = new byte[k.BitLength + 1];
 
             // 2^width and a mask and sign bit set accordingly
-            int pow2 = 1 << width;
-            int mask = pow2 - 1;
-            int sign = pow2 >> 1;
+            var pow2 = 1 << width;
+            var mask = pow2 - 1;
+            var sign = pow2 >> 1;
 
-            bool carry = false;
+            var carry = false;
             int length = 0, pos = 0;
 
             while (pos <= k.BitLength)
@@ -243,19 +258,21 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
                 k = k.ShiftRight(pos);
 
-                int digit = k.IntValue & mask;
+                var digit = k.IntValue & mask;
+
                 if (carry)
                 {
                     ++digit;
                 }
 
                 carry = (digit & sign) != 0;
+
                 if (carry)
                 {
                     digit -= pow2;
                 }
 
-                length += (length > 0) ? pos - 1 : pos;
+                length += length > 0 ? pos - 1 : pos;
                 wnaf[length++] = (byte)digit;
                 pos = width;
             }
@@ -265,7 +282,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
             {
                 wnaf = Trim(wnaf, length);
             }
-        
+
             return wnaf;
         }
 
@@ -274,8 +291,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
             if (k.SignValue == 0)
                 return 0;
 
-            BigInteger _3k = k.ShiftLeft(1).Add(k);
-            BigInteger diff = _3k.Xor(k);
+            var _3k = k.ShiftLeft(1).Add(k);
+            var diff = _3k.Xor(k);
 
             return diff.BitCount;
         }
@@ -310,7 +327,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
          */
         public static int GetWindowSize(int bits, int[] windowSizeCutoffs)
         {
-            int w = 0;
+            var w = 0;
+
             for (; w < windowSizeCutoffs.Length; ++w)
             {
                 if (bits < windowSizeCutoffs[w])
@@ -318,16 +336,17 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
                     break;
                 }
             }
+
             return w + 2;
         }
 
         public static ECPoint MapPointWithPrecomp(ECPoint p, int width, bool includeNegated,
-            ECPointMap pointMap)
+                                                  ECPointMap pointMap)
         {
-            ECCurve c = p.Curve;
-            WNafPreCompInfo wnafPreCompP = Precompute(p, width, includeNegated);
+            var c = p.Curve;
+            var wnafPreCompP = Precompute(p, width, includeNegated);
 
-            ECPoint q = pointMap.Map(p);
+            var q = pointMap.Map(p);
             c.Precompute(q, PRECOMP_NAME, new MapPointCallback(wnafPreCompP, includeNegated, pointMap));
             return q;
         }
@@ -339,21 +358,21 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
         private static byte[] Trim(byte[] a, int length)
         {
-            byte[] result = new byte[length];
+            var result = new byte[length];
             Array.Copy(a, 0, result, 0, result.Length);
             return result;
         }
 
         private static int[] Trim(int[] a, int length)
         {
-            int[] result = new int[length];
+            var result = new int[length];
             Array.Copy(a, 0, result, 0, result.Length);
             return result;
         }
 
         private static ECPoint[] ResizeTable(ECPoint[] a, int length)
         {
-            ECPoint[] result = new ECPoint[length];
+            var result = new ECPoint[length];
             Array.Copy(a, 0, result, 0, a.Length);
             return result;
         }
@@ -367,37 +386,42 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
             internal MapPointCallback(WNafPreCompInfo wnafPreCompP, bool includeNegated, ECPointMap pointMap)
             {
-                this.m_wnafPreCompP = wnafPreCompP;
-                this.m_includeNegated = includeNegated;
-                this.m_pointMap = pointMap;
+                m_wnafPreCompP = wnafPreCompP;
+                m_includeNegated = includeNegated;
+                m_pointMap = pointMap;
             }
 
             public PreCompInfo Precompute(PreCompInfo existing)
             {
-                WNafPreCompInfo result = new WNafPreCompInfo();
+                var result = new WNafPreCompInfo();
 
-                ECPoint twiceP = m_wnafPreCompP.Twice;
+                var twiceP = m_wnafPreCompP.Twice;
+
                 if (twiceP != null)
                 {
-                    ECPoint twiceQ = m_pointMap.Map(twiceP);
+                    var twiceQ = m_pointMap.Map(twiceP);
                     result.Twice = twiceQ;
                 }
 
                 ECPoint[] preCompP = m_wnafPreCompP.PreComp;
-                ECPoint[] preCompQ = new ECPoint[preCompP.Length];
-                for (int i = 0; i < preCompP.Length; ++i)
+                var preCompQ = new ECPoint[preCompP.Length];
+
+                for (var i = 0; i < preCompP.Length; ++i)
                 {
                     preCompQ[i] = m_pointMap.Map(preCompP[i]);
                 }
+
                 result.PreComp = preCompQ;
 
                 if (m_includeNegated)
                 {
-                    ECPoint[] preCompNegQ = new ECPoint[preCompQ.Length];
-                    for (int i = 0; i < preCompNegQ.Length; ++i)
+                    var preCompNegQ = new ECPoint[preCompQ.Length];
+
+                    for (var i = 0; i < preCompNegQ.Length; ++i)
                     {
                         preCompNegQ[i] = preCompQ[i].Negate();
                     }
+
                     result.PreCompNeg = preCompNegQ;
                 }
 
@@ -414,21 +438,21 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
             internal WNafCallback(ECPoint p, int width, bool includeNegated)
             {
-                this.m_p = p;
-                this.m_width = width;
-                this.m_includeNegated = includeNegated;
+                m_p = p;
+                m_width = width;
+                m_includeNegated = includeNegated;
             }
 
             public PreCompInfo Precompute(PreCompInfo existing)
             {
-                WNafPreCompInfo existingWNaf = existing as WNafPreCompInfo;
+                var existingWNaf = existing as WNafPreCompInfo;
 
-                int reqPreCompLen = 1 << System.Math.Max(0, m_width - 2);
+                var reqPreCompLen = 1 << System.Math.Max(0, m_width - 2);
 
                 if (CheckExisting(existingWNaf, reqPreCompLen, m_includeNegated))
                     return existingWNaf;
 
-                ECCurve c = m_p.Curve;
+                var c = m_p.Curve;
                 ECPoint[] preComp = null, preCompNeg = null;
                 ECPoint twiceP = null;
 
@@ -439,7 +463,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
                     twiceP = existingWNaf.Twice;
                 }
 
-                int iniPreCompLen = 0;
+                var iniPreCompLen = 0;
+
                 if (preComp == null)
                 {
                     preComp = EMPTY_POINTS;
@@ -451,7 +476,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
                 if (iniPreCompLen < reqPreCompLen)
                 {
-                    preComp = WNafUtilities.ResizeTable(preComp, reqPreCompLen);
+                    preComp = ResizeTable(preComp, reqPreCompLen);
 
                     if (reqPreCompLen == 1)
                     {
@@ -459,7 +484,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
                     }
                     else
                     {
-                        int curPreCompLen = iniPreCompLen;
+                        var curPreCompLen = iniPreCompLen;
+
                         if (curPreCompLen == 0)
                         {
                             preComp[0] = m_p;
@@ -475,6 +501,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
                         else
                         {
                             ECPoint isoTwiceP = twiceP, last = preComp[curPreCompLen - 1];
+
                             if (isoTwiceP == null)
                             {
                                 isoTwiceP = preComp[0].Twice();
@@ -494,23 +521,25 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
                                 {
                                     switch (c.CoordinateSystem)
                                     {
-                                    case ECCurve.COORD_JACOBIAN:
-                                    case ECCurve.COORD_JACOBIAN_CHUDNOVSKY:
-                                    case ECCurve.COORD_JACOBIAN_MODIFIED:
-                                    {
-                                        iso = twiceP.GetZCoord(0);
-                                        isoTwiceP = c.CreatePoint(twiceP.XCoord.ToBigInteger(),
-                                            twiceP.YCoord.ToBigInteger());
-
-                                        ECFieldElement iso2 = iso.Square(), iso3 = iso2.Multiply(iso);
-                                        last = last.ScaleX(iso2).ScaleY(iso3);
-
-                                        if (iniPreCompLen == 0)
+                                        case ECCurve.COORD_JACOBIAN:
+                                        case ECCurve.COORD_JACOBIAN_CHUDNOVSKY:
+                                        case ECCurve.COORD_JACOBIAN_MODIFIED:
                                         {
-                                            preComp[0] = last;
+                                            iso = twiceP.GetZCoord(0);
+
+                                            isoTwiceP = c.CreatePoint(twiceP.XCoord.ToBigInteger(),
+                                                twiceP.YCoord.ToBigInteger());
+
+                                            ECFieldElement iso2 = iso.Square(), iso3 = iso2.Multiply(iso);
+                                            last = last.ScaleX(iso2).ScaleY(iso3);
+
+                                            if (iniPreCompLen == 0)
+                                            {
+                                                preComp[0] = last;
+                                            }
+
+                                            break;
                                         }
-                                        break;
-                                    }
                                     }
                                 }
                             }
@@ -535,17 +564,19 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
                 if (m_includeNegated)
                 {
                     int pos;
+
                     if (preCompNeg == null)
                     {
                         pos = 0;
-                        preCompNeg = new ECPoint[reqPreCompLen]; 
+                        preCompNeg = new ECPoint[reqPreCompLen];
                     }
                     else
                     {
                         pos = preCompNeg.Length;
+
                         if (pos < reqPreCompLen)
                         {
-                            preCompNeg = WNafUtilities.ResizeTable(preCompNeg, reqPreCompLen);
+                            preCompNeg = ResizeTable(preCompNeg, reqPreCompLen);
                         }
                     }
 
@@ -556,7 +587,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
                     }
                 }
 
-                WNafPreCompInfo result = new WNafPreCompInfo();
+                var result = new WNafPreCompInfo();
                 result.PreComp = preComp;
                 result.PreCompNeg = preCompNeg;
                 result.Twice = twiceP;
@@ -566,8 +597,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
             private bool CheckExisting(WNafPreCompInfo existingWNaf, int reqPreCompLen, bool includeNegated)
             {
                 return existingWNaf != null
-                    && CheckTable(existingWNaf.PreComp, reqPreCompLen)
-                    && (!includeNegated || CheckTable(existingWNaf.PreCompNeg, reqPreCompLen));
+                       && CheckTable(existingWNaf.PreComp, reqPreCompLen)
+                       && (!includeNegated || CheckTable(existingWNaf.PreCompNeg, reqPreCompLen));
             }
 
             private bool CheckTable(ECPoint[] table, int reqLen)

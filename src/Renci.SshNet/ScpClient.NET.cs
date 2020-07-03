@@ -43,6 +43,7 @@ namespace Renci.SshNet
                 {
                     throw SecureExecutionRequestRejectedException();
                 }
+
                 CheckReturnCode(input);
 
                 using (var source = fileInfo.OpenRead())
@@ -68,8 +69,10 @@ namespace Renci.SshNet
         {
             if (directoryInfo == null)
                 throw new ArgumentNullException("directoryInfo");
+
             if (path == null)
                 throw new ArgumentNullException("path");
+
             if (path.Length == 0)
                 throw new ArgumentException("The path cannot be a zero-length string.", "path");
 
@@ -108,6 +111,7 @@ namespace Renci.SshNet
         {
             if (string.IsNullOrEmpty(filename))
                 throw new ArgumentException("filename");
+
             if (fileInfo == null)
                 throw new ArgumentNullException("fileInfo");
 
@@ -122,6 +126,7 @@ namespace Renci.SshNet
                 {
                     throw SecureExecutionRequestRejectedException();
                 }
+
                 // Send reply
                 SendSuccessConfirmation(channel);
 
@@ -142,6 +147,7 @@ namespace Renci.SshNet
         {
             if (string.IsNullOrEmpty(directoryName))
                 throw new ArgumentException("directoryName");
+
             if (directoryInfo == null)
                 throw new ArgumentNullException("directoryInfo");
 
@@ -156,6 +162,7 @@ namespace Renci.SshNet
                 {
                     throw SecureExecutionRequestRejectedException();
                 }
+
                 // Send reply
                 SendSuccessConfirmation(channel);
 
@@ -173,8 +180,8 @@ namespace Renci.SshNet
         private void UploadTimes(IChannelSession channel, Stream input, FileSystemInfo fileOrDirectory)
         {
             var zeroTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            var modificationSeconds = (long) (fileOrDirectory.LastWriteTimeUtc - zeroTime).TotalSeconds;
-            var accessSeconds = (long) (fileOrDirectory.LastAccessTimeUtc - zeroTime).TotalSeconds;
+            var modificationSeconds = (long)(fileOrDirectory.LastWriteTimeUtc - zeroTime).TotalSeconds;
+            var accessSeconds = (long)(fileOrDirectory.LastAccessTimeUtc - zeroTime).TotalSeconds;
             SendData(channel, string.Format("T{0} 0 {1} 0\n", modificationSeconds, accessSeconds));
             CheckReturnCode(input);
         }
@@ -188,7 +195,8 @@ namespace Renci.SshNet
         private void UploadDirectoryContent(IChannelSession channel, Stream input, DirectoryInfo directoryInfo)
         {
             //  Upload files
-            var files = directoryInfo.GetFiles();
+            FileInfo[] files = directoryInfo.GetFiles();
+
             foreach (var file in files)
             {
                 using (var source = file.OpenRead())
@@ -200,7 +208,8 @@ namespace Renci.SshNet
             }
 
             //  Upload directories
-            var directories = directoryInfo.GetDirectories();
+            DirectoryInfo[] directories = directoryInfo.GetDirectories();
+
             foreach (var directory in directories)
             {
                 UploadTimes(channel, input, directory);
@@ -245,10 +254,12 @@ namespace Renci.SshNet
 
                     if (directoryCounter == 0)
                         break;
+
                     continue;
                 }
 
                 var match = DirectoryInfoRe.Match(message);
+
                 if (match.Success)
                 {
                     SendSuccessConfirmation(channel); //  Send reply
@@ -257,6 +268,7 @@ namespace Renci.SshNet
                     var filename = match.Result("${filename}");
 
                     DirectoryInfo newDirectoryInfo;
+
                     if (directoryCounter > 0)
                     {
                         newDirectoryInfo = Directory.CreateDirectory(Path.Combine(currentDirectoryFullName, filename));
@@ -276,6 +288,7 @@ namespace Renci.SshNet
                 }
 
                 match = FileInfoRe.Match(message);
+
                 if (match.Success)
                 {
                     //  Read file
@@ -299,10 +312,12 @@ namespace Renci.SshNet
 
                     if (directoryCounter == 0)
                         break;
+
                     continue;
                 }
 
                 match = TimestampRe.Match(message);
+
                 if (match.Success)
                 {
                     //  Read timestamp

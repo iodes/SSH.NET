@@ -13,7 +13,6 @@ namespace Renci.SshNet.Tests.Classes.Sftp
     public class SftpSessionTest_Connected_RequestStatVfs
     {
         #region SftpSession.Connect()
-
         private Mock<ISession> _sessionMock;
         private Mock<IChannelSession> _channelSessionMock;
         private ISftpResponseFactory _sftpResponseFactory;
@@ -25,7 +24,6 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         private SftpNameResponse _sftpNameResponse;
         private byte[] _sftpInitRequestBytes;
         private byte[] _sftpRealPathRequestBytes;
-
         #endregion SftpSession.Connect()
 
         private byte[] _sftpStatVfsRequestBytes;
@@ -46,43 +44,47 @@ namespace Renci.SshNet.Tests.Classes.Sftp
             var random = new Random();
 
             #region SftpSession.Connect()
-
             _operationTimeout = random.Next(100, 500);
             _encoding = Encoding.UTF8;
             _protocolVersion = 3;
             _sftpResponseFactory = new SftpResponseFactory();
-            _sftpInitRequestBytes = new SftpInitRequestBuilder().WithVersion(SftpSession.MaximumSupportedVersion)
-                                                                .Build()
-                                                                .GetBytes();
-            _sftpVersionResponse = new SftpVersionResponseBuilder().WithVersion(_protocolVersion)
-                                                                   .WithExtension("statvfs@openssh.com", "")
-                                                                   .Build();
-            _sftpRealPathRequestBytes = new SftpRealPathRequestBuilder().WithProtocolVersion(_protocolVersion)
-                                                                        .WithRequestId(1)
-                                                                        .WithPath(".")
-                                                                        .WithEncoding(_encoding)
-                                                                        .Build()
-                                                                        .GetBytes();
-            _sftpNameResponse = new SftpNameResponseBuilder().WithProtocolVersion(_protocolVersion)
-                                                             .WithResponseId(1U)
-                                                             .WithEncoding(_encoding)
-                                                             .WithFile("ABC", SftpFileAttributes.Empty)
-                                                             .Build();
 
+            _sftpInitRequestBytes = new SftpInitRequestBuilder().WithVersion(SftpSession.MaximumSupportedVersion)
+                .Build()
+                .GetBytes();
+
+            _sftpVersionResponse = new SftpVersionResponseBuilder().WithVersion(_protocolVersion)
+                .WithExtension("statvfs@openssh.com", "")
+                .Build();
+
+            _sftpRealPathRequestBytes = new SftpRealPathRequestBuilder().WithProtocolVersion(_protocolVersion)
+                .WithRequestId(1)
+                .WithPath(".")
+                .WithEncoding(_encoding)
+                .Build()
+                .GetBytes();
+
+            _sftpNameResponse = new SftpNameResponseBuilder().WithProtocolVersion(_protocolVersion)
+                .WithResponseId(1U)
+                .WithEncoding(_encoding)
+                .WithFile("ABC", SftpFileAttributes.Empty)
+                .Build();
             #endregion SftpSession.Connect()
 
             _path = random.Next().ToString();
-            _bAvail = (ulong) random.Next(0, int.MaxValue);
+            _bAvail = (ulong)random.Next(0, int.MaxValue);
+
             _sftpStatVfsRequestBytes = new SftpStatVfsRequestBuilder().WithProtocolVersion(_protocolVersion)
-                                                                      .WithRequestId(2)
-                                                                      .WithPath(_path)
-                                                                      .WithEncoding(_encoding)
-                                                                      .Build()
-                                                                      .GetBytes();
+                .WithRequestId(2)
+                .WithPath(_path)
+                .WithEncoding(_encoding)
+                .Build()
+                .GetBytes();
+
             _sftpStatVfsResponse = new SftpStatVfsResponseBuilder().WithProtocolVersion(_protocolVersion)
-                                                                   .WithResponseId(2U)
-                                                                   .WithBAvail(_bAvail)
-                                                                   .Build();
+                .WithResponseId(2U)
+                .WithBAvail(_bAvail)
+                .Build();
         }
 
         private void CreateMocks()
@@ -96,33 +98,35 @@ namespace Renci.SshNet.Tests.Classes.Sftp
             var sequence = new MockSequence();
 
             #region SftpSession.Connect()
-
             _sessionMock.InSequence(sequence).Setup(p => p.CreateChannelSession()).Returns(_channelSessionMock.Object);
             _channelSessionMock.InSequence(sequence).Setup(p => p.Open());
             _channelSessionMock.InSequence(sequence).Setup(p => p.SendSubsystemRequest("sftp")).Returns(true);
             _channelSessionMock.InSequence(sequence).Setup(p => p.IsOpen).Returns(true);
+
             _channelSessionMock.InSequence(sequence).Setup(p => p.SendData(_sftpInitRequestBytes)).Callback(
                 () =>
                 {
                     _channelSessionMock.Raise(c => c.DataReceived += null,
-                                              new ChannelDataEventArgs(0, _sftpVersionResponse.GetBytes()));
+                        new ChannelDataEventArgs(0, _sftpVersionResponse.GetBytes()));
                 });
+
             _channelSessionMock.InSequence(sequence).Setup(p => p.IsOpen).Returns(true);
+
             _channelSessionMock.InSequence(sequence).Setup(p => p.SendData(_sftpRealPathRequestBytes)).Callback(
                 () =>
                 {
                     _channelSessionMock.Raise(c => c.DataReceived += null,
-                                              new ChannelDataEventArgs(0, _sftpNameResponse.GetBytes()));
+                        new ChannelDataEventArgs(0, _sftpNameResponse.GetBytes()));
                 });
-
             #endregion SftpSession.Connect()
 
             _channelSessionMock.InSequence(sequence).Setup(p => p.IsOpen).Returns(true);
+
             _channelSessionMock.InSequence(sequence).Setup(p => p.SendData(_sftpStatVfsRequestBytes)).Callback(
                 () =>
                 {
                     _channelSessionMock.Raise(c => c.DataReceived += null,
-                                              new ChannelDataEventArgs(0, _sftpStatVfsResponse.GetBytes()));
+                        new ChannelDataEventArgs(0, _sftpStatVfsResponse.GetBytes()));
                 });
         }
 
@@ -152,5 +156,5 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         {
             Assert.AreEqual(_bAvail, _actual.AvailableBlocks);
         }
-   }
+    }
 }

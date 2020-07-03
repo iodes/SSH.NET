@@ -22,9 +22,9 @@ namespace Renci.SshNet.Tests.Classes.Channels
         {
             var random = new Random();
 
-            _localWindowSize = (uint) random.Next(1000, int.MaxValue);
+            _localWindowSize = (uint)random.Next(1000, int.MaxValue);
             _localPacketSize = _localWindowSize - 1;
-            _localChannelNumber = (uint) random.Next(0, int.MaxValue);
+            _localChannelNumber = (uint)random.Next(0, int.MaxValue);
             _onRequestException = new SystemException();
             _channelExceptionRegister = new List<ExceptionEventArgs>();
             _requestInfo = new SignalRequestInfo("ABC");
@@ -33,7 +33,7 @@ namespace Renci.SshNet.Tests.Classes.Channels
         protected override void SetupMocks()
         {
             SessionMock.Setup(p => p.ConnectionInfo)
-                        .Returns(new ConnectionInfo("host", "user", new PasswordAuthenticationMethod("user", "password")));
+                .Returns(new ConnectionInfo("host", "user", new PasswordAuthenticationMethod("user", "password")));
         }
 
         protected override void Arrange()
@@ -48,7 +48,7 @@ namespace Renci.SshNet.Tests.Classes.Channels
         protected override void Act()
         {
             SessionMock.Raise(s => s.ChannelRequestReceived += null,
-                               new MessageEventArgs<ChannelRequestMessage>(new ChannelRequestMessage(_localChannelNumber, _requestInfo)));
+                new MessageEventArgs<ChannelRequestMessage>(new ChannelRequestMessage(_localChannelNumber, _requestInfo)));
         }
 
         [TestMethod]

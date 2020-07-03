@@ -35,8 +35,8 @@ namespace Renci.SshNet.Tests.Classes
 
             var random = new Random();
             _terminalName = random.Next().ToString(CultureInfo.InvariantCulture);
-            _widthColumns = (uint) random.Next();
-            _heightRows = (uint) random.Next();
+            _widthColumns = (uint)random.Next();
+            _heightRows = (uint)random.Next();
             _widthPixels = (uint)random.Next();
             _heightPixels = (uint)random.Next();
             _terminalModes = new Dictionary<TerminalModes, uint>();
@@ -61,15 +61,19 @@ namespace Renci.SshNet.Tests.Classes
             var shellStream = CreateShellStream();
 
             var channelDataPublishThread = new Thread(() =>
-                {
-                    _channelSessionMock.Raise(p => p.DataReceived += null,
-                        new ChannelDataEventArgs(5, _encoding.GetBytes(data1)));
-                    Thread.Sleep(50);
-                    _channelSessionMock.Raise(p => p.DataReceived += null,
-                        new ChannelDataEventArgs(5, _encoding.GetBytes(data2 + "\r\n")));
-                    _channelSessionMock.Raise(p => p.DataReceived += null,
-                        new ChannelDataEventArgs(5, _encoding.GetBytes(data3 + "\r\n")));
-                });
+            {
+                _channelSessionMock.Raise(p => p.DataReceived += null,
+                    new ChannelDataEventArgs(5, _encoding.GetBytes(data1)));
+
+                Thread.Sleep(50);
+
+                _channelSessionMock.Raise(p => p.DataReceived += null,
+                    new ChannelDataEventArgs(5, _encoding.GetBytes(data2 + "\r\n")));
+
+                _channelSessionMock.Raise(p => p.DataReceived += null,
+                    new ChannelDataEventArgs(5, _encoding.GetBytes(data3 + "\r\n")));
+            });
+
             channelDataPublishThread.Start();
 
             Assert.AreEqual(data1 + data2, shellStream.ReadLine());
@@ -94,7 +98,7 @@ namespace Renci.SshNet.Tests.Classes
         {
             var shellStream = CreateShellStream();
             const string line = null;
-            var lineTerminator = _encoding.GetBytes("\r");
+            byte[] lineTerminator = _encoding.GetBytes("\r");
 
             _channelSessionMock.Setup(p => p.SendData(lineTerminator));
 
@@ -109,18 +113,20 @@ namespace Renci.SshNet.Tests.Classes
             _connectionInfoMock.Setup(p => p.Encoding).Returns(_encoding);
             _sessionMock.Setup(p => p.CreateChannelSession()).Returns(_channelSessionMock.Object);
             _channelSessionMock.Setup(p => p.Open());
+
             _channelSessionMock.Setup(p => p.SendPseudoTerminalRequest(_terminalName, _widthColumns, _heightRows,
                 _widthPixels, _heightPixels, _terminalModes)).Returns(true);
+
             _channelSessionMock.Setup(p => p.SendShellRequest()).Returns(true);
 
             return new ShellStream(_sessionMock.Object,
-                                   _terminalName,
-                                   _widthColumns,
-                                   _heightRows,
-                                   _widthPixels,
-                                   _heightPixels,
-                                   _terminalModes,
-                                   _bufferSize);
+                _terminalName,
+                _widthColumns,
+                _heightRows,
+                _widthPixels,
+                _heightPixels,
+                _terminalModes,
+                _bufferSize);
         }
     }
 }

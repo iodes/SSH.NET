@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Math;
 
 namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
@@ -14,16 +13,18 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
         public static bool AreAllZeroes(byte[] buf, int off, int len)
         {
             uint bits = 0;
-            for (int i = 0; i < len; ++i)
+
+            for (var i = 0; i < len; ++i)
             {
                 bits |= buf[off + i];
             }
+
             return bits == 0;
         }
 
         public static bool AreEqual(
-            bool[]  a,
-            bool[]  b)
+            bool[] a,
+            bool[] b)
         {
             if (a == b)
                 return true;
@@ -54,8 +55,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
         /// <param name="b">Right side.</param>
         /// <returns>True if equal.</returns>
         public static bool AreEqual(
-            byte[]	a,
-            byte[]	b)
+            byte[] a,
+            byte[] b)
         {
             if (a == b)
                 return true;
@@ -68,8 +69,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
 
         [Obsolete("Use 'AreEqual' method instead")]
         public static bool AreSame(
-            byte[]	a,
-            byte[]	b)
+            byte[] a,
+            byte[] b)
         {
             return AreEqual(a, b);
         }
@@ -82,24 +83,28 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
         /// <param name="b">second array</param>
         /// <returns>true if arrays equal, false otherwise.</returns>
         public static bool ConstantTimeAreEqual(
-            byte[]	a,
-            byte[]	b)
+            byte[] a,
+            byte[] b)
         {
-            int i = a.Length;
+            var i = a.Length;
+
             if (i != b.Length)
                 return false;
-            int cmp = 0;
+
+            var cmp = 0;
+
             while (i != 0)
             {
                 --i;
-                cmp |= (a[i] ^ b[i]);
+                cmp |= a[i] ^ b[i];
             }
+
             return cmp == 0;
         }
 
         public static bool AreEqual(
-            int[]	a,
-            int[]	b)
+            int[] a,
+            int[] b)
         {
             if (a == b)
                 return true;
@@ -125,15 +130,19 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
             bool[] a,
             bool[] b)
         {
-            int i = a.Length;
+            var i = a.Length;
+
             if (i != b.Length)
                 return false;
+
             while (i != 0)
             {
                 --i;
+
                 if (a[i] != b[i])
                     return false;
             }
+
             return true;
         }
 
@@ -141,76 +150,95 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
             char[] a,
             char[] b)
         {
-            int i = a.Length;
+            var i = a.Length;
+
             if (i != b.Length)
                 return false;
+
             while (i != 0)
             {
                 --i;
+
                 if (a[i] != b[i])
                     return false;
             }
+
             return true;
         }
 
         private static bool HaveSameContents(
-            byte[]	a,
-            byte[]	b)
+            byte[] a,
+            byte[] b)
         {
-            int i = a.Length;
+            var i = a.Length;
+
             if (i != b.Length)
                 return false;
+
             while (i != 0)
             {
                 --i;
+
                 if (a[i] != b[i])
                     return false;
             }
+
             return true;
         }
 
         private static bool HaveSameContents(
-            int[]	a,
-            int[]	b)
+            int[] a,
+            int[] b)
         {
-            int i = a.Length;
+            var i = a.Length;
+
             if (i != b.Length)
                 return false;
+
             while (i != 0)
             {
                 --i;
+
                 if (a[i] != b[i])
                     return false;
             }
+
             return true;
         }
 
         private static bool HaveSameContents(uint[] a, uint[] b)
         {
-            int i = a.Length;
+            var i = a.Length;
+
             if (i != b.Length)
                 return false;
+
             while (i != 0)
             {
                 --i;
+
                 if (a[i] != b[i])
                     return false;
             }
+
             return true;
         }
 
         public static string ToString(
             object[] a)
         {
-            StringBuilder sb = new StringBuilder('[');
+            var sb = new StringBuilder('[');
+
             if (a.Length > 0)
             {
                 sb.Append(a[0]);
-                for (int index = 1; index < a.Length; ++index)
+
+                for (var index = 1; index < a.Length; ++index)
                 {
                     sb.Append(", ").Append(a[index]);
                 }
             }
+
             sb.Append(']');
             return sb.ToString();
         }
@@ -222,8 +250,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
                 return 0;
             }
 
-            int i = data.Length;
-            int hc = i + 1;
+            var i = data.Length;
+            var hc = i + 1;
 
             while (--i >= 0)
             {
@@ -241,8 +269,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
                 return 0;
             }
 
-            int i = len;
-            int hc = i + 1;
+            var i = len;
+            var hc = i + 1;
 
             while (--i >= 0)
             {
@@ -258,8 +286,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
             if (data == null)
                 return 0;
 
-            int i = data.Length;
-            int hc = i + 1;
+            var i = data.Length;
+            var hc = i + 1;
 
             while (--i >= 0)
             {
@@ -275,8 +303,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
             if (data == null)
                 return 0;
 
-            int i = len;
-            int hc = i + 1;
+            var i = len;
+            var hc = i + 1;
 
             while (--i >= 0)
             {
@@ -292,8 +320,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
             if (data == null)
                 return 0;
 
-            int i = data.Length;
-            int hc = i + 1;
+            var i = data.Length;
+            var hc = i + 1;
 
             while (--i >= 0)
             {
@@ -309,8 +337,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
             if (data == null)
                 return 0;
 
-            int i = len;
-            int hc = i + 1;
+            var i = len;
+            var hc = i + 1;
 
             while (--i >= 0)
             {
@@ -326,12 +354,12 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
             if (data == null)
                 return 0;
 
-            int i = data.Length;
-            int hc = i + 1;
+            var i = data.Length;
+            var hc = i + 1;
 
             while (--i >= 0)
             {
-                ulong di = data[i];
+                var di = data[i];
                 hc *= 257;
                 hc ^= (int)di;
                 hc *= 257;
@@ -346,12 +374,12 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
             if (data == null)
                 return 0;
 
-            int i = len;
-            int hc = i + 1;
+            var i = len;
+            var hc = i + 1;
 
             while (--i >= 0)
             {
-                ulong di = data[off + i];
+                var di = data[off + i];
                 hc *= 257;
                 hc ^= (int)di;
                 hc *= 257;
@@ -368,17 +396,19 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
         }
 
         public static byte[] Clone(
-            byte[] data, 
+            byte[] data,
             byte[] existing)
         {
             if (data == null)
             {
                 return null;
             }
-            if ((existing == null) || (existing.Length != data.Length))
+
+            if (existing == null || existing.Length != data.Length)
             {
                 return Clone(data);
             }
+
             Array.Copy(data, 0, existing, 0, existing.Length);
             return existing;
         }
@@ -402,60 +432,66 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
         public static ulong[] Clone(
             ulong[] data)
         {
-            return data == null ? null : (ulong[]) data.Clone();
+            return data == null ? null : (ulong[])data.Clone();
         }
 
         public static ulong[] Clone(
-            ulong[] data, 
+            ulong[] data,
             ulong[] existing)
         {
             if (data == null)
             {
                 return null;
             }
-            if ((existing == null) || (existing.Length != data.Length))
+
+            if (existing == null || existing.Length != data.Length)
             {
                 return Clone(data);
             }
+
             Array.Copy(data, 0, existing, 0, existing.Length);
             return existing;
         }
 
         public static bool Contains(byte[] a, byte n)
         {
-            for (int i = 0; i < a.Length; ++i)
+            for (var i = 0; i < a.Length; ++i)
             {
                 if (a[i] == n)
                     return true;
             }
+
             return false;
         }
 
         public static bool Contains(short[] a, short n)
         {
-            for (int i = 0; i < a.Length; ++i)
+            for (var i = 0; i < a.Length; ++i)
             {
                 if (a[i] == n)
                     return true;
             }
+
             return false;
         }
 
         public static bool Contains(int[] a, int n)
         {
-            for (int i = 0; i < a.Length; ++i)
+            for (var i = 0; i < a.Length; ++i)
             {
                 if (a[i] == n)
                     return true;
             }
+
             return false;
         }
 
         public static void Fill(
-            byte[]	buf,
-            byte	b)
+            byte[] buf,
+            byte b)
         {
-            int i = buf.Length;
+            var i = buf.Length;
+
             while (i > 0)
             {
                 buf[--i] = b;
@@ -464,7 +500,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
 
         public static void Fill(byte[] buf, int from, int to, byte b)
         {
-            for (int i = from; i < to; ++i)
+            for (var i = from; i < to; ++i)
             {
                 buf[i] = b;
             }
@@ -472,35 +508,35 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
 
         public static byte[] CopyOf(byte[] data, int newLength)
         {
-            byte[] tmp = new byte[newLength];
+            var tmp = new byte[newLength];
             Array.Copy(data, 0, tmp, 0, System.Math.Min(newLength, data.Length));
             return tmp;
         }
 
         public static char[] CopyOf(char[] data, int newLength)
         {
-            char[] tmp = new char[newLength];
+            var tmp = new char[newLength];
             Array.Copy(data, 0, tmp, 0, System.Math.Min(newLength, data.Length));
             return tmp;
         }
 
         public static int[] CopyOf(int[] data, int newLength)
         {
-            int[] tmp = new int[newLength];
+            var tmp = new int[newLength];
             Array.Copy(data, 0, tmp, 0, System.Math.Min(newLength, data.Length));
             return tmp;
         }
 
         public static long[] CopyOf(long[] data, int newLength)
         {
-            long[] tmp = new long[newLength];
+            var tmp = new long[newLength];
             Array.Copy(data, 0, tmp, 0, System.Math.Min(newLength, data.Length));
             return tmp;
         }
 
         public static BigInteger[] CopyOf(BigInteger[] data, int newLength)
         {
-            BigInteger[] tmp = new BigInteger[newLength];
+            var tmp = new BigInteger[newLength];
             Array.Copy(data, 0, tmp, 0, System.Math.Min(newLength, data.Length));
             return tmp;
         }
@@ -518,51 +554,56 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
          */
         public static byte[] CopyOfRange(byte[] data, int from, int to)
         {
-            int newLength = GetLength(from, to);
-            byte[] tmp = new byte[newLength];
+            var newLength = GetLength(from, to);
+            var tmp = new byte[newLength];
             Array.Copy(data, from, tmp, 0, System.Math.Min(newLength, data.Length - from));
             return tmp;
         }
 
         public static int[] CopyOfRange(int[] data, int from, int to)
         {
-            int newLength = GetLength(from, to);
-            int[] tmp = new int[newLength];
+            var newLength = GetLength(from, to);
+            var tmp = new int[newLength];
             Array.Copy(data, from, tmp, 0, System.Math.Min(newLength, data.Length - from));
             return tmp;
         }
 
         public static long[] CopyOfRange(long[] data, int from, int to)
         {
-            int newLength = GetLength(from, to);
-            long[] tmp = new long[newLength];
+            var newLength = GetLength(from, to);
+            var tmp = new long[newLength];
             Array.Copy(data, from, tmp, 0, System.Math.Min(newLength, data.Length - from));
             return tmp;
         }
 
         public static BigInteger[] CopyOfRange(BigInteger[] data, int from, int to)
         {
-            int newLength = GetLength(from, to);
-            BigInteger[] tmp = new BigInteger[newLength];
+            var newLength = GetLength(from, to);
+            var tmp = new BigInteger[newLength];
             Array.Copy(data, from, tmp, 0, System.Math.Min(newLength, data.Length - from));
             return tmp;
         }
 
         private static int GetLength(int from, int to)
         {
-            int newLength = to - from;
+            var newLength = to - from;
+
             if (newLength < 0)
                 throw new ArgumentException(from + " > " + to);
+
             return newLength;
         }
 
         public static byte[] Append(byte[] a, byte b)
         {
             if (a == null)
-                return new byte[] { b };
+                return new byte[]
+                {
+                    b
+                };
 
-            int length = a.Length;
-            byte[] result = new byte[length + 1];
+            var length = a.Length;
+            var result = new byte[length + 1];
             Array.Copy(a, 0, result, 0, length);
             result[length] = b;
             return result;
@@ -571,10 +612,13 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
         public static short[] Append(short[] a, short b)
         {
             if (a == null)
-                return new short[] { b };
+                return new short[]
+                {
+                    b
+                };
 
-            int length = a.Length;
-            short[] result = new short[length + 1];
+            var length = a.Length;
+            var result = new short[length + 1];
             Array.Copy(a, 0, result, 0, length);
             result[length] = b;
             return result;
@@ -583,10 +627,13 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
         public static int[] Append(int[] a, int b)
         {
             if (a == null)
-                return new int[] { b };
+                return new int[]
+                {
+                    b
+                };
 
-            int length = a.Length;
-            int[] result = new int[length + 1];
+            var length = a.Length;
+            var result = new int[length + 1];
             Array.Copy(a, 0, result, 0, length);
             result[length] = b;
             return result;
@@ -596,10 +643,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
         {
             if (a == null)
                 return Clone(b);
+
             if (b == null)
                 return Clone(a);
 
-            byte[] rv = new byte[a.Length + b.Length];
+            var rv = new byte[a.Length + b.Length];
             Array.Copy(a, 0, rv, 0, a.Length);
             Array.Copy(b, 0, rv, a.Length, b.Length);
             return rv;
@@ -607,13 +655,14 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
 
         public static byte[] ConcatenateAll(params byte[][] vs)
         {
-            byte[][] nonNull = new byte[vs.Length][];
-            int count = 0;
-            int totalLength = 0;
+            var nonNull = new byte[vs.Length][];
+            var count = 0;
+            var totalLength = 0;
 
-            for (int i = 0; i < vs.Length; ++i)
+            for (var i = 0; i < vs.Length; ++i)
             {
                 byte[] v = vs[i];
+
                 if (v != null)
                 {
                     nonNull[count++] = v;
@@ -621,10 +670,10 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
                 }
             }
 
-            byte[] result = new byte[totalLength];
-            int pos = 0;
+            var result = new byte[totalLength];
+            var pos = 0;
 
-            for (int j = 0; j < count; ++j)
+            for (var j = 0; j < count; ++j)
             {
                 byte[] v = nonNull[j];
                 Array.Copy(v, 0, result, pos, v.Length);
@@ -638,10 +687,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
         {
             if (a == null)
                 return Clone(b);
+
             if (b == null)
                 return Clone(a);
 
-            int[] rv = new int[a.Length + b.Length];
+            var rv = new int[a.Length + b.Length];
             Array.Copy(a, 0, rv, 0, a.Length);
             Array.Copy(b, 0, rv, a.Length, b.Length);
             return rv;
@@ -650,10 +700,13 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
         public static byte[] Prepend(byte[] a, byte b)
         {
             if (a == null)
-                return new byte[] { b };
+                return new byte[]
+                {
+                    b
+                };
 
-            int length = a.Length;
-            byte[] result = new byte[length + 1];
+            var length = a.Length;
+            var result = new byte[length + 1];
             Array.Copy(a, 0, result, 1, length);
             result[0] = b;
             return result;
@@ -662,10 +715,13 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
         public static short[] Prepend(short[] a, short b)
         {
             if (a == null)
-                return new short[] { b };
+                return new short[]
+                {
+                    b
+                };
 
-            int length = a.Length;
-            short[] result = new short[length + 1];
+            var length = a.Length;
+            var result = new short[length + 1];
             Array.Copy(a, 0, result, 1, length);
             result[0] = b;
             return result;
@@ -674,10 +730,13 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
         public static int[] Prepend(int[] a, int b)
         {
             if (a == null)
-                return new int[] { b };
+                return new int[]
+                {
+                    b
+                };
 
-            int length = a.Length;
-            int[] result = new int[length + 1];
+            var length = a.Length;
+            var result = new int[length + 1];
             Array.Copy(a, 0, result, 1, length);
             result[0] = b;
             return result;
@@ -689,7 +748,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
                 return null;
 
             int p1 = 0, p2 = a.Length;
-            byte[] result = new byte[p2];
+            var result = new byte[p2];
 
             while (--p2 >= 0)
             {
@@ -705,7 +764,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
                 return null;
 
             int p1 = 0, p2 = a.Length;
-            int[] result = new int[p2];
+            var result = new int[p2];
 
             while (--p2 >= 0)
             {

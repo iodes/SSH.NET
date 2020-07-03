@@ -21,7 +21,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         {
             AsyncCallback asyncCallback = null; // TODO: Initialize to an appropriate value
             object state = null; // TODO: Initialize to an appropriate value
-            SftpUploadAsyncResult target = new SftpUploadAsyncResult(asyncCallback, state);
+            var target = new SftpUploadAsyncResult(asyncCallback, state);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

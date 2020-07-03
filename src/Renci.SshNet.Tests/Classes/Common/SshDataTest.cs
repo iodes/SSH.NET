@@ -12,9 +12,9 @@ namespace Renci.SshNet.Tests.Classes.Common
         {
             var sshData = new BoolSshData(false);
 
-            var bytes = sshData.GetBytes();
+            byte[] bytes = sshData.GetBytes();
 
-            Assert.AreEqual((byte) 0, bytes[0]);
+            Assert.AreEqual((byte)0, bytes[0]);
         }
 
         [TestMethod]
@@ -22,9 +22,9 @@ namespace Renci.SshNet.Tests.Classes.Common
         {
             var sshData = new BoolSshData(true);
 
-            var bytes = sshData.GetBytes();
+            byte[] bytes = sshData.GetBytes();
 
-            Assert.AreEqual((byte) 1, bytes[0]);
+            Assert.AreEqual((byte)1, bytes[0]);
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace Renci.SshNet.Tests.Classes.Common
             sshDataStream.Write(one);
             sshDataStream.Write(two);
 
-            var sshData = sshDataStream.ToArray();
+            byte[] sshData = sshDataStream.ToArray();
 
             var request = new RequestSshData();
             request.Load(sshData);
@@ -77,7 +77,7 @@ namespace Renci.SshNet.Tests.Classes.Common
             sshDataStream.Write(one);
             sshDataStream.Write(two);
 
-            var sshData = sshDataStream.ToArray();
+            byte[] sshData = sshDataStream.ToArray();
 
             var request = new RequestSshData();
             request.Load(sshData, 3, sshData.Length - 3);
@@ -123,14 +123,14 @@ namespace Renci.SshNet.Tests.Classes.Common
 
             public uint ValueOne
             {
-                get { return _valueOne; }
-                set { _valueOne = value; }
+                get => _valueOne;
+                set => _valueOne = value;
             }
 
             public uint ValueTwo
             {
-                get { return _valueTwo; }
-                set { _valueTwo = value; }
+                get => _valueTwo;
+                set => _valueTwo = value;
             }
 
             protected override void LoadData()

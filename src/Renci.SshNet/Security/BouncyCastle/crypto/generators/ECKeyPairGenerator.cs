@@ -1,5 +1,4 @@
 using System;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Crypto.Parameters;
 using Renci.SshNet.Security.Org.BouncyCastle.Math;
 using Renci.SshNet.Security.Org.BouncyCastle.Math.EC;
@@ -35,24 +34,24 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Generators
         {
             if (parameters is ECKeyGenerationParameters)
             {
-                ECKeyGenerationParameters ecP = (ECKeyGenerationParameters) parameters;
+                var ecP = (ECKeyGenerationParameters)parameters;
 
                 this.parameters = ecP.DomainParameters;
             }
 
-            this.random = parameters.Random;
+            random = parameters.Random;
 
-            if (this.random == null)
+            if (random == null)
             {
-                this.random = new SecureRandom();
+                random = new SecureRandom();
             }
         }
 
         public AsymmetricCipherKeyPair GenerateKeyPair()
         {
-            BigInteger n = parameters.N;
+            var n = parameters.N;
             BigInteger d;
-            int minWeight = n.BitLength >> 2;
+            var minWeight = n.BitLength >> 2;
 
             for (;;)
             {
@@ -67,7 +66,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Generators
                 break;
             }
 
-            ECPoint q = CreateBasePointMultiplier().Multiply(parameters.G, d);
+            var q = CreateBasePointMultiplier().Multiply(parameters.G, d);
 
             return new AsymmetricCipherKeyPair(
                 new ECPublicKeyParameters(algorithm, q, parameters),
@@ -82,8 +81,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Generators
         internal static ECPublicKeyParameters GetCorrespondingPublicKey(
             ECPrivateKeyParameters privKey)
         {
-            ECDomainParameters ec = privKey.Parameters;
-            ECPoint q = new FixedPointCombMultiplier().Multiply(ec.G, privKey.D);
+            var ec = privKey.Parameters;
+            var q = new FixedPointCombMultiplier().Multiply(ec.G, privKey.D);
 
             return new ECPublicKeyParameters(privKey.AlgorithmName, q, ec);
         }

@@ -68,7 +68,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Requests
             Action<SftpStatusResponse> statusAction = statusActionInvocations.Add;
             var request = new SftpRmDirRequest(_protocolVersion, _requestId, _path, _encoding, null);
 
-            var bytes = request.GetBytes();
+            byte[] bytes = request.GetBytes();
 
             var expectedBytesLength = 0;
             expectedBytesLength += 4; // Length
@@ -81,11 +81,11 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Requests
 
             var sshDataStream = new SshDataStream(bytes);
 
-            Assert.AreEqual((uint) bytes.Length - 4, sshDataStream.ReadUInt32());
-            Assert.AreEqual((byte) SftpMessageTypes.RmDir, sshDataStream.ReadByte());
+            Assert.AreEqual((uint)bytes.Length - 4, sshDataStream.ReadUInt32());
+            Assert.AreEqual((byte)SftpMessageTypes.RmDir, sshDataStream.ReadByte());
             Assert.AreEqual(_requestId, sshDataStream.ReadUInt32());
 
-            Assert.AreEqual((uint) _pathBytes.Length, sshDataStream.ReadUInt32());
+            Assert.AreEqual((uint)_pathBytes.Length, sshDataStream.ReadUInt32());
             var actualPath = new byte[_pathBytes.Length];
             sshDataStream.Read(actualPath, 0, actualPath.Length);
             Assert.IsTrue(_pathBytes.SequenceEqual(actualPath));

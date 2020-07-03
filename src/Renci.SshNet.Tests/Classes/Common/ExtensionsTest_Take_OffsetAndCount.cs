@@ -39,12 +39,11 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldReturnEmptyByteArrayWhenCountIsZero()
         {
-            var value = CreateBuffer(16);
+            byte[] value = CreateBuffer(16);
             const int offset = 25;
             const int count = 0;
 
-
-            var actual = Extensions.Take(value, offset, count);
+            byte[] actual = Extensions.Take(value, offset, count);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(0, actual.Length);
@@ -53,11 +52,11 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldReturnValueWhenCountIsEqualToLengthOfValueAndOffsetIsZero()
         {
-            var value = CreateBuffer(16);
+            byte[] value = CreateBuffer(16);
             const int offset = 0;
             var count = value.Length;
 
-            var actual = Extensions.Take(value, offset, count);
+            byte[] actual = Extensions.Take(value, offset, count);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(value.Length, actual.Length);
@@ -67,11 +66,11 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldReturnLeadingBytesWhenOffsetIsZeroAndCountIsLessThanLengthOfValue()
         {
-            var value = CreateBuffer(16);
+            byte[] value = CreateBuffer(16);
             const int offset = 0;
             const int count = 5;
 
-            var actual = Extensions.Take(value, offset, count);
+            byte[] actual = Extensions.Take(value, offset, count);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(count, actual.Length);
@@ -85,11 +84,11 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldReturnCorrectPartOfValueWhenOffsetIsGreaterThanZeroAndOffsetPlusCountIsLessThanLengthOfValue()
         {
-            var value = CreateBuffer(16);
+            byte[] value = CreateBuffer(16);
             const int offset = 3;
             const int count = 4;
 
-            var actual = Extensions.Take(value, offset, count);
+            byte[] actual = Extensions.Take(value, offset, count);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(count, actual.Length);
@@ -102,7 +101,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldThrowArgumentExceptionWhenCountIsGreaterThanLengthOfValue()
         {
-            var value = CreateBuffer(16);
+            byte[] value = CreateBuffer(16);
             const int offset = 0;
             var count = value.Length + 1;
 
@@ -119,7 +118,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldThrowArgumentExceptionWhenOffsetPlusCountIsGreaterThanLengthOfValue()
         {
-            var value = CreateBuffer(16);
+            byte[] value = CreateBuffer(16);
             const int offset = 1;
             var count = value.Length;
 

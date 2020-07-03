@@ -8,21 +8,18 @@ namespace Renci.SshNet.Sftp.Requests
         private byte[] _newLinkPath;
         private byte[] _existingPath;
 
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.Link; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.Link;
 
         public string NewLinkPath
         {
-            get { return Utf8.GetString(_newLinkPath, 0, _newLinkPath.Length); }
-            private set { _newLinkPath = Utf8.GetBytes(value); }
+            get => Utf8.GetString(_newLinkPath, 0, _newLinkPath.Length);
+            private set => _newLinkPath = Utf8.GetBytes(value);
         }
 
         public string ExistingPath
         {
-            get { return Utf8.GetString(_existingPath, 0, _existingPath.Length); }
-            private set { _existingPath = Utf8.GetBytes(value); }
+            get => Utf8.GetString(_existingPath, 0, _existingPath.Length);
+            private set => _existingPath = Utf8.GetBytes(value);
         }
 
         public bool IsSymLink { get; private set; }

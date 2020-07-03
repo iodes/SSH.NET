@@ -17,10 +17,7 @@ namespace Renci.SshNet.Messages.Transport
         /// <value>
         /// The name of the service.
         /// </value>
-        public ServiceName ServiceName
-        {
-            get { return _serviceName.ToServiceName(); }
-        }
+        public ServiceName ServiceName => _serviceName.ToServiceName();
 
         /// <summary>
         /// Gets the size of the message in bytes.

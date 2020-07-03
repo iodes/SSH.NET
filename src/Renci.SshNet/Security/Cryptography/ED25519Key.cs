@@ -33,12 +33,12 @@ namespace Renci.SshNet.Security
         {
             get
             {
-                return new BigInteger[] { publicKey.ToBigInteger() };
+                return new BigInteger[]
+                {
+                    publicKey.ToBigInteger()
+                };
             }
-            set
-            {
-                publicKey = value[0].ToByteArray().Reverse().TrimLeadingZeros().Pad(Ed25519.PublicKeySizeInBytes);
-            }
+            set => publicKey = value[0].ToByteArray().Reverse().TrimLeadingZeros().Pad(Ed25519.PublicKeySizeInBytes);
         }
 
         /// <summary>
@@ -47,13 +47,7 @@ namespace Renci.SshNet.Security
         /// <value>
         /// The length of the key.
         /// </value>
-        public override int KeyLength
-        {
-            get
-            {
-                return PublicKey.Length;
-            }
-        }
+        public override int KeyLength => PublicKey.Length;
 
         /// <summary>
         /// Gets the digital signature.
@@ -66,6 +60,7 @@ namespace Renci.SshNet.Security
                 {
                     _digitalSignature = new ED25519DigitalSignature(this);
                 }
+
                 return _digitalSignature;
             }
         }
@@ -73,24 +68,12 @@ namespace Renci.SshNet.Security
         /// <summary>
         /// Gets the PublicKey Bytes
         /// </summary>
-        public byte[] PublicKey
-        {
-            get
-            {
-                return publicKey;
-            }
-        }
+        public byte[] PublicKey => publicKey;
 
         /// <summary>
         /// Gets the PrivateKey Bytes
         /// </summary>
-        public byte[] PrivateKey
-        {
-            get
-            {
-                return privateKey;
-            }
-        }
+        public byte[] PrivateKey => privateKey;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ED25519Key"/> class.
@@ -113,7 +96,6 @@ namespace Renci.SshNet.Security
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -148,7 +130,6 @@ namespace Renci.SshNet.Security
         {
             Dispose(false);
         }
-
         #endregion
     }
 }

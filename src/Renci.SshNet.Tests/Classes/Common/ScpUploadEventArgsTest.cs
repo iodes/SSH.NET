@@ -17,10 +17,10 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ScpUploadEventArgsConstructorTest()
         {
-            string filename = string.Empty; // TODO: Initialize to an appropriate value
+            var filename = string.Empty; // TODO: Initialize to an appropriate value
             long size = 0; // TODO: Initialize to an appropriate value
             long uploaded = 0; // TODO: Initialize to an appropriate value
-            ScpUploadEventArgs target = new ScpUploadEventArgs(filename, size, uploaded);
+            var target = new ScpUploadEventArgs(filename, size, uploaded);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

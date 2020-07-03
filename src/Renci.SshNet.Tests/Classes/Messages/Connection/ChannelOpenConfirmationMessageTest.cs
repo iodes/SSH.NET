@@ -19,7 +19,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         [Ignore] // placeholder
         public void ChannelOpenConfirmationMessageConstructorTest()
         {
-            ChannelOpenConfirmationMessage target = new ChannelOpenConfirmationMessage();
+            var target = new ChannelOpenConfirmationMessage();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -34,7 +34,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
             uint initialWindowSize = 0; // TODO: Initialize to an appropriate value
             uint maximumPacketSize = 0; // TODO: Initialize to an appropriate value
             uint remoteChannelNumber = 0; // TODO: Initialize to an appropriate value
-            ChannelOpenConfirmationMessage target = new ChannelOpenConfirmationMessage(localChannelNumber, initialWindowSize, maximumPacketSize, remoteChannelNumber);
+            var target = new ChannelOpenConfirmationMessage(localChannelNumber, initialWindowSize, maximumPacketSize, remoteChannelNumber);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

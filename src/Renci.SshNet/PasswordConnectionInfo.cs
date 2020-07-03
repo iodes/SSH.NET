@@ -250,6 +250,7 @@ namespace Renci.SshNet
             foreach (var authenticationMethod in AuthenticationMethods)
             {
                 var pwdAuthentication = authenticationMethod as PasswordAuthenticationMethod;
+
                 if (pwdAuthentication != null)
                 {
                     pwdAuthentication.PasswordExpired += AuthenticationMethod_PasswordExpired;
@@ -266,7 +267,6 @@ namespace Renci.SshNet
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -294,6 +294,7 @@ namespace Renci.SshNet
                     foreach (var authenticationMethod in AuthenticationMethods)
                     {
                         var disposable = authenticationMethod as IDisposable;
+
                         if (disposable != null)
                         {
                             disposable.Dispose();
@@ -316,7 +317,6 @@ namespace Renci.SshNet
             // readability and maintainability.
             Dispose(false);
         }
-
         #endregion
     }
 }

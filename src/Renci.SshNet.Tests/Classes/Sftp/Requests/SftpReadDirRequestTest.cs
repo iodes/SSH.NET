@@ -22,8 +22,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Requests
         {
             var random = new Random();
 
-            _protocolVersion = (uint) random.Next(0, int.MaxValue);
-            _requestId = (uint) random.Next(0, int.MaxValue);
+            _protocolVersion = (uint)random.Next(0, int.MaxValue);
+            _requestId = (uint)random.Next(0, int.MaxValue);
             _handle = new byte[random.Next(1, 10)];
             random.NextBytes(_handle);
         }
@@ -82,7 +82,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Requests
         {
             var request = new SftpReadDirRequest(_protocolVersion, _requestId, _handle, null, null);
 
-            var bytes = request.GetBytes();
+            byte[] bytes = request.GetBytes();
 
             var expectedBytesLength = 0;
             expectedBytesLength += 4; // Length
@@ -95,11 +95,11 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Requests
 
             var sshDataStream = new SshDataStream(bytes);
 
-            Assert.AreEqual((uint) bytes.Length - 4, sshDataStream.ReadUInt32());
-            Assert.AreEqual((byte) SftpMessageTypes.ReadDir, sshDataStream.ReadByte());
+            Assert.AreEqual((uint)bytes.Length - 4, sshDataStream.ReadUInt32());
+            Assert.AreEqual((byte)SftpMessageTypes.ReadDir, sshDataStream.ReadByte());
             Assert.AreEqual(_requestId, sshDataStream.ReadUInt32());
 
-            Assert.AreEqual((uint) _handle.Length, sshDataStream.ReadUInt32());
+            Assert.AreEqual((uint)_handle.Length, sshDataStream.ReadUInt32());
             var actualHandle = new byte[_handle.Length];
             sshDataStream.Read(actualHandle, 0, actualHandle.Length);
             Assert.IsTrue(_handle.SequenceEqual(actualHandle));

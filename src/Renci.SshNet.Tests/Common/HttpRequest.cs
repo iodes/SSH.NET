@@ -11,7 +11,9 @@ namespace Renci.SshNet.Tests.Common
         }
 
         public string RequestLine { get; set; }
+
         public IList<string> Headers { get; set; }
+
         public byte[] MessageBody { get; set; }
     }
 }

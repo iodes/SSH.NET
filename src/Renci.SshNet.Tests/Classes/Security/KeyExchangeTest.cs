@@ -11,6 +11,5 @@ namespace Renci.SshNet.Tests
     [TestClass()]
     public class KeyExchangeTest : TestBase
     {
-
     }
 }

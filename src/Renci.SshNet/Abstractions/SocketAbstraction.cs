@@ -22,7 +22,6 @@ namespace Renci.SshNet.Abstractions
             }
 
             return false;
-
         }
 
         /// <summary>
@@ -49,15 +48,20 @@ namespace Renci.SshNet.Abstractions
 
         public static Socket Connect(IPEndPoint remoteEndpoint, TimeSpan connectTimeout)
         {
-            var socket = new Socket(remoteEndpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp) {NoDelay = true};
+            var socket = new Socket(remoteEndpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp)
+            {
+                NoDelay = true
+            };
 
 #if FEATURE_SOCKET_EAP
             var connectCompleted = new ManualResetEvent(false);
+
             var args = new SocketAsyncEventArgs
-                {
-                    UserToken = connectCompleted,
-                    RemoteEndPoint = remoteEndpoint
-                };
+            {
+                UserToken = connectCompleted,
+                RemoteEndPoint = remoteEndpoint
+            };
+
             args.Completed += ConnectCompleted;
 
             if (socket.ConnectAsync(args))
@@ -74,8 +78,8 @@ namespace Renci.SshNet.Abstractions
                     args.Dispose();
 
                     throw new SshOperationTimeoutException(string.Format(CultureInfo.InvariantCulture,
-                                                                         "Connection failed to establish within {0:F0} milliseconds.",
-                                                                         connectTimeout.TotalMilliseconds));
+                        "Connection failed to establish within {0:F0} milliseconds.",
+                        connectTimeout.TotalMilliseconds));
                 }
             }
 
@@ -84,7 +88,7 @@ namespace Renci.SshNet.Abstractions
 
             if (args.SocketError != SocketError.Success)
             {
-                var socketError = (int) args.SocketError;
+                var socketError = (int)args.SocketError;
 
                 // dispose Socket
                 socket.Dispose();
@@ -124,14 +128,13 @@ namespace Renci.SshNet.Abstractions
             do
             {
                 bytesReceived = ReadPartial(socket, buffer, 0, buffer.Length, timeout);
-            }
-            while (bytesReceived > 0);
+            } while (bytesReceived > 0);
         }
 
         public static int ReadPartial(Socket socket, byte[] buffer, int offset, int size, TimeSpan timeout)
         {
 #if FEATURE_SOCKET_SYNC
-            socket.ReceiveTimeout = (int) timeout.TotalMilliseconds;
+            socket.ReceiveTimeout = (int)timeout.TotalMilliseconds;
 
             try
             {
@@ -142,6 +145,7 @@ namespace Renci.SshNet.Abstractions
                 if (ex.SocketErrorCode == SocketError.TimedOut)
                     throw new SshOperationTimeoutException(string.Format(CultureInfo.InvariantCulture,
                         "Socket read operation has timed out after {0:F0} milliseconds.", timeout.TotalMilliseconds));
+
                 throw;
             }
 #elif FEATURE_SOCKET_EAP
@@ -199,6 +203,7 @@ namespace Renci.SshNet.Abstractions
                 try
                 {
                     var bytesRead = socket.Receive(buffer, offset, size, SocketFlags.None);
+
                     if (bytesRead == 0)
                         break;
 
@@ -215,10 +220,12 @@ namespace Renci.SshNet.Abstractions
                         case SocketError.ConnectionReset:
                             // connection was closed
                             return;
+
                         case SocketError.Interrupted:
                             // connection was closed because FIN/ACK was not received in time after
                             // shutting down the (send part of the) socket
                             return;
+
                         default:
                             throw; // throw any other error
                     }
@@ -263,6 +270,7 @@ namespace Renci.SshNet.Abstractions
         public static int ReadByte(Socket socket, TimeSpan timeout)
         {
             var buffer = new byte[1];
+
             if (Read(socket, buffer, 0, 1, timeout) == 0)
                 return -1;
 
@@ -277,7 +285,11 @@ namespace Renci.SshNet.Abstractions
         /// <exception cref="SocketException">The write failed.</exception>
         public static void SendByte(Socket socket, byte value)
         {
-            var buffer = new[] {value};
+            byte[] buffer = new[]
+            {
+                value
+            };
+
             Send(socket, buffer, 0, 1);
         }
 
@@ -328,13 +340,14 @@ namespace Renci.SshNet.Abstractions
             var totalBytesRead = 0;
             var totalBytesToRead = size;
 
-            socket.ReceiveTimeout = (int) timeout.TotalMilliseconds;
+            socket.ReceiveTimeout = (int)timeout.TotalMilliseconds;
 
             do
             {
                 try
                 {
                     var bytesRead = socket.Receive(buffer, offset + totalBytesRead, totalBytesToRead - totalBytesRead, SocketFlags.None);
+
                     if (bytesRead == 0)
                         return 0;
 
@@ -352,10 +365,9 @@ namespace Renci.SshNet.Abstractions
                         throw new SshOperationTimeoutException(string.Format(CultureInfo.InvariantCulture,
                             "Socket read operation has timed out after {0:F0} milliseconds.", timeout.TotalMilliseconds));
 
-                     throw;
+                    throw;
                 }
-            }
-            while (totalBytesRead < totalBytesToRead);
+            } while (totalBytesRead < totalBytesToRead);
 
             return totalBytesRead;
 #elif FEATURE_SOCKET_EAP
@@ -408,7 +420,7 @@ namespace Renci.SshNet.Abstractions
         public static void Send(Socket socket, byte[] data, int offset, int size)
         {
 #if FEATURE_SOCKET_SYNC
-            var totalBytesSent = 0;  // how many bytes are already sent
+            var totalBytesSent = 0; // how many bytes are already sent
             var totalBytesToSend = size;
 
             do
@@ -416,9 +428,10 @@ namespace Renci.SshNet.Abstractions
                 try
                 {
                     var bytesSent = socket.Send(data, offset + totalBytesSent, totalBytesToSend - totalBytesSent, SocketFlags.None);
+
                     if (bytesSent == 0)
                         throw new SshConnectionException("An established connection was aborted by the server.",
-                                                         DisconnectReason.ConnectionLost);
+                            DisconnectReason.ConnectionLost);
 
                     totalBytesSent += bytesSent;
                 }
@@ -430,7 +443,9 @@ namespace Renci.SshNet.Abstractions
                         ThreadAbstraction.Sleep(30);
                     }
                     else
-                        throw;  // any serious error occurr
+                    {
+                        throw; // any serious error occurr
+                    }
                 }
             } while (totalBytesSent < totalBytesToSend);
 #elif FEATURE_SOCKET_EAP
@@ -483,6 +498,7 @@ namespace Renci.SshNet.Abstractions
                 case SocketError.IOPending:
                 case SocketError.NoBufferSpaceAvailable:
                     return true;
+
                 default:
                     return false;
             }
@@ -491,7 +507,8 @@ namespace Renci.SshNet.Abstractions
 #if FEATURE_SOCKET_EAP
         private static void ConnectCompleted(object sender, SocketAsyncEventArgs e)
         {
-            var eventWaitHandle = (ManualResetEvent) e.UserToken;
+            var eventWaitHandle = (ManualResetEvent)e.UserToken;
+
             if (eventWaitHandle != null)
                 eventWaitHandle.Set();
         }

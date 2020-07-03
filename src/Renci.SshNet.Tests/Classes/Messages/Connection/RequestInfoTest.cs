@@ -26,7 +26,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         [TestMethod()]
         public void RequestNameTest()
         {
-            RequestInfo target = CreateRequestInfo(); // TODO: Initialize to an appropriate value
+            var target = CreateRequestInfo(); // TODO: Initialize to an appropriate value
             string actual;
             actual = target.RequestName;
             Assert.Inconclusive("Verify the correctness of this test method.");

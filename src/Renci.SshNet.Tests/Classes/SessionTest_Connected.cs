@@ -106,14 +106,14 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethod]
         public void ISession_ConnectionInfoShouldReturnConnectionInfoPassedThroughConstructor()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
             Assert.AreSame(ConnectionInfo, session.ConnectionInfo);
         }
 
         [TestMethod]
         public void ISession_MessageListenerCompletedShouldNotBeSignaled()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
 
             Assert.IsNotNull(session.MessageListenerCompleted);
             Assert.IsFalse(session.MessageListenerCompleted.WaitOne(0));
@@ -122,7 +122,7 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethod]
         public void ISession_SendMessageShouldSendPacketToServer()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
             ServerBytesReceivedRegister.Clear();
 
             session.SendMessage(_ignoreMessage);
@@ -136,7 +136,7 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethod]
         public void ISession_TrySendMessageShouldSendPacketToServerAndReturnTrue()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
             ServerBytesReceivedRegister.Clear();
 
             var actual = session.TrySendMessage(new IgnoreMessage());
@@ -152,7 +152,7 @@ namespace Renci.SshNet.Tests.Classes
         public void ISession_WaitOnHandleShouldThrowArgumentNullExceptionWhenWaitHandleIsNull()
         {
             const WaitHandle waitHandle = null;
-            var session = (ISession) Session;
+            var session = (ISession)Session;
 
             try
             {
@@ -169,7 +169,7 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethod]
         public void ISession_TryWait_WaitHandleAndTimeout_ShouldReturnSuccessIfWaitHandleIsSignaled()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
             var waitHandle = new ManualResetEvent(true);
 
             var result = session.TryWait(waitHandle, TimeSpan.FromMilliseconds(0));
@@ -180,7 +180,7 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethod]
         public void ISession_TryWait_WaitHandleAndTimeout_ShouldReturnTimedOutIfWaitHandleIsNotSignaled()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
             var waitHandle = new ManualResetEvent(false);
 
             var result = session.TryWait(waitHandle, TimeSpan.FromMilliseconds(0));
@@ -191,7 +191,7 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethod]
         public void ISession_TryWait_WaitHandleAndTimeout_ShouldThrowArgumentNullExceptionWhenWaitHandleIsNull()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
             const WaitHandle waitHandle = null;
 
             try
@@ -209,7 +209,7 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethod]
         public void ISession_TryWait_WaitHandleAndTimeoutAndException_ShouldReturnSuccessIfWaitHandleIsSignaled()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
             var waitHandle = new ManualResetEvent(true);
             Exception exception;
 
@@ -222,7 +222,7 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethod]
         public void ISession_TryWait_WaitHandleAndTimeoutAndException_ShouldReturnTimedOutIfWaitHandleIsNotSignaled()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
             var waitHandle = new ManualResetEvent(false);
             Exception exception;
 
@@ -235,7 +235,7 @@ namespace Renci.SshNet.Tests.Classes
         [TestMethod]
         public void ISession_TryWait_WaitHandleAndTimeoutAndException_ShouldThrowArgumentNullExceptionWhenWaitHandleIsNull()
         {
-            var session = (ISession) Session;
+            var session = (ISession)Session;
             const WaitHandle waitHandle = null;
             Exception exception = null;
 

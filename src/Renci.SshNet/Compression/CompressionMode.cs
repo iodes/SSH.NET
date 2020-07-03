@@ -13,6 +13,6 @@
         /// <summary>
         /// Specifies that content should be decompressed.
         /// </summary>
-        Decompress = 1,
+        Decompress = 1
     }
 }

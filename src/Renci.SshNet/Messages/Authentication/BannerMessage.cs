@@ -12,18 +12,12 @@
         /// <summary>
         /// Gets banner message.
         /// </summary>
-        public string Message
-        {
-            get { return Utf8.GetString(_message, 0, _message.Length); }
-        }
+        public string Message => Utf8.GetString(_message, 0, _message.Length);
 
         /// <summary>
         /// Gets banner language.
         /// </summary>
-        public string Language
-        {
-            get { return Utf8.GetString(_language, 0, _language.Length); }
-        }
+        public string Language => Utf8.GetString(_language, 0, _language.Length);
 
         /// <summary>
         /// Gets the size of the message in bytes.

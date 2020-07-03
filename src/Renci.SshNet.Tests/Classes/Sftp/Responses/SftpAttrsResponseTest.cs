@@ -17,7 +17,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Responses
         public void Init()
         {
             _random = new Random();
-            _protocolVersion = (uint) _random.Next(0, int.MaxValue);
+            _protocolVersion = (uint)_random.Next(0, int.MaxValue);
             _responseId = (uint)_random.Next(0, int.MaxValue);
         }
 
@@ -28,7 +28,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Responses
 
             Assert.IsNull(target.Attributes);
             Assert.AreEqual(_protocolVersion, target.ProtocolVersion);
-            Assert.AreEqual((uint) 0, target.ResponseId);
+            Assert.AreEqual((uint)0, target.ResponseId);
             Assert.AreEqual(SftpMessageTypes.Attrs, target.SftpMessageType);
         }
 
@@ -37,7 +37,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Responses
         {
             var target = new SftpAttrsResponse(_protocolVersion);
             var attributes = CreateSftpFileAttributes();
-            var attributesBytes = attributes.GetBytes();
+            byte[] attributesBytes = attributes.GetBytes();
 
             var sshDataStream = new SshDataStream(4 + attributesBytes.Length);
             sshDataStream.Write(_responseId);

@@ -25,10 +25,7 @@ namespace Renci.SshNet
         /// <value>
         /// <c>true</c> if port forwarding is started; otherwise, <c>false</c>.
         /// </value>
-        public override bool IsStarted
-        {
-            get { return _status == ForwardedPortStatus.Started; }
-        }
+        public override bool IsStarted => _status == ForwardedPortStatus.Started;
 
         /// <summary>
         /// Gets the bound host.
@@ -38,13 +35,7 @@ namespace Renci.SshNet
         /// <summary>
         /// Gets the bound host.
         /// </summary>
-        public string BoundHost
-        {
-            get
-            {
-                return BoundHostAddress.ToString();
-            }
-        }
+        public string BoundHost => BoundHostAddress.ToString();
 
         /// <summary>
         /// Gets the bound port.
@@ -59,13 +50,7 @@ namespace Renci.SshNet
         /// <summary>
         /// Gets the forwarded host.
         /// </summary>
-        public string Host
-        {
-            get
-            {
-                return HostAddress.ToString();
-            }
-        }
+        public string Host => HostAddress.ToString();
 
         /// <summary>
         /// Gets the forwarded port.
@@ -87,6 +72,7 @@ namespace Renci.SshNet
         {
             if (boundHostAddress == null)
                 throw new ArgumentNullException("boundHostAddress");
+
             if (hostAddress == null)
                 throw new ArgumentNullException("hostAddress");
 
@@ -123,9 +109,9 @@ namespace Renci.SshNet
         /// <param name="port">The port.</param>
         public ForwardedPortRemote(string boundHost, uint boundPort, string host, uint port)
             : this(DnsAbstraction.GetHostAddresses(boundHost)[0],
-                   boundPort,
-                   DnsAbstraction.GetHostAddresses(host)[0],
-                   port)
+                boundPort,
+                DnsAbstraction.GetHostAddresses(host)[0],
+                port)
         {
         }
 
@@ -189,9 +175,13 @@ namespace Renci.SshNet
 
             // send global request to cancel direct tcpip
             Session.SendMessage(new CancelTcpIpForwardGlobalRequestMessage(BoundHost, BoundPort));
+
             // wait for response on global request to cancel direct tcpip or completion of message
             // listener loop (in which case response on global request can never be received)
-            WaitHandle.WaitAny(new[] { _globalRequestResponse, Session.MessageListenerCompleted }, timeout);
+            WaitHandle.WaitAny(new[]
+            {
+                _globalRequestResponse, Session.MessageListenerCompleted
+            }, timeout);
 
             // unsubscribe from session events as either the tcpip forward is cancelled at the
             // server, or our session message loop has completed
@@ -201,7 +191,7 @@ namespace Renci.SshNet
 
             // wait for pending channels to close
             _pendingChannelCountdown.Signal();
-            
+
             if (!_pendingChannelCountdown.Wait(timeout))
             {
                 // TODO: log as warning
@@ -225,6 +215,7 @@ namespace Renci.SshNet
         {
             var channelOpenMessage = e.Message;
             var info = channelOpenMessage.Info as ForwardedTcpipChannelInfo;
+
             if (info != null)
             {
                 //  Ensure this is the corresponding request
@@ -237,42 +228,42 @@ namespace Renci.SshNet
                     }
 
                     ThreadAbstraction.ExecuteThread(() =>
+                    {
+                        // capture the countdown event that we're adding a count to, as we need to make sure that we'll be signaling
+                        // that same instance; the instance field for the countdown event is re-initialize when the port is restarted
+                        // and that time there may still be pending requests
+                        var pendingChannelCountdown = _pendingChannelCountdown;
+
+                        pendingChannelCountdown.AddCount();
+
+                        try
                         {
-                            // capture the countdown event that we're adding a count to, as we need to make sure that we'll be signaling
-                            // that same instance; the instance field for the countdown event is re-initialize when the port is restarted
-                            // and that time there may still be pending requests
-                            var pendingChannelCountdown = _pendingChannelCountdown;
+                            RaiseRequestReceived(info.OriginatorAddress, info.OriginatorPort);
 
-                            pendingChannelCountdown.AddCount();
-
+                            using (var channel = Session.CreateChannelForwardedTcpip(channelOpenMessage.LocalChannelNumber, channelOpenMessage.InitialWindowSize, channelOpenMessage.MaximumPacketSize))
+                            {
+                                channel.Exception += Channel_Exception;
+                                channel.Bind(new IPEndPoint(HostAddress, (int)Port), this);
+                            }
+                        }
+                        catch (Exception exp)
+                        {
+                            RaiseExceptionEvent(exp);
+                        }
+                        finally
+                        {
+                            // take into account that CountdownEvent has since been disposed; when stopping the port we
+                            // wait for a given time for the channels to close, but once that timeout period has elapsed
+                            // the CountdownEvent will be disposed
                             try
                             {
-                                RaiseRequestReceived(info.OriginatorAddress, info.OriginatorPort);
-
-                                using (var channel = Session.CreateChannelForwardedTcpip(channelOpenMessage.LocalChannelNumber, channelOpenMessage.InitialWindowSize, channelOpenMessage.MaximumPacketSize))
-                                {
-                                    channel.Exception += Channel_Exception;
-                                    channel.Bind(new IPEndPoint(HostAddress, (int) Port), this);
-                                }
+                                pendingChannelCountdown.Signal();
                             }
-                            catch (Exception exp)
+                            catch (ObjectDisposedException)
                             {
-                                RaiseExceptionEvent(exp);
                             }
-                            finally
-                            {
-                                // take into account that CountdownEvent has since been disposed; when stopping the port we
-                                // wait for a given time for the channels to close, but once that timeout period has elapsed
-                                // the CountdownEvent will be disposed
-                                try
-                                {
-                                    pendingChannelCountdown.Signal();
-                                }
-                                catch (ObjectDisposedException)
-                                {
-                                }
-                            }
-                        });
+                        }
+                    });
                 }
             }
         }
@@ -293,6 +284,7 @@ namespace Renci.SshNet
         private void InitializePendingChannelCountdown()
         {
             var original = Interlocked.Exchange(ref _pendingChannelCountdown, new CountdownEvent(1));
+
             if (original != null)
             {
                 original.Dispose();
@@ -313,16 +305,16 @@ namespace Renci.SshNet
         private void Session_RequestSuccess(object sender, MessageEventArgs<RequestSuccessMessage> e)
         {
             _requestStatus = true;
+
             if (BoundPort == 0)
             {
-                BoundPort = (e.Message.BoundPort == null) ? 0 : e.Message.BoundPort.Value;
+                BoundPort = e.Message.BoundPort == null ? 0 : e.Message.BoundPort.Value;
             }
 
             _globalRequestResponse.Set();
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -348,6 +340,7 @@ namespace Renci.SshNet
             if (disposing)
             {
                 var session = Session;
+
                 if (session != null)
                 {
                     Session = null;
@@ -357,6 +350,7 @@ namespace Renci.SshNet
                 }
 
                 var globalRequestResponse = _globalRequestResponse;
+
                 if (globalRequestResponse != null)
                 {
                     _globalRequestResponse = null;
@@ -364,6 +358,7 @@ namespace Renci.SshNet
                 }
 
                 var pendingRequestsCountdown = _pendingChannelCountdown;
+
                 if (pendingRequestsCountdown != null)
                 {
                     _pendingChannelCountdown = null;
@@ -382,7 +377,6 @@ namespace Renci.SshNet
         {
             Dispose(false);
         }
-
         #endregion
     }
 }

@@ -21,10 +21,7 @@ namespace Renci.SshNet.Messages.Authentication
         /// <c>-1</c> to indicate that the size of the message cannot be determined,
         /// or is too costly to calculate.
         /// </value>
-        protected override int BufferCapacity
-        {
-            get { return -1; }
-        }
+        protected override int BufferCapacity => -1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InformationResponseMessage"/> class.
@@ -47,7 +44,8 @@ namespace Renci.SshNet.Messages.Authentication
         /// </summary>
         protected override void SaveData()
         {
-            Write((uint) Responses.Count);
+            Write((uint)Responses.Count);
+
             foreach (var response in Responses)
             {
                 Write(response);

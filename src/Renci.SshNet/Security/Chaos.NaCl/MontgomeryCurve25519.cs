@@ -18,38 +18,41 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (privateKey == null)
                 throw new ArgumentNullException("privateKey");
+
             if (privateKey.Length != PrivateKeySizeInBytes)
                 throw new ArgumentException("privateKey.Length must be 32");
+
             var publicKey = new byte[32];
             GetPublicKey(new ArraySegment<byte>(publicKey), new ArraySegment<byte>(privateKey));
             return publicKey;
         }
 
-        static readonly byte[] _basePoint = new byte[32]
-		{
-			9, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0 ,0, 0, 0, 0, 0,
-			0, 0, 0 ,0, 0, 0, 0, 0,
-			0, 0, 0 ,0, 0, 0, 0, 0
-		};
+        private static readonly byte[] _basePoint = new byte[32]
+        {
+            9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
 
         internal static void GetPublicKey(ArraySegment<byte> publicKey, ArraySegment<byte> privateKey)
         {
             if (publicKey.Array == null)
                 throw new ArgumentNullException("publicKey.Array");
+
             if (privateKey.Array == null)
                 throw new ArgumentNullException("privateKey.Array");
+
             if (publicKey.Count != PublicKeySizeInBytes)
                 throw new ArgumentException("privateKey.Count must be 32");
+
             if (privateKey.Count != PrivateKeySizeInBytes)
                 throw new ArgumentException("privateKey.Count must be 32");
 
             // hack: abusing publicKey as temporary storage
             // todo: remove hack
-            for (int i = 0; i < 32; i++)
+            for (var i = 0; i < 32; i++)
             {
                 publicKey.Array[publicKey.Offset + i] = privateKey.Array[privateKey.Offset + i];
             }
+
             ScalarOperations.sc_clamp(publicKey.Array, publicKey.Offset);
 
             GroupElementP3 A;
@@ -63,12 +66,12 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         internal static void KeyExchangeOutputHashCurve25519Paper(byte[] sharedKey, int offset)
         {
             //c = Curve25519output
-            const UInt32 c0 = 'C' | 'u' << 8 | 'r' << 16 | (UInt32)'v' << 24;
-            const UInt32 c1 = 'e' | '2' << 8 | '5' << 16 | (UInt32)'5' << 24;
-            const UInt32 c2 = '1' | '9' << 8 | 'o' << 16 | (UInt32)'u' << 24;
-            const UInt32 c3 = 't' | 'p' << 8 | 'u' << 16 | (UInt32)'t' << 24;
+            const uint c0 = 'C' | ('u' << 8) | ('r' << 16) | ((uint)'v' << 24);
+            const uint c1 = 'e' | ('2' << 8) | ('5' << 16) | ((uint)'5' << 24);
+            const uint c2 = '1' | ('9' << 8) | ('o' << 16) | ((uint)'u' << 24);
+            const uint c3 = 't' | ('p' << 8) | ('u' << 16) | ((uint)'t' << 24);
 
-            Array16<UInt32> salsaState;
+            Array16<uint> salsaState;
             salsaState.x0 = c0;
             salsaState.x1 = ByteIntegerConverter.LoadLittleEndian32(sharedKey, offset + 0);
             salsaState.x2 = 0;
@@ -116,16 +119,22 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (sharedKey.Array == null)
                 throw new ArgumentNullException("sharedKey.Array");
+
             if (publicKey.Array == null)
                 throw new ArgumentNullException("publicKey.Array");
+
             if (privateKey.Array == null)
                 throw new ArgumentNullException("privateKey");
+
             if (sharedKey.Count != 32)
                 throw new ArgumentException("sharedKey.Count != 32");
+
             if (publicKey.Count != 32)
                 throw new ArgumentException("publicKey.Count != 32");
+
             if (privateKey.Count != 32)
                 throw new ArgumentException("privateKey.Count != 32");
+
             MontgomeryOperations.scalarmult(sharedKey.Array, sharedKey.Offset, privateKey.Array, privateKey.Offset, publicKey.Array, publicKey.Offset);
             KeyExchangeOutputHashNaCl(sharedKey.Array, sharedKey.Offset);
         }

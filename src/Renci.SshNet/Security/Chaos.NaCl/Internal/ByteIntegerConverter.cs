@@ -9,17 +9,16 @@ namespace Renci.SshNet.Security.Chaos.NaCl.Internal
     internal static class ByteIntegerConverter
     {
         #region Individual
-
-        internal static UInt32 LoadLittleEndian32(byte[] buf, int offset)
+        internal static uint LoadLittleEndian32(byte[] buf, int offset)
         {
             return
-                (UInt32)(buf[offset + 0])
-            | (((UInt32)(buf[offset + 1])) << 8)
-            | (((UInt32)(buf[offset + 2])) << 16)
-            | (((UInt32)(buf[offset + 3])) << 24);
+                (uint)buf[offset + 0]
+                | ((uint)buf[offset + 1] << 8)
+                | ((uint)buf[offset + 2] << 16)
+                | ((uint)buf[offset + 3] << 24);
         }
 
-        internal static void StoreLittleEndian32(byte[] buf, int offset, UInt32 value)
+        internal static void StoreLittleEndian32(byte[] buf, int offset, uint value)
         {
             buf[offset + 0] = unchecked((byte)value);
             buf[offset + 1] = unchecked((byte)(value >> 8));
@@ -27,20 +26,20 @@ namespace Renci.SshNet.Security.Chaos.NaCl.Internal
             buf[offset + 3] = unchecked((byte)(value >> 24));
         }
 
-        internal static UInt64 LoadBigEndian64(byte[] buf, int offset)
+        internal static ulong LoadBigEndian64(byte[] buf, int offset)
         {
             return
-                (UInt64)(buf[offset + 7])
-                | (((UInt64)(buf[offset + 6])) << 8)
-                | (((UInt64)(buf[offset + 5])) << 16)
-                | (((UInt64)(buf[offset + 4])) << 24)
-                | (((UInt64)(buf[offset + 3])) << 32)
-                | (((UInt64)(buf[offset + 2])) << 40)
-                | (((UInt64)(buf[offset + 1])) << 48)
-                | (((UInt64)(buf[offset + 0])) << 56);
+                (ulong)buf[offset + 7]
+                | ((ulong)buf[offset + 6] << 8)
+                | ((ulong)buf[offset + 5] << 16)
+                | ((ulong)buf[offset + 4] << 24)
+                | ((ulong)buf[offset + 3] << 32)
+                | ((ulong)buf[offset + 2] << 40)
+                | ((ulong)buf[offset + 1] << 48)
+                | ((ulong)buf[offset + 0] << 56);
         }
 
-        internal static void StoreBigEndian64(byte[] buf, int offset, UInt64 value)
+        internal static void StoreBigEndian64(byte[] buf, int offset, ulong value)
         {
             buf[offset + 7] = unchecked((byte)value);
             buf[offset + 6] = unchecked((byte)(value >> 8));
@@ -67,12 +66,10 @@ namespace Renci.SshNet.Security.Chaos.NaCl.Internal
             output[outputOffset + 2] = (byte)(input[inputOffset + 2] ^ (value >> 16));
             output[outputOffset + 3] = (byte)(input[inputOffset + 3] ^ (value >> 24));
         }*/
-
         #endregion
 
         #region Array8
-
-        internal static void Array8LoadLittleEndian32(out Array8<UInt32> output, byte[] input, int inputOffset)
+        internal static void Array8LoadLittleEndian32(out Array8<uint> output, byte[] input, int inputOffset)
         {
             output.x0 = LoadLittleEndian32(input, inputOffset + 0);
             output.x1 = LoadLittleEndian32(input, inputOffset + 4);
@@ -307,7 +304,7 @@ namespace Renci.SshNet.Security.Chaos.NaCl.Internal
         }*/
         #endregion
 
-        internal static void Array16LoadBigEndian64(out Array16<UInt64> output, byte[] input, int inputOffset)
+        internal static void Array16LoadBigEndian64(out Array16<ulong> output, byte[] input, int inputOffset)
         {
             output.x0 = LoadBigEndian64(input, inputOffset + 0);
             output.x1 = LoadBigEndian64(input, inputOffset + 8);
@@ -328,7 +325,7 @@ namespace Renci.SshNet.Security.Chaos.NaCl.Internal
         }
 
         // ToDo: Only used in tests. Remove?
-        internal static void Array16LoadLittleEndian32(out Array16<UInt32> output, byte[] input, int inputOffset)
+        internal static void Array16LoadLittleEndian32(out Array16<uint> output, byte[] input, int inputOffset)
         {
             output.x0 = LoadLittleEndian32(input, inputOffset + 0);
             output.x1 = LoadLittleEndian32(input, inputOffset + 4);
@@ -393,7 +390,7 @@ namespace Renci.SshNet.Security.Chaos.NaCl.Internal
             }
         }*/
 
-        internal static void Array16StoreLittleEndian32(byte[] output, int outputOffset, ref Array16<UInt32> input)
+        internal static void Array16StoreLittleEndian32(byte[] output, int outputOffset, ref Array16<uint> input)
         {
             StoreLittleEndian32(output, outputOffset + 0, input.x0);
             StoreLittleEndian32(output, outputOffset + 4, input.x1);

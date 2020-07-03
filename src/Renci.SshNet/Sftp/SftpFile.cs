@@ -61,14 +61,8 @@ namespace Renci.SshNet.Sftp
         /// </value>
         public DateTime LastAccessTime
         {
-            get
-            {
-                return Attributes.LastAccessTime;
-            }
-            set
-            {
-                Attributes.LastAccessTime = value;
-            }
+            get => Attributes.LastAccessTime;
+            set => Attributes.LastAccessTime = value;
         }
 
         /// <summary>
@@ -79,14 +73,8 @@ namespace Renci.SshNet.Sftp
         /// </value>
         public DateTime LastWriteTime
         {
-            get
-            {
-                return Attributes.LastWriteTime;
-            }
-            set
-            {
-                Attributes.LastWriteTime = value;
-            }
+            get => Attributes.LastWriteTime;
+            set => Attributes.LastWriteTime = value;
         }
 
         /// <summary>
@@ -97,14 +85,8 @@ namespace Renci.SshNet.Sftp
         /// </value>
         public DateTime LastAccessTimeUtc
         {
-            get
-            {
-                return Attributes.LastAccessTime.ToUniversalTime();
-            }
-            set
-            {
-                Attributes.LastAccessTime = value.ToLocalTime();
-            }
+            get => Attributes.LastAccessTime.ToUniversalTime();
+            set => Attributes.LastAccessTime = value.ToLocalTime();
         }
 
         /// <summary>
@@ -115,14 +97,8 @@ namespace Renci.SshNet.Sftp
         /// </value>
         public DateTime LastWriteTimeUtc
         {
-            get
-            {
-                return Attributes.LastWriteTime.ToUniversalTime();
-            }
-            set
-            {
-                Attributes.LastWriteTime = value.ToLocalTime();
-            }
+            get => Attributes.LastWriteTime.ToUniversalTime();
+            set => Attributes.LastWriteTime = value.ToLocalTime();
         }
 
         /// <summary>
@@ -131,13 +107,7 @@ namespace Renci.SshNet.Sftp
         /// <value>
         /// The size of the current file in bytes.
         /// </value>
-        public long Length
-        {
-            get
-            {
-                return Attributes.Size;
-            }
-        }
+        public long Length => Attributes.Size;
 
         /// <summary>
         /// Gets or sets file user id.
@@ -147,14 +117,8 @@ namespace Renci.SshNet.Sftp
         /// </value>
         public int UserId
         {
-            get
-            {
-                return Attributes.UserId;
-            }
-            set
-            {
-                Attributes.UserId = value;
-            }
+            get => Attributes.UserId;
+            set => Attributes.UserId = value;
         }
 
         /// <summary>
@@ -165,14 +129,8 @@ namespace Renci.SshNet.Sftp
         /// </value>
         public int GroupId
         {
-            get
-            {
-                return Attributes.GroupId;
-            }
-            set
-            {
-                Attributes.GroupId = value;
-            }
+            get => Attributes.GroupId;
+            set => Attributes.GroupId = value;
         }
 
         /// <summary>
@@ -181,13 +139,7 @@ namespace Renci.SshNet.Sftp
         /// <value>
         ///   <c>true</c> if file represents a socket; otherwise, <c>false</c>.
         /// </value>
-        public bool IsSocket
-        {
-            get
-            {
-                return Attributes.IsSocket;
-            }
-        }
+        public bool IsSocket => Attributes.IsSocket;
 
         /// <summary>
         /// Gets a value indicating whether file represents a symbolic link.
@@ -195,13 +147,7 @@ namespace Renci.SshNet.Sftp
         /// <value>
         /// 	<c>true</c> if file represents a symbolic link; otherwise, <c>false</c>.
         /// </value>
-        public bool IsSymbolicLink
-        {
-            get
-            {
-                return Attributes.IsSymbolicLink;
-            }
-        }
+        public bool IsSymbolicLink => Attributes.IsSymbolicLink;
 
         /// <summary>
         /// Gets a value indicating whether file represents a regular file.
@@ -209,13 +155,7 @@ namespace Renci.SshNet.Sftp
         /// <value>
         /// 	<c>true</c> if file represents a regular file; otherwise, <c>false</c>.
         /// </value>
-        public bool IsRegularFile
-        {
-            get
-            {
-                return Attributes.IsRegularFile;
-            }
-        }
+        public bool IsRegularFile => Attributes.IsRegularFile;
 
         /// <summary>
         /// Gets a value indicating whether file represents a block device.
@@ -223,13 +163,7 @@ namespace Renci.SshNet.Sftp
         /// <value>
         /// 	<c>true</c> if file represents a block device; otherwise, <c>false</c>.
         /// </value>
-        public bool IsBlockDevice
-        {
-            get
-            {
-                return Attributes.IsBlockDevice;
-            }
-        }
+        public bool IsBlockDevice => Attributes.IsBlockDevice;
 
         /// <summary>
         /// Gets a value indicating whether file represents a directory.
@@ -237,13 +171,7 @@ namespace Renci.SshNet.Sftp
         /// <value>
         /// 	<c>true</c> if file represents a directory; otherwise, <c>false</c>.
         /// </value>
-        public bool IsDirectory
-        {
-            get
-            {
-                return Attributes.IsDirectory;
-            }
-        }
+        public bool IsDirectory => Attributes.IsDirectory;
 
         /// <summary>
         /// Gets a value indicating whether file represents a character device.
@@ -251,13 +179,7 @@ namespace Renci.SshNet.Sftp
         /// <value>
         /// 	<c>true</c> if file represents a character device; otherwise, <c>false</c>.
         /// </value>
-        public bool IsCharacterDevice
-        {
-            get
-            {
-                return Attributes.IsCharacterDevice;
-            }
-        }
+        public bool IsCharacterDevice => Attributes.IsCharacterDevice;
 
         /// <summary>
         /// Gets a value indicating whether file represents a named pipe.
@@ -265,13 +187,7 @@ namespace Renci.SshNet.Sftp
         /// <value>
         /// 	<c>true</c> if file represents a named pipe; otherwise, <c>false</c>.
         /// </value>
-        public bool IsNamedPipe
-        {
-            get
-            {
-                return Attributes.IsNamedPipe;
-            }
-        }
+        public bool IsNamedPipe => Attributes.IsNamedPipe;
 
         /// <summary>
         /// Gets or sets a value indicating whether the owner can read from this file.
@@ -281,14 +197,8 @@ namespace Renci.SshNet.Sftp
         /// </value>
         public bool OwnerCanRead
         {
-            get
-            {
-                return Attributes.OwnerCanRead;
-            }
-            set
-            {
-                Attributes.OwnerCanRead = value;
-            }
+            get => Attributes.OwnerCanRead;
+            set => Attributes.OwnerCanRead = value;
         }
 
         /// <summary>
@@ -299,14 +209,8 @@ namespace Renci.SshNet.Sftp
         /// </value>
         public bool OwnerCanWrite
         {
-            get
-            {
-                return Attributes.OwnerCanWrite;
-            }
-            set
-            {
-                Attributes.OwnerCanWrite = value;
-            }
+            get => Attributes.OwnerCanWrite;
+            set => Attributes.OwnerCanWrite = value;
         }
 
         /// <summary>
@@ -317,14 +221,8 @@ namespace Renci.SshNet.Sftp
         /// </value>
         public bool OwnerCanExecute
         {
-            get
-            {
-                return Attributes.OwnerCanExecute;
-            }
-            set
-            {
-                Attributes.OwnerCanExecute = value;
-            }
+            get => Attributes.OwnerCanExecute;
+            set => Attributes.OwnerCanExecute = value;
         }
 
         /// <summary>
@@ -335,14 +233,8 @@ namespace Renci.SshNet.Sftp
         /// </value>
         public bool GroupCanRead
         {
-            get
-            {
-                return Attributes.GroupCanRead;
-            }
-            set
-            {
-                Attributes.GroupCanRead = value;
-            }
+            get => Attributes.GroupCanRead;
+            set => Attributes.GroupCanRead = value;
         }
 
         /// <summary>
@@ -353,14 +245,8 @@ namespace Renci.SshNet.Sftp
         /// </value>
         public bool GroupCanWrite
         {
-            get
-            {
-                return Attributes.GroupCanWrite;
-            }
-            set
-            {
-                Attributes.GroupCanWrite = value;
-            }
+            get => Attributes.GroupCanWrite;
+            set => Attributes.GroupCanWrite = value;
         }
 
         /// <summary>
@@ -371,14 +257,8 @@ namespace Renci.SshNet.Sftp
         /// </value>
         public bool GroupCanExecute
         {
-            get
-            {
-                return Attributes.GroupCanExecute;
-            }
-            set
-            {
-                Attributes.GroupCanExecute = value;
-            }
+            get => Attributes.GroupCanExecute;
+            set => Attributes.GroupCanExecute = value;
         }
 
         /// <summary>
@@ -389,14 +269,8 @@ namespace Renci.SshNet.Sftp
         /// </value>
         public bool OthersCanRead
         {
-            get
-            {
-                return Attributes.OthersCanRead;
-            }
-            set
-            {
-                Attributes.OthersCanRead = value;
-            }
+            get => Attributes.OthersCanRead;
+            set => Attributes.OthersCanRead = value;
         }
 
         /// <summary>
@@ -407,14 +281,8 @@ namespace Renci.SshNet.Sftp
         /// </value>
         public bool OthersCanWrite
         {
-            get
-            {
-                return Attributes.OthersCanWrite;
-            }
-            set
-            {
-                Attributes.OthersCanWrite = value;
-            }
+            get => Attributes.OthersCanWrite;
+            set => Attributes.OthersCanWrite = value;
         }
 
         /// <summary>
@@ -425,14 +293,8 @@ namespace Renci.SshNet.Sftp
         /// </value>
         public bool OthersCanExecute
         {
-            get
-            {
-                return Attributes.OthersCanExecute;
-            }
-            set
-            {
-                Attributes.OthersCanExecute = value;
-            }
+            get => Attributes.OthersCanExecute;
+            set => Attributes.OthersCanExecute = value;
         }
 
         /// <summary>
@@ -470,6 +332,7 @@ namespace Renci.SshNet.Sftp
         {
             if (destFileName == null)
                 throw new ArgumentNullException("destFileName");
+
             _sftpSession.RequestRename(FullName, destFileName);
 
             var fullPath = _sftpSession.GetCanonicalPath(destFileName);

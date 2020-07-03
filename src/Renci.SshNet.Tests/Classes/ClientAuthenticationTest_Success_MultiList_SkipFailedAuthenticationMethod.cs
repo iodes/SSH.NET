@@ -28,21 +28,27 @@ namespace Renci.SshNet.Tests.Classes
 
             NoneAuthenticationMethodMock.InSequence(seq).Setup(p => p.Authenticate(SessionMock.Object))
                 .Returns(AuthenticationResult.Failure);
+
             ConnectionInfoMock.InSequence(seq).Setup(p => p.AuthenticationMethods)
-                            .Returns(new List<IAuthenticationMethod>
+                .Returns(new List<IAuthenticationMethod>
                 {
                     PasswordAuthenticationMethodMock.Object,
-                    PublicKeyAuthenticationMethodMock.Object,
+                    PublicKeyAuthenticationMethodMock.Object
                 });
+
             NoneAuthenticationMethodMock.InSequence(seq)
                 .Setup(p => p.AllowedAuthentications)
-                .Returns(new[] { "publickey", "password" });
+                .Returns(new[]
+                {
+                    "publickey", "password"
+                });
 
             PasswordAuthenticationMethodMock.InSequence(seq).Setup(p => p.Name).Returns("password");
             PublicKeyAuthenticationMethodMock.InSequence(seq).Setup(p => p.Name).Returns("publickey");
 
             PasswordAuthenticationMethodMock.InSequence(seq).Setup(p => p.Authenticate(SessionMock.Object))
                 .Returns(AuthenticationResult.Failure);
+
             // obtain name for inclusion in SshAuthenticationException
             PasswordAuthenticationMethodMock.InSequence(seq).Setup(p => p.Name).Returns("password");
 

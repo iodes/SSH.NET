@@ -1,5 +1,4 @@
 using System;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Math.EC;
 
 namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Parameters
@@ -10,16 +9,16 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Parameters
         private readonly ECPoint q;
 
         public ECPublicKeyParameters(
-            ECPoint				q,
-            ECDomainParameters	parameters)
+            ECPoint q,
+            ECDomainParameters parameters)
             : this("EC", q, parameters)
         {
         }
 
         public ECPublicKeyParameters(
-            string				algorithm,
-            ECPoint				q,
-            ECDomainParameters	parameters)
+            string algorithm,
+            ECPoint q,
+            ECDomainParameters parameters)
             : base(algorithm, false, parameters)
         {
             if (q == null)
@@ -28,17 +27,14 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Parameters
             this.q = ECDomainParameters.Validate(Parameters.Curve, q);
         }
 
-        public ECPoint Q
-        {
-            get { return q; }
-        }
+        public ECPoint Q => q;
 
         public override bool Equals(object obj)
         {
             if (obj == this)
                 return true;
 
-            ECPublicKeyParameters other = obj as ECPublicKeyParameters;
+            var other = obj as ECPublicKeyParameters;
 
             if (other == null)
                 return false;

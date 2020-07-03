@@ -27,7 +27,7 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void FinishTest()
         {
-            KeyExchangeDiffieHellmanGroupSha1 target = CreateKeyExchangeDiffieHellmanGroupSha1(); // TODO: Initialize to an appropriate value
+            var target = CreateKeyExchangeDiffieHellmanGroupSha1(); // TODO: Initialize to an appropriate value
             target.Finish();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -39,7 +39,7 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void StartTest()
         {
-            KeyExchangeDiffieHellmanGroupSha1 target = CreateKeyExchangeDiffieHellmanGroupSha1(); // TODO: Initialize to an appropriate value
+            var target = CreateKeyExchangeDiffieHellmanGroupSha1(); // TODO: Initialize to an appropriate value
             Session session = null; // TODO: Initialize to an appropriate value
             KeyExchangeInitMessage message = null; // TODO: Initialize to an appropriate value
             target.Start(session, message);
@@ -53,7 +53,7 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void GroupPrimeTest()
         {
-            KeyExchangeDiffieHellmanGroupSha1 target = CreateKeyExchangeDiffieHellmanGroupSha1(); // TODO: Initialize to an appropriate value
+            var target = CreateKeyExchangeDiffieHellmanGroupSha1(); // TODO: Initialize to an appropriate value
             BigInteger actual;
             actual = target.GroupPrime;
             Assert.Inconclusive("Verify the correctness of this test method.");

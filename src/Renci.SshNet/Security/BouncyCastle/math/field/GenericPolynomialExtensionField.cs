@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Utilities;
 
 namespace Renci.SshNet.Security.Org.BouncyCastle.Math.Field
@@ -13,33 +12,18 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.Field
         internal GenericPolynomialExtensionField(IFiniteField subfield, IPolynomial polynomial)
         {
             this.subfield = subfield;
-            this.minimalPolynomial = polynomial;
+            minimalPolynomial = polynomial;
         }
 
-        public virtual BigInteger Characteristic
-        {
-            get { return subfield.Characteristic; }
-        }
+        public virtual BigInteger Characteristic => subfield.Characteristic;
 
-        public virtual int Dimension
-        {
-            get { return subfield.Dimension * minimalPolynomial.Degree; }
-        }
+        public virtual int Dimension => subfield.Dimension * minimalPolynomial.Degree;
 
-        public virtual IFiniteField Subfield
-        {
-            get { return subfield; }
-        }
+        public virtual IFiniteField Subfield => subfield;
 
-        public virtual int Degree
-        {
-            get { return minimalPolynomial.Degree; }
-        }
+        public virtual int Degree => minimalPolynomial.Degree;
 
-        public virtual IPolynomial MinimalPolynomial
-        {
-            get { return minimalPolynomial; }
-        }
+        public virtual IPolynomial MinimalPolynomial => minimalPolynomial;
 
         public override bool Equals(object obj)
         {
@@ -47,11 +31,14 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.Field
             {
                 return true;
             }
-            GenericPolynomialExtensionField other = obj as GenericPolynomialExtensionField;
+
+            var other = obj as GenericPolynomialExtensionField;
+
             if (null == other)
             {
                 return false;
             }
+
             return subfield.Equals(other.subfield) && minimalPolynomial.Equals(other.minimalPolynomial);
         }
 

@@ -36,10 +36,7 @@ namespace Renci.SshNet
         /// <value>
         /// <c>true</c> if port forwarding is started; otherwise, <c>false</c>.
         /// </value>
-        public override bool IsStarted
-        {
-            get { return _status == ForwardedPortStatus.Started; }
-        }
+        public override bool IsStarted => _status == ForwardedPortStatus.Started;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ForwardedPortLocal"/> class.
@@ -68,7 +65,7 @@ namespace Renci.SshNet
         /// <exception cref="ArgumentNullException"><paramref name="host"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="port" /> is greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
         public ForwardedPortLocal(string boundHost, string host, uint port)
-            : this(boundHost, 0, host, port) 
+            : this(boundHost, 0, host, port)
         {
         }
 
@@ -163,7 +160,6 @@ namespace Renci.SshNet
         partial void InternalStop(TimeSpan timeout);
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -200,7 +196,6 @@ namespace Renci.SshNet
         {
             Dispose(false);
         }
-
         #endregion
     }
 }

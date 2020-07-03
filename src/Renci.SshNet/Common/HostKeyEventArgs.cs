@@ -25,7 +25,7 @@ namespace Renci.SshNet.Common
         /// <summary>
         /// Gets the host key name.
         /// </summary>
-        public string HostKeyName{ get; private set; }
+        public string HostKeyName { get; private set; }
 
         /// <summary>
         /// Gets the finger print.
@@ -46,7 +46,7 @@ namespace Renci.SshNet.Common
         /// <param name="host">The host.</param>
         public HostKeyEventArgs(KeyHostAlgorithm host)
         {
-            CanTrust = true;   //  Set default value
+            CanTrust = true; //  Set default value
 
             HostKey = host.Data;
 

@@ -41,10 +41,10 @@ namespace Renci.SshNet.Tests.Classes
             var random = new Random();
 
             _terminalName = random.Next().ToString();
-            _widthColumns = (uint) random.Next();
-            _heightRows = (uint) random.Next();
-            _widthPixels = (uint) random.Next();
-            _heightPixels = (uint) random.Next();
+            _widthColumns = (uint)random.Next();
+            _heightRows = (uint)random.Next();
+            _widthPixels = (uint)random.Next();
+            _heightPixels = (uint)random.Next();
             _terminalModes = new Dictionary<TerminalModes, uint>();
             _bufferSize = random.Next(100, 1000);
 
@@ -65,27 +65,32 @@ namespace Renci.SshNet.Tests.Classes
             _mockSequence = new MockSequence();
 
             _sessionMock.InSequence(_mockSequence)
-                        .Setup(p => p.ConnectionInfo)
-                        .Returns(_connectionInfoMock.Object);
+                .Setup(p => p.ConnectionInfo)
+                .Returns(_connectionInfoMock.Object);
+
             _connectionInfoMock.InSequence(_mockSequence)
-                               .Setup(p => p.Encoding)
-                               .Returns(new UTF8Encoding());
+                .Setup(p => p.Encoding)
+                .Returns(new UTF8Encoding());
+
             _sessionMock.InSequence(_mockSequence)
-                        .Setup(p => p.CreateChannelSession())
-                        .Returns(_channelSessionMock.Object);
+                .Setup(p => p.CreateChannelSession())
+                .Returns(_channelSessionMock.Object);
+
             _channelSessionMock.InSequence(_mockSequence)
-                               .Setup(p => p.Open());
+                .Setup(p => p.Open());
+
             _channelSessionMock.InSequence(_mockSequence)
-                               .Setup(p => p.SendPseudoTerminalRequest(_terminalName,
-                                                                       _widthColumns,
-                                                                       _heightRows,
-                                                                       _widthPixels,
-                                                                       _heightPixels,
-                                                                       _terminalModes))
-                               .Returns(true);
+                .Setup(p => p.SendPseudoTerminalRequest(_terminalName,
+                    _widthColumns,
+                    _heightRows,
+                    _widthPixels,
+                    _heightPixels,
+                    _terminalModes))
+                .Returns(true);
+
             _channelSessionMock.InSequence(_mockSequence)
-                               .Setup(p => p.SendShellRequest())
-                               .Returns(true);
+                .Setup(p => p.SendShellRequest())
+                .Returns(true);
         }
 
         private void Arrange()
@@ -95,13 +100,13 @@ namespace Renci.SshNet.Tests.Classes
             SetupMocks();
 
             _shellStream = new ShellStream(_sessionMock.Object,
-                                           _terminalName,
-                                           _widthColumns,
-                                           _heightRows,
-                                           _widthPixels,
-                                           _heightPixels,
-                                           _terminalModes,
-                                           _bufferSize);
+                _terminalName,
+                _widthColumns,
+                _heightRows,
+                _widthPixels,
+                _heightPixels,
+                _terminalModes,
+                _bufferSize);
         }
 
         private void Act()
@@ -121,8 +126,8 @@ namespace Renci.SshNet.Tests.Classes
             byte[] bytesSent = null;
 
             _channelSessionMock.InSequence(_mockSequence)
-                               .Setup(p => p.SendData(It.IsAny<byte[]>()))
-                               .Callback<byte[]>(data => bytesSent = data);
+                .Setup(p => p.SendData(It.IsAny<byte[]>()))
+                .Callback<byte[]>(data => bytesSent = data);
 
             _shellStream.Flush();
 

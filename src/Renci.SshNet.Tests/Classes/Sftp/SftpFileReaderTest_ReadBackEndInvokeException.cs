@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Renci.SshNet.Tests.Classes.Sftp
 {
-    class SftpFileReaderTest_ReadBackEndInvokeException
+    internal class SftpFileReaderTest_ReadBackEndInvokeException
     {
     }
 }

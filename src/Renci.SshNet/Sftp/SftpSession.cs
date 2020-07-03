@@ -15,7 +15,9 @@ namespace Renci.SshNet.Sftp
         private const int MinimumSupportedVersion = 0;
 
         private readonly Dictionary<uint, SftpRequest> _requests = new Dictionary<uint, SftpRequest>();
+
         private readonly ISftpResponseFactory _sftpResponseFactory;
+
         //FIXME: obtain from SftpClient!
         private readonly List<byte> _data = new List<byte>(32 * 1024);
         private EventWaitHandle _sftpVersionConfirmed = new AutoResetEvent(false);
@@ -47,13 +49,7 @@ namespace Renci.SshNet.Sftp
         /// <summary>
         /// Gets the next request id for sftp session.
         /// </summary>
-        public uint NextRequestId
-        {
-            get
-            {
-                return (uint) Interlocked.Increment(ref _requestId);
-            }
-        }
+        public uint NextRequestId => (uint)Interlocked.Increment(ref _requestId);
 
         public SftpSession(ISession session, int operationTimeout, Encoding encoding, ISftpResponseFactory sftpResponseFactory)
             : base(session, "sftp", operationTimeout)
@@ -69,7 +65,7 @@ namespace Renci.SshNet.Sftp
         public void ChangeDirectory(string path)
         {
             var fullPath = GetCanonicalPath(path);
-            var handle = RequestOpenDir(fullPath);
+            byte[] handle = RequestOpenDir(fullPath);
 
             RequestClose(handle);
             WorkingDirectory = fullPath;
@@ -77,7 +73,7 @@ namespace Renci.SshNet.Sftp
 
         internal void SendMessage(SftpMessage sftpMessage)
         {
-            var data = sftpMessage.GetBytes();
+            byte[] data = sftpMessage.GetBytes();
             SendData(data);
         }
 
@@ -94,7 +90,7 @@ namespace Renci.SshNet.Sftp
 
             var canonizedPath = string.Empty;
 
-            var realPathFiles = RequestRealPath(fullPath, true);
+            KeyValuePair<string, SftpFileAttributes>[] realPathFiles = RequestRealPath(fullPath, true);
 
             if (realPathFiles != null)
             {
@@ -111,7 +107,7 @@ namespace Renci.SshNet.Sftp
                 fullPath.IndexOf('/') < 0)
                 return fullPath;
 
-            var pathParts = fullPath.Split('/');
+            string[] pathParts = fullPath.Split('/');
 
             var partialFullPath = string.Join("/", pathParts, 0, pathParts.Length - 1);
 
@@ -131,8 +127,10 @@ namespace Renci.SshNet.Sftp
             }
 
             var slash = string.Empty;
+
             if (canonizedPath[canonizedPath.Length - 1] != '/')
                 slash = "/";
+
             return string.Format(CultureInfo.InvariantCulture, "{0}{1}{2}", canonizedPath, slash, pathParts[pathParts.Length - 1]);
         }
 
@@ -156,6 +154,7 @@ namespace Renci.SshNet.Sftp
                     fullPath = string.Format(CultureInfo.InvariantCulture, "{0}/{1}", WorkingDirectory, path);
                 }
             }
+
             return fullPath;
         }
 
@@ -193,7 +192,7 @@ namespace Renci.SshNet.Sftp
                 while (count >= minimumChannelDataLength)
                 {
                     // extract packet length
-                    var packetDataLength = data[offset] << 24 | data[offset + 1] << 16 | data[offset + 2] << 8 |
+                    var packetDataLength = (data[offset] << 24) | (data[offset + 1] << 16) | (data[offset + 2] << 8) |
                                            data[offset + 3];
 
                     var packetTotalLength = packetDataLength + packetLengthByteCount;
@@ -251,7 +250,7 @@ namespace Renci.SshNet.Sftp
             while (_data.Count >= minimumChannelDataLength)
             {
                 // extract packet length
-                var packetDataLength = _data[0] << 24 | _data[1] << 16 | _data[2] << 8 | _data[3];
+                var packetDataLength = (_data[0] << 24) | (_data[1] << 16) | (_data[2] << 8) | _data[3];
 
                 var packetTotalLength = packetDataLength + packetLengthByteCount;
 
@@ -298,6 +297,7 @@ namespace Renci.SshNet.Sftp
             try
             {
                 var versionResponse = response as SftpVersionResponse;
+
                 if (versionResponse != null)
                 {
                     ProtocolVersion = versionResponse.Version;
@@ -326,6 +326,7 @@ namespace Renci.SshNet.Sftp
             if (disposing)
             {
                 var sftpVersionConfirmed = _sftpVersionConfirmed;
+
                 if (sftpVersionConfirmed != null)
                 {
                     _sftpVersionConfirmed = null;
@@ -345,7 +346,6 @@ namespace Renci.SshNet.Sftp
         }
 
         #region SFTP API functions
-
         /// <summary>
         /// Performs SSH_FXP_OPEN request
         /// </summary>
@@ -362,15 +362,15 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpOpenRequest(ProtocolVersion, NextRequestId, path, Encoding, flags,
                     response =>
-                        {
-                            handle = response.Handle;
-                            wait.Set();
-                        },
+                    {
+                        handle = response.Handle;
+                        wait.Set();
+                    },
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -456,10 +456,10 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpCloseRequest(ProtocolVersion, NextRequestId, handle,
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -490,6 +490,7 @@ namespace Renci.SshNet.Sftp
                 {
                     asyncResult.SetAsCompleted(GetSftpException(response), false);
                 });
+
             SendRequest(request);
 
             return asyncResult;
@@ -553,6 +554,7 @@ namespace Renci.SshNet.Sftp
                         asyncResult.SetAsCompleted(Array<byte>.Empty, false);
                     }
                 });
+
             SendRequest(request);
 
             return asyncResult;
@@ -605,22 +607,23 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpReadRequest(ProtocolVersion, NextRequestId, handle, offset, length,
                     response =>
-                        {
-                            data = response.Data;
-                            wait.Set();
-                        },
+                    {
+                        data = response.Data;
+                        wait.Set();
+                    },
                     response =>
+                    {
+                        if (response.StatusCode != StatusCodes.Eof)
                         {
-                            if (response.StatusCode != StatusCodes.Eof)
-                            {
-                                exception = GetSftpException(response);
-                            }
-                            else
-                            {
-                                data = Array<byte>.Empty;
-                            }
-                            wait.Set();
-                        });
+                            exception = GetSftpException(response);
+                        }
+                        else
+                        {
+                            data = Array<byte>.Empty;
+                        }
+
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -657,16 +660,17 @@ namespace Renci.SshNet.Sftp
 
             var request = new SftpWriteRequest(ProtocolVersion, NextRequestId, handle, serverOffset, data, offset,
                 length, response =>
+                {
+                    if (writeCompleted != null)
                     {
-                        if (writeCompleted != null)
-                        {
-                            writeCompleted(response);
-                        }
+                        writeCompleted(response);
+                    }
 
-                        exception = GetSftpException(response);
-                        if (wait != null)
-                            wait.Set();
-                    });
+                    exception = GetSftpException(response);
+
+                    if (wait != null)
+                        wait.Set();
+                });
 
             SendRequest(request);
 
@@ -691,19 +695,20 @@ namespace Renci.SshNet.Sftp
             SshException exception = null;
 
             SftpFileAttributes attributes = null;
+
             using (var wait = new AutoResetEvent(false))
             {
                 var request = new SftpLStatRequest(ProtocolVersion, NextRequestId, path, Encoding,
                     response =>
-                        {
-                            attributes = response.Attributes;
-                            wait.Set();
-                        },
+                    {
+                        attributes = response.Attributes;
+                        wait.Set();
+                    },
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -740,6 +745,7 @@ namespace Renci.SshNet.Sftp
                 {
                     asyncResult.SetAsCompleted(GetSftpException(response), false);
                 });
+
             SendRequest(request);
 
             return asyncResult;
@@ -788,15 +794,15 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpFStatRequest(ProtocolVersion, NextRequestId, handle,
                     response =>
-                        {
-                            attributes = response.Attributes;
-                            wait.Set();
-                        },
+                    {
+                        attributes = response.Attributes;
+                        wait.Set();
+                    },
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -824,10 +830,10 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpSetStatRequest(ProtocolVersion, NextRequestId, path, Encoding, attributes,
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -853,10 +859,10 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpFSetStatRequest(ProtocolVersion, NextRequestId, handle, attributes,
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -885,15 +891,15 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpOpenDirRequest(ProtocolVersion, NextRequestId, path, Encoding,
                     response =>
-                        {
-                            handle = response.Handle;
-                            wait.Set();
-                        },
+                    {
+                        handle = response.Handle;
+                        wait.Set();
+                    },
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -923,18 +929,19 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpReadDirRequest(ProtocolVersion, NextRequestId, handle,
                     response =>
-                        {
-                            result = response.Files;
-                            wait.Set();
-                        },
+                    {
+                        result = response.Files;
+                        wait.Set();
+                    },
                     response =>
+                    {
+                        if (response.StatusCode != StatusCodes.Eof)
                         {
-                            if (response.StatusCode != StatusCodes.Eof)
-                            {
-                                exception = GetSftpException(response);
-                            }
-                            wait.Set();
-                        });
+                            exception = GetSftpException(response);
+                        }
+
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -961,10 +968,10 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpRemoveRequest(ProtocolVersion, NextRequestId, path, Encoding,
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -989,10 +996,10 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpMkDirRequest(ProtocolVersion, NextRequestId, path, Encoding,
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -1017,10 +1024,10 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpRmDirRequest(ProtocolVersion, NextRequestId, path, Encoding,
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -1051,15 +1058,15 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpRealPathRequest(ProtocolVersion, NextRequestId, path, Encoding,
                     response =>
-                        {
-                            result = response.Files;
-                            wait.Set();
-                        },
+                    {
+                        result = response.Files;
+                        wait.Set();
+                    },
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -1070,7 +1077,7 @@ namespace Renci.SshNet.Sftp
             {
                 throw exception;
             }
-            
+
             return result;
         }
 
@@ -1096,6 +1103,7 @@ namespace Renci.SshNet.Sftp
                 {
                     asyncResult.SetAsCompleted(GetSftpException(response), false);
                 });
+
             SendRequest(request);
 
             return asyncResult;
@@ -1145,15 +1153,15 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpStatRequest(ProtocolVersion, NextRequestId, path, Encoding,
                     response =>
-                        {
-                            attributes = response.Attributes;
-                            wait.Set();
-                        },
+                    {
+                        attributes = response.Attributes;
+                        wait.Set();
+                    },
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -1190,6 +1198,7 @@ namespace Renci.SshNet.Sftp
                 {
                     asyncResult.SetAsCompleted(GetSftpException(response), false);
                 });
+
             SendRequest(request);
 
             return asyncResult;
@@ -1239,10 +1248,10 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpRenameRequest(ProtocolVersion, NextRequestId, oldPath, newPath, Encoding,
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -1276,15 +1285,15 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpReadLinkRequest(ProtocolVersion, NextRequestId, path, Encoding,
                     response =>
-                        {
-                            result = response.Files;
-                            wait.Set();
-                        },
+                    {
+                        result = response.Files;
+                        wait.Set();
+                    },
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -1317,10 +1326,10 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new SftpSymLinkRequest(ProtocolVersion, NextRequestId, linkpath, targetpath, Encoding,
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 SendRequest(request);
 
@@ -1332,11 +1341,9 @@ namespace Renci.SshNet.Sftp
                 throw exception;
             }
         }
-
         #endregion
 
         #region SFTP Extended API functions
-
         /// <summary>
         /// Performs posix-rename@openssh.com extended request.
         /// </summary>
@@ -1355,10 +1362,10 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new PosixRenameRequest(ProtocolVersion, NextRequestId, oldPath, newPath, Encoding,
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 if (!_supportedExtensions.ContainsKey(request.Name))
                     throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture, "Extension method {0} currently not supported by the server.", request.Name));
@@ -1395,15 +1402,15 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new StatVfsRequest(ProtocolVersion, NextRequestId, path, Encoding,
                     response =>
-                        {
-                            information = response.GetReply<StatVfsReplyInfo>().Information;
-                            wait.Set();
-                        },
+                    {
+                        information = response.GetReply<StatVfsReplyInfo>().Information;
+                        wait.Set();
+                    },
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 if (!_supportedExtensions.ContainsKey(request.Name))
                     throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture, "Extension method {0} currently not supported by the server.", request.Name));
@@ -1443,15 +1450,15 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new FStatVfsRequest(ProtocolVersion, NextRequestId, handle,
                     response =>
-                        {
-                            information = response.GetReply<StatVfsReplyInfo>().Information;
-                            wait.Set();
-                        },
+                    {
+                        information = response.GetReply<StatVfsReplyInfo>().Information;
+                        wait.Set();
+                    },
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 if (!_supportedExtensions.ContainsKey(request.Name))
                     throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture, "Extension method {0} currently not supported by the server.", request.Name));
@@ -1460,7 +1467,7 @@ namespace Renci.SshNet.Sftp
 
                 WaitOnHandle(wait, OperationTimeout);
             }
-            
+
             if (!nullOnError && exception != null)
             {
                 throw exception;
@@ -1487,10 +1494,10 @@ namespace Renci.SshNet.Sftp
             {
                 var request = new HardLinkRequest(ProtocolVersion, NextRequestId, oldPath, newPath,
                     response =>
-                        {
-                            exception = GetSftpException(response);
-                            wait.Set();
-                        });
+                    {
+                        exception = GetSftpException(response);
+                        wait.Set();
+                    });
 
                 if (!_supportedExtensions.ContainsKey(request.Name))
                     throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture, "Extension method {0} currently not supported by the server.", request.Name));
@@ -1505,7 +1512,6 @@ namespace Renci.SshNet.Sftp
                 throw exception;
             }
         }
-
         #endregion
 
         /// <summary>
@@ -1571,10 +1577,13 @@ namespace Renci.SshNet.Sftp
             {
                 case StatusCodes.Ok:
                     return null;
+
                 case StatusCodes.PermissionDenied:
                     return new SftpPermissionDeniedException(response.ErrorMessage);
+
                 case StatusCodes.NoSuchFile:
                     return new SftpPathNotFoundException(response.ErrorMessage);
+
                 default:
                     return new SshException(response.ErrorMessage);
             }
@@ -1583,9 +1592,11 @@ namespace Renci.SshNet.Sftp
         private void HandleResponse(SftpResponse response)
         {
             SftpRequest request;
+
             lock (_requests)
             {
                 _requests.TryGetValue(response.ResponseId, out request);
+
                 if (request != null)
                 {
                     _requests.Remove(response.ResponseId);

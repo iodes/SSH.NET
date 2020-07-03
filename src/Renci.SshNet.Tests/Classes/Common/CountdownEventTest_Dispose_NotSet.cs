@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CountdownEvent = Renci.SshNet.Common.CountdownEvent;
 #else
 using System.Threading;
+
 #endif
 
 namespace Renci.SshNet.Tests.Classes.Common

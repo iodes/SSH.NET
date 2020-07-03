@@ -19,7 +19,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
         [Ignore] // placeholder
         public void KeyExchangeDhReplyMessageConstructorTest()
         {
-            KeyExchangeDhReplyMessage target = new KeyExchangeDhReplyMessage();
+            var target = new KeyExchangeDhReplyMessage();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

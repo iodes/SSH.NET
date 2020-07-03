@@ -1,5 +1,4 @@
-﻿
-namespace Renci.SshNet.Channels
+﻿namespace Renci.SshNet.Channels
 {
     /// <summary>
     /// Lists channel types as defined by the protocol.
@@ -10,14 +9,17 @@ namespace Renci.SshNet.Channels
         /// session
         /// </summary>
         Session,
+
         /// <summary>
         /// x11
         /// </summary>
         X11,
+
         /// <summary>
         /// forwarded-tcpip
         /// </summary>
         ForwardedTcpip,
+
         /// <summary>
         /// direct-tcpip
         /// </summary>

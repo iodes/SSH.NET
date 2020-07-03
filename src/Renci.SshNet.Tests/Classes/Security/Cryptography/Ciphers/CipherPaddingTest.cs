@@ -25,8 +25,8 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
         [Ignore] // placeholder for actual test
         public void PadTest()
         {
-            CipherPadding target = CreateCipherPadding(); // TODO: Initialize to an appropriate value
-            int blockSize = 0; // TODO: Initialize to an appropriate value
+            var target = CreateCipherPadding(); // TODO: Initialize to an appropriate value
+            var blockSize = 0; // TODO: Initialize to an appropriate value
             byte[] input = null; // TODO: Initialize to an appropriate value
             byte[] expected = null; // TODO: Initialize to an appropriate value
             byte[] actual;

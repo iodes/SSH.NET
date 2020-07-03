@@ -22,6 +22,4 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities
         {
         }
     }
-
 }
-

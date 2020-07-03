@@ -59,10 +59,7 @@ namespace Renci.SshNet
         /// <value>
         /// The number of bytes that will be written to the internal buffer.
         /// </value>
-        internal int BufferSize
-        {
-            get { return _bufferSize; }
-        }
+        internal int BufferSize => _bufferSize;
 
         /// <summary>
         /// Initializes a new <see cref="ShellStream"/> instance.
@@ -95,10 +92,12 @@ namespace Renci.SshNet
             try
             {
                 _channel.Open();
+
                 if (!_channel.SendPseudoTerminalRequest(terminalName, columns, rows, width, height, terminalModeValues))
                 {
                     throw new SshException("The pseudo-terminal request was not accepted by the server. Consult the server log for more information.");
                 }
+
                 if (!_channel.SendShellRequest())
                 {
                     throw new SshException("The request to start a shell was not accepted by the server. Consult the server log for more information.");
@@ -113,17 +112,13 @@ namespace Renci.SshNet
         }
 
         #region Stream overide methods
-
         /// <summary>
         /// Gets a value indicating whether the current stream supports reading.
         /// </summary>
         /// <returns>
         /// <c>true</c> if the stream supports reading; otherwise, <c>false</c>.
         /// </returns>
-        public override bool CanRead
-        {
-            get { return true; }
-        }
+        public override bool CanRead => true;
 
         /// <summary>
         /// Gets a value indicating whether the current stream supports seeking.
@@ -131,10 +126,7 @@ namespace Renci.SshNet
         /// <returns>
         /// <c>true</c> if the stream supports seeking; otherwise, <c>false</c>.
         /// </returns>
-        public override bool CanSeek
-        {
-            get { return false; }
-        }
+        public override bool CanSeek => false;
 
         /// <summary>
         /// Gets a value indicating whether the current stream supports writing.
@@ -142,10 +134,7 @@ namespace Renci.SshNet
         /// <returns>
         /// <c>true</c> if the stream supports writing; otherwise, <c>false</c>.
         /// </returns>
-        public override bool CanWrite
-        {
-            get { return true; }
-        }
+        public override bool CanWrite => true;
 
         /// <summary>
         /// Clears all buffers for this stream and causes any buffered data to be written to the underlying device.
@@ -194,8 +183,8 @@ namespace Renci.SshNet
         /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed.</exception>
         public override long Position
         {
-            get { return 0; }
-            set { throw new NotSupportedException(); }
+            get => 0;
+            set => throw new NotSupportedException();
         }
 
         /// <summary>
@@ -280,7 +269,6 @@ namespace Renci.SshNet
                 _outgoing.Enqueue(b);
             }
         }
-
         #endregion
 
         /// <summary>
@@ -348,8 +336,7 @@ namespace Renci.SshNet
                         _dataReceived.WaitOne();
                     }
                 }
-            }
-            while (!expectedFound);
+            } while (!expectedFound);
         }
 
         /// <summary>
@@ -412,14 +399,13 @@ namespace Renci.SshNet
             ThreadAbstraction.ExecuteThread(() =>
             {
                 string expectActionResult = null;
+
                 try
                 {
-
                     do
                     {
                         lock (_incoming)
                         {
-
                             if (_incoming.Count > 0)
                             {
                                 text = _encoding.GetString(_incoming.ToArray(), 0, _incoming.Count);
@@ -447,6 +433,7 @@ namespace Renci.SshNet
                                         {
                                             callback(asyncResult);
                                         }
+
                                         expectActionResult = result;
                                     }
                                 }
@@ -464,6 +451,7 @@ namespace Renci.SshNet
                                 {
                                     callback(asyncResult);
                                 }
+
                                 break;
                             }
                         }
@@ -568,6 +556,7 @@ namespace Renci.SshNet
                         {
                             _incoming.Dequeue();
                         }
+
                         break;
                     }
                 }
@@ -583,7 +572,6 @@ namespace Renci.SshNet
                 {
                     _dataReceived.WaitOne();
                 }
-
             }
 
             return text;
@@ -648,7 +636,6 @@ namespace Renci.SshNet
                 {
                     _dataReceived.WaitOne();
                 }
-
             }
 
             return text;
@@ -690,7 +677,7 @@ namespace Renci.SshNet
                 throw new ObjectDisposedException("ShellStream");
             }
 
-            var data = _encoding.GetBytes(text);
+            byte[] data = _encoding.GetBytes(text);
             _channel.SendData(data);
         }
 
@@ -792,7 +779,8 @@ namespace Renci.SshNet
 
         private void OnRaiseError(ExceptionEventArgs e)
         {
-            var handler = ErrorOccurred;
+            EventHandler<ExceptionEventArgs> handler = ErrorOccurred;
+
             if (handler != null)
             {
                 handler(this, e);
@@ -801,7 +789,8 @@ namespace Renci.SshNet
 
         private void OnDataReceived(byte[] data)
         {
-            var handler = DataReceived;
+            EventHandler<ShellDataEventArgs> handler = DataReceived;
+
             if (handler != null)
             {
                 handler(this, new ShellDataEventArgs(data));

@@ -31,41 +31,11 @@ namespace Renci.SshNet
         {
             AllMessages = new MessageMetadata[]
             {
-                new MessageMetadata<KeyExchangeInitMessage>(0, "SSH_MSG_KEXINIT", 20),
-                new MessageMetadata<NewKeysMessage> (1, "SSH_MSG_NEWKEYS", 21),
-                new MessageMetadata<RequestFailureMessage> (2, "SSH_MSG_REQUEST_FAILURE", 82),
-                new MessageMetadata<ChannelOpenFailureMessage> (3, "SSH_MSG_CHANNEL_OPEN_FAILURE", 92),
-                new MessageMetadata<ChannelFailureMessage> (4, "SSH_MSG_CHANNEL_FAILURE", 100),
-                new MessageMetadata<ChannelExtendedDataMessage> (5, "SSH_MSG_CHANNEL_EXTENDED_DATA", 95),
-                new MessageMetadata<ChannelDataMessage> (6, "SSH_MSG_CHANNEL_DATA", 94),
-                new MessageMetadata<ChannelRequestMessage> (7, "SSH_MSG_CHANNEL_REQUEST", 98),
-                new MessageMetadata<BannerMessage> (8, "SSH_MSG_USERAUTH_BANNER", 53),
-                new MessageMetadata<InformationResponseMessage> (9, "SSH_MSG_USERAUTH_INFO_RESPONSE", 61),
-                new MessageMetadata<FailureMessage> (10, "SSH_MSG_USERAUTH_FAILURE", 51),
-                new MessageMetadata<DebugMessage> (11, "SSH_MSG_DEBUG", 4),
-                new MessageMetadata<GlobalRequestMessage> (12, "SSH_MSG_GLOBAL_REQUEST", 80),
-                new MessageMetadata<ChannelOpenMessage> (13, "SSH_MSG_CHANNEL_OPEN", 90),
-                new MessageMetadata<ChannelOpenConfirmationMessage> (14, "SSH_MSG_CHANNEL_OPEN_CONFIRMATION", 91),
-                new MessageMetadata<InformationRequestMessage> (15, "SSH_MSG_USERAUTH_INFO_REQUEST", 60),
-                new MessageMetadata<UnimplementedMessage> (16, "SSH_MSG_UNIMPLEMENTED", 3),
-                new MessageMetadata<RequestSuccessMessage> (17, "SSH_MSG_REQUEST_SUCCESS", 81),
-                new MessageMetadata<ChannelSuccessMessage> (18, "SSH_MSG_CHANNEL_SUCCESS", 99),
-                new MessageMetadata<PasswordChangeRequiredMessage> (19, "SSH_MSG_USERAUTH_PASSWD_CHANGEREQ", 60),
-                new MessageMetadata<DisconnectMessage> (20, "SSH_MSG_DISCONNECT", 1),
-                new MessageMetadata<SuccessMessage> (21, "SSH_MSG_USERAUTH_SUCCESS", 52),
-                new MessageMetadata<PublicKeyMessage> (22, "SSH_MSG_USERAUTH_PK_OK", 60),
-                new MessageMetadata<IgnoreMessage> (23, "SSH_MSG_IGNORE", 2),
-                new MessageMetadata<ChannelWindowAdjustMessage> (24, "SSH_MSG_CHANNEL_WINDOW_ADJUST", 93),
-                new MessageMetadata<ChannelEofMessage> (25, "SSH_MSG_CHANNEL_EOF", 96),
-                new MessageMetadata<ChannelCloseMessage> (26, "SSH_MSG_CHANNEL_CLOSE", 97),
-                new MessageMetadata<ServiceAcceptMessage> (27, "SSH_MSG_SERVICE_ACCEPT", 6),
-                new MessageMetadata<KeyExchangeDhGroupExchangeGroup> (28, "SSH_MSG_KEX_DH_GEX_GROUP", 31),
-                new MessageMetadata<KeyExchangeDhReplyMessage> (29, "SSH_MSG_KEXDH_REPLY", 31),
-                new MessageMetadata<KeyExchangeDhGroupExchangeReply> (30, "SSH_MSG_KEX_DH_GEX_REPLY", 33),
-                new MessageMetadata<KeyExchangeEcdhReplyMessage> (31, "SSH_MSG_KEX_ECDH_REPLY", 31)
+                new MessageMetadata<KeyExchangeInitMessage>(0, "SSH_MSG_KEXINIT", 20), new MessageMetadata<NewKeysMessage>(1, "SSH_MSG_NEWKEYS", 21), new MessageMetadata<RequestFailureMessage>(2, "SSH_MSG_REQUEST_FAILURE", 82), new MessageMetadata<ChannelOpenFailureMessage>(3, "SSH_MSG_CHANNEL_OPEN_FAILURE", 92), new MessageMetadata<ChannelFailureMessage>(4, "SSH_MSG_CHANNEL_FAILURE", 100), new MessageMetadata<ChannelExtendedDataMessage>(5, "SSH_MSG_CHANNEL_EXTENDED_DATA", 95), new MessageMetadata<ChannelDataMessage>(6, "SSH_MSG_CHANNEL_DATA", 94), new MessageMetadata<ChannelRequestMessage>(7, "SSH_MSG_CHANNEL_REQUEST", 98), new MessageMetadata<BannerMessage>(8, "SSH_MSG_USERAUTH_BANNER", 53), new MessageMetadata<InformationResponseMessage>(9, "SSH_MSG_USERAUTH_INFO_RESPONSE", 61), new MessageMetadata<FailureMessage>(10, "SSH_MSG_USERAUTH_FAILURE", 51), new MessageMetadata<DebugMessage>(11, "SSH_MSG_DEBUG", 4), new MessageMetadata<GlobalRequestMessage>(12, "SSH_MSG_GLOBAL_REQUEST", 80), new MessageMetadata<ChannelOpenMessage>(13, "SSH_MSG_CHANNEL_OPEN", 90), new MessageMetadata<ChannelOpenConfirmationMessage>(14, "SSH_MSG_CHANNEL_OPEN_CONFIRMATION", 91), new MessageMetadata<InformationRequestMessage>(15, "SSH_MSG_USERAUTH_INFO_REQUEST", 60), new MessageMetadata<UnimplementedMessage>(16, "SSH_MSG_UNIMPLEMENTED", 3), new MessageMetadata<RequestSuccessMessage>(17, "SSH_MSG_REQUEST_SUCCESS", 81), new MessageMetadata<ChannelSuccessMessage>(18, "SSH_MSG_CHANNEL_SUCCESS", 99), new MessageMetadata<PasswordChangeRequiredMessage>(19, "SSH_MSG_USERAUTH_PASSWD_CHANGEREQ", 60), new MessageMetadata<DisconnectMessage>(20, "SSH_MSG_DISCONNECT", 1), new MessageMetadata<SuccessMessage>(21, "SSH_MSG_USERAUTH_SUCCESS", 52), new MessageMetadata<PublicKeyMessage>(22, "SSH_MSG_USERAUTH_PK_OK", 60), new MessageMetadata<IgnoreMessage>(23, "SSH_MSG_IGNORE", 2), new MessageMetadata<ChannelWindowAdjustMessage>(24, "SSH_MSG_CHANNEL_WINDOW_ADJUST", 93), new MessageMetadata<ChannelEofMessage>(25, "SSH_MSG_CHANNEL_EOF", 96), new MessageMetadata<ChannelCloseMessage>(26, "SSH_MSG_CHANNEL_CLOSE", 97), new MessageMetadata<ServiceAcceptMessage>(27, "SSH_MSG_SERVICE_ACCEPT", 6), new MessageMetadata<KeyExchangeDhGroupExchangeGroup>(28, "SSH_MSG_KEX_DH_GEX_GROUP", 31), new MessageMetadata<KeyExchangeDhReplyMessage>(29, "SSH_MSG_KEXDH_REPLY", 31), new MessageMetadata<KeyExchangeDhGroupExchangeReply>(30, "SSH_MSG_KEX_DH_GEX_REPLY", 33), new MessageMetadata<KeyExchangeEcdhReplyMessage>(31, "SSH_MSG_KEX_ECDH_REPLY", 31)
             };
 
             MessagesByName = new Dictionary<string, MessageMetadata>(AllMessages.Length);
+
             for (var i = 0; i < AllMessages.Length; i++)
             {
                 var messageMetadata = AllMessages[i];
@@ -96,6 +66,7 @@ namespace Renci.SshNet
             }
 
             var enabledMessageMetadata = _enabledMessagesByNumber[messageNumber];
+
             if (enabledMessageMetadata == null)
             {
                 MessageMetadata definedMessageMetadata = null;
@@ -104,6 +75,7 @@ namespace Renci.SshNet
                 for (var i = 0; i < AllMessages.Length; i++)
                 {
                     var messageMetadata = AllMessages[i];
+
                     if (messageMetadata.Number == messageNumber)
                     {
                         definedMessageMetadata = messageMetadata;
@@ -129,7 +101,8 @@ namespace Renci.SshNet
                 var messageMetadata = AllMessages[i];
 
                 var messageNumber = messageMetadata.Number;
-                if ((messageNumber > 2 && messageNumber < 20) || messageNumber > 30)
+
+                if (messageNumber > 2 && messageNumber < 20 || messageNumber > 30)
                 {
                     _enabledMessagesByNumber[messageNumber] = null;
                 }
@@ -146,12 +119,14 @@ namespace Renci.SshNet
                     continue;
 
                 var enabledMessageMetadata = _enabledMessagesByNumber[messageMetadata.Number];
+
                 if (enabledMessageMetadata != null && enabledMessageMetadata != messageMetadata)
                 {
                     throw CreateMessageTypeAlreadyEnabledForOtherMessageException(messageMetadata.Number,
                         messageMetadata.Name,
                         enabledMessageMetadata.Name);
                 }
+
                 _enabledMessagesByNumber[messageMetadata.Number] = messageMetadata;
             }
         }
@@ -171,6 +146,7 @@ namespace Renci.SshNet
                 }
 
                 var enabledMessageMetadata = _enabledMessagesByNumber[messageMetadata.Number];
+
                 if (enabledMessageMetadata != null && enabledMessageMetadata != messageMetadata)
                 {
                     throw CreateMessageTypeAlreadyEnabledForOtherMessageException(messageMetadata.Number,
@@ -198,6 +174,7 @@ namespace Renci.SshNet
                 }
 
                 var enabledMessageMetadata = _enabledMessagesByNumber[messageMetadata.Number];
+
                 if (enabledMessageMetadata != null && enabledMessageMetadata != messageMetadata)
                 {
                     throw CreateMessageTypeAlreadyEnabledForOtherMessageException(messageMetadata.Number,

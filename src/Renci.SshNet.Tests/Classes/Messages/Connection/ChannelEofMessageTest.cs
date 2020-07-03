@@ -19,7 +19,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         [Ignore] // placeholder
         public void ChannelEofMessageConstructorTest()
         {
-            ChannelEofMessage target = new ChannelEofMessage();
+            var target = new ChannelEofMessage();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -31,7 +31,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         public void ChannelEofMessageConstructorTest1()
         {
             uint localChannelNumber = 0; // TODO: Initialize to an appropriate value
-            ChannelEofMessage target = new ChannelEofMessage(localChannelNumber);
+            var target = new ChannelEofMessage(localChannelNumber);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

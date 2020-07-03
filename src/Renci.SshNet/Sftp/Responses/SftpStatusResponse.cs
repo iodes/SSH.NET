@@ -2,10 +2,7 @@
 {
     internal class SftpStatusResponse : SftpResponse
     {
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.Status; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.Status;
 
         public SftpStatusResponse(uint protocolVersion)
             : base(protocolVersion)
@@ -22,7 +19,7 @@
         {
             base.LoadData();
 
-            StatusCode = (StatusCodes) ReadUInt32();
+            StatusCode = (StatusCodes)ReadUInt32();
 
             if (ProtocolVersion < 3)
             {

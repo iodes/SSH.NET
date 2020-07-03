@@ -36,11 +36,12 @@ namespace Renci.SshNet.Tests.Classes.Sftp
             object state = "STATE";
             Exception exception = new IOException();
             IAsyncResult callbackResult = null;
+
             var target = new SftpDownloadAsyncResult(asyncResult =>
-                {
-                    downloadCompleted.Set();
-                    callbackResult = asyncResult;
-                }, state);
+            {
+                downloadCompleted.Set();
+                callbackResult = asyncResult;
+            }, state);
 
             target.SetAsCompleted(exception, true);
 

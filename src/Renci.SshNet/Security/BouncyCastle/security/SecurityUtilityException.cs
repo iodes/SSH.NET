@@ -6,7 +6,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Security
     [Serializable]
 #endif
     internal class SecurityUtilityException
-		: Exception
+        : Exception
     {
         /**
         * base constructor.
@@ -15,21 +15,21 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Security
         {
         }
 
-		/**
+        /**
          * create a SecurityUtilityException with the given message.
          *
          * @param message the message to be carried with the exception.
          */
         public SecurityUtilityException(
             string message)
-			: base(message)
+            : base(message)
         {
         }
 
-		public SecurityUtilityException(
-            string		message,
-            Exception	exception)
-			: base(message, exception)
+        public SecurityUtilityException(
+            string message,
+            Exception exception)
+            : base(message, exception)
         {
         }
     }

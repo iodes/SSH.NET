@@ -26,7 +26,7 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void StartTest()
         {
-            KeyExchangeDiffieHellman target = CreateKeyExchangeDiffieHellman(); // TODO: Initialize to an appropriate value
+            var target = CreateKeyExchangeDiffieHellman(); // TODO: Initialize to an appropriate value
             Session session = null; // TODO: Initialize to an appropriate value
             KeyExchangeInitMessage message = null; // TODO: Initialize to an appropriate value
             target.Start(session, message);

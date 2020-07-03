@@ -8,10 +8,7 @@
         /// <summary>
         /// Gets algorithm name.
         /// </summary>
-        public override string Name
-        {
-            get { return "zlib"; }
-        }
+        public override string Name => "zlib";
 
         /// <summary>
         /// Initializes the algorithm

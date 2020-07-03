@@ -9,7 +9,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp
 {
     public abstract class SftpFileReaderTestBase
     {
-        internal Mock<ISftpSession> SftpSessionMock {  get; private set;}
+        internal Mock<ISftpSession> SftpSessionMock { get; private set; }
 
         protected abstract void SetupData();
 
@@ -54,6 +54,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp
 
             if (result == WaitHandle.WaitTimeout)
                 throw new SshOperationTimeoutException();
+
             return result;
         }
     }

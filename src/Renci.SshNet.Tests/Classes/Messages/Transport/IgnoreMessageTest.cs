@@ -58,7 +58,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
         {
             var request = new IgnoreMessage(_data);
 
-            var bytes = request.GetBytes();
+            byte[] bytes = request.GetBytes();
 
             var expectedBytesLength = 0;
             expectedBytesLength += 1; // Type
@@ -70,7 +70,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
             var sshDataStream = new SshDataStream(bytes);
 
             Assert.AreEqual(IgnoreMessage.MessageNumber, sshDataStream.ReadByte());
-            Assert.AreEqual((uint) _data.Length, sshDataStream.ReadUInt32());
+            Assert.AreEqual((uint)_data.Length, sshDataStream.ReadUInt32());
 
             var actualData = new byte[_data.Length];
             sshDataStream.Read(actualData, 0, actualData.Length);
@@ -83,7 +83,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
         public void Load()
         {
             var ignoreMessage = new IgnoreMessage(_data);
-            var bytes = ignoreMessage.GetBytes();
+            byte[] bytes = ignoreMessage.GetBytes();
             var target = new IgnoreMessage();
 
             target.Load(bytes, 1, bytes.Length - 1);
@@ -101,7 +101,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
             ssh.Write(5u); // Data length
             ssh.Write(new byte[3]); // Data
 
-            var ignoreMessageBytes = ssh.ToArray();
+            byte[] ignoreMessageBytes = ssh.ToArray();
 
             var ignoreMessage = new IgnoreMessage();
             ignoreMessage.Load(ignoreMessageBytes, 1, ignoreMessageBytes.Length - 1);
@@ -117,7 +117,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
             ssh.Write(uint.MaxValue); // Data length
             ssh.Write(new byte[3]);
 
-            var ignoreMessageBytes = ssh.ToArray();
+            byte[] ignoreMessageBytes = ssh.ToArray();
             var ignoreMessage = new IgnoreMessage();
 
             try

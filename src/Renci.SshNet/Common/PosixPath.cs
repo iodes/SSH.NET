@@ -5,6 +5,7 @@ namespace Renci.SshNet.Common
     internal class PosixPath
     {
         public string Directory { get; private set; }
+
         public string File { get; private set; }
 
         public static PosixPath CreateAbsoluteOrRelativeFilePath(string path)
@@ -17,6 +18,7 @@ namespace Renci.SshNet.Common
             var posixPath = new PosixPath();
 
             var pathEnd = path.LastIndexOf('/');
+
             if (pathEnd == -1)
             {
                 if (path.Length == 0)
@@ -30,6 +32,7 @@ namespace Renci.SshNet.Common
             else if (pathEnd == 0)
             {
                 posixPath.Directory = "/";
+
                 if (path.Length > 1)
                 {
                     posixPath.File = path.Substring(pathEnd + 1);
@@ -38,6 +41,7 @@ namespace Renci.SshNet.Common
             else
             {
                 posixPath.Directory = path.Substring(0, pathEnd);
+
                 if (pathEnd < path.Length - 1)
                 {
                     posixPath.File = path.Substring(pathEnd + 1);
@@ -70,10 +74,13 @@ namespace Renci.SshNet.Common
                 throw new ArgumentNullException("path");
 
             var pathEnd = path.LastIndexOf('/');
+
             if (pathEnd == -1)
                 return path;
+
             if (pathEnd == path.Length - 1)
                 return string.Empty;
+
             return path.Substring(pathEnd + 1);
         }
 
@@ -92,12 +99,16 @@ namespace Renci.SshNet.Common
                 throw new ArgumentNullException("path");
 
             var pathEnd = path.LastIndexOf('/');
+
             if (pathEnd == -1)
                 return ".";
+
             if (pathEnd == 0)
                 return "/";
+
             if (pathEnd == path.Length - 1)
                 return path.Substring(0, pathEnd);
+
             return path.Substring(0, pathEnd);
         }
     }

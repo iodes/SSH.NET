@@ -9,21 +9,12 @@ namespace Renci.SshNet.Security
         /// <summary>
         /// Gets algorithm name.
         /// </summary>
-        public override string Name
-        {
-            get { return "ecdh-sha2-nistp521"; }
-        }
+        public override string Name => "ecdh-sha2-nistp521";
 
         /// <summary>
         /// Gets Curve Parameter.
         /// </summary>
-        protected override X9ECParameters CurveParameter
-        {
-            get
-            {
-                return SecNamedCurves.GetByName("P-521");
-            }
-        }
+        protected override X9ECParameters CurveParameter => SecNamedCurves.GetByName("P-521");
 
         /// <summary>
         /// Gets the size, in bits, of the computed hash code.
@@ -31,10 +22,7 @@ namespace Renci.SshNet.Security
         /// <value>
         /// The size, in bits, of the computed hash code.
         /// </value>
-        protected override int HashSize
-        {
-            get { return 512; }
-        }
+        protected override int HashSize => 512;
 
         /// <summary>
         /// Hashes the specified data bytes.

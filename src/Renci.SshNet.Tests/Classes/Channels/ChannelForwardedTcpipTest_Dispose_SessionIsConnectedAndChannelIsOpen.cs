@@ -55,8 +55,10 @@ namespace Renci.SshNet.Tests.Classes.Channels
             {
                 if (_channelThread.IsAlive)
                     _channelThread.Abort();
+
                 _channelThread = null;
             }
+
             if (_channel != null)
             {
                 _channel.Dispose();
@@ -67,12 +69,12 @@ namespace Renci.SshNet.Tests.Classes.Channels
         private void Arrange()
         {
             var random = new Random();
-            _localChannelNumber = (uint) random.Next(0, int.MaxValue);
-            _localWindowSize = (uint) random.Next(2000, 3000);
-            _localPacketSize = (uint) random.Next(1000, 2000);
-            _remoteChannelNumber = (uint) random.Next(0, int.MaxValue);
-            _remoteWindowSize = (uint) random.Next(0, int.MaxValue);
-            _remotePacketSize = (uint) random.Next(100, 200);
+            _localChannelNumber = (uint)random.Next(0, int.MaxValue);
+            _localWindowSize = (uint)random.Next(2000, 3000);
+            _localPacketSize = (uint)random.Next(1000, 2000);
+            _remoteChannelNumber = (uint)random.Next(0, int.MaxValue);
+            _remoteWindowSize = (uint)random.Next(0, int.MaxValue);
+            _remotePacketSize = (uint)random.Next(100, 200);
             _channelCloseTimeout = TimeSpan.FromSeconds(random.Next(10, 20));
             _channelBindFinishedWaitHandle = new ManualResetEvent(false);
             _channelException = null;
@@ -90,6 +92,7 @@ namespace Renci.SshNet.Tests.Classes.Channels
             _sessionMock.InSequence(sequence).Setup(p => p.IsConnected).Returns(true);
             _sessionMock.InSequence(sequence).Setup(p => p.ConnectionInfo).Returns(_connectionInfoMock.Object);
             _connectionInfoMock.InSequence(sequence).Setup(p => p.Timeout).Returns(_connectionInfoTimeout);
+
             _sessionMock.InSequence(sequence).Setup(
                 p => p.SendMessage(
                     It.Is<ChannelOpenConfirmationMessage>(
@@ -100,29 +103,36 @@ namespace Renci.SshNet.Tests.Classes.Channels
                              m.MaximumPacketSize == _localPacketSize
                              &&
                              m.RemoteChannelNumber == _localChannelNumber)
-                    ));
+                ));
+
             _sessionMock.InSequence(sequence).Setup(p => p.IsConnected).Returns(true);
+
             _sessionMock.InSequence(sequence)
                 .Setup(
                     p => p.TrySendMessage(It.Is<ChannelEofMessage>(m => m.LocalChannelNumber == _remoteChannelNumber)))
                 .Returns(true);
+
             _sessionMock.InSequence(sequence).Setup(p => p.IsConnected).Returns(true);
+
             _sessionMock.InSequence(sequence)
                 .Setup(
                     p => p.TrySendMessage(It.Is<ChannelCloseMessage>(m => m.LocalChannelNumber == _remoteChannelNumber)))
                 .Returns(true);
+
             _sessionMock.InSequence(sequence).Setup(p => p.ConnectionInfo).Returns(_connectionInfoMock.Object);
             _connectionInfoMock.InSequence(sequence).Setup(p => p.ChannelCloseTimeout).Returns(_channelCloseTimeout);
+
             _sessionMock.InSequence(sequence)
-                        .Setup(p => p.TryWait(It.IsAny<EventWaitHandle>(), _channelCloseTimeout))
-                        .Callback<WaitHandle, TimeSpan>((waitHandle, channelCloseTimeout) =>
-                        {
-                            _sessionMock.Raise(
-                                s => s.ChannelCloseReceived += null,
-                                new MessageEventArgs<ChannelCloseMessage>(new ChannelCloseMessage(_localChannelNumber)));
-                            waitHandle.WaitOne();
-                        })
-                        .Returns(WaitResult.Success);
+                .Setup(p => p.TryWait(It.IsAny<EventWaitHandle>(), _channelCloseTimeout))
+                .Callback<WaitHandle, TimeSpan>((waitHandle, channelCloseTimeout) =>
+                {
+                    _sessionMock.Raise(
+                        s => s.ChannelCloseReceived += null,
+                        new MessageEventArgs<ChannelCloseMessage>(new ChannelCloseMessage(_localChannelNumber)));
+
+                    waitHandle.WaitOne();
+                })
+                .Returns(WaitResult.Success);
 
             _remoteListener = new AsyncSocketListener(_remoteEndpoint);
             _remoteListener.Connected += socket => _connectedRegister.Add(socket);
@@ -139,20 +149,21 @@ namespace Renci.SshNet.Tests.Classes.Channels
                 _remotePacketSize);
 
             _channelThread = new Thread(() =>
+            {
+                try
                 {
-                    try
-                    {
-                        _channel.Bind(_remoteEndpoint, _forwardedPortMock.Object);
-                    }
-                    catch (Exception ex)
-                    {
-                        _channelException = ex;
-                    }
-                    finally
-                    {
-                        _channelBindFinishedWaitHandle.Set();
-                    }
-                });
+                    _channel.Bind(_remoteEndpoint, _forwardedPortMock.Object);
+                }
+                catch (Exception ex)
+                {
+                    _channelException = ex;
+                }
+                finally
+                {
+                    _channelBindFinishedWaitHandle.Set();
+                }
+            });
+
             _channelThread.Start();
 
             // give channel time to bind to remote endpoint

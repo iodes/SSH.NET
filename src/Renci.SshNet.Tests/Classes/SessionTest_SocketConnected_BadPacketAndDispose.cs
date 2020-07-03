@@ -40,31 +40,40 @@ namespace Renci.SshNet.Tests.Classes
         protected void Arrange()
         {
             _serverEndPoint = new IPEndPoint(IPAddress.Loopback, 8122);
+
             _connectionInfo = new ConnectionInfo(
                 _serverEndPoint.Address.ToString(),
                 _serverEndPoint.Port,
                 "user",
                 new PasswordAuthenticationMethod("user", "password"));
+
             _connectionInfo.Timeout = TimeSpan.FromMilliseconds(200);
             _actualException = null;
 
             _serviceFactoryMock = new Mock<IServiceFactory>(MockBehavior.Strict);
 
             _serverListener = new AsyncSocketListener(_serverEndPoint);
-            _serverListener.Connected += (socket) =>
-                {
-                    _serverSocket = socket;
 
-                    socket.Send(Encoding.ASCII.GetBytes("\r\n"));
-                    socket.Send(Encoding.ASCII.GetBytes("WELCOME banner\r\n"));
-                    socket.Send(Encoding.ASCII.GetBytes("SSH-2.0-SshStub\r\n"));
-                };
+            _serverListener.Connected += (socket) =>
+            {
+                _serverSocket = socket;
+
+                socket.Send(Encoding.ASCII.GetBytes("\r\n"));
+                socket.Send(Encoding.ASCII.GetBytes("WELCOME banner\r\n"));
+                socket.Send(Encoding.ASCII.GetBytes("SSH-2.0-SshStub\r\n"));
+            };
+
             _serverListener.BytesReceived += (received, socket) =>
+            {
+                var badPacket = new byte[]
                 {
-                    var badPacket = new byte[] {0x0a, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05};
-                    _serverSocket.Send(badPacket, 0, badPacket.Length, SocketFlags.None);
-                    _serverSocket.Shutdown(SocketShutdown.Send);
+                    0x0a, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05
                 };
+
+                _serverSocket.Send(badPacket, 0, badPacket.Length, SocketFlags.None);
+                _serverSocket.Shutdown(SocketShutdown.Send);
+            };
+
             _serverListener.Start();
         }
 

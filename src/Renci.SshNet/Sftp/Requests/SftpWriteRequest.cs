@@ -5,10 +5,7 @@ namespace Renci.SshNet.Sftp.Requests
 {
     internal class SftpWriteRequest : SftpRequest
     {
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.Write; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.Write;
 
         public byte[] Handle { get; private set; }
 

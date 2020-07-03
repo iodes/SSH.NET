@@ -26,9 +26,9 @@ namespace Renci.SshNet.Tests.Classes.Messages
         [TestMethod]
         public void GetBytesTest()
         {
-            Message target = CreateMessage(); // TODO: Initialize to an appropriate value
+            var target = CreateMessage(); // TODO: Initialize to an appropriate value
             byte[] expected = null; // TODO: Initialize to an appropriate value
-            var actual = target.GetBytes();
+            byte[] actual = target.GetBytes();
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
@@ -39,8 +39,8 @@ namespace Renci.SshNet.Tests.Classes.Messages
         [TestMethod]
         public void ToStringTest()
         {
-            Message target = CreateMessage(); // TODO: Initialize to an appropriate value
-            string expected = string.Empty; // TODO: Initialize to an appropriate value
+            var target = CreateMessage(); // TODO: Initialize to an appropriate value
+            var expected = string.Empty; // TODO: Initialize to an appropriate value
             var actual = target.ToString();
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");

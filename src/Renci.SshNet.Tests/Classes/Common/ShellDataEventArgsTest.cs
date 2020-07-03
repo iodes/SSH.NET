@@ -17,7 +17,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         public void ShellDataEventArgsConstructorTest()
         {
             byte[] data = null; // TODO: Initialize to an appropriate value
-            ShellDataEventArgs target = new ShellDataEventArgs(data);
+            var target = new ShellDataEventArgs(data);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -27,8 +27,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShellDataEventArgsConstructorTest1()
         {
-            string line = string.Empty; // TODO: Initialize to an appropriate value
-            ShellDataEventArgs target = new ShellDataEventArgs(line);
+            var line = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new ShellDataEventArgs(line);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

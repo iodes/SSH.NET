@@ -39,10 +39,7 @@ namespace Renci.SshNet.Security.Cryptography
         /// <value>
         /// The size, in bits, of the computed hash code.
         /// </value>
-        public override int HashSize
-        {
-            get { return _hashSize; }
-        }
+        public override int HashSize => _hashSize;
 
         /// <summary>
         /// Finalizes the hash computation after the last data is processed by the cryptographic stream object.
@@ -52,7 +49,7 @@ namespace Renci.SshNet.Security.Cryptography
         /// </returns>
         protected override byte[] HashFinal()
         {
-            var hash = base.HashFinal();
+            byte[] hash = base.HashFinal();
             return hash.Take(HashSize / 8);
         }
     }

@@ -88,6 +88,7 @@ namespace Renci.SshNet
         {
             if (clientAlgorithms == null)
                 throw new ArgumentNullException("clientAlgorithms");
+
             if (serverAlgorithms == null)
                 throw new ArgumentNullException("serverAlgorithms");
 
@@ -112,7 +113,7 @@ namespace Renci.SshNet
             // Issue #292: Avoid overlapping SSH_FXP_OPEN and SSH_FXP_LSTAT requests for the same file as this
             // causes a performance degradation on Sun SSH
             var openAsyncResult = sftpSession.BeginOpen(fileName, Flags.Read, null, null);
-            var handle = sftpSession.EndOpen(openAsyncResult);
+            byte[] handle = sftpSession.EndOpen(openAsyncResult);
 
             var statAsyncResult = sftpSession.BeginLStat(fileName, null, null);
 
@@ -127,7 +128,7 @@ namespace Renci.SshNet
             {
                 var fileAttributes = sftpSession.EndLStat(statAsyncResult);
                 fileSize = fileAttributes.Size;
-                maxPendingReads = Math.Min(10, (int) Math.Ceiling((double) fileAttributes.Size / chunkSize) + 1);
+                maxPendingReads = Math.Min(10, (int)Math.Ceiling((double)fileAttributes.Size / chunkSize) + 1);
             }
             catch (SshException ex)
             {

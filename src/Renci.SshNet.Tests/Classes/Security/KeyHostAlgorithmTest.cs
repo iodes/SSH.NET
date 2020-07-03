@@ -48,9 +48,9 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void KeyHostAlgorithmConstructorTest()
         {
-            string name = string.Empty; // TODO: Initialize to an appropriate value
+            var name = string.Empty; // TODO: Initialize to an appropriate value
             Key key = null; // TODO: Initialize to an appropriate value
-            KeyHostAlgorithm target = new KeyHostAlgorithm(name, key);
+            var target = new KeyHostAlgorithm(name, key);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -61,10 +61,10 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void KeyHostAlgorithmConstructorTest1()
         {
-            string name = string.Empty; // TODO: Initialize to an appropriate value
+            var name = string.Empty; // TODO: Initialize to an appropriate value
             Key key = null; // TODO: Initialize to an appropriate value
             byte[] data = null; // TODO: Initialize to an appropriate value
-            KeyHostAlgorithm target = new KeyHostAlgorithm(name, key, data);
+            var target = new KeyHostAlgorithm(name, key, data);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -75,9 +75,9 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void SignTest()
         {
-            string name = string.Empty; // TODO: Initialize to an appropriate value
+            var name = string.Empty; // TODO: Initialize to an appropriate value
             Key key = null; // TODO: Initialize to an appropriate value
-            KeyHostAlgorithm target = new KeyHostAlgorithm(name, key); // TODO: Initialize to an appropriate value
+            var target = new KeyHostAlgorithm(name, key); // TODO: Initialize to an appropriate value
             byte[] data = null; // TODO: Initialize to an appropriate value
             byte[] expected = null; // TODO: Initialize to an appropriate value
             byte[] actual;
@@ -93,12 +93,12 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void VerifySignatureTest()
         {
-            string name = string.Empty; // TODO: Initialize to an appropriate value
+            var name = string.Empty; // TODO: Initialize to an appropriate value
             Key key = null; // TODO: Initialize to an appropriate value
-            KeyHostAlgorithm target = new KeyHostAlgorithm(name, key); // TODO: Initialize to an appropriate value
+            var target = new KeyHostAlgorithm(name, key); // TODO: Initialize to an appropriate value
             byte[] data = null; // TODO: Initialize to an appropriate value
             byte[] signature = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.VerifySignature(data, signature);
             Assert.AreEqual(expected, actual);
@@ -112,9 +112,9 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void DataTest()
         {
-            string name = string.Empty; // TODO: Initialize to an appropriate value
+            var name = string.Empty; // TODO: Initialize to an appropriate value
             Key key = null; // TODO: Initialize to an appropriate value
-            KeyHostAlgorithm target = new KeyHostAlgorithm(name, key); // TODO: Initialize to an appropriate value
+            var target = new KeyHostAlgorithm(name, key); // TODO: Initialize to an appropriate value
             byte[] actual;
             actual = target.Data;
             Assert.Inconclusive("Verify the correctness of this test method.");

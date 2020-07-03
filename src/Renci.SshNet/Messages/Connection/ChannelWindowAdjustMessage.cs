@@ -32,7 +32,6 @@
         /// </summary>
         public ChannelWindowAdjustMessage()
         {
-
         }
 
         /// <summary>

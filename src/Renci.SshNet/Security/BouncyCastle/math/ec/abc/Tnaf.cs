@@ -39,11 +39,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         */
         public static readonly ZTauElement[] Alpha0 =
         {
-            null,
-            new ZTauElement(BigInteger.One, BigInteger.Zero), null,
-            new ZTauElement(MinusThree, MinusOne), null,
-            new ZTauElement(MinusOne, MinusOne), null,
-            new ZTauElement(BigInteger.One, MinusOne), null
+            null, new ZTauElement(BigInteger.One, BigInteger.Zero), null, new ZTauElement(MinusThree, MinusOne), null, new ZTauElement(MinusOne, MinusOne), null, new ZTauElement(BigInteger.One, MinusOne), null
         };
 
         /**
@@ -52,7 +48,22 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         */
         public static readonly sbyte[][] Alpha0Tnaf =
         {
-            null, new sbyte[]{1}, null, new sbyte[]{-1, 0, 1}, null, new sbyte[]{1, 0, 1}, null, new sbyte[]{-1, 0, 0, 1}
+            null, new sbyte[]
+            {
+                1
+            },
+            null, new sbyte[]
+            {
+                -1, 0, 1
+            },
+            null, new sbyte[]
+            {
+                1, 0, 1
+            },
+            null, new sbyte[]
+            {
+                -1, 0, 0, 1
+            }
         };
 
         /**
@@ -61,11 +72,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         */
         public static readonly ZTauElement[] Alpha1 =
         {
-            null,
-            new ZTauElement(BigInteger.One, BigInteger.Zero), null,
-            new ZTauElement(MinusThree, BigInteger.One), null,
-            new ZTauElement(MinusOne, BigInteger.One), null,
-            new ZTauElement(BigInteger.One, BigInteger.One), null
+            null, new ZTauElement(BigInteger.One, BigInteger.Zero), null, new ZTauElement(MinusThree, BigInteger.One), null, new ZTauElement(MinusOne, BigInteger.One), null, new ZTauElement(BigInteger.One, BigInteger.One), null
         };
 
         /**
@@ -74,7 +81,22 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         */
         public static readonly sbyte[][] Alpha1Tnaf =
         {
-            null, new sbyte[]{1}, null, new sbyte[]{-1, 0, 1}, null, new sbyte[]{1, 0, 1}, null, new sbyte[]{-1, 0, 0, -1}
+            null, new sbyte[]
+            {
+                1
+            },
+            null, new sbyte[]
+            {
+                -1, 0, 1
+            },
+            null, new sbyte[]
+            {
+                1, 0, 1
+            },
+            null, new sbyte[]
+            {
+                -1, 0, 0, -1
+            }
         };
 
         /**
@@ -90,13 +112,13 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
             BigInteger norm;
 
             // s1 = u^2
-            BigInteger s1 = lambda.u.Multiply(lambda.u);
+            var s1 = lambda.u.Multiply(lambda.u);
 
             // s2 = u * v
-            BigInteger s2 = lambda.u.Multiply(lambda.v);
+            var s2 = lambda.u.Multiply(lambda.v);
 
             // s3 = 2 * v^2
-            BigInteger s3 = lambda.v.Multiply(lambda.v).ShiftLeft(1);
+            var s3 = lambda.v.Multiply(lambda.v).ShiftLeft(1);
 
             if (mu == 1)
             {
@@ -131,13 +153,13 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
             SimpleBigDecimal norm;
 
             // s1 = u^2
-            SimpleBigDecimal s1 = u.Multiply(u);
+            var s1 = u.Multiply(u);
 
             // s2 = u * v
-            SimpleBigDecimal s2 = u.Multiply(v);
+            var s2 = u.Multiply(v);
 
             // s3 = 2 * v^2
-            SimpleBigDecimal s3 = v.Multiply(v).ShiftLeft(1);
+            var s3 = v.Multiply(v).ShiftLeft(1);
 
             if (mu == 1)
             {
@@ -169,23 +191,25 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         * <code>lambda1</code> do not have same scale.
         */
         public static ZTauElement Round(SimpleBigDecimal lambda0,
-            SimpleBigDecimal lambda1, sbyte mu)
+                                        SimpleBigDecimal lambda1, sbyte mu)
         {
-            int scale = lambda0.Scale;
+            var scale = lambda0.Scale;
+
             if (lambda1.Scale != scale)
                 throw new ArgumentException("lambda0 and lambda1 do not have same scale");
 
-            if (!((mu == 1) || (mu == -1)))
+            if (!(mu == 1 || mu == -1))
                 throw new ArgumentException("mu must be 1 or -1");
 
-            BigInteger f0 = lambda0.Round();
-            BigInteger f1 = lambda1.Round();
+            var f0 = lambda0.Round();
+            var f1 = lambda1.Round();
 
-            SimpleBigDecimal eta0 = lambda0.Subtract(f0);
-            SimpleBigDecimal eta1 = lambda1.Subtract(f1);
+            var eta0 = lambda0.Subtract(f0);
+            var eta1 = lambda1.Subtract(f1);
 
             // eta = 2*eta0 + mu*eta1
-            SimpleBigDecimal eta = eta0.Add(eta0);
+            var eta = eta0.Add(eta0);
+
             if (mu == 1)
             {
                 eta = eta.Add(eta1);
@@ -198,10 +222,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
 
             // check1 = eta0 - 3*mu*eta1
             // check2 = eta0 + 4*mu*eta1
-            SimpleBigDecimal threeEta1 = eta1.Add(eta1).Add(eta1);
-            SimpleBigDecimal fourEta1 = threeEta1.Add(eta1);
+            var threeEta1 = eta1.Add(eta1).Add(eta1);
+            var fourEta1 = threeEta1.Add(eta1);
             SimpleBigDecimal check1;
             SimpleBigDecimal check2;
+
             if (mu == 1)
             {
                 check1 = eta0.Subtract(threeEta1);
@@ -259,8 +284,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
                 }
             }
 
-            BigInteger q0 = f0.Add(BigInteger.ValueOf(h0));
-            BigInteger q1 = f1.Add(BigInteger.ValueOf(h1));
+            var q0 = f0.Add(BigInteger.ValueOf(h0));
+            var q1 = f1.Add(BigInteger.ValueOf(h1));
             return new ZTauElement(q0, q1);
         }
 
@@ -281,20 +306,21 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         * <code>c</code> bits of accuracy.
         */
         public static SimpleBigDecimal ApproximateDivisionByN(BigInteger k,
-            BigInteger s, BigInteger vm, sbyte a, int m, int c)
+                                                              BigInteger s, BigInteger vm, sbyte a, int m, int c)
         {
-            int _k = (m + 5)/2 + c;
-            BigInteger ns = k.ShiftRight(m - _k - 2 + a);
+            var _k = (m + 5) / 2 + c;
+            var ns = k.ShiftRight(m - _k - 2 + a);
 
-            BigInteger gs = s.Multiply(ns);
+            var gs = s.Multiply(ns);
 
-            BigInteger hs = gs.ShiftRight(m);
+            var hs = gs.ShiftRight(m);
 
-            BigInteger js = vm.Multiply(hs);
+            var js = vm.Multiply(hs);
 
-            BigInteger gsPlusJs = gs.Add(js);
-            BigInteger ls = gsPlusJs.ShiftRight(_k-c);
-            if (gsPlusJs.TestBit(_k-c-1))
+            var gsPlusJs = gs.Add(js);
+            var ls = gsPlusJs.ShiftRight(_k - c);
+
+            if (gsPlusJs.TestBit(_k - c - 1))
             {
                 // round up
                 ls = ls.Add(BigInteger.One);
@@ -313,33 +339,33 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         */
         public static sbyte[] TauAdicNaf(sbyte mu, ZTauElement lambda)
         {
-            if (!((mu == 1) || (mu == -1))) 
+            if (!(mu == 1 || mu == -1))
                 throw new ArgumentException("mu must be 1 or -1");
 
-            BigInteger norm = Norm(mu, lambda);
+            var norm = Norm(mu, lambda);
 
             // Ceiling of log2 of the norm 
-            int log2Norm = norm.BitLength;
+            var log2Norm = norm.BitLength;
 
             // If length(TNAF) > 30, then length(TNAF) < log2Norm + 3.52
-            int maxLength = log2Norm > 30 ? log2Norm + 4 : 34;
+            var maxLength = log2Norm > 30 ? log2Norm + 4 : 34;
 
             // The array holding the TNAF
-            sbyte[] u = new sbyte[maxLength];
-            int i = 0;
+            var u = new sbyte[maxLength];
+            var i = 0;
 
             // The actual length of the TNAF
-            int length = 0;
+            var length = 0;
 
-            BigInteger r0 = lambda.u;
-            BigInteger r1 = lambda.v;
+            var r0 = lambda.u;
+            var r1 = lambda.v;
 
-            while(!((r0.Equals(BigInteger.Zero)) && (r1.Equals(BigInteger.Zero))))
+            while (!(r0.Equals(BigInteger.Zero) && r1.Equals(BigInteger.Zero)))
             {
                 // If r0 is odd
-                if (r0.TestBit(0)) 
+                if (r0.TestBit(0))
                 {
-                    u[i] = (sbyte) BigInteger.Two.Subtract((r0.Subtract(r1.ShiftLeft(1))).Mod(Four)).IntValue;
+                    u[i] = (sbyte)BigInteger.Two.Subtract(r0.Subtract(r1.ShiftLeft(1)).Mod(Four)).IntValue;
 
                     // r0 = r0 - u[i]
                     if (u[i] == 1)
@@ -351,6 +377,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
                         // u[i] == -1
                         r0 = r0.Add(BigInteger.One);
                     }
+
                     length = i;
                 }
                 else
@@ -358,9 +385,10 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
                     u[i] = 0;
                 }
 
-                BigInteger t = r0;
-                BigInteger s = r0.ShiftRight(1);
-                if (mu == 1) 
+                var t = r0;
+                var s = r0.ShiftRight(1);
+
+                if (mu == 1)
                 {
                     r0 = r1.Add(s);
                 }
@@ -377,7 +405,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
             length++;
 
             // Reduce the TNAF array to its actual length
-            sbyte[] tnaf = new sbyte[length];
+            var tnaf = new sbyte[length];
             Array.Copy(u, 0, tnaf, 0, length);
             return tnaf;
         }
@@ -405,9 +433,10 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         */
         public static sbyte GetMu(AbstractF2mCurve curve)
         {
-            BigInteger a = curve.A.ToBigInteger();
+            var a = curve.A.ToBigInteger();
 
             sbyte mu;
+
             if (a.SignValue == 0)
             {
                 mu = -1;
@@ -420,6 +449,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
             {
                 throw new ArgumentException("No Koblitz curve (ABC), TNAF multiplication not possible");
             }
+
             return mu;
         }
 
@@ -449,7 +479,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         */
         public static BigInteger[] GetLucas(sbyte mu, int k, bool doV)
         {
-            if (!(mu == 1 || mu == -1)) 
+            if (!(mu == 1 || mu == -1))
                 throw new ArgumentException("mu must be 1 or -1");
 
             BigInteger u0;
@@ -467,10 +497,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
                 u1 = BigInteger.One;
             }
 
-            for (int i = 1; i < k; i++)
+            for (var i = 1; i < k; i++)
             {
                 // u2 = mu*u1 - 2*u0;
                 BigInteger s = null;
+
                 if (mu == 1)
                 {
                     s = u1;
@@ -480,7 +511,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
                     // mu == -1
                     s = u1.Negate();
                 }
-                
+
                 u2 = s.Subtract(u0.ShiftLeft(1));
                 u0 = u1;
                 u1 = u2;
@@ -488,7 +519,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
                 //            System.out.println();
             }
 
-            BigInteger[] retVal = {u0, u1};
+            BigInteger[] retVal =
+            {
+                u0, u1
+            };
+
             return retVal;
         }
 
@@ -500,7 +535,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         * @param w The window width of the WTNAF.
         * @return the auxiliary value <code>t<sub>w</sub></code>
         */
-        public static BigInteger GetTw(sbyte mu, int w) 
+        public static BigInteger GetTw(sbyte mu, int w)
         {
             if (w == 4)
             {
@@ -518,8 +553,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
             {
                 // For w <> 4, the values must be computed
                 BigInteger[] us = GetLucas(mu, w, false);
-                BigInteger twoToW = BigInteger.Zero.SetBit(w);
-                BigInteger u1invert = us[1].ModInverse(twoToW);
+                var twoToW = BigInteger.Zero.SetBit(w);
+                var u1invert = us[1].ModInverse(twoToW);
                 BigInteger tw;
                 tw = BigInteger.Two.Multiply(us[0]).Multiply(u1invert).Mod(twoToW);
                 //System.out.println("mu = " + mu);
@@ -541,11 +576,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
             if (!curve.IsKoblitz)
                 throw new ArgumentException("si is defined for Koblitz curves only");
 
-            int m = curve.FieldSize;
-            int a = curve.A.ToBigInteger().IntValue;
-            sbyte mu = GetMu(a);
-            int shifts = GetShiftsForCofactor(curve.Cofactor);
-            int index = m + 3 - a;
+            var m = curve.FieldSize;
+            var a = curve.A.ToBigInteger().IntValue;
+            var mu = GetMu(a);
+            var shifts = GetShiftsForCofactor(curve.Cofactor);
+            var index = m + 3 - a;
             BigInteger[] ui = GetLucas(mu, index, false);
 
             if (mu == 1)
@@ -554,37 +589,46 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
                 ui[1] = ui[1].Negate();
             }
 
-            BigInteger dividend0 = BigInteger.One.Add(ui[1]).ShiftRight(shifts);
-            BigInteger dividend1 = BigInteger.One.Add(ui[0]).ShiftRight(shifts).Negate();
+            var dividend0 = BigInteger.One.Add(ui[1]).ShiftRight(shifts);
+            var dividend1 = BigInteger.One.Add(ui[0]).ShiftRight(shifts).Negate();
 
-            return new BigInteger[] { dividend0, dividend1 };
+            return new BigInteger[]
+            {
+                dividend0, dividend1
+            };
         }
 
         public static BigInteger[] GetSi(int fieldSize, int curveA, BigInteger cofactor)
         {
-            sbyte mu = GetMu(curveA);
-            int shifts = GetShiftsForCofactor(cofactor);
-            int index = fieldSize + 3 - curveA;
+            var mu = GetMu(curveA);
+            var shifts = GetShiftsForCofactor(cofactor);
+            var index = fieldSize + 3 - curveA;
             BigInteger[] ui = GetLucas(mu, index, false);
+
             if (mu == 1)
             {
                 ui[0] = ui[0].Negate();
                 ui[1] = ui[1].Negate();
             }
 
-            BigInteger dividend0 = BigInteger.One.Add(ui[1]).ShiftRight(shifts);
-            BigInteger dividend1 = BigInteger.One.Add(ui[0]).ShiftRight(shifts).Negate();
+            var dividend0 = BigInteger.One.Add(ui[1]).ShiftRight(shifts);
+            var dividend1 = BigInteger.One.Add(ui[0]).ShiftRight(shifts).Negate();
 
-            return new BigInteger[] { dividend0, dividend1 };
+            return new BigInteger[]
+            {
+                dividend0, dividend1
+            };
         }
 
         protected static int GetShiftsForCofactor(BigInteger h)
         {
             if (h != null && h.BitLength < 4)
             {
-                int hi = h.IntValue;
+                var hi = h.IntValue;
+
                 if (hi == 2)
                     return 1;
+
                 if (hi == 4)
                     return 2;
             }
@@ -606,10 +650,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         * @return <code>&#961; := k partmod (&#964;<sup>m</sup> - 1)/(&#964; - 1)</code>
         */
         public static ZTauElement PartModReduction(BigInteger k, int m, sbyte a,
-            BigInteger[] s, sbyte mu, sbyte c)
+                                                   BigInteger[] s, sbyte mu, sbyte c)
         {
             // d0 = s[0] + mu*s[1]; mu is either 1 or -1
             BigInteger d0;
+
             if (mu == 1)
             {
                 d0 = s[0].Add(s[1]);
@@ -620,23 +665,23 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
             }
 
             BigInteger[] v = GetLucas(mu, m, true);
-            BigInteger vm = v[1];
+            var vm = v[1];
 
-            SimpleBigDecimal lambda0 = ApproximateDivisionByN(
+            var lambda0 = ApproximateDivisionByN(
                 k, s[0], vm, a, m, c);
-            
-            SimpleBigDecimal lambda1 = ApproximateDivisionByN(
+
+            var lambda1 = ApproximateDivisionByN(
                 k, s[1], vm, a, m, c);
 
-            ZTauElement q = Round(lambda0, lambda1, mu);
+            var q = Round(lambda0, lambda1, mu);
 
             // r0 = n - d0*q0 - 2*s1*q1
-            BigInteger r0 = k.Subtract(d0.Multiply(q.u)).Subtract(
+            var r0 = k.Subtract(d0.Multiply(q.u)).Subtract(
                 BigInteger.ValueOf(2).Multiply(s[1]).Multiply(q.v));
 
             // r1 = s1*q0 - s0*q1
-            BigInteger r1 = s[1].Multiply(q.u).Subtract(s[0].Multiply(q.v));
-            
+            var r1 = s[1].Multiply(q.u).Subtract(s[0].Multiply(q.v));
+
             return new ZTauElement(r0, r1);
         }
 
@@ -650,12 +695,12 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         */
         public static AbstractF2mPoint MultiplyRTnaf(AbstractF2mPoint p, BigInteger k)
         {
-            AbstractF2mCurve curve = (AbstractF2mCurve)p.Curve;
-            int m = curve.FieldSize;
-            int a = curve.A.ToBigInteger().IntValue;
-            sbyte mu = GetMu(a);
+            var curve = (AbstractF2mCurve)p.Curve;
+            var m = curve.FieldSize;
+            var a = curve.A.ToBigInteger().IntValue;
+            var mu = GetMu(a);
             BigInteger[] s = curve.GetSi();
-            ZTauElement rho = PartModReduction(k, m, (sbyte)a, s, mu, (sbyte)10);
+            var rho = PartModReduction(k, m, (sbyte)a, s, mu, (sbyte)10);
 
             return MultiplyTnaf(p, rho);
         }
@@ -671,11 +716,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         */
         public static AbstractF2mPoint MultiplyTnaf(AbstractF2mPoint p, ZTauElement lambda)
         {
-            AbstractF2mCurve curve = (AbstractF2mCurve)p.Curve;
-            sbyte mu = GetMu(curve.A);
+            var curve = (AbstractF2mCurve)p.Curve;
+            var mu = GetMu(curve.A);
             sbyte[] u = TauAdicNaf(mu, lambda);
 
-            AbstractF2mPoint q = MultiplyFromTnaf(p, u);
+            var q = MultiplyFromTnaf(p, u);
 
             return q;
         }
@@ -691,14 +736,16 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         */
         public static AbstractF2mPoint MultiplyFromTnaf(AbstractF2mPoint p, sbyte[] u)
         {
-            ECCurve curve = p.Curve;
-            AbstractF2mPoint q = (AbstractF2mPoint)curve.Infinity;
-            AbstractF2mPoint pNeg = (AbstractF2mPoint)p.Negate();
-            int tauCount = 0;
-            for (int i = u.Length - 1; i >= 0; i--)
+            var curve = p.Curve;
+            var q = (AbstractF2mPoint)curve.Infinity;
+            var pNeg = (AbstractF2mPoint)p.Negate();
+            var tauCount = 0;
+
+            for (var i = u.Length - 1; i >= 0; i--)
             {
                 ++tauCount;
-                sbyte ui = u[i];
+                var ui = u[i];
+
                 if (ui != 0)
                 {
                     q = q.TauPow(tauCount);
@@ -708,10 +755,12 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
                     q = (AbstractF2mPoint)q.Add(x);
                 }
             }
+
             if (tauCount > 0)
             {
                 q = q.TauPow(tauCount);
             }
+
             return q;
         }
 
@@ -730,62 +779,64 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         * <code>&#955;</code>.
         */
         public static sbyte[] TauAdicWNaf(sbyte mu, ZTauElement lambda,
-            sbyte width, BigInteger pow2w, BigInteger tw, ZTauElement[] alpha)
+                                          sbyte width, BigInteger pow2w, BigInteger tw, ZTauElement[] alpha)
         {
-            if (!((mu == 1) || (mu == -1))) 
+            if (!(mu == 1 || mu == -1))
                 throw new ArgumentException("mu must be 1 or -1");
 
-            BigInteger norm = Norm(mu, lambda);
+            var norm = Norm(mu, lambda);
 
             // Ceiling of log2 of the norm 
-            int log2Norm = norm.BitLength;
+            var log2Norm = norm.BitLength;
 
             // If length(TNAF) > 30, then length(TNAF) < log2Norm + 3.52
-            int maxLength = log2Norm > 30 ? log2Norm + 4 + width : 34 + width;
+            var maxLength = log2Norm > 30 ? log2Norm + 4 + width : 34 + width;
 
             // The array holding the TNAF
-            sbyte[] u = new sbyte[maxLength];
+            var u = new sbyte[maxLength];
 
             // 2^(width - 1)
-            BigInteger pow2wMin1 = pow2w.ShiftRight(1);
+            var pow2wMin1 = pow2w.ShiftRight(1);
 
             // Split lambda into two BigIntegers to simplify calculations
-            BigInteger r0 = lambda.u;
-            BigInteger r1 = lambda.v;
-            int i = 0;
+            var r0 = lambda.u;
+            var r1 = lambda.v;
+            var i = 0;
 
             // while lambda <> (0, 0)
-            while (!((r0.Equals(BigInteger.Zero))&&(r1.Equals(BigInteger.Zero))))
+            while (!(r0.Equals(BigInteger.Zero) && r1.Equals(BigInteger.Zero)))
             {
                 // if r0 is odd
-                if (r0.TestBit(0)) 
+                if (r0.TestBit(0))
                 {
                     // uUnMod = r0 + r1*tw Mod 2^width
-                    BigInteger uUnMod
+                    var uUnMod
                         = r0.Add(r1.Multiply(tw)).Mod(pow2w);
-                    
+
                     sbyte uLocal;
+
                     // if uUnMod >= 2^(width - 1)
                     if (uUnMod.CompareTo(pow2wMin1) >= 0)
                     {
-                        uLocal = (sbyte) uUnMod.Subtract(pow2w).IntValue;
+                        uLocal = (sbyte)uUnMod.Subtract(pow2w).IntValue;
                     }
                     else
                     {
-                        uLocal = (sbyte) uUnMod.IntValue;
+                        uLocal = (sbyte)uUnMod.IntValue;
                     }
                     // uLocal is now in [-2^(width-1), 2^(width-1)-1]
 
                     u[i] = uLocal;
-                    bool s = true;
-                    if (uLocal < 0) 
+                    var s = true;
+
+                    if (uLocal < 0)
                     {
                         s = false;
                         uLocal = (sbyte)-uLocal;
                     }
                     // uLocal is now >= 0
 
-                    if (s) 
+                    if (s)
                     {
                         r0 = r0.Subtract(alpha[uLocal].u);
                         r1 = r1.Subtract(alpha[uLocal].v);
@@ -801,7 +852,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
                     u[i] = 0;
                 }
 
-                BigInteger t = r0;
+                var t = r0;
 
                 if (mu == 1)
                 {
@@ -812,9 +863,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
                     // mu == -1
                     r0 = r1.Subtract(r0.ShiftRight(1));
                 }
+
                 r1 = t.ShiftRight(1).Negate();
                 i++;
             }
+
             return u;
         }
 
@@ -826,15 +879,16 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc
         */
         public static AbstractF2mPoint[] GetPreComp(AbstractF2mPoint p, sbyte a)
         {
-            sbyte[][] alphaTnaf = (a == 0) ? Tnaf.Alpha0Tnaf : Tnaf.Alpha1Tnaf;
+            sbyte[][] alphaTnaf = a == 0 ? Alpha0Tnaf : Alpha1Tnaf;
 
-            AbstractF2mPoint[] pu = new AbstractF2mPoint[(uint)(alphaTnaf.Length + 1) >> 1];
+            var pu = new AbstractF2mPoint[(uint)(alphaTnaf.Length + 1) >> 1];
             pu[0] = p;
 
-            uint precompLen = (uint)alphaTnaf.Length;
+            var precompLen = (uint)alphaTnaf.Length;
+
             for (uint i = 3; i < precompLen; i += 2)
             {
-                pu[i >> 1] = Tnaf.MultiplyFromTnaf(p, alphaTnaf[i]);
+                pu[i >> 1] = MultiplyFromTnaf(p, alphaTnaf[i]);
             }
 
             p.Curve.NormalizeAll(pu);

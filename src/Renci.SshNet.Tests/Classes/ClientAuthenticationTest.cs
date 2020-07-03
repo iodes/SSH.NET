@@ -69,11 +69,10 @@ namespace Renci.SshNet.Tests.Classes
             Assert.AreEqual(partialSuccessLimit, clientAuthentication.PartialSuccessLimit);
         }
 
-
         [TestMethod]
         public void AuthenticateShouldThrowArgumentNullExceptionWhenConnectionInfoIsNull()
         {
-           const IConnectionInfoInternal connectionInfo = null;
+            const IConnectionInfoInternal connectionInfo = null;
             var session = new Mock<ISession>(MockBehavior.Strict).Object;
 
             try

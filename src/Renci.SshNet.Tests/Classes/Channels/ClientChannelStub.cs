@@ -20,10 +20,7 @@ namespace Renci.SshNet.Tests.Classes.Channels
             OnErrorOccurredInvocations = new List<Exception>();
         }
 
-        public override ChannelTypes ChannelType
-        {
-            get { return ChannelTypes.X11; }
-        }
+        public override ChannelTypes ChannelType => ChannelTypes.X11;
 
         public IList<Exception> OnErrorOccurredInvocations { get; private set; }
 
@@ -33,7 +30,7 @@ namespace Renci.SshNet.Tests.Classes.Channels
 
         public Exception OnDisconnectedException { get; set; }
 
-        public Exception OnEofException{ get; set; }
+        public Exception OnEofException { get; set; }
 
         public Exception OnErrorOccurredException { get; set; }
 
@@ -58,7 +55,7 @@ namespace Renci.SshNet.Tests.Classes.Channels
 
         public void InitializeRemoteChannelInfo(uint remoteChannelNumber, uint remoteWindowSize, uint remotePacketSize)
         {
-            base.InitializeRemoteInfo(remoteChannelNumber, remoteWindowSize, remotePacketSize);
+            InitializeRemoteInfo(remoteChannelNumber, remoteWindowSize, remotePacketSize);
         }
 
         protected override void OnClose()

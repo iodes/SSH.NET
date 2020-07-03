@@ -25,7 +25,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         [Ignore] // placeholder for actual test
         public void SignTest()
         {
-            CipherDigitalSignature target = CreateCipherDigitalSignature(); // TODO: Initialize to an appropriate value
+            var target = CreateCipherDigitalSignature(); // TODO: Initialize to an appropriate value
             byte[] input = null; // TODO: Initialize to an appropriate value
             byte[] expected = null; // TODO: Initialize to an appropriate value
             byte[] actual;
@@ -41,10 +41,10 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         [Ignore] // placeholder for actual test
         public void VerifyTest()
         {
-            CipherDigitalSignature target = CreateCipherDigitalSignature(); // TODO: Initialize to an appropriate value
+            var target = CreateCipherDigitalSignature(); // TODO: Initialize to an appropriate value
             byte[] input = null; // TODO: Initialize to an appropriate value
             byte[] signature = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.Verify(input, signature);
             Assert.AreEqual(expected, actual);

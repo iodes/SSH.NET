@@ -1,6 +1,5 @@
 using System;
 using System.Threading;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Crypto;
 using Renci.SshNet.Security.Org.BouncyCastle.Crypto.Digests;
 using Renci.SshNet.Security.Org.BouncyCastle.Crypto.Prng;
@@ -13,31 +12,31 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Security
     {
         private static long counter = Times.NanoTime();
 
-       private static long NextCounterValue()
+        private static long NextCounterValue()
         {
             return Interlocked.Increment(ref counter);
         }
 
         private static readonly SecureRandom master = new SecureRandom(new CryptoApiRandomGenerator());
-        private static SecureRandom Master
-        {
-            get { return master; }
-        }
+
+        private static SecureRandom Master => master;
 
         private static DigestRandomGenerator CreatePrng(IDigest digest, bool autoSeed)
         {
-            DigestRandomGenerator prng = new DigestRandomGenerator(digest);
+            var prng = new DigestRandomGenerator(digest);
+
             if (autoSeed)
             {
                 prng.AddSeedMaterial(NextCounterValue());
                 prng.AddSeedMaterial(GetNextBytes(Master, digest.GetDigestSize()));
             }
+
             return prng;
         }
 
         public static byte[] GetNextBytes(SecureRandom secureRandom, int length)
         {
-            byte[] result = new byte[length];
+            var result = new byte[length];
             secureRandom.NextBytes(result);
             return result;
         }
@@ -85,7 +84,6 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Security
 
         public override int Next(int maxValue)
         {
-
             if (maxValue < 2)
             {
                 if (maxValue < 0)
@@ -104,12 +102,12 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Security
             }
 
             int result;
+
             do
             {
                 bits = NextInt() & int.MaxValue;
                 result = bits % maxValue;
-            }
-            while (bits - result + (maxValue - 1) < 0); // Ignore results near overflow
+            } while (bits - result + (maxValue - 1) < 0); // Ignore results near overflow
 
             return result;
         }
@@ -124,13 +122,14 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Security
                 throw new ArgumentException("maxValue cannot be less than minValue");
             }
 
-            int diff = maxValue - minValue;
+            var diff = maxValue - minValue;
+
             if (diff > 0)
                 return minValue + Next(diff);
 
             for (;;)
             {
-                int i = NextInt();
+                var i = NextInt();
 
                 if (i >= minValue && i < maxValue)
                     return i;
@@ -151,12 +150,12 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Security
 
         public override double NextDouble()
         {
-            return Convert.ToDouble((ulong) NextLong()) / DoubleScale;
+            return Convert.ToDouble((ulong)NextLong()) / DoubleScale;
         }
 
         public virtual int NextInt()
         {
-            byte[] bytes = new byte[4];
+            var bytes = new byte[4];
             NextBytes(bytes);
 
             uint result = bytes[0];
@@ -171,7 +170,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Security
 
         public virtual long NextLong()
         {
-            return ((long)(uint) NextInt() << 32) | (long)(uint) NextInt();
+            return ((long)(uint)NextInt() << 32) | (long)(uint)NextInt();
         }
     }
 }

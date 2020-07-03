@@ -26,7 +26,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         [TestMethod()]
         public void ChannelTypeTest()
         {
-            ChannelOpenInfo target = CreateChannelOpenInfo(); // TODO: Initialize to an appropriate value
+            var target = CreateChannelOpenInfo(); // TODO: Initialize to an appropriate value
             string actual;
             actual = target.ChannelType;
             Assert.Inconclusive("Verify the correctness of this test method.");

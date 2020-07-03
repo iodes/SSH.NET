@@ -18,7 +18,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         [Ignore] // placeholder
         public void RequestFailureMessageConstructorTest()
         {
-            RequestFailureMessage target = new RequestFailureMessage();
+            var target = new RequestFailureMessage();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

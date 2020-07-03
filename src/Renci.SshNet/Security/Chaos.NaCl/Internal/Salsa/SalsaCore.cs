@@ -5,34 +5,34 @@ namespace Renci.SshNet.Security.Chaos.NaCl.Internal.Salsa
 {
     internal static class SalsaCore
     {
-        internal static void HSalsa(out Array16<UInt32> output, ref Array16<UInt32> input, int rounds)
+        internal static void HSalsa(out Array16<uint> output, ref Array16<uint> input, int rounds)
         {
             InternalAssert.Assert(rounds % 2 == 0, "Number of salsa rounds must be even");
 
-            int doubleRounds = rounds / 2;
+            var doubleRounds = rounds / 2;
 
-            UInt32 x0 = input.x0;
-            UInt32 x1 = input.x1;
-            UInt32 x2 = input.x2;
-            UInt32 x3 = input.x3;
-            UInt32 x4 = input.x4;
-            UInt32 x5 = input.x5;
-            UInt32 x6 = input.x6;
-            UInt32 x7 = input.x7;
-            UInt32 x8 = input.x8;
-            UInt32 x9 = input.x9;
-            UInt32 x10 = input.x10;
-            UInt32 x11 = input.x11;
-            UInt32 x12 = input.x12;
-            UInt32 x13 = input.x13;
-            UInt32 x14 = input.x14;
-            UInt32 x15 = input.x15;
+            var x0 = input.x0;
+            var x1 = input.x1;
+            var x2 = input.x2;
+            var x3 = input.x3;
+            var x4 = input.x4;
+            var x5 = input.x5;
+            var x6 = input.x6;
+            var x7 = input.x7;
+            var x8 = input.x8;
+            var x9 = input.x9;
+            var x10 = input.x10;
+            var x11 = input.x11;
+            var x12 = input.x12;
+            var x13 = input.x13;
+            var x14 = input.x14;
+            var x15 = input.x15;
 
             unchecked
             {
-                for (int i = 0; i < doubleRounds; i++)
+                for (var i = 0; i < doubleRounds; i++)
                 {
-                    UInt32 y;
+                    uint y;
 
                     // row 0
                     y = x0 + x12;
@@ -134,10 +134,11 @@ namespace Renci.SshNet.Security.Chaos.NaCl.Internal.Salsa
             output.x15 = x15;
         }
 
-        internal static void Salsa(out Array16<UInt32> output, ref Array16<UInt32> input, int rounds)
+        internal static void Salsa(out Array16<uint> output, ref Array16<uint> input, int rounds)
         {
-            Array16<UInt32> temp;
+            Array16<uint> temp;
             HSalsa(out temp, ref input, rounds);
+
             unchecked
             {
                 output.x0 = temp.x0 + input.x0;
@@ -258,6 +259,5 @@ int crypto_core(
 
   return 0;
 }*/
-
     }
 }

@@ -1,5 +1,4 @@
 using System;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Abc;
 
 namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
@@ -27,14 +26,14 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
             if (!(point is AbstractF2mPoint))
                 throw new ArgumentException("Only AbstractF2mPoint can be used in WTauNafMultiplier");
 
-            AbstractF2mPoint p = (AbstractF2mPoint)point;
-            AbstractF2mCurve curve = (AbstractF2mCurve)p.Curve;
-            int m = curve.FieldSize;
-            sbyte a = (sbyte)curve.A.ToBigInteger().IntValue;
-            sbyte mu = Tnaf.GetMu(a);
+            var p = (AbstractF2mPoint)point;
+            var curve = (AbstractF2mCurve)p.Curve;
+            var m = curve.FieldSize;
+            var a = (sbyte)curve.A.ToBigInteger().IntValue;
+            var mu = Tnaf.GetMu(a);
             BigInteger[] s = curve.GetSi();
 
-            ZTauElement rho = Tnaf.PartModReduction(k, m, a, s, mu, (sbyte)10);
+            var rho = Tnaf.PartModReduction(k, m, a, s, mu, (sbyte)10);
 
             return MultiplyWTnaf(p, rho, a, mu);
         }
@@ -50,18 +49,18 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
         * @return <code>p</code> multiplied by <code>&#955;</code>.
         */
         private AbstractF2mPoint MultiplyWTnaf(AbstractF2mPoint p, ZTauElement lambda,
-            sbyte a, sbyte mu)
+                                               sbyte a, sbyte mu)
         {
-            ZTauElement[] alpha = (a == 0) ? Tnaf.Alpha0 : Tnaf.Alpha1;
+            ZTauElement[] alpha = a == 0 ? Tnaf.Alpha0 : Tnaf.Alpha1;
 
-            BigInteger tw = Tnaf.GetTw(mu, Tnaf.Width);
+            var tw = Tnaf.GetTw(mu, Tnaf.Width);
 
-            sbyte[]u = Tnaf.TauAdicWNaf(mu, lambda, Tnaf.Width,
+            sbyte[] u = Tnaf.TauAdicWNaf(mu, lambda, Tnaf.Width,
                 BigInteger.ValueOf(Tnaf.Pow2Width), tw, alpha);
 
             return MultiplyFromWTnaf(p, u);
         }
-        
+
         /**
         * Multiplies a {@link org.bouncycastle.math.ec.AbstractF2mPoint AbstractF2mPoint}
         * by an element <code>&#955;</code> of <code><b>Z</b>[&#964;]</code>
@@ -73,42 +72,46 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
         */
         private static AbstractF2mPoint MultiplyFromWTnaf(AbstractF2mPoint p, sbyte[] u)
         {
-            AbstractF2mCurve curve = (AbstractF2mCurve)p.Curve;
-            sbyte a = (sbyte)curve.A.ToBigInteger().IntValue;
+            var curve = (AbstractF2mCurve)p.Curve;
+            var a = (sbyte)curve.A.ToBigInteger().IntValue;
 
-            WTauNafCallback callback = new WTauNafCallback(p, a);
-            WTauNafPreCompInfo preCompInfo = (WTauNafPreCompInfo)curve.Precompute(p, PRECOMP_NAME, callback);
+            var callback = new WTauNafCallback(p, a);
+            var preCompInfo = (WTauNafPreCompInfo)curve.Precompute(p, PRECOMP_NAME, callback);
             AbstractF2mPoint[] pu = preCompInfo.PreComp;
 
             // TODO Include negations in precomp (optionally) and use from here
-            AbstractF2mPoint[] puNeg = new AbstractF2mPoint[pu.Length];
-            for (int i = 0; i < pu.Length; ++i)
+            var puNeg = new AbstractF2mPoint[pu.Length];
+
+            for (var i = 0; i < pu.Length; ++i)
             {
                 puNeg[i] = (AbstractF2mPoint)pu[i].Negate();
             }
 
-            
             // q = infinity
-            AbstractF2mPoint q = (AbstractF2mPoint) p.Curve.Infinity;
+            var q = (AbstractF2mPoint)p.Curve.Infinity;
 
-            int tauCount = 0;
-            for (int i = u.Length - 1; i >= 0; i--)
+            var tauCount = 0;
+
+            for (var i = u.Length - 1; i >= 0; i--)
             {
                 ++tauCount;
                 int ui = u[i];
+
                 if (ui != 0)
                 {
                     q = q.TauPow(tauCount);
                     tauCount = 0;
 
-                    ECPoint x = ui > 0 ? pu[ui >> 1] : puNeg[(-ui) >> 1];
+                    ECPoint x = ui > 0 ? pu[ui >> 1] : puNeg[-ui >> 1];
                     q = (AbstractF2mPoint)q.Add(x);
                 }
             }
+
             if (tauCount > 0)
             {
                 q = q.TauPow(tauCount);
             }
+
             return q;
         }
 
@@ -120,8 +123,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
             internal WTauNafCallback(AbstractF2mPoint p, sbyte a)
             {
-                this.m_p = p;
-                this.m_a = a;
+                m_p = p;
+                m_a = a;
             }
 
             public PreCompInfo Precompute(PreCompInfo existing)
@@ -129,7 +132,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
                 if (existing is WTauNafPreCompInfo)
                     return existing;
 
-                WTauNafPreCompInfo result = new WTauNafPreCompInfo();
+                var result = new WTauNafPreCompInfo();
                 result.PreComp = Tnaf.GetPreComp(m_p, m_a);
                 return result;
             }

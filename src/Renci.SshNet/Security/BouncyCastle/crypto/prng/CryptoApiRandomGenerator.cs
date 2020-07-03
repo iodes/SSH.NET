@@ -17,11 +17,10 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Prng
 
         public CryptoApiRandomGenerator(RandomNumberGenerator rng)
         {
-            this.rndProv = rng;
+            rndProv = rng;
         }
 
         #region IRandomGenerator Members
-
         public virtual void AddSeedMaterial(byte[] seed)
         {
             // We don't care about the seed
@@ -49,21 +48,21 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Prng
         {
             if (start < 0)
                 throw new ArgumentException("Start offset cannot be negative", "start");
-            if (bytes.Length < (start + len))
+
+            if (bytes.Length < start + len)
                 throw new ArgumentException("Byte array too small for requested offset and length");
 
-            if (bytes.Length == len && start == 0) 
+            if (bytes.Length == len && start == 0)
             {
                 NextBytes(bytes);
             }
-            else 
+            else
             {
-                byte[] tmpBuf = new byte[len];
+                var tmpBuf = new byte[len];
                 NextBytes(tmpBuf);
                 Array.Copy(tmpBuf, 0, bytes, start, len);
             }
         }
-
         #endregion
     }
 }

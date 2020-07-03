@@ -27,14 +27,23 @@ namespace Renci.SshNet.Tests.Classes
         private string _keyExchangeAlgorithm;
 
         protected Random Random { get; private set; }
+
         protected byte[] SessionId { get; private set; }
+
         protected ConnectionInfo ConnectionInfo { get; private set; }
+
         protected IList<EventArgs> DisconnectedRegister { get; private set; }
+
         protected IList<MessageEventArgs<DisconnectMessage>> DisconnectReceivedRegister { get; private set; }
+
         protected IList<ExceptionEventArgs> ErrorOccurredRegister { get; private set; }
+
         protected AsyncSocketListener ServerListener { get; private set; }
+
         protected IList<byte[]> ServerBytesReceivedRegister { get; private set; }
+
         protected Session Session { get; private set; }
+
         protected Socket ServerSocket { get; private set; }
 
         [TestInitialize]
@@ -71,12 +80,16 @@ namespace Renci.SshNet.Tests.Classes
             Random = new Random();
 
             _serverEndPoint = new IPEndPoint(IPAddress.Loopback, 8122);
+
             ConnectionInfo = new ConnectionInfo(
                 _serverEndPoint.Address.ToString(),
                 _serverEndPoint.Port,
                 "user",
                 new PasswordAuthenticationMethod("user", "password"))
-            {Timeout = TimeSpan.FromSeconds(20)};
+            {
+                Timeout = TimeSpan.FromSeconds(20)
+            };
+
             _keyExchangeAlgorithm = Random.Next().ToString(CultureInfo.InvariantCulture);
             SessionId = new byte[10];
             Random.NextBytes(SessionId);
@@ -89,57 +102,65 @@ namespace Renci.SshNet.Tests.Classes
             Session.Disconnected += (sender, args) => DisconnectedRegister.Add(args);
             Session.DisconnectReceived += (sender, args) => DisconnectReceivedRegister.Add(args);
             Session.ErrorOccured += (sender, args) => ErrorOccurredRegister.Add(args);
+
             Session.KeyExchangeInitReceived += (sender, args) =>
-                {
-                    var newKeysMessage = new NewKeysMessage();
-                    var newKeys = newKeysMessage.GetPacket(8, null);
-                    ServerSocket.Send(newKeys, 4, newKeys.Length - 4, SocketFlags.None);
-                };
+            {
+                var newKeysMessage = new NewKeysMessage();
+                byte[] newKeys = newKeysMessage.GetPacket(8, null);
+                ServerSocket.Send(newKeys, 4, newKeys.Length - 4, SocketFlags.None);
+            };
 
             ServerListener = new AsyncSocketListener(_serverEndPoint);
             ServerListener.ShutdownRemoteCommunicationSocket = false;
-            ServerListener.Connected += socket =>
-                {
-                    ServerSocket = socket;
 
-                    socket.Send(Encoding.ASCII.GetBytes("\r\n"));
-                    socket.Send(Encoding.ASCII.GetBytes("WELCOME banner\r\n"));
-                    socket.Send(Encoding.ASCII.GetBytes("SSH-2.0-SshStub\r\n"));
-                };
+            ServerListener.Connected += socket =>
+            {
+                ServerSocket = socket;
+
+                socket.Send(Encoding.ASCII.GetBytes("\r\n"));
+                socket.Send(Encoding.ASCII.GetBytes("WELCOME banner\r\n"));
+                socket.Send(Encoding.ASCII.GetBytes("SSH-2.0-SshStub\r\n"));
+            };
 
             var counter = 0;
 
             ServerListener.BytesReceived += (received, socket) =>
-                {
-                    ServerBytesReceivedRegister.Add(received);
+            {
+                ServerBytesReceivedRegister.Add(received);
 
-                    switch (counter++)
-                    {
-                        case 0:
-                            var keyExchangeInitMessage = new KeyExchangeInitMessage
+                switch (counter++)
+                {
+                    case 0:
+                        var keyExchangeInitMessage = new KeyExchangeInitMessage
+                        {
+                            CompressionAlgorithmsClientToServer = new string[0],
+                            CompressionAlgorithmsServerToClient = new string[0],
+                            EncryptionAlgorithmsClientToServer = new string[0],
+                            EncryptionAlgorithmsServerToClient = new string[0],
+                            KeyExchangeAlgorithms = new[]
                             {
-                                CompressionAlgorithmsClientToServer = new string[0],
-                                CompressionAlgorithmsServerToClient = new string[0],
-                                EncryptionAlgorithmsClientToServer = new string[0],
-                                EncryptionAlgorithmsServerToClient = new string[0],
-                                KeyExchangeAlgorithms = new[] {_keyExchangeAlgorithm},
-                                LanguagesClientToServer = new string[0],
-                                LanguagesServerToClient = new string[0],
-                                MacAlgorithmsClientToServer = new string[0],
-                                MacAlgorithmsServerToClient = new string[0],
-                                ServerHostKeyAlgorithms = new string[0]
-                            };
-                            var keyExchangeInit = keyExchangeInitMessage.GetPacket(8, null);
-                            ServerSocket.Send(keyExchangeInit, 4, keyExchangeInit.Length - 4, SocketFlags.None);
-                            break;
-                        case 1:
-                            var serviceAcceptMessage =
-                                ServiceAcceptMessageBuilder.Create(ServiceName.UserAuthentication)
-                                    .Build();
-                            ServerSocket.Send(serviceAcceptMessage, 0, serviceAcceptMessage.Length, SocketFlags.None);
-                            break;
-                    }
-                };
+                                _keyExchangeAlgorithm
+                            },
+                            LanguagesClientToServer = new string[0],
+                            LanguagesServerToClient = new string[0],
+                            MacAlgorithmsClientToServer = new string[0],
+                            MacAlgorithmsServerToClient = new string[0],
+                            ServerHostKeyAlgorithms = new string[0]
+                        };
+
+                        byte[] keyExchangeInit = keyExchangeInitMessage.GetPacket(8, null);
+                        ServerSocket.Send(keyExchangeInit, 4, keyExchangeInit.Length - 4, SocketFlags.None);
+                        break;
+
+                    case 1:
+                        byte[] serviceAcceptMessage =
+                            ServiceAcceptMessageBuilder.Create(ServiceName.UserAuthentication)
+                                .Build();
+
+                        ServerSocket.Send(serviceAcceptMessage, 0, serviceAcceptMessage.Length, SocketFlags.None);
+                        break;
+                }
+            };
         }
 
         private void CreateMocks()
@@ -153,20 +174,26 @@ namespace Renci.SshNet.Tests.Classes
         {
             _serviceFactoryMock.Setup(
                 p =>
-                    p.CreateKeyExchange(ConnectionInfo.KeyExchangeAlgorithms, new[] { _keyExchangeAlgorithm })).Returns(_keyExchangeMock.Object);
+                    p.CreateKeyExchange(ConnectionInfo.KeyExchangeAlgorithms, new[]
+                    {
+                        _keyExchangeAlgorithm
+                    })).Returns(_keyExchangeMock.Object);
+
             _keyExchangeMock.Setup(p => p.Name).Returns(_keyExchangeAlgorithm);
             _keyExchangeMock.Setup(p => p.Start(Session, It.IsAny<KeyExchangeInitMessage>()));
             _keyExchangeMock.Setup(p => p.ExchangeHash).Returns(SessionId);
-            _keyExchangeMock.Setup(p => p.CreateServerCipher()).Returns((Cipher) null);
-            _keyExchangeMock.Setup(p => p.CreateClientCipher()).Returns((Cipher) null);
-            _keyExchangeMock.Setup(p => p.CreateServerHash()).Returns((HashAlgorithm) null);
-            _keyExchangeMock.Setup(p => p.CreateClientHash()).Returns((HashAlgorithm) null);
-            _keyExchangeMock.Setup(p => p.CreateCompressor()).Returns((Compressor) null);
-            _keyExchangeMock.Setup(p => p.CreateDecompressor()).Returns((Compressor) null);
+            _keyExchangeMock.Setup(p => p.CreateServerCipher()).Returns((Cipher)null);
+            _keyExchangeMock.Setup(p => p.CreateClientCipher()).Returns((Cipher)null);
+            _keyExchangeMock.Setup(p => p.CreateServerHash()).Returns((HashAlgorithm)null);
+            _keyExchangeMock.Setup(p => p.CreateClientHash()).Returns((HashAlgorithm)null);
+            _keyExchangeMock.Setup(p => p.CreateCompressor()).Returns((Compressor)null);
+            _keyExchangeMock.Setup(p => p.CreateDecompressor()).Returns((Compressor)null);
             _keyExchangeMock.Setup(p => p.Dispose());
+
             _serviceFactoryMock.Setup(p => p.CreateClientAuthentication())
                 .Callback(ClientAuthentication_Callback)
                 .Returns(_clientAuthenticationMock.Object);
+
             _clientAuthenticationMock.Setup(p => p.Authenticate(ConnectionInfo, Session));
         }
 
@@ -202,7 +229,7 @@ namespace Renci.SshNet.Tests.Classes
 
             public byte[] Build()
             {
-                var serviceName = _serviceName.ToArray();
+                byte[] serviceName = _serviceName.ToArray();
 
                 var sshDataStream = new SshDataStream(4 + 1 + 1 + 4 + serviceName.Length);
                 sshDataStream.Write((uint)(sshDataStream.Capacity - 4)); // packet length

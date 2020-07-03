@@ -6,10 +6,7 @@ namespace Renci.SshNet.Sftp.Responses
 {
     internal class SftpNameResponse : SftpResponse
     {
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.Name; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.Name;
 
         public uint Count { get; private set; }
 
@@ -27,17 +24,19 @@ namespace Renci.SshNet.Sftp.Responses
         protected override void LoadData()
         {
             base.LoadData();
-            
+
             Count = ReadUInt32();
             Files = new KeyValuePair<string, SftpFileAttributes>[Count];
 
             for (var i = 0; i < Count; i++)
             {
                 var fileName = ReadString(Encoding);
+
                 if (SupportsLongName(ProtocolVersion))
                 {
                     ReadString(Encoding); // skip longname
                 }
+
                 Files[i] = new KeyValuePair<string, SftpFileAttributes>(fileName, ReadAttributes());
             }
         }
@@ -46,11 +45,11 @@ namespace Renci.SshNet.Sftp.Responses
         {
             base.SaveData();
 
-            Write((uint) Files.Length); // count
+            Write((uint)Files.Length); // count
 
             for (var i = 0; i < Files.Length; i++)
             {
-                var file = Files[i];
+                KeyValuePair<string, SftpFileAttributes> file = Files[i];
 
                 Write(file.Key, Encoding); // filename
 

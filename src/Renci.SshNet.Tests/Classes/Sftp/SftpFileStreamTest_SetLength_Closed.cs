@@ -30,7 +30,12 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         {
             var random = new Random();
             _path = random.Next().ToString(CultureInfo.InvariantCulture);
-            _handle = new[] { (byte)random.Next(byte.MinValue, byte.MaxValue) };
+
+            _handle = new[]
+            {
+                (byte)random.Next(byte.MinValue, byte.MaxValue)
+            };
+
             _bufferSize = (uint)random.Next(1, 1000);
             _readBufferSize = (uint)random.Next(0, 1000);
             _writeBufferSize = (uint)random.Next(0, 1000);
@@ -38,18 +43,23 @@ namespace Renci.SshNet.Tests.Classes.Sftp
             _sftpSessionMock = new Mock<ISftpSession>(MockBehavior.Strict);
 
             var sequence = new MockSequence();
+
             _sftpSessionMock.InSequence(sequence)
                 .Setup(p => p.RequestOpen(_path, Flags.Write | Flags.Truncate, true))
                 .Returns(_handle);
+
             _sftpSessionMock.InSequence(sequence)
                 .Setup(p => p.CalculateOptimalReadLength(_bufferSize))
                 .Returns(_readBufferSize);
+
             _sftpSessionMock.InSequence(sequence)
                 .Setup(p => p.CalculateOptimalWriteLength(_bufferSize, _handle))
                 .Returns(_writeBufferSize);
+
             _sftpSessionMock.InSequence(sequence)
                 .Setup(p => p.IsOpen)
                 .Returns(true);
+
             _sftpSessionMock.InSequence(sequence)
                 .Setup(p => p.RequestClose(_handle));
 
@@ -75,12 +85,14 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         {
             Assert.IsNotNull(_actualException);
             Assert.IsNull(_actualException.InnerException);
+
             Assert.AreEqual(
                 string.Format(
                     "Cannot access a disposed object.{0}Object name: '{1}'.",
                     Environment.NewLine,
                     _actualException.ObjectName),
                 _actualException.Message);
+
             Assert.AreEqual(typeof(SftpFileStream).FullName, _actualException.ObjectName);
         }
     }

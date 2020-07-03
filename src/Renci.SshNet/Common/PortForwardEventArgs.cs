@@ -28,6 +28,7 @@ namespace Renci.SshNet.Common
         {
             if (host == null)
                 throw new ArgumentNullException("host");
+
             port.ValidatePort("port");
 
             OriginatorHost = host;

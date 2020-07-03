@@ -29,12 +29,12 @@ namespace Renci.SshNet.Tests.Classes.Channels
         {
             var random = new Random();
 
-            _localChannelNumber = (uint) random.Next(0, int.MaxValue);
-            _localWindowSize = (uint) random.Next(0, int.MaxValue);
-            _localPacketSize = (uint) random.Next(0, int.MaxValue);
-            _remoteChannelNumber = (uint) random.Next(0, int.MaxValue);
-            _remoteWindowSize = (uint) random.Next(0, int.MaxValue);
-            _remotePacketSize = (uint) random.Next(0, int.MaxValue);
+            _localChannelNumber = (uint)random.Next(0, int.MaxValue);
+            _localWindowSize = (uint)random.Next(0, int.MaxValue);
+            _localPacketSize = (uint)random.Next(0, int.MaxValue);
+            _remoteChannelNumber = (uint)random.Next(0, int.MaxValue);
+            _remoteWindowSize = (uint)random.Next(0, int.MaxValue);
+            _remotePacketSize = (uint)random.Next(0, int.MaxValue);
             _channelCloseTimeout = TimeSpan.FromSeconds(random.Next(10, 20));
             _channelClosedRegister = new List<ChannelEventArgs>();
             _channelExceptionRegister = new List<ExceptionEventArgs>();
@@ -49,6 +49,7 @@ namespace Renci.SshNet.Tests.Classes.Channels
             SessionMock.InSequence(sequence).Setup(p => p.ConnectionInfo).Returns(ConnectionInfoMock.Object);
             ConnectionInfoMock.InSequence(sequence).Setup(p => p.RetryAttempts).Returns(1);
             SessionMock.Setup(p => p.SessionSemaphore).Returns(_sessionSemaphore);
+
             SessionMock.InSequence(sequence)
                 .Setup(
                     p =>
@@ -58,6 +59,7 @@ namespace Renci.SshNet.Tests.Classes.Channels
                                     m.LocalChannelNumber == _localChannelNumber &&
                                     m.InitialWindowSize == _localWindowSize && m.MaximumPacketSize == _localPacketSize &&
                                     m.Info is SessionChannelOpenInfo)));
+
             SessionMock.InSequence(sequence)
                 .Setup(p => p.WaitOnHandle(It.IsNotNull<WaitHandle>()))
                 .Callback<WaitHandle>(
@@ -71,26 +73,32 @@ namespace Renci.SshNet.Tests.Classes.Channels
                                     _remoteWindowSize,
                                     _remotePacketSize,
                                     _remoteChannelNumber)));
+
                         w.WaitOne();
                     });
+
             SessionMock.Setup(p => p.IsConnected).Returns(true);
+
             SessionMock.InSequence(sequence)
                 .Setup(
                     p => p.TrySendMessage(It.Is<ChannelCloseMessage>(c => c.LocalChannelNumber == _remoteChannelNumber)))
                 .Returns(true);
+
             SessionMock.InSequence(sequence).Setup(p => p.ConnectionInfo).Returns(ConnectionInfoMock.Object);
             ConnectionInfoMock.InSequence(sequence).Setup(p => p.ChannelCloseTimeout).Returns(_channelCloseTimeout);
+
             SessionMock.InSequence(sequence)
-                       .Setup(p => p.TryWait(It.IsNotNull<WaitHandle>(), _channelCloseTimeout))
-                       .Callback<WaitHandle, TimeSpan>(
-                           (waitHandle, channelCloseTimeout) =>
-                           {
-                               SessionMock.Raise(
-                                   s => s.ChannelCloseReceived += null,
-                                   new MessageEventArgs<ChannelCloseMessage>(new ChannelCloseMessage(_localChannelNumber)));
-                               waitHandle.WaitOne();
-                           })
-                       .Returns(WaitResult.Success);
+                .Setup(p => p.TryWait(It.IsNotNull<WaitHandle>(), _channelCloseTimeout))
+                .Callback<WaitHandle, TimeSpan>(
+                    (waitHandle, channelCloseTimeout) =>
+                    {
+                        SessionMock.Raise(
+                            s => s.ChannelCloseReceived += null,
+                            new MessageEventArgs<ChannelCloseMessage>(new ChannelCloseMessage(_localChannelNumber)));
+
+                        waitHandle.WaitOne();
+                    })
+                .Returns(WaitResult.Success);
         }
 
         protected override void Arrange()

@@ -43,7 +43,8 @@ namespace Renci.SshNet.Channels
             // Channel is consider to be open when confirmation message was received
             IsOpen = true;
 
-            var openConfirmed = OpenConfirmed;
+            EventHandler<ChannelOpenConfirmedEventArgs> openConfirmed = OpenConfirmed;
+
             if (openConfirmed != null)
                 openConfirmed(this, new ChannelOpenConfirmedEventArgs(remoteChannelNumber, initialWindowSize, maximumPacketSize));
         }
@@ -68,7 +69,8 @@ namespace Renci.SshNet.Channels
         /// <param name="language">The language.</param>
         protected virtual void OnOpenFailure(uint reasonCode, string description, string language)
         {
-            var openFailed = OpenFailed;
+            EventHandler<ChannelOpenFailedEventArgs> openFailed = OpenFailed;
+
             if (openFailed != null)
                 openFailed(this, new ChannelOpenFailedEventArgs(LocalChannelNumber, reasonCode, description, language));
         }

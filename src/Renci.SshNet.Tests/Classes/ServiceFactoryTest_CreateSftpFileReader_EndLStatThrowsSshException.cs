@@ -30,7 +30,7 @@ namespace Renci.SshNet.Tests.Classes
             _handle = CryptoAbstraction.GenerateRandom(random.Next(1, 10));
             _statAsyncResult = new SFtpStatAsyncResult(null, null);
             _fileName = random.Next().ToString();
-            _chunkSize = (uint) random.Next(1, int.MaxValue);
+            _chunkSize = (uint)random.Next(1, int.MaxValue);
         }
 
         private void CreateMocks()
@@ -44,23 +44,28 @@ namespace Renci.SshNet.Tests.Classes
             var seq = new MockSequence();
 
             _sftpSessionMock.InSequence(seq)
-                            .Setup(p => p.BeginOpen(_fileName, Flags.Read, null, null))
-                            .Returns(_openAsyncResult);
+                .Setup(p => p.BeginOpen(_fileName, Flags.Read, null, null))
+                .Returns(_openAsyncResult);
+
             _sftpSessionMock.InSequence(seq)
-                            .Setup(p => p.EndOpen(_openAsyncResult))
-                            .Returns(_handle);
+                .Setup(p => p.EndOpen(_openAsyncResult))
+                .Returns(_handle);
+
             _sftpSessionMock.InSequence(seq)
-                            .Setup(p => p.BeginLStat(_fileName, null, null))
-                            .Returns(_statAsyncResult);
+                .Setup(p => p.BeginLStat(_fileName, null, null))
+                .Returns(_statAsyncResult);
+
             _sftpSessionMock.InSequence(seq)
-                            .Setup(p => p.CalculateOptimalReadLength(_bufferSize))
-                            .Returns(_chunkSize);
+                .Setup(p => p.CalculateOptimalReadLength(_bufferSize))
+                .Returns(_chunkSize);
+
             _sftpSessionMock.InSequence(seq)
-                            .Setup(p => p.EndLStat(_statAsyncResult))
-                            .Throws(new SshException());
+                .Setup(p => p.EndLStat(_statAsyncResult))
+                .Throws(new SshException());
+
             _sftpSessionMock.InSequence(seq)
-                            .Setup(p => p.CreateFileReader(_handle, _sftpSessionMock.Object, _chunkSize, 3, null))
-                            .Returns(_sftpFileReaderMock.Object);
+                .Setup(p => p.CreateFileReader(_handle, _sftpSessionMock.Object, _chunkSize, 3, null))
+                .Returns(_sftpFileReaderMock.Object);
         }
 
         private void Arrange()

@@ -8,7 +8,7 @@ namespace Renci.SshNet.Sftp.Requests
         private readonly Action<SftpStatusResponse> _statusAction;
 
         public uint RequestId { get; private set; }
-        
+
         public uint ProtocolVersion { get; private set; }
 
         /// <summary>
@@ -37,6 +37,7 @@ namespace Renci.SshNet.Sftp.Requests
         public virtual void Complete(SftpResponse response)
         {
             var statusResponse = response as SftpStatusResponse;
+
             if (statusResponse != null)
             {
                 _statusAction(statusResponse);

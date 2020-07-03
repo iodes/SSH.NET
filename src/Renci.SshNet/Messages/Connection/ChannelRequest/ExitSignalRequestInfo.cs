@@ -20,10 +20,7 @@
         /// <value>
         /// The name of the request.
         /// </value>
-        public override string RequestName
-        {
-            get { return Name; }
-        }
+        public override string RequestName => Name;
 
         /// <summary>
         /// Gets the name of the signal.
@@ -33,8 +30,8 @@
         /// </value>
         public string SignalName
         {
-            get { return Ascii.GetString(_signalName, 0, _signalName.Length); }
-            private set { _signalName = Ascii.GetBytes(value); }
+            get => Ascii.GetString(_signalName, 0, _signalName.Length);
+            private set => _signalName = Ascii.GetBytes(value);
         }
 
         /// <summary>
@@ -50,8 +47,8 @@
         /// </summary>
         public string ErrorMessage
         {
-            get { return Utf8.GetString(_errorMessage, 0, _errorMessage.Length); }
-            private set { _errorMessage = Utf8.GetBytes(value); }
+            get => Utf8.GetString(_errorMessage, 0, _errorMessage.Length);
+            private set => _errorMessage = Utf8.GetBytes(value);
         }
 
         /// <summary>
@@ -59,8 +56,8 @@
         /// </summary>
         public string Language
         {
-            get { return Utf8.GetString(_language, 0, _language.Length); }
-            private set { _language = Utf8.GetBytes(value); }
+            get => Utf8.GetString(_language, 0, _language.Length);
+            private set => _language = Utf8.GetBytes(value);
         }
 
         protected override int BufferCapacity

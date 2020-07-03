@@ -24,7 +24,10 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void GetByteCount_Chars()
         {
-            var chars = new[] { 'B', 'e', 'l', 'g', 'i', 'u', 'm' };
+            var chars = new[]
+            {
+                'B', 'e', 'l', 'g', 'i', 'u', 'm'
+            };
 
             var actual = _ascii.GetByteCount(chars);
 
@@ -34,9 +37,12 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void GetBytes_CharArray()
         {
-            var chars = new[] {'B', 'e', 'l', 'g', 'i', 'u', 'm'};
+            var chars = new[]
+            {
+                'B', 'e', 'l', 'g', 'i', 'u', 'm'
+            };
 
-            var actual = _ascii.GetBytes(chars);
+            byte[] actual = _ascii.GetBytes(chars);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(7, actual.Length);
@@ -46,13 +52,16 @@ namespace Renci.SshNet.Tests.Classes.Common
             Assert.AreEqual(0x67, actual[3]);
             Assert.AreEqual(0x69, actual[4]);
             Assert.AreEqual(0x75, actual[5]);
-            Assert.AreEqual(0x6d ,actual[6]);
+            Assert.AreEqual(0x6d, actual[6]);
         }
 
         [TestMethod]
         public void GetCharCount_Bytes()
         {
-            var bytes = new byte[] { 0x42, 0x65, 0x6c, 0x67, 0x69, 0x75, 0x6d };
+            var bytes = new byte[]
+            {
+                0x42, 0x65, 0x6c, 0x67, 0x69, 0x75, 0x6d
+            };
 
             var actual = _ascii.GetCharCount(bytes);
 
@@ -62,9 +71,12 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void GetChars_Bytes()
         {
-            var bytes = new byte[] {0x42, 0x65, 0x6c, 0x67, 0x69, 0x75, 0x6d};
+            var bytes = new byte[]
+            {
+                0x42, 0x65, 0x6c, 0x67, 0x69, 0x75, 0x6d
+            };
 
-            var actual = _ascii.GetChars(bytes);
+            char[] actual = _ascii.GetChars(bytes);
 
             Assert.AreEqual("Belgium", new string(actual));
         }
@@ -72,9 +84,12 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void GetChars_Bytes_DefaultFallback()
         {
-            var bytes = new byte[] { 0x42, 0x65, 0x6c, 0x80, 0x69, 0x75, 0x6d };
+            var bytes = new byte[]
+            {
+                0x42, 0x65, 0x6c, 0x80, 0x69, 0x75, 0x6d
+            };
 
-            var actual = _ascii.GetChars(bytes);
+            char[] actual = _ascii.GetChars(bytes);
 
             Assert.AreEqual("Bel?ium", new string(actual));
         }
@@ -136,7 +151,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void GetPreamble()
         {
-            var actual = _ascii.GetPreamble();
+            byte[] actual = _ascii.GetPreamble();
 
             Assert.AreEqual(0, actual.Length);
         }
@@ -156,7 +171,7 @@ namespace Renci.SshNet.Tests.Classes.Common
             const int loopCount = 10000000;
             var result = new byte[input.Length];
 
-            var corefxAscii = new System.Text.ASCIIEncoding();
+            var corefxAscii = new ASCIIEncoding();
             var sshAscii = _ascii;
 
             var stopWatch = new Stopwatch();
@@ -201,7 +216,7 @@ namespace Renci.SshNet.Tests.Classes.Common
             new Random().NextBytes(input);
             const int loopCount = 100000;
 
-            var corefxAscii = new System.Text.ASCIIEncoding();
+            var corefxAscii = new ASCIIEncoding();
             var sshAscii = _ascii;
 
             var stopWatch = new Stopwatch();
@@ -213,7 +228,7 @@ namespace Renci.SshNet.Tests.Classes.Common
 
             for (var i = 0; i < loopCount; i++)
             {
-                var actual = corefxAscii.GetChars(input);
+                char[] actual = corefxAscii.GetChars(input);
             }
 
             stopWatch.Stop();
@@ -229,13 +244,12 @@ namespace Renci.SshNet.Tests.Classes.Common
 
             for (var i = 0; i < loopCount; i++)
             {
-                var actual = sshAscii.GetChars(input);
+                char[] actual = sshAscii.GetChars(input);
             }
 
             stopWatch.Stop();
 
             Console.WriteLine(stopWatch.ElapsedMilliseconds);
         }
-
     }
 }

@@ -40,10 +40,11 @@ namespace Renci.SshNet.Tests.Classes
         {
             var operationTimeout = TimeSpan.FromMilliseconds(_random.Next(0, int.MaxValue - 1));
             var connectionInfo = new PasswordConnectionInfo("host", 22, "admin", "pwd");
+
             var target = new SftpClient(connectionInfo)
-                {
-                    OperationTimeout = operationTimeout
-                };
+            {
+                OperationTimeout = operationTimeout
+            };
 
             var actual = target.OperationTimeout;
 
@@ -55,10 +56,11 @@ namespace Renci.SshNet.Tests.Classes
         {
             var operationTimeout = TimeSpan.FromMilliseconds(-1);
             var connectionInfo = new PasswordConnectionInfo("host", 22, "admin", "pwd");
+
             var target = new SftpClient(connectionInfo)
-                {
-                    OperationTimeout = operationTimeout
-                };
+            {
+                OperationTimeout = operationTimeout
+            };
 
             var actual = target.OperationTimeout;
 
@@ -70,10 +72,11 @@ namespace Renci.SshNet.Tests.Classes
         {
             var operationTimeout = TimeSpan.FromMilliseconds(int.MaxValue);
             var connectionInfo = new PasswordConnectionInfo("host", 22, "admin", "pwd");
+
             var target = new SftpClient(connectionInfo)
-                {
-                    OperationTimeout = operationTimeout
-                };
+            {
+                OperationTimeout = operationTimeout
+            };
 
             var actual = target.OperationTimeout;
 
@@ -157,10 +160,10 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void SftpClientConstructorTest()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             PrivateKeyFile[] keyFiles = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(host, username, keyFiles);
+            var target = new SftpClient(host, username, keyFiles);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -171,11 +174,11 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void SftpClientConstructorTest1()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             PrivateKeyFile[] keyFiles = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(host, port, username, keyFiles);
+            var target = new SftpClient(host, port, username, keyFiles);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -186,10 +189,10 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void SftpClientConstructorTest2()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(host, username, password);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var password = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(host, username, password);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -200,11 +203,11 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void SftpClientConstructorTest3()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(host, port, username, password);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var password = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(host, port, username, password);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -216,7 +219,7 @@ namespace Renci.SshNet.Tests.Classes
         public void SftpClientConstructorTest4()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo);
+            var target = new SftpClient(connectionInfo);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -228,8 +231,8 @@ namespace Renci.SshNet.Tests.Classes
         public void ChangePermissionsTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             short mode = 0; // TODO: Initialize to an appropriate value
             target.ChangePermissions(path, mode);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -243,8 +246,8 @@ namespace Renci.SshNet.Tests.Classes
         public void ChangeDirectoryTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             target.ChangeDirectory(path);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -257,9 +260,9 @@ namespace Renci.SshNet.Tests.Classes
         public void BeginUploadFileTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
             Stream input = null; // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             AsyncCallback asyncCallback = null; // TODO: Initialize to an appropriate value
             object state = null; // TODO: Initialize to an appropriate value
             Action<ulong> uploadCallback = null; // TODO: Initialize to an appropriate value
@@ -278,10 +281,10 @@ namespace Renci.SshNet.Tests.Classes
         public void BeginUploadFileTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
             Stream input = null; // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            bool canOverride = false; // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var canOverride = false; // TODO: Initialize to an appropriate value
             AsyncCallback asyncCallback = null; // TODO: Initialize to an appropriate value
             object state = null; // TODO: Initialize to an appropriate value
             Action<ulong> uploadCallback = null; // TODO: Initialize to an appropriate value
@@ -300,10 +303,10 @@ namespace Renci.SshNet.Tests.Classes
         public void BeginSynchronizeDirectoriesTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string sourcePath = string.Empty; // TODO: Initialize to an appropriate value
-            string destinationPath = string.Empty; // TODO: Initialize to an appropriate value
-            string searchPattern = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var sourcePath = string.Empty; // TODO: Initialize to an appropriate value
+            var destinationPath = string.Empty; // TODO: Initialize to an appropriate value
+            var searchPattern = string.Empty; // TODO: Initialize to an appropriate value
             AsyncCallback asyncCallback = null; // TODO: Initialize to an appropriate value
             object state = null; // TODO: Initialize to an appropriate value
             IAsyncResult expected = null; // TODO: Initialize to an appropriate value
@@ -321,8 +324,8 @@ namespace Renci.SshNet.Tests.Classes
         public void BeginListDirectoryTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             AsyncCallback asyncCallback = null; // TODO: Initialize to an appropriate value
             object state = null; // TODO: Initialize to an appropriate value
             Action<int> listCallback = null; // TODO: Initialize to an appropriate value
@@ -341,8 +344,8 @@ namespace Renci.SshNet.Tests.Classes
         public void BeginDownloadFileTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             Stream output = null; // TODO: Initialize to an appropriate value
             AsyncCallback asyncCallback = null; // TODO: Initialize to an appropriate value
             object state = null; // TODO: Initialize to an appropriate value
@@ -362,8 +365,8 @@ namespace Renci.SshNet.Tests.Classes
         public void AppendTextTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             Encoding encoding = null; // TODO: Initialize to an appropriate value
             StreamWriter expected = null; // TODO: Initialize to an appropriate value
             StreamWriter actual;
@@ -380,8 +383,8 @@ namespace Renci.SshNet.Tests.Classes
         public void AppendTextTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             StreamWriter expected = null; // TODO: Initialize to an appropriate value
             StreamWriter actual;
             actual = target.AppendText(path);
@@ -397,9 +400,9 @@ namespace Renci.SshNet.Tests.Classes
         public void AppendAllTextTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            string contents = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var contents = string.Empty; // TODO: Initialize to an appropriate value
             target.AppendAllText(path, contents);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -412,9 +415,9 @@ namespace Renci.SshNet.Tests.Classes
         public void AppendAllTextTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            string contents = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var contents = string.Empty; // TODO: Initialize to an appropriate value
             Encoding encoding = null; // TODO: Initialize to an appropriate value
             target.AppendAllText(path, contents, encoding);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -428,8 +431,8 @@ namespace Renci.SshNet.Tests.Classes
         public void AppendAllLinesTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             IEnumerable<string> contents = null; // TODO: Initialize to an appropriate value
             target.AppendAllLines(path, contents);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -443,8 +446,8 @@ namespace Renci.SshNet.Tests.Classes
         public void AppendAllLinesTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             IEnumerable<string> contents = null; // TODO: Initialize to an appropriate value
             Encoding encoding = null; // TODO: Initialize to an appropriate value
             target.AppendAllLines(path, contents, encoding);
@@ -459,8 +462,8 @@ namespace Renci.SshNet.Tests.Classes
         public void CreateTextTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             Encoding encoding = null; // TODO: Initialize to an appropriate value
             StreamWriter expected = null; // TODO: Initialize to an appropriate value
             StreamWriter actual;
@@ -477,8 +480,8 @@ namespace Renci.SshNet.Tests.Classes
         public void CreateTextTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             StreamWriter expected = null; // TODO: Initialize to an appropriate value
             StreamWriter actual;
             actual = target.CreateText(path);
@@ -494,8 +497,8 @@ namespace Renci.SshNet.Tests.Classes
         public void CreateDirectoryTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             target.CreateDirectory(path);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -508,9 +511,9 @@ namespace Renci.SshNet.Tests.Classes
         public void CreateTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            int bufferSize = 0; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var bufferSize = 0; // TODO: Initialize to an appropriate value
             SftpFileStream expected = null; // TODO: Initialize to an appropriate value
             SftpFileStream actual;
             actual = target.Create(path, bufferSize);
@@ -526,8 +529,8 @@ namespace Renci.SshNet.Tests.Classes
         public void CreateTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileStream expected = null; // TODO: Initialize to an appropriate value
             SftpFileStream actual;
             actual = target.Create(path);
@@ -543,7 +546,7 @@ namespace Renci.SshNet.Tests.Classes
         public void EndSynchronizeDirectoriesTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
             IAsyncResult asyncResult = null; // TODO: Initialize to an appropriate value
             IEnumerable<FileInfo> expected = null; // TODO: Initialize to an appropriate value
             IEnumerable<FileInfo> actual;
@@ -560,7 +563,7 @@ namespace Renci.SshNet.Tests.Classes
         public void EndListDirectoryTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
             IAsyncResult asyncResult = null; // TODO: Initialize to an appropriate value
             IEnumerable<SftpFile> expected = null; // TODO: Initialize to an appropriate value
             IEnumerable<SftpFile> actual;
@@ -577,7 +580,7 @@ namespace Renci.SshNet.Tests.Classes
         public void EndDownloadFileTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
             IAsyncResult asyncResult = null; // TODO: Initialize to an appropriate value
             target.EndDownloadFile(asyncResult);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -591,8 +594,8 @@ namespace Renci.SshNet.Tests.Classes
         public void DownloadFileTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             Stream output = null; // TODO: Initialize to an appropriate value
             Action<ulong> downloadCallback = null; // TODO: Initialize to an appropriate value
             target.DownloadFile(path, output, downloadCallback);
@@ -607,8 +610,8 @@ namespace Renci.SshNet.Tests.Classes
         public void DeleteFileTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             target.DeleteFile(path);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -621,8 +624,8 @@ namespace Renci.SshNet.Tests.Classes
         public void DeleteDirectoryTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             target.DeleteDirectory(path);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -635,8 +638,8 @@ namespace Renci.SshNet.Tests.Classes
         public void DeleteTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             target.Delete(path);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -649,9 +652,9 @@ namespace Renci.SshNet.Tests.Classes
         public void GetLastAccessTimeUtcTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            DateTime expected = new DateTime(); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var expected = new DateTime(); // TODO: Initialize to an appropriate value
             DateTime actual;
             actual = target.GetLastAccessTimeUtc(path);
             Assert.AreEqual(expected, actual);
@@ -666,9 +669,9 @@ namespace Renci.SshNet.Tests.Classes
         public void GetLastAccessTimeTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            DateTime expected = new DateTime(); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var expected = new DateTime(); // TODO: Initialize to an appropriate value
             DateTime actual;
             actual = target.GetLastAccessTime(path);
             Assert.AreEqual(expected, actual);
@@ -683,8 +686,8 @@ namespace Renci.SshNet.Tests.Classes
         public void GetAttributesTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes expected = null; // TODO: Initialize to an appropriate value
             SftpFileAttributes actual;
             actual = target.GetAttributes(path);
@@ -700,8 +703,8 @@ namespace Renci.SshNet.Tests.Classes
         public void GetTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             SftpFile expected = null; // TODO: Initialize to an appropriate value
             SftpFile actual;
             actual = target.Get(path);
@@ -717,9 +720,9 @@ namespace Renci.SshNet.Tests.Classes
         public void ExistsTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.Exists(path);
             Assert.AreEqual(expected, actual);
@@ -734,7 +737,7 @@ namespace Renci.SshNet.Tests.Classes
         public void EndUploadFileTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
             IAsyncResult asyncResult = null; // TODO: Initialize to an appropriate value
             target.EndUploadFile(asyncResult);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -748,9 +751,9 @@ namespace Renci.SshNet.Tests.Classes
         public void GetLastWriteTimeUtcTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            DateTime expected = new DateTime(); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var expected = new DateTime(); // TODO: Initialize to an appropriate value
             DateTime actual;
             actual = target.GetLastWriteTimeUtc(path);
             Assert.AreEqual(expected, actual);
@@ -765,9 +768,9 @@ namespace Renci.SshNet.Tests.Classes
         public void GetLastWriteTimeTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            DateTime expected = new DateTime(); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var expected = new DateTime(); // TODO: Initialize to an appropriate value
             DateTime actual;
             actual = target.GetLastWriteTime(path);
             Assert.AreEqual(expected, actual);
@@ -782,8 +785,8 @@ namespace Renci.SshNet.Tests.Classes
         public void GetStatusTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileSytemInformation expected = null; // TODO: Initialize to an appropriate value
             SftpFileSytemInformation actual;
             actual = target.GetStatus(path);
@@ -799,8 +802,8 @@ namespace Renci.SshNet.Tests.Classes
         public void ListDirectoryTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             Action<int> listCallback = null; // TODO: Initialize to an appropriate value
             IEnumerable<SftpFile> expected = null; // TODO: Initialize to an appropriate value
             IEnumerable<SftpFile> actual;
@@ -817,9 +820,9 @@ namespace Renci.SshNet.Tests.Classes
         public void OpenTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            FileMode mode = new FileMode(); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var mode = new FileMode(); // TODO: Initialize to an appropriate value
             SftpFileStream expected = null; // TODO: Initialize to an appropriate value
             SftpFileStream actual;
             actual = target.Open(path, mode);
@@ -835,10 +838,10 @@ namespace Renci.SshNet.Tests.Classes
         public void OpenTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            FileMode mode = new FileMode(); // TODO: Initialize to an appropriate value
-            FileAccess access = new FileAccess(); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var mode = new FileMode(); // TODO: Initialize to an appropriate value
+            var access = new FileAccess(); // TODO: Initialize to an appropriate value
             SftpFileStream expected = null; // TODO: Initialize to an appropriate value
             SftpFileStream actual;
             actual = target.Open(path, mode, access);
@@ -854,8 +857,8 @@ namespace Renci.SshNet.Tests.Classes
         public void OpenReadTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileStream expected = null; // TODO: Initialize to an appropriate value
             SftpFileStream actual;
             actual = target.OpenRead(path);
@@ -871,8 +874,8 @@ namespace Renci.SshNet.Tests.Classes
         public void OpenTextTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             StreamReader expected = null; // TODO: Initialize to an appropriate value
             StreamReader actual;
             actual = target.OpenText(path);
@@ -888,8 +891,8 @@ namespace Renci.SshNet.Tests.Classes
         public void OpenWriteTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileStream expected = null; // TODO: Initialize to an appropriate value
             SftpFileStream actual;
             actual = target.OpenWrite(path);
@@ -905,8 +908,8 @@ namespace Renci.SshNet.Tests.Classes
         public void ReadAllBytesTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             byte[] expected = null; // TODO: Initialize to an appropriate value
             byte[] actual;
             actual = target.ReadAllBytes(path);
@@ -922,8 +925,8 @@ namespace Renci.SshNet.Tests.Classes
         public void ReadAllLinesTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             Encoding encoding = null; // TODO: Initialize to an appropriate value
             string[] expected = null; // TODO: Initialize to an appropriate value
             string[] actual;
@@ -940,8 +943,8 @@ namespace Renci.SshNet.Tests.Classes
         public void ReadAllLinesTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             string[] expected = null; // TODO: Initialize to an appropriate value
             string[] actual;
             actual = target.ReadAllLines(path);
@@ -957,10 +960,10 @@ namespace Renci.SshNet.Tests.Classes
         public void ReadAllTextTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             Encoding encoding = null; // TODO: Initialize to an appropriate value
-            string expected = string.Empty; // TODO: Initialize to an appropriate value
+            var expected = string.Empty; // TODO: Initialize to an appropriate value
             string actual;
             actual = target.ReadAllText(path, encoding);
             Assert.AreEqual(expected, actual);
@@ -975,9 +978,9 @@ namespace Renci.SshNet.Tests.Classes
         public void ReadAllTextTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            string expected = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var expected = string.Empty; // TODO: Initialize to an appropriate value
             string actual;
             actual = target.ReadAllText(path);
             Assert.AreEqual(expected, actual);
@@ -992,8 +995,8 @@ namespace Renci.SshNet.Tests.Classes
         public void ReadLinesTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             IEnumerable<string> expected = null; // TODO: Initialize to an appropriate value
             IEnumerable<string> actual;
             actual = target.ReadLines(path);
@@ -1009,8 +1012,8 @@ namespace Renci.SshNet.Tests.Classes
         public void ReadLinesTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             Encoding encoding = null; // TODO: Initialize to an appropriate value
             IEnumerable<string> expected = null; // TODO: Initialize to an appropriate value
             IEnumerable<string> actual;
@@ -1027,9 +1030,9 @@ namespace Renci.SshNet.Tests.Classes
         public void RenameFileTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string oldPath = string.Empty; // TODO: Initialize to an appropriate value
-            string newPath = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var oldPath = string.Empty; // TODO: Initialize to an appropriate value
+            var newPath = string.Empty; // TODO: Initialize to an appropriate value
             target.RenameFile(oldPath, newPath);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -1042,10 +1045,10 @@ namespace Renci.SshNet.Tests.Classes
         public void RenameFileTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string oldPath = string.Empty; // TODO: Initialize to an appropriate value
-            string newPath = string.Empty; // TODO: Initialize to an appropriate value
-            bool isPosix = false; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var oldPath = string.Empty; // TODO: Initialize to an appropriate value
+            var newPath = string.Empty; // TODO: Initialize to an appropriate value
+            var isPosix = false; // TODO: Initialize to an appropriate value
             target.RenameFile(oldPath, newPath, isPosix);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -1058,8 +1061,8 @@ namespace Renci.SshNet.Tests.Classes
         public void SetAttributesTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes fileAttributes = null; // TODO: Initialize to an appropriate value
             target.SetAttributes(path, fileAttributes);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -1073,9 +1076,9 @@ namespace Renci.SshNet.Tests.Classes
         public void SetLastAccessTimeTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            DateTime lastAccessTime = new DateTime(); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var lastAccessTime = new DateTime(); // TODO: Initialize to an appropriate value
             target.SetLastAccessTime(path, lastAccessTime);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -1088,9 +1091,9 @@ namespace Renci.SshNet.Tests.Classes
         public void SetLastAccessTimeUtcTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            DateTime lastAccessTimeUtc = new DateTime(); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var lastAccessTimeUtc = new DateTime(); // TODO: Initialize to an appropriate value
             target.SetLastAccessTimeUtc(path, lastAccessTimeUtc);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -1103,9 +1106,9 @@ namespace Renci.SshNet.Tests.Classes
         public void SetLastWriteTimeTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            DateTime lastWriteTime = new DateTime(); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var lastWriteTime = new DateTime(); // TODO: Initialize to an appropriate value
             target.SetLastWriteTime(path, lastWriteTime);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -1118,9 +1121,9 @@ namespace Renci.SshNet.Tests.Classes
         public void SetLastWriteTimeUtcTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            DateTime lastWriteTimeUtc = new DateTime(); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var lastWriteTimeUtc = new DateTime(); // TODO: Initialize to an appropriate value
             target.SetLastWriteTimeUtc(path, lastWriteTimeUtc);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -1133,9 +1136,9 @@ namespace Renci.SshNet.Tests.Classes
         public void SymbolicLinkTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            string linkPath = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var linkPath = string.Empty; // TODO: Initialize to an appropriate value
             target.SymbolicLink(path, linkPath);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -1148,10 +1151,10 @@ namespace Renci.SshNet.Tests.Classes
         public void SynchronizeDirectoriesTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string sourcePath = string.Empty; // TODO: Initialize to an appropriate value
-            string destinationPath = string.Empty; // TODO: Initialize to an appropriate value
-            string searchPattern = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var sourcePath = string.Empty; // TODO: Initialize to an appropriate value
+            var destinationPath = string.Empty; // TODO: Initialize to an appropriate value
+            var searchPattern = string.Empty; // TODO: Initialize to an appropriate value
             IEnumerable<FileInfo> expected = null; // TODO: Initialize to an appropriate value
             IEnumerable<FileInfo> actual;
             actual = target.SynchronizeDirectories(sourcePath, destinationPath, searchPattern);
@@ -1167,9 +1170,9 @@ namespace Renci.SshNet.Tests.Classes
         public void UploadFileTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
             Stream input = null; // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             Action<ulong> uploadCallback = null; // TODO: Initialize to an appropriate value
             target.UploadFile(input, path, uploadCallback);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -1183,10 +1186,10 @@ namespace Renci.SshNet.Tests.Classes
         public void UploadFileTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
             Stream input = null; // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            bool canOverride = false; // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var canOverride = false; // TODO: Initialize to an appropriate value
             Action<ulong> uploadCallback = null; // TODO: Initialize to an appropriate value
             target.UploadFile(input, path, canOverride, uploadCallback);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -1200,8 +1203,8 @@ namespace Renci.SshNet.Tests.Classes
         public void WriteAllBytesTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             byte[] bytes = null; // TODO: Initialize to an appropriate value
             target.WriteAllBytes(path, bytes);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -1215,8 +1218,8 @@ namespace Renci.SshNet.Tests.Classes
         public void WriteAllLinesTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             IEnumerable<string> contents = null; // TODO: Initialize to an appropriate value
             target.WriteAllLines(path, contents);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -1230,8 +1233,8 @@ namespace Renci.SshNet.Tests.Classes
         public void WriteAllLinesTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             string[] contents = null; // TODO: Initialize to an appropriate value
             target.WriteAllLines(path, contents);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -1245,8 +1248,8 @@ namespace Renci.SshNet.Tests.Classes
         public void WriteAllLinesTest2()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             IEnumerable<string> contents = null; // TODO: Initialize to an appropriate value
             Encoding encoding = null; // TODO: Initialize to an appropriate value
             target.WriteAllLines(path, contents, encoding);
@@ -1261,8 +1264,8 @@ namespace Renci.SshNet.Tests.Classes
         public void WriteAllLinesTest3()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
             string[] contents = null; // TODO: Initialize to an appropriate value
             Encoding encoding = null; // TODO: Initialize to an appropriate value
             target.WriteAllLines(path, contents, encoding);
@@ -1277,9 +1280,9 @@ namespace Renci.SshNet.Tests.Classes
         public void WriteAllTextTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            string contents = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var contents = string.Empty; // TODO: Initialize to an appropriate value
             target.WriteAllText(path, contents);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -1292,9 +1295,9 @@ namespace Renci.SshNet.Tests.Classes
         public void WriteAllTextTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string path = string.Empty; // TODO: Initialize to an appropriate value
-            string contents = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var path = string.Empty; // TODO: Initialize to an appropriate value
+            var contents = string.Empty; // TODO: Initialize to an appropriate value
             Encoding encoding = null; // TODO: Initialize to an appropriate value
             target.WriteAllText(path, contents, encoding);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -1308,7 +1311,7 @@ namespace Renci.SshNet.Tests.Classes
         public void BufferSizeTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
             uint expected = 0; // TODO: Initialize to an appropriate value
             uint actual;
             target.BufferSize = expected;
@@ -1325,8 +1328,8 @@ namespace Renci.SshNet.Tests.Classes
         public void OperationTimeoutTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            TimeSpan expected = new TimeSpan(); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var expected = new TimeSpan(); // TODO: Initialize to an appropriate value
             TimeSpan actual;
             target.OperationTimeout = expected;
             actual = target.OperationTimeout;
@@ -1342,7 +1345,7 @@ namespace Renci.SshNet.Tests.Classes
         public void WorkingDirectoryTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            SftpClient target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new SftpClient(connectionInfo); // TODO: Initialize to an appropriate value
             string actual;
             actual = target.WorkingDirectory;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -1350,17 +1353,19 @@ namespace Renci.SshNet.Tests.Classes
 
         protected static string CalculateMD5(string fileName)
         {
-            using (FileStream file = new FileStream(fileName, FileMode.Open))
+            using (var file = new FileStream(fileName, FileMode.Open))
             {
                 MD5 md5 = new MD5CryptoServiceProvider();
                 byte[] retVal = md5.ComputeHash(file);
                 file.Close();
 
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < retVal.Length; i++)
+                var sb = new StringBuilder();
+
+                for (var i = 0; i < retVal.Length; i++)
                 {
                     sb.Append(retVal[i].ToString("x2"));
                 }
+
                 return sb.ToString();
             }
         }

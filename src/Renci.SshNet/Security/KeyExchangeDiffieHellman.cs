@@ -71,7 +71,7 @@ namespace Renci.SshNet.Security
         /// </returns>
         protected override bool ValidateExchangeHash()
         {
-            var exchangeHash = CalculateHash();
+            byte[] exchangeHash = CalculateHash();
 
             var length = Pack.BigEndianToUInt32(_hostKey);
             var algorithmName = Encoding.UTF8.GetString(_hostKey, 4, (int)length);
@@ -83,6 +83,7 @@ namespace Renci.SshNet.Security
             {
                 return key.VerifySignature(exchangeHash, _signature);
             }
+
             return false;
         }
 
@@ -122,7 +123,7 @@ namespace Renci.SshNet.Security
                 _privateExponent = BigInteger.Random(privateExponentSize);
                 // generate public component
                 clientExchangeValue = BigInteger.ModPow(_group, _privateExponent, _prime);
-            } while (clientExchangeValue < 1 || clientExchangeValue > (_prime - 1));
+            } while (clientExchangeValue < 1 || clientExchangeValue > _prime - 1);
 
             _clientExchangeValue = clientExchangeValue.ToByteArray().Reverse();
         }

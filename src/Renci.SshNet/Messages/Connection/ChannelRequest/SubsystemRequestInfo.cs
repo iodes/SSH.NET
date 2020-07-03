@@ -18,10 +18,7 @@
         /// <value>
         /// The name of the request.
         /// </value>
-        public override string RequestName
-        {
-            get { return Name; }
-        }
+        public override string RequestName => Name;
 
         /// <summary>
         /// Gets the name of the subsystem.
@@ -31,8 +28,8 @@
         /// </value>
         public string SubsystemName
         {
-            get { return Ascii.GetString(_subsystemName, 0, _subsystemName.Length); }
-            private set { _subsystemName = Ascii.GetBytes(value); }
+            get => Ascii.GetString(_subsystemName, 0, _subsystemName.Length);
+            private set => _subsystemName = Ascii.GetBytes(value);
         }
 
         protected override int BufferCapacity

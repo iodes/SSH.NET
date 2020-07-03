@@ -30,10 +30,10 @@ namespace Renci.SshNet.Tests.Classes
             var random = new Random();
 
             _terminalName = random.Next().ToString();
-            _columns = (uint) random.Next();
-            _rows = (uint) random.Next();
-            _width = (uint) random.Next();
-            _height = (uint) random.Next();
+            _columns = (uint)random.Next();
+            _rows = (uint)random.Next();
+            _width = (uint)random.Next();
+            _height = (uint)random.Next();
             _terminalModeValues = new Dictionary<TerminalModes, uint>();
             _bufferSize = random.Next();
             _channelOpenException = new SshException();
@@ -53,19 +53,23 @@ namespace Renci.SshNet.Tests.Classes
             var sequence = new MockSequence();
 
             _sessionMock.InSequence(sequence)
-                        .Setup(p => p.ConnectionInfo)
-                        .Returns(_connectionInfoMock.Object);
+                .Setup(p => p.ConnectionInfo)
+                .Returns(_connectionInfoMock.Object);
+
             _connectionInfoMock.InSequence(sequence)
-                               .Setup(p => p.Encoding)
-                               .Returns(new UTF8Encoding());
+                .Setup(p => p.Encoding)
+                .Returns(new UTF8Encoding());
+
             _sessionMock.InSequence(sequence)
-                        .Setup(p => p.CreateChannelSession())
-                        .Returns(_channelSessionMock.Object);
+                .Setup(p => p.CreateChannelSession())
+                .Returns(_channelSessionMock.Object);
+
             _channelSessionMock.InSequence(sequence)
-                               .Setup(p => p.Open())
-                               .Throws(_channelOpenException);
+                .Setup(p => p.Open())
+                .Throws(_channelOpenException);
+
             _channelSessionMock.InSequence(sequence)
-                               .Setup(p => p.Dispose());
+                .Setup(p => p.Dispose());
         }
 
         private void Arrange()
@@ -89,13 +93,14 @@ namespace Renci.SshNet.Tests.Classes
             try
             {
                 _serviceFactory.CreateShellStream(_sessionMock.Object,
-                                                  _terminalName,
-                                                  _columns,
-                                                  _rows,
-                                                  _width,
-                                                  _height,
-                                                  _terminalModeValues,
-                                                  _bufferSize);
+                    _terminalName,
+                    _columns,
+                    _rows,
+                    _width,
+                    _height,
+                    _terminalModeValues,
+                    _bufferSize);
+
                 Assert.Fail();
             }
             catch (SshException ex)

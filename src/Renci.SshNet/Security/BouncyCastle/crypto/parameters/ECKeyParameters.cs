@@ -1,5 +1,4 @@
 using System;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Security;
 using Renci.SshNet.Security.Org.BouncyCastle.Utilities;
 
@@ -8,19 +7,23 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Parameters
     internal abstract class ECKeyParameters
         : AsymmetricKeyParameter
     {
-        private static readonly string[] algorithms = { "EC", "ECDH" };
+        private static readonly string[] algorithms =
+        {
+            "EC", "ECDH"
+        };
 
         private readonly string algorithm;
         private readonly ECDomainParameters parameters;
 
         protected ECKeyParameters(
-            string				algorithm,
-            bool				isPrivate,
-            ECDomainParameters	parameters)
+            string algorithm,
+            bool isPrivate,
+            ECDomainParameters parameters)
             : base(isPrivate)
         {
             if (algorithm == null)
                 throw new ArgumentNullException("algorithm");
+
             if (parameters == null)
                 throw new ArgumentNullException("parameters");
 
@@ -28,15 +31,9 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Parameters
             this.parameters = parameters;
         }
 
-        public string AlgorithmName
-        {
-            get { return algorithm; }
-        }
+        public string AlgorithmName => algorithm;
 
-        public ECDomainParameters Parameters
-        {
-            get { return parameters; }
-        }
+        public ECDomainParameters Parameters => parameters;
 
         public override bool Equals(
             object obj)
@@ -44,7 +41,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Parameters
             if (obj == this)
                 return true;
 
-            ECDomainParameters other = obj as ECDomainParameters;
+            var other = obj as ECDomainParameters;
 
             if (other == null)
                 return false;
@@ -73,6 +70,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Parameters
         {
             if (Array.IndexOf(algorithms, algorithm, 0, algorithms.Length) < 0)
                 throw new ArgumentException("unrecognised algorithm: " + algorithm, "algorithm");
+
             return algorithm.ToUpper();
         }
     }

@@ -55,7 +55,7 @@ namespace Renci.SshNet.Tests.Classes
 
             _sessionMock.Setup(p => p.IsConnected).Returns(false);
 
-            _forwardedPort = new ForwardedPortRemote(_bindEndpoint.Address, (uint)_bindEndpoint.Port, _remoteEndpoint.Address, (uint)_remoteEndpoint.Port); 
+            _forwardedPort = new ForwardedPortRemote(_bindEndpoint.Address, (uint)_bindEndpoint.Port, _remoteEndpoint.Address, (uint)_remoteEndpoint.Port);
             _forwardedPort.Closing += (sender, args) => _closingRegister.Add(args);
             _forwardedPort.Exception += (sender, args) => _exceptionRegister.Add(args);
             _forwardedPort.Session = _sessionMock.Object;
@@ -124,4 +124,3 @@ namespace Renci.SshNet.Tests.Classes
         }
     }
 }
-

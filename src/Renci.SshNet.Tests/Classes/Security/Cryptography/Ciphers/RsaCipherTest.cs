@@ -19,7 +19,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
         public void RsaCipherConstructorTest()
         {
             RsaKey key = null; // TODO: Initialize to an appropriate value
-            RsaCipher target = new RsaCipher(key);
+            var target = new RsaCipher(key);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -31,7 +31,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
         public void DecryptTest()
         {
             RsaKey key = null; // TODO: Initialize to an appropriate value
-            RsaCipher target = new RsaCipher(key); // TODO: Initialize to an appropriate value
+            var target = new RsaCipher(key); // TODO: Initialize to an appropriate value
             byte[] data = null; // TODO: Initialize to an appropriate value
             byte[] expected = null; // TODO: Initialize to an appropriate value
             byte[] actual;
@@ -48,7 +48,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers
         public void EncryptTest()
         {
             RsaKey key = null; // TODO: Initialize to an appropriate value
-            RsaCipher target = new RsaCipher(key); // TODO: Initialize to an appropriate value
+            var target = new RsaCipher(key); // TODO: Initialize to an appropriate value
             byte[] data = null; // TODO: Initialize to an appropriate value
             byte[] expected = null; // TODO: Initialize to an appropriate value
             byte[] actual;

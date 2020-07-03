@@ -30,7 +30,6 @@ namespace Renci.SshNet
         public PrivateKeyConnectionInfo(string host, string username, params PrivateKeyFile[] keyFiles)
             : this(host, DefaultPort, username, ProxyTypes.None, string.Empty, 0, string.Empty, string.Empty, keyFiles)
         {
-
         }
 
         /// <summary>
@@ -140,7 +139,6 @@ namespace Renci.SshNet
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -169,6 +167,7 @@ namespace Renci.SshNet
                     foreach (var authenticationMethod in AuthenticationMethods)
                     {
                         var disposable = authenticationMethod as IDisposable;
+
                         if (disposable != null)
                         {
                             disposable.Dispose();
@@ -191,7 +190,6 @@ namespace Renci.SshNet
             // readability and maintainability.
             Dispose(false);
         }
-
         #endregion
     }
 }

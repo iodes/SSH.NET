@@ -17,7 +17,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         [TestMethod()]
         public void ChannelRequestMessageConstructorTest()
         {
-            ChannelRequestMessage target = new ChannelRequestMessage();
+            var target = new ChannelRequestMessage();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -29,7 +29,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         {
             uint localChannelName = 0; // TODO: Initialize to an appropriate value
             RequestInfo info = null; // TODO: Initialize to an appropriate value
-            ChannelRequestMessage target = new ChannelRequestMessage(localChannelName, info);
+            var target = new ChannelRequestMessage(localChannelName, info);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

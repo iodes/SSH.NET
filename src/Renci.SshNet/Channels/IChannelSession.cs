@@ -26,7 +26,7 @@ namespace Renci.SshNet.Channels
         /// <c>true</c> if request was successful; otherwise <c>false</c>.
         /// </returns>
         bool SendPseudoTerminalRequest(string environmentVariable, uint columns, uint rows, uint width, uint height,
-            IDictionary<TerminalModes, uint> terminalModeValues);
+                                       IDictionary<TerminalModes, uint> terminalModeValues);
 
         /// <summary>
         /// Sends the X11 forwarding request.

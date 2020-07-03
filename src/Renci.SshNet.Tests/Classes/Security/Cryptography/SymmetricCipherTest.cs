@@ -26,13 +26,13 @@ namespace Renci.SshNet.Tests
         [Ignore] // placeholder for actual test
         public void DecryptBlockTest()
         {
-            SymmetricCipher target = CreateSymmetricCipher(); // TODO: Initialize to an appropriate value
+            var target = CreateSymmetricCipher(); // TODO: Initialize to an appropriate value
             byte[] inputBuffer = null; // TODO: Initialize to an appropriate value
-            int inputOffset = 0; // TODO: Initialize to an appropriate value
-            int inputCount = 0; // TODO: Initialize to an appropriate value
+            var inputOffset = 0; // TODO: Initialize to an appropriate value
+            var inputCount = 0; // TODO: Initialize to an appropriate value
             byte[] outputBuffer = null; // TODO: Initialize to an appropriate value
-            int outputOffset = 0; // TODO: Initialize to an appropriate value
-            int expected = 0; // TODO: Initialize to an appropriate value
+            var outputOffset = 0; // TODO: Initialize to an appropriate value
+            var expected = 0; // TODO: Initialize to an appropriate value
             int actual;
             actual = target.DecryptBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
             Assert.AreEqual(expected, actual);
@@ -46,13 +46,13 @@ namespace Renci.SshNet.Tests
         [Ignore] // placeholder for actual test
         public void EncryptBlockTest()
         {
-            SymmetricCipher target = CreateSymmetricCipher(); // TODO: Initialize to an appropriate value
+            var target = CreateSymmetricCipher(); // TODO: Initialize to an appropriate value
             byte[] inputBuffer = null; // TODO: Initialize to an appropriate value
-            int inputOffset = 0; // TODO: Initialize to an appropriate value
-            int inputCount = 0; // TODO: Initialize to an appropriate value
+            var inputOffset = 0; // TODO: Initialize to an appropriate value
+            var inputCount = 0; // TODO: Initialize to an appropriate value
             byte[] outputBuffer = null; // TODO: Initialize to an appropriate value
-            int outputOffset = 0; // TODO: Initialize to an appropriate value
-            int expected = 0; // TODO: Initialize to an appropriate value
+            var outputOffset = 0; // TODO: Initialize to an appropriate value
+            var expected = 0; // TODO: Initialize to an appropriate value
             int actual;
             actual = target.EncryptBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
             Assert.AreEqual(expected, actual);

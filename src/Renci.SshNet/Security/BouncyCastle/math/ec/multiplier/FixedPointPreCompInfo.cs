@@ -24,20 +24,20 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Math.EC.Multiplier
 
         public virtual ECLookupTable LookupTable
         {
-            get { return m_lookupTable; }
-            set { this.m_lookupTable = value; }
+            get => m_lookupTable;
+            set => m_lookupTable = value;
         }
 
         public virtual ECPoint Offset
         {
-			get { return m_offset; }
-			set { this.m_offset = value; }
-		}
+            get => m_offset;
+            set => m_offset = value;
+        }
 
         public virtual int Width
         {
-            get { return m_width; }
-            set { this.m_width = value; }
+            get => m_width;
+            set => m_width = value;
         }
     }
 }

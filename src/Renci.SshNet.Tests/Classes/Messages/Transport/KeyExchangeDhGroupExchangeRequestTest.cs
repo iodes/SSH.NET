@@ -19,11 +19,10 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
         public void Init()
         {
             var random = new Random();
-            _minimum = (uint) random.Next(1, int.MaxValue);
-            _preferred = (uint) random.Next(1, int.MaxValue);
-            _maximum = (uint) random.Next(1, int.MaxValue);
+            _minimum = (uint)random.Next(1, int.MaxValue);
+            _preferred = (uint)random.Next(1, int.MaxValue);
+            _maximum = (uint)random.Next(1, int.MaxValue);
         }
-
 
         [TestMethod]
         [TestCategory("KeyExchangeInitMessage")]
@@ -33,7 +32,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
         {
             var request = new KeyExchangeDhGroupExchangeRequest(_minimum, _preferred, _maximum);
 
-            var bytes = request.GetBytes();
+            byte[] bytes = request.GetBytes();
 
             var expectedBytesLength = 0;
             expectedBytesLength += 1; // Type
@@ -57,7 +56,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
         public void Load()
         {
             var request = new KeyExchangeDhGroupExchangeRequest(_minimum, _preferred, _maximum);
-            var bytes = request.GetBytes();
+            byte[] bytes = request.GetBytes();
             var target = new KeyExchangeDhGroupExchangeRequest(0, 0, 0);
 
             target.Load(bytes, 1, bytes.Length - 1);

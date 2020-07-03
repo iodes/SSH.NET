@@ -19,10 +19,7 @@ namespace Renci.SshNet.Messages.Connection
         /// <value>
         /// The name of the request.
         /// </value>
-        public override string RequestName
-        {
-            get { return Name; }
-        }
+        public override string RequestName => Name;
 
         /// <summary>
         /// Gets or sets the value of the TERM environment variable (e.g., vt100).
@@ -79,10 +76,7 @@ namespace Renci.SshNet.Messages.Connection
         /// <c>-1</c> to indicate that the size of the message cannot be determined,
         /// or is too costly to calculate.
         /// </value>
-        protected override int BufferCapacity
-        {
-            get { return -1; }
-        }
+        protected override int BufferCapacity => -1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PseudoTerminalRequestInfo"/> class.
@@ -140,20 +134,20 @@ namespace Renci.SshNet.Messages.Connection
                 // write total length of encoded terminal modes, which is 1 bytes for the opcode / terminal mode
                 // and 4 bytes for the uint argument for each entry; the encoded terminal modes are terminated by
                 // opcode TTY_OP_END (which is 1 byte)
-                Write((uint) TerminalModeValues.Count*(1 + 4) + 1);
+                Write((uint)TerminalModeValues.Count * (1 + 4) + 1);
 
-                foreach (var item in TerminalModeValues)
+                foreach (KeyValuePair<TerminalModes, uint> item in TerminalModeValues)
                 {
-                    Write((byte) item.Key);
+                    Write((byte)item.Key);
                     Write(item.Value);
                 }
 
-                Write((byte) TerminalModes.TTY_OP_END);
+                Write((byte)TerminalModes.TTY_OP_END);
             }
             else
             {
                 // when there are no terminal mode, the length of the string is zero
-                Write((uint) 0);
+                Write((uint)0);
             }
         }
     }

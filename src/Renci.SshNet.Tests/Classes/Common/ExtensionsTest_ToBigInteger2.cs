@@ -12,9 +12,12 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldNotAppendZero()
         {
-            byte[] value = { 0x0a, 0x0d };
+            byte[] value =
+            {
+                0x0a, 0x0d
+            };
 
-            var actual = value.ToBigInteger2().ToByteArray().Reverse();
+            byte[] actual = value.ToBigInteger2().ToByteArray().Reverse();
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(2, actual.Length);
@@ -25,9 +28,12 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldAppendZero()
         {
-            byte[] value = { 0xff, 0x0a, 0x0d };
+            byte[] value =
+            {
+                0xff, 0x0a, 0x0d
+            };
 
-            var actual = value.ToBigInteger2().ToByteArray().Reverse();
+            byte[] actual = value.ToBigInteger2().ToByteArray().Reverse();
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(4, actual.Length);

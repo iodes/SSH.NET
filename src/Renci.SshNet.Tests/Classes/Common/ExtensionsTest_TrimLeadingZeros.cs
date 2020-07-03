@@ -29,9 +29,12 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldRemoveAllLeadingZeros()
         {
-            byte[] value = {0x00, 0x00, 0x0a, 0x0d};
+            byte[] value =
+            {
+                0x00, 0x00, 0x0a, 0x0d
+            };
 
-            var actual = Extensions.TrimLeadingZeros(value);
+            byte[] actual = Extensions.TrimLeadingZeros(value);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(2, actual.Length);
@@ -42,9 +45,12 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldOnlyRemoveLeadingZeros()
         {
-            byte[] value = { 0x00, 0x0a, 0x00, 0x0d, 0x00 };
+            byte[] value =
+            {
+                0x00, 0x0a, 0x00, 0x0d, 0x00
+            };
 
-            var actual = Extensions.TrimLeadingZeros(value);
+            byte[] actual = Extensions.TrimLeadingZeros(value);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(4, actual.Length);
@@ -57,9 +63,12 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldReturnOriginalEmptyByteArrayWhenValueHasNoLeadingZeros()
         {
-            byte[] value = { 0x0a, 0x00, 0x0d };
+            byte[] value =
+            {
+                0x0a, 0x00, 0x0d
+            };
 
-            var actual = Extensions.TrimLeadingZeros(value);
+            byte[] actual = Extensions.TrimLeadingZeros(value);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(3, actual.Length);
@@ -71,9 +80,11 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldReturnEmptyByteArrayWhenValueIsEmpty()
         {
-            byte[] value = {};
+            byte[] value =
+            {
+            };
 
-            var actual = Extensions.TrimLeadingZeros(value);
+            byte[] actual = Extensions.TrimLeadingZeros(value);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(0, actual.Length);

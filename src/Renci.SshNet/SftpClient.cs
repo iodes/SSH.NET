@@ -58,10 +58,11 @@ namespace Renci.SshNet
                 CheckDisposed();
 
                 var timeoutInMilliseconds = value.TotalMilliseconds;
+
                 if (timeoutInMilliseconds < -1d || timeoutInMilliseconds > int.MaxValue)
                     throw new ArgumentOutOfRangeException("value", "The timeout must represent a value between -1 and Int32.MaxValue, inclusive.");
 
-                _operationTimeout = (int) timeoutInMilliseconds;
+                _operationTimeout = (int)timeoutInMilliseconds;
             }
         }
 
@@ -120,8 +121,10 @@ namespace Renci.SshNet
             get
             {
                 CheckDisposed();
+
                 if (_sftpSession == null)
                     throw new SshConnectionException("Client not connected.");
+
                 return _sftpSession.WorkingDirectory;
             }
         }
@@ -136,9 +139,11 @@ namespace Renci.SshNet
             get
             {
                 CheckDisposed();
+
                 if (_sftpSession == null)
                     throw new SshConnectionException("Client not connected.");
-                return (int) _sftpSession.ProtocolVersion;
+
+                return (int)_sftpSession.ProtocolVersion;
             }
         }
 
@@ -148,13 +153,9 @@ namespace Renci.SshNet
         /// <value>
         /// The current SFTP session.
         /// </value>
-        internal ISftpSession SftpSession
-        {
-            get { return _sftpSession; }
-        }
+        internal ISftpSession SftpSession => _sftpSession;
 
         #region Constructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SftpClient"/> class.
         /// </summary>
@@ -256,7 +257,6 @@ namespace Renci.SshNet
             _operationTimeout = SshNet.Session.Infinite;
             _bufferSize = 1024 * 32;
         }
-
         #endregion Constructors
 
         /// <summary>
@@ -497,7 +497,7 @@ namespace Renci.SshNet
             {
                 try
                 {
-                    var result = InternalListDirectory(path, count =>
+                    IEnumerable<SftpFile> result = InternalListDirectory(path, count =>
                     {
                         asyncResult.Update(count);
 
@@ -950,7 +950,6 @@ namespace Renci.SshNet
                         {
                             uploadCallback(offset);
                         }
-
                     });
 
                     asyncResult.SetAsCompleted(null, false);
@@ -1010,7 +1009,6 @@ namespace Renci.SshNet
         }
 
         #region File Methods
-
         /// <summary>
         /// Appends lines to a file, creating the file if it does not already exist.
         /// </summary>
@@ -1141,7 +1139,7 @@ namespace Renci.SshNet
             if (encoding == null)
                 throw new ArgumentNullException("encoding");
 
-            return new StreamWriter(new SftpFileStream(_sftpSession, path, FileMode.Append, FileAccess.Write, (int) _bufferSize), encoding);
+            return new StreamWriter(new SftpFileStream(_sftpSession, path, FileMode.Append, FileAccess.Write, (int)_bufferSize), encoding);
         }
 
         /// <summary>
@@ -1162,7 +1160,7 @@ namespace Renci.SshNet
         {
             CheckDisposed();
 
-            return new SftpFileStream(_sftpSession, path, FileMode.Create, FileAccess.ReadWrite, (int) _bufferSize);
+            return new SftpFileStream(_sftpSession, path, FileMode.Create, FileAccess.ReadWrite, (int)_bufferSize);
         }
 
         /// <summary>
@@ -1353,7 +1351,7 @@ namespace Renci.SshNet
         {
             CheckDisposed();
 
-            return new SftpFileStream(_sftpSession, path, mode, access, (int) _bufferSize);
+            return new SftpFileStream(_sftpSession, path, mode, access, (int)_bufferSize);
         }
 
         /// <summary>
@@ -1403,7 +1401,7 @@ namespace Renci.SshNet
         {
             CheckDisposed();
 
-            return new SftpFileStream(_sftpSession, path, FileMode.OpenOrCreate, FileAccess.Write, (int) _bufferSize);
+            return new SftpFileStream(_sftpSession, path, FileMode.OpenOrCreate, FileAccess.Write, (int)_bufferSize);
         }
 
         /// <summary>
@@ -1458,6 +1456,7 @@ namespace Renci.SshNet
             // for the SftpFileStream; may want to revisit this later
 
             var lines = new List<string>();
+
             using (var stream = new StreamReader(OpenRead(path), encoding))
             {
                 while (!stream.EndOfStream)
@@ -1465,6 +1464,7 @@ namespace Renci.SshNet
                     lines.Add(stream.ReadLine());
                 }
             }
+
             return lines.ToArray();
         }
 
@@ -1818,11 +1818,9 @@ namespace Renci.SshNet
         //public void SetAccessControl(string path, FileSecurity fileSecurity);
         //public void SetCreationTime(string path, DateTime creationTime);
         //public void SetCreationTimeUtc(string path, DateTime creationTimeUtc);
-
         #endregion // File Methods
 
         #region SynchronizeDirectories
-
         /// <summary>
         /// Synchronizes the directories.
         /// </summary>
@@ -1839,6 +1837,7 @@ namespace Renci.SshNet
         {
             if (sourcePath == null)
                 throw new ArgumentNullException("sourcePath");
+
             if (destinationPath.IsNullOrWhiteSpace())
                 throw new ArgumentException("destinationPath");
 
@@ -1862,6 +1861,7 @@ namespace Renci.SshNet
         {
             if (sourcePath == null)
                 throw new ArgumentNullException("sourcePath");
+
             if (destinationPath.IsNullOrWhiteSpace())
                 throw new ArgumentException("destDir");
 
@@ -1871,7 +1871,7 @@ namespace Renci.SshNet
             {
                 try
                 {
-                    var result = InternalSynchronizeDirectories(sourcePath, destinationPath, searchPattern, asyncResult);
+                    IEnumerable<FileInfo> result = InternalSynchronizeDirectories(sourcePath, destinationPath, searchPattern, asyncResult);
 
                     asyncResult.SetAsCompleted(result, false);
                 }
@@ -1913,26 +1913,27 @@ namespace Renci.SshNet
 
             var sourceDirectory = new DirectoryInfo(sourcePath);
 
-            var sourceFiles = FileSystemAbstraction.EnumerateFiles(sourceDirectory, searchPattern).ToList();
+            List<FileInfo> sourceFiles = FileSystemAbstraction.EnumerateFiles(sourceDirectory, searchPattern).ToList();
+
             if (sourceFiles.Count == 0)
                 return uploadedFiles;
 
             #region Existing Files at The Destination
-
-            var destFiles = InternalListDirectory(destinationPath, null);
+            IEnumerable<SftpFile> destFiles = InternalListDirectory(destinationPath, null);
             var destDict = new Dictionary<string, SftpFile>();
+
             foreach (var destFile in destFiles)
             {
                 if (destFile.IsDirectory)
                     continue;
+
                 destDict.Add(destFile.Name, destFile);
             }
-
             #endregion
 
             #region Upload the difference
-
             const Flags uploadFlag = Flags.Write | Flags.Truncate | Flags.CreateNewOrOpen;
+
             foreach (var localFile in sourceFiles)
             {
                 var isDifferent = !destDict.ContainsKey(localFile.Name);
@@ -1948,6 +1949,7 @@ namespace Renci.SshNet
                 if (isDifferent)
                 {
                     var remoteFileName = string.Format(CultureInfo.InvariantCulture, @"{0}/{1}", destinationPath, localFile.Name);
+
                     try
                     {
                         using (var file = File.OpenRead(localFile.FullName))
@@ -1968,12 +1970,10 @@ namespace Renci.SshNet
                     }
                 }
             }
-
             #endregion
 
             return uploadedFiles;
         }
-
         #endregion
 
         /// <summary>
@@ -1996,7 +1996,7 @@ namespace Renci.SshNet
 
             var fullPath = _sftpSession.GetCanonicalPath(path);
 
-            var handle = _sftpSession.RequestOpenDir(fullPath);
+            byte[] handle = _sftpSession.RequestOpenDir(fullPath);
 
             var basePath = fullPath;
 
@@ -2005,7 +2005,7 @@ namespace Renci.SshNet
 
             var result = new List<SftpFile>();
 
-            var files = _sftpSession.RequestReadDir(handle);
+            KeyValuePair<string, SftpFileAttributes>[] files = _sftpSession.RequestReadDir(handle);
 
             while (files != null)
             {
@@ -2060,13 +2060,14 @@ namespace Renci.SshNet
                     if (asyncResult != null && asyncResult.IsDownloadCanceled)
                         break;
 
-                    var data = fileReader.Read();
+                    byte[] data = fileReader.Read();
+
                     if (data.Length == 0)
                         break;
 
                     output.Write(data, 0, data.Length);
 
-                    totalBytesRead += (ulong) data.Length;
+                    totalBytesRead += (ulong)data.Length;
 
                     if (downloadCallback != null)
                     {
@@ -2104,7 +2105,7 @@ namespace Renci.SshNet
 
             var fullPath = _sftpSession.GetCanonicalPath(path);
 
-            var handle = _sftpSession.RequestOpen(fullPath, flags);
+            byte[] handle = _sftpSession.RequestOpen(fullPath, flags);
 
             ulong offset = 0;
 
@@ -2123,26 +2124,27 @@ namespace Renci.SshNet
 
                 if (bytesRead > 0)
                 {
-                    var writtenBytes = offset + (ulong) bytesRead;
+                    var writtenBytes = offset + (ulong)bytesRead;
 
                     _sftpSession.RequestWrite(handle, offset, buffer, 0, bytesRead, null, s =>
+                    {
+                        if (s.StatusCode == StatusCodes.Ok)
                         {
-                            if (s.StatusCode == StatusCodes.Ok)
-                            {
-                                Interlocked.Decrement(ref expectedResponses);
-                                responseReceivedWaitHandle.Set();
+                            Interlocked.Decrement(ref expectedResponses);
+                            responseReceivedWaitHandle.Set();
 
-                                //  Call callback to report number of bytes written
-                                if (uploadCallback != null)
-                                {
-                                    //  Execute callback on different thread
-                                    ThreadAbstraction.ExecuteThread(() => uploadCallback(writtenBytes));
-                                }
+                            //  Call callback to report number of bytes written
+                            if (uploadCallback != null)
+                            {
+                                //  Execute callback on different thread
+                                ThreadAbstraction.ExecuteThread(() => uploadCallback(writtenBytes));
                             }
-                        });
+                        }
+                    });
+
                     Interlocked.Increment(ref expectedResponses);
 
-                    offset += (ulong) bytesRead;
+                    offset += (ulong)bytesRead;
 
                     bytesRead = input.Read(buffer, 0, buffer.Length);
                 }
@@ -2176,6 +2178,7 @@ namespace Renci.SshNet
             // disconnect, dispose and dereference the SFTP session since we create a new SFTP session
             // on each connect
             var sftpSession = _sftpSession;
+
             if (sftpSession != null)
             {
                 _sftpSession = null;
@@ -2194,6 +2197,7 @@ namespace Renci.SshNet
             if (disposing)
             {
                 var sftpSession = _sftpSession;
+
                 if (sftpSession != null)
                 {
                     _sftpSession = null;
@@ -2205,9 +2209,10 @@ namespace Renci.SshNet
         private ISftpSession CreateAndConnectToSftpSession()
         {
             var sftpSession = ServiceFactory.CreateSftpSession(Session,
-                                                               _operationTimeout,
-                                                               ConnectionInfo.Encoding,
-                                                               ServiceFactory.CreateSftpResponseFactory());
+                _operationTimeout,
+                ConnectionInfo.Encoding,
+                ServiceFactory.CreateSftpResponseFactory());
+
             try
             {
                 sftpSession.Connect();

@@ -90,10 +90,7 @@ namespace Renci.SshNet.Sftp
         /// <value>
         /// <c>true</c> if this instance is read only; otherwise, <c>false</c>.
         /// </value>
-        public bool IsReadOnly
-        {
-            get { return (_flag & SSH_FXE_STATVFS_ST_RDONLY) == SSH_FXE_STATVFS_ST_RDONLY; }
-        }
+        public bool IsReadOnly => (_flag & SSH_FXE_STATVFS_ST_RDONLY) == SSH_FXE_STATVFS_ST_RDONLY;
 
         /// <summary>
         /// Gets a value indicating whether [supports set uid].
@@ -101,10 +98,7 @@ namespace Renci.SshNet.Sftp
         /// <value>
         ///   <c>true</c> if [supports set uid]; otherwise, <c>false</c>.
         /// </value>
-        public bool SupportsSetUid
-        {
-            get { return (_flag & SSH_FXE_STATVFS_ST_NOSUID) == 0; }
-        }
+        public bool SupportsSetUid => (_flag & SSH_FXE_STATVFS_ST_NOSUID) == 0;
 
         /// <summary>
         /// Gets the max name lenght.

@@ -10,10 +10,7 @@ namespace Renci.SshNet.Security
         /// <summary>
         /// Gets the host key data.
         /// </summary>
-        public override byte[] Data
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public override byte[] Data => throw new NotImplementedException();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CertificateHostAlgorithm"/> class.

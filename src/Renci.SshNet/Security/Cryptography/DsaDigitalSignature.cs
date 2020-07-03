@@ -40,9 +40,12 @@ namespace Renci.SshNet.Security.Cryptography
         /// <exception cref="InvalidOperationException">Invalid signature.</exception>
         public override bool Verify(byte[] input, byte[] signature)
         {
-            var hashInput = _hash.ComputeHash(input);
+            byte[] hashInput = _hash.ComputeHash(input);
 
-            var hm = new BigInteger(hashInput.Reverse().Concat(new byte[] { 0 }));
+            var hm = new BigInteger(hashInput.Reverse().Concat(new byte[]
+            {
+                0
+            }));
 
             if (signature.Length != 40)
                 throw new InvalidOperationException("Invalid signature.");
@@ -80,7 +83,7 @@ namespace Renci.SshNet.Security.Cryptography
             u2 = BigInteger.ModPow(_key.Y, u2, _key.P);
 
             //  Calculate v = ((g pow u1 * y pow u2) mod p) mod q
-            var v = ((u1 * u2) % _key.P) % _key.Q;
+            var v = u1 * u2 % _key.P % _key.Q;
 
             //  The signature is valid if v = r
             return v == r;
@@ -96,16 +99,19 @@ namespace Renci.SshNet.Security.Cryptography
         /// <exception cref="SshException">Invalid DSA key.</exception>
         public override byte[] Sign(byte[] input)
         {
-            var hashInput = _hash.ComputeHash(input);
+            byte[] hashInput = _hash.ComputeHash(input);
 
-            var m = new BigInteger(hashInput.Reverse().Concat(new byte[] { 0 }));
+            var m = new BigInteger(hashInput.Reverse().Concat(new byte[]
+            {
+                0
+            }));
 
             BigInteger s;
             BigInteger r;
 
             do
             {
-                BigInteger k = BigInteger.Zero;
+                var k = BigInteger.Zero;
 
                 do
                 {
@@ -126,9 +132,8 @@ namespace Renci.SshNet.Security.Cryptography
                     //      In the unlikely case that r = 0, start again with a different random k
                 } while (r.IsZero);
 
-
                 //  Calculate s = ((k pow −1)(H(m) + x*r)) mod q
-                k = (BigInteger.ModInverse(k, _key.Q) * (m + _key.X * r));
+                k = BigInteger.ModInverse(k, _key.Q) * (m + _key.X * r);
 
                 s = k % _key.Q;
 
@@ -139,18 +144,17 @@ namespace Renci.SshNet.Security.Cryptography
             var signature = new byte[40];
 
             // issue #1918: pad part with zero's on the left if length is less than 20
-            var rBytes = r.ToByteArray().Reverse().TrimLeadingZeros();
+            byte[] rBytes = r.ToByteArray().Reverse().TrimLeadingZeros();
             Array.Copy(rBytes, 0, signature, 20 - rBytes.Length, rBytes.Length);
 
             // issue #1918: pad part with zero's on the left if length is less than 20
-            var sBytes = s.ToByteArray().Reverse().TrimLeadingZeros();
+            byte[] sBytes = s.ToByteArray().Reverse().TrimLeadingZeros();
             Array.Copy(sBytes, 0, signature, 40 - sBytes.Length, sBytes.Length);
 
             return signature;
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -174,6 +178,7 @@ namespace Renci.SshNet.Security.Cryptography
             if (disposing)
             {
                 var hash = _hash;
+
                 if (hash != null)
                 {
                     hash.Dispose();
@@ -192,7 +197,6 @@ namespace Renci.SshNet.Security.Cryptography
         {
             Dispose(false);
         }
-
         #endregion
     }
 }

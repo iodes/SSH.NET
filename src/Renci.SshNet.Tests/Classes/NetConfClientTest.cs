@@ -32,10 +32,11 @@ namespace Renci.SshNet.Tests.Classes
         {
             var operationTimeout = TimeSpan.FromMilliseconds(_random.Next(0, int.MaxValue - 1));
             var connectionInfo = new PasswordConnectionInfo("host", 22, "admin", "pwd");
+
             var target = new NetConfClient(connectionInfo)
-                {
-                    OperationTimeout = operationTimeout
-                };
+            {
+                OperationTimeout = operationTimeout
+            };
 
             var actual = target.OperationTimeout;
 
@@ -47,9 +48,10 @@ namespace Renci.SshNet.Tests.Classes
         {
             var operationTimeout = TimeSpan.FromMilliseconds(-1);
             var connectionInfo = new PasswordConnectionInfo("host", 22, "admin", "pwd");
+
             var target = new NetConfClient(connectionInfo)
-                {
-                    OperationTimeout = operationTimeout
+            {
+                OperationTimeout = operationTimeout
             };
 
             var actual = target.OperationTimeout;
@@ -62,10 +64,11 @@ namespace Renci.SshNet.Tests.Classes
         {
             var operationTimeout = TimeSpan.FromMilliseconds(int.MaxValue);
             var connectionInfo = new PasswordConnectionInfo("host", 22, "admin", "pwd");
+
             var target = new NetConfClient(connectionInfo)
-                {
-                    OperationTimeout = operationTimeout
-                };
+            {
+                OperationTimeout = operationTimeout
+            };
 
             var actual = target.OperationTimeout;
 
@@ -117,10 +120,10 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void NetConfClientConstructorTest()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             PrivateKeyFile[] keyFiles = null; // TODO: Initialize to an appropriate value
-            NetConfClient target = new NetConfClient(host, username, keyFiles);
+            var target = new NetConfClient(host, username, keyFiles);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -131,11 +134,11 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void NetConfClientConstructorTest1()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
             PrivateKeyFile[] keyFiles = null; // TODO: Initialize to an appropriate value
-            NetConfClient target = new NetConfClient(host, port, username, keyFiles);
+            var target = new NetConfClient(host, port, username, keyFiles);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -146,10 +149,10 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void NetConfClientConstructorTest2()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            NetConfClient target = new NetConfClient(host, username, password);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var password = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new NetConfClient(host, username, password);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -160,11 +163,11 @@ namespace Renci.SshNet.Tests.Classes
         [Ignore] // placeholder for actual test
         public void NetConfClientConstructorTest3()
         {
-            string host = string.Empty; // TODO: Initialize to an appropriate value
-            int port = 0; // TODO: Initialize to an appropriate value
-            string username = string.Empty; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            NetConfClient target = new NetConfClient(host, port, username, password);
+            var host = string.Empty; // TODO: Initialize to an appropriate value
+            var port = 0; // TODO: Initialize to an appropriate value
+            var username = string.Empty; // TODO: Initialize to an appropriate value
+            var password = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new NetConfClient(host, port, username, password);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -176,7 +179,7 @@ namespace Renci.SshNet.Tests.Classes
         public void NetConfClientConstructorTest4()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            NetConfClient target = new NetConfClient(connectionInfo);
+            var target = new NetConfClient(connectionInfo);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -188,8 +191,8 @@ namespace Renci.SshNet.Tests.Classes
         public void SendReceiveRpcTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            NetConfClient target = new NetConfClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string xml = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new NetConfClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var xml = string.Empty; // TODO: Initialize to an appropriate value
             XmlDocument expected = null; // TODO: Initialize to an appropriate value
             XmlDocument actual;
             actual = target.SendReceiveRpc(xml);
@@ -205,7 +208,7 @@ namespace Renci.SshNet.Tests.Classes
         public void SendReceiveRpcTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            NetConfClient target = new NetConfClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new NetConfClient(connectionInfo); // TODO: Initialize to an appropriate value
             XmlDocument rpc = null; // TODO: Initialize to an appropriate value
             XmlDocument expected = null; // TODO: Initialize to an appropriate value
             XmlDocument actual;
@@ -222,7 +225,7 @@ namespace Renci.SshNet.Tests.Classes
         public void SendCloseRpcTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            NetConfClient target = new NetConfClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new NetConfClient(connectionInfo); // TODO: Initialize to an appropriate value
             XmlDocument expected = null; // TODO: Initialize to an appropriate value
             XmlDocument actual;
             actual = target.SendCloseRpc();
@@ -238,7 +241,7 @@ namespace Renci.SshNet.Tests.Classes
         public void ServerCapabilitiesTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            NetConfClient target = new NetConfClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new NetConfClient(connectionInfo); // TODO: Initialize to an appropriate value
             XmlDocument actual;
             actual = target.ServerCapabilities;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -252,7 +255,7 @@ namespace Renci.SshNet.Tests.Classes
         public void ClientCapabilitiesTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            NetConfClient target = new NetConfClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new NetConfClient(connectionInfo); // TODO: Initialize to an appropriate value
             XmlDocument actual;
             actual = target.ClientCapabilities;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -266,8 +269,8 @@ namespace Renci.SshNet.Tests.Classes
         public void AutomaticMessageIdHandlingTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            NetConfClient target = new NetConfClient(connectionInfo); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = new NetConfClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.AutomaticMessageIdHandling = expected;
             actual = target.AutomaticMessageIdHandling;

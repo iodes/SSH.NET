@@ -50,21 +50,26 @@ namespace Renci.SshNet.Tests.Classes
             var sequence = new MockSequence();
 
             _sessionMock.InSequence(sequence)
-                        .Setup(p => p.ConnectionInfo)
-                        .Returns(_connectionInfoMock.Object);
+                .Setup(p => p.ConnectionInfo)
+                .Returns(_connectionInfoMock.Object);
+
             _connectionInfoMock.InSequence(sequence)
-                               .Setup(p => p.Encoding)
-                               .Returns(new UTF8Encoding());
+                .Setup(p => p.Encoding)
+                .Returns(new UTF8Encoding());
+
             _sessionMock.InSequence(sequence)
-                        .Setup(p => p.CreateChannelSession())
-                        .Returns(_channelSessionMock.Object);
+                .Setup(p => p.CreateChannelSession())
+                .Returns(_channelSessionMock.Object);
+
             _channelSessionMock.InSequence(sequence)
-                               .Setup(p => p.Open());
+                .Setup(p => p.Open());
+
             _channelSessionMock.InSequence(sequence)
-                               .Setup(p => p.SendPseudoTerminalRequest(_terminalName, _columns, _rows, _width, _height, _terminalModeValues))
-                               .Returns(false);
+                .Setup(p => p.SendPseudoTerminalRequest(_terminalName, _columns, _rows, _width, _height, _terminalModeValues))
+                .Returns(false);
+
             _channelSessionMock.InSequence(sequence)
-                               .Setup(p => p.Dispose());
+                .Setup(p => p.Dispose());
         }
 
         private void Arrange()
@@ -88,13 +93,14 @@ namespace Renci.SshNet.Tests.Classes
             try
             {
                 _serviceFactory.CreateShellStream(_sessionMock.Object,
-                                                  _terminalName,
-                                                  _columns,
-                                                  _rows,
-                                                  _width,
-                                                  _height,
-                                                  _terminalModeValues,
-                                                  _bufferSize);
+                    _terminalName,
+                    _columns,
+                    _rows,
+                    _width,
+                    _height,
+                    _terminalModeValues,
+                    _bufferSize);
+
                 Assert.Fail();
             }
             catch (SshException ex)

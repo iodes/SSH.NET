@@ -34,7 +34,6 @@
     public class PipeStream : Stream
     {
         #region Private members
-
         /// <summary>
         /// Queue of bytes provides the datastructure for transmitting from an
         /// input stream to an output stream.
@@ -63,19 +62,17 @@
         /// Indicates whether the current <see cref="PipeStream"/> is disposed.
         /// </summary>
         private bool _isDisposed;
-
         #endregion
 
         #region Public properties
-
         /// <summary>
         /// Gets or sets the maximum number of bytes to store in the buffer.
         /// </summary>
         /// <value>The length of the max buffer.</value>
         public long MaxBufferLength
         {
-            get { return _maxBufferLength; }
-            set { _maxBufferLength = value; }
+            get => _maxBufferLength;
+            set => _maxBufferLength = value;
         }
 
         /// <summary>
@@ -109,14 +106,14 @@
                 // when turning off the block last read, signal Read() that it may now read the rest of the buffer.
                 if (!_canBlockLastRead)
                     lock (_buffer)
+                    {
                         Monitor.Pulse(_buffer);
+                    }
             }
         }
-
         #endregion
 
         #region Stream overide methods
-
         /// <summary>
         /// When overridden in a derived class, clears all buffers for this stream and causes any buffered data to be written to the underlying device.
         /// </summary>
@@ -132,6 +129,7 @@
                 throw CreateObjectDisposedException();
 
             _isFlushed = true;
+
             lock (_buffer)
             {
                 // unblock read hereby allowing buffer to be partially filled
@@ -182,16 +180,22 @@
         {
             if (offset != 0)
                 throw new NotSupportedException("Offsets with value of non-zero are not supported");
+
             if (buffer == null)
                 throw new ArgumentNullException("buffer");
+
             if (offset + count > buffer.Length)
                 throw new ArgumentException("The sum of offset and count is greater than the buffer length.");
+
             if (offset < 0 || count < 0)
                 throw new ArgumentOutOfRangeException("offset", "offset or count is negative.");
+
             if (BlockLastReadBuffer && count >= _maxBufferLength)
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "count({0}) > mMaxBufferLength({1})", count, _maxBufferLength));
+
             if (_isDisposed)
                 throw CreateObjectDisposedException();
+
             if (count == 0)
                 return 0;
 
@@ -230,7 +234,7 @@
         private bool ReadAvailable(int count)
         {
             var length = Length;
-            return (_isFlushed || length >= count) && (length >= (count + 1) || !BlockLastReadBuffer);
+            return (_isFlushed || length >= count) && (length >= count + 1 || !BlockLastReadBuffer);
         }
 
         ///<summary>
@@ -249,12 +253,16 @@
         {
             if (buffer == null)
                 throw new ArgumentNullException("buffer");
+
             if (offset + count > buffer.Length)
                 throw new ArgumentException("The sum of offset and count is greater than the buffer length.");
+
             if (offset < 0 || count < 0)
                 throw new ArgumentOutOfRangeException("offset", "offset or count is negative.");
+
             if (_isDisposed)
                 throw CreateObjectDisposedException();
+
             if (count == 0)
                 return;
 
@@ -303,10 +311,7 @@
         ///<returns>
         ///true if the stream supports reading; otherwise, false.
         ///</returns>
-        public override bool CanRead
-        {
-            get { return !_isDisposed; }
-        }
+        public override bool CanRead => !_isDisposed;
 
         /// <summary>
         /// When overridden in a derived class, gets a value indicating whether the current stream supports seeking.
@@ -314,10 +319,7 @@
         /// <returns>
         /// <c>true</c> if the stream supports seeking; otherwise, <c>false</c>.
         ///</returns>
-        public override bool CanSeek
-        {
-            get { return false; }
-        }
+        public override bool CanSeek => false;
 
         /// <summary>
         /// When overridden in a derived class, gets a value indicating whether the current stream supports writing.
@@ -325,10 +327,7 @@
         /// <returns>
         /// <c>true</c> if the stream supports writing; otherwise, <c>false</c>.
         /// </returns>
-        public override bool CanWrite
-        {
-            get { return !_isDisposed; }
-        }
+        public override bool CanWrite => !_isDisposed;
 
         /// <summary>
         /// When overridden in a derived class, gets the length in bytes of the stream.
@@ -358,10 +357,9 @@
         /// <exception cref="NotSupportedException">The stream does not support seeking.</exception>
         public override long Position
         {
-            get { return 0; }
-            set { throw new NotSupportedException(); }
+            get => 0;
+            set => throw new NotSupportedException();
         }
-
         #endregion
 
         private ObjectDisposedException CreateObjectDisposedException()

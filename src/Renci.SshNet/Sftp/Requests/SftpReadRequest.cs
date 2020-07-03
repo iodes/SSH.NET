@@ -7,10 +7,7 @@ namespace Renci.SshNet.Sftp.Requests
     {
         private readonly Action<SftpDataResponse> _dataAction;
 
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.Read; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.Read;
 
         public byte[] Handle { get; private set; }
 
@@ -37,7 +34,7 @@ namespace Renci.SshNet.Sftp.Requests
             }
         }
 
-        public SftpReadRequest(uint protocolVersion, uint requestId, byte[] handle, UInt64 offset, UInt32 length, Action<SftpDataResponse> dataAction, Action<SftpStatusResponse> statusAction)
+        public SftpReadRequest(uint protocolVersion, uint requestId, byte[] handle, ulong offset, uint length, Action<SftpDataResponse> dataAction, Action<SftpStatusResponse> statusAction)
             : base(protocolVersion, requestId, statusAction)
         {
             Handle = handle;
@@ -65,6 +62,7 @@ namespace Renci.SshNet.Sftp.Requests
         public override void Complete(SftpResponse response)
         {
             var dataResponse = response as SftpDataResponse;
+
             if (dataResponse != null)
             {
                 _dataAction(dataResponse);

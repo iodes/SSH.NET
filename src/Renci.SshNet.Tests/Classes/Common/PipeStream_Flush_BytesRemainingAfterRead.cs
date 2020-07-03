@@ -96,12 +96,13 @@ namespace Renci.SshNet.Tests.Classes.Common
             _pipeStream.WriteByte(32);
 
             var buffer = new byte[4];
-            int bytesRead = int.MaxValue;
+            var bytesRead = int.MaxValue;
 
-            Thread readThread = new Thread(() =>
+            var readThread = new Thread(() =>
             {
                 bytesRead = _pipeStream.Read(buffer, 0, buffer.Length);
             });
+
             readThread.Start();
 
             Assert.IsFalse(readThread.Join(500));

@@ -19,7 +19,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         [Ignore] // placeholder for actual test
         public void DsaKeyConstructorTest()
         {
-            DsaKey target = new DsaKey();
+            var target = new DsaKey();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -31,7 +31,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         public void DsaKeyConstructorTest1()
         {
             byte[] data = null; // TODO: Initialize to an appropriate value
-            DsaKey target = new DsaKey(data);
+            var target = new DsaKey(data);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -42,12 +42,12 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         [Ignore] // placeholder for actual test
         public void DsaKeyConstructorTest2()
         {
-            BigInteger p = new BigInteger(); // TODO: Initialize to an appropriate value
-            BigInteger q = new BigInteger(); // TODO: Initialize to an appropriate value
-            BigInteger g = new BigInteger(); // TODO: Initialize to an appropriate value
-            BigInteger y = new BigInteger(); // TODO: Initialize to an appropriate value
-            BigInteger x = new BigInteger(); // TODO: Initialize to an appropriate value
-            DsaKey target = new DsaKey(p, q, g, y, x);
+            var p = new BigInteger(); // TODO: Initialize to an appropriate value
+            var q = new BigInteger(); // TODO: Initialize to an appropriate value
+            var g = new BigInteger(); // TODO: Initialize to an appropriate value
+            var y = new BigInteger(); // TODO: Initialize to an appropriate value
+            var x = new BigInteger(); // TODO: Initialize to an appropriate value
+            var target = new DsaKey(p, q, g, y, x);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -58,7 +58,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         [Ignore] // placeholder for actual test
         public void DisposeTest()
         {
-            DsaKey target = new DsaKey(); // TODO: Initialize to an appropriate value
+            var target = new DsaKey(); // TODO: Initialize to an appropriate value
             target.Dispose();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -70,7 +70,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         [Ignore] // placeholder for actual test
         public void GTest()
         {
-            DsaKey target = new DsaKey(); // TODO: Initialize to an appropriate value
+            var target = new DsaKey(); // TODO: Initialize to an appropriate value
             BigInteger actual;
             actual = target.G;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -83,7 +83,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         [Ignore] // placeholder for actual test
         public void KeyLengthTest()
         {
-            DsaKey target = new DsaKey(); // TODO: Initialize to an appropriate value
+            var target = new DsaKey(); // TODO: Initialize to an appropriate value
             int actual;
             actual = target.KeyLength;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -96,7 +96,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         [Ignore] // placeholder for actual test
         public void PTest()
         {
-            DsaKey target = new DsaKey(); // TODO: Initialize to an appropriate value
+            var target = new DsaKey(); // TODO: Initialize to an appropriate value
             BigInteger actual;
             actual = target.P;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -109,7 +109,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         [Ignore] // placeholder for actual test
         public void PublicTest()
         {
-            DsaKey target = new DsaKey(); // TODO: Initialize to an appropriate value
+            var target = new DsaKey(); // TODO: Initialize to an appropriate value
             BigInteger[] expected = null; // TODO: Initialize to an appropriate value
             BigInteger[] actual;
             target.Public = expected;
@@ -125,7 +125,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         [Ignore] // placeholder for actual test
         public void QTest()
         {
-            DsaKey target = new DsaKey(); // TODO: Initialize to an appropriate value
+            var target = new DsaKey(); // TODO: Initialize to an appropriate value
             BigInteger actual;
             actual = target.Q;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -138,7 +138,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         [Ignore] // placeholder for actual test
         public void XTest()
         {
-            DsaKey target = new DsaKey(); // TODO: Initialize to an appropriate value
+            var target = new DsaKey(); // TODO: Initialize to an appropriate value
             BigInteger actual;
             actual = target.X;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -151,7 +151,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         [Ignore] // placeholder for actual test
         public void YTest()
         {
-            DsaKey target = new DsaKey(); // TODO: Initialize to an appropriate value
+            var target = new DsaKey(); // TODO: Initialize to an appropriate value
             BigInteger actual;
             actual = target.Y;
             Assert.Inconclusive("Verify the correctness of this test method.");

@@ -25,7 +25,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         [Ignore] // placeholder for actual test
         public void DecryptTest()
         {
-            Cipher target = CreateCipher(); // TODO: Initialize to an appropriate value
+            var target = CreateCipher(); // TODO: Initialize to an appropriate value
             byte[] input = null; // TODO: Initialize to an appropriate value
             byte[] expected = null; // TODO: Initialize to an appropriate value
             byte[] actual;
@@ -41,7 +41,7 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography
         [Ignore] // placeholder for actual test
         public void EncryptTest()
         {
-            Cipher target = CreateCipher(); // TODO: Initialize to an appropriate value
+            var target = CreateCipher(); // TODO: Initialize to an appropriate value
             byte[] input = null; // TODO: Initialize to an appropriate value
             byte[] expected = null; // TODO: Initialize to an appropriate value
             byte[] actual;

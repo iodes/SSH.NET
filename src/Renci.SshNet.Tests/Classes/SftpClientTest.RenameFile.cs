@@ -19,11 +19,11 @@ namespace Renci.SshNet.Tests.Classes
             {
                 sftp.Connect();
 
-                string uploadedFileName = Path.GetTempFileName();
-                string remoteFileName1 = Path.GetRandomFileName();
-                string remoteFileName2 = Path.GetRandomFileName();
+                var uploadedFileName = Path.GetTempFileName();
+                var remoteFileName1 = Path.GetRandomFileName();
+                var remoteFileName2 = Path.GetRandomFileName();
 
-                this.CreateTestFile(uploadedFileName, 1);
+                CreateTestFile(uploadedFileName, 1);
 
                 using (var file = File.OpenRead(uploadedFileName))
                 {

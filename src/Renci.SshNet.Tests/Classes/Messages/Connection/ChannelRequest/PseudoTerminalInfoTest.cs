@@ -29,14 +29,19 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
 
             _environmentVariable = random.Next().ToString(CultureInfo.InvariantCulture);
             _environmentVariableBytes = Encoding.UTF8.GetBytes(_environmentVariable);
-            _columns = (uint) random.Next(0, int.MaxValue);
-            _rows = (uint) random.Next(0, int.MaxValue);
-            _width = (uint) random.Next(0, int.MaxValue);
-            _height = (uint) random.Next(0, int.MaxValue);
+            _columns = (uint)random.Next(0, int.MaxValue);
+            _rows = (uint)random.Next(0, int.MaxValue);
+            _width = (uint)random.Next(0, int.MaxValue);
+            _height = (uint)random.Next(0, int.MaxValue);
+
             _terminalModeValues = new Dictionary<TerminalModes, uint>
             {
-                {TerminalModes.CS8, 433},
-                {TerminalModes.ECHO, 566}
+                {
+                    TerminalModes.CS8, 433
+                },
+                {
+                    TerminalModes.ECHO, 566
+                }
             };
         }
 
@@ -45,7 +50,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         {
             var target = new PseudoTerminalRequestInfo(_environmentVariable, _columns, _rows, _width, _height, _terminalModeValues);
 
-            var bytes = target.GetBytes();
+            byte[] bytes = target.GetBytes();
 
             var expectedBytesLength = 1; // WantReply
             expectedBytesLength += 4; // EnvironmentVariable length
@@ -55,7 +60,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
             expectedBytesLength += 4; // PixelWidth
             expectedBytesLength += 4; // PixelHeight
             expectedBytesLength += 4; // Length of "encoded terminal modes"
-            expectedBytesLength += _terminalModeValues.Count*(1 + 4) + 1; // encoded terminal modes
+            expectedBytesLength += _terminalModeValues.Count * (1 + 4) + 1; // encoded terminal modes
 
             Assert.AreEqual(expectedBytesLength, bytes.Length);
 
@@ -67,12 +72,12 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
             Assert.AreEqual(_rows, sshDataStream.ReadUInt32());
             Assert.AreEqual(_width, sshDataStream.ReadUInt32());
             Assert.AreEqual(_height, sshDataStream.ReadUInt32());
-            Assert.AreEqual((uint) (_terminalModeValues.Count * (1 + 4) + 1), sshDataStream.ReadUInt32());
-            Assert.AreEqual((int) TerminalModes.CS8, sshDataStream.ReadByte());
+            Assert.AreEqual((uint)(_terminalModeValues.Count * (1 + 4) + 1), sshDataStream.ReadUInt32());
+            Assert.AreEqual((int)TerminalModes.CS8, sshDataStream.ReadByte());
             Assert.AreEqual(_terminalModeValues[TerminalModes.CS8], sshDataStream.ReadUInt32());
-            Assert.AreEqual((int) TerminalModes.ECHO, sshDataStream.ReadByte());
+            Assert.AreEqual((int)TerminalModes.ECHO, sshDataStream.ReadByte());
             Assert.AreEqual(_terminalModeValues[TerminalModes.ECHO], sshDataStream.ReadUInt32());
-            Assert.AreEqual((int) TerminalModes.TTY_OP_END, sshDataStream.ReadByte());
+            Assert.AreEqual((int)TerminalModes.TTY_OP_END, sshDataStream.ReadByte());
 
             Assert.IsTrue(sshDataStream.IsEndOfData);
         }
@@ -82,7 +87,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         {
             var target = new PseudoTerminalRequestInfo(_environmentVariable, _columns, _rows, _width, _height, null);
 
-            var bytes = target.GetBytes();
+            byte[] bytes = target.GetBytes();
 
             var expectedBytesLength = 1; // WantReply
             expectedBytesLength += 4; // EnvironmentVariable length
@@ -103,7 +108,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
             Assert.AreEqual(_rows, sshDataStream.ReadUInt32());
             Assert.AreEqual(_width, sshDataStream.ReadUInt32());
             Assert.AreEqual(_height, sshDataStream.ReadUInt32());
-            Assert.AreEqual((uint) 0, sshDataStream.ReadUInt32());
+            Assert.AreEqual((uint)0, sshDataStream.ReadUInt32());
 
             Assert.IsTrue(sshDataStream.IsEndOfData);
         }
@@ -112,13 +117,13 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         public void GetBytes_TerminalModeValues_Empty()
         {
             var target = new PseudoTerminalRequestInfo(_environmentVariable,
-                                                       _columns,
-                                                       _rows,
-                                                       _width,
-                                                       _height,
-                                                       new Dictionary<TerminalModes, uint>());
+                _columns,
+                _rows,
+                _width,
+                _height,
+                new Dictionary<TerminalModes, uint>());
 
-            var bytes = target.GetBytes();
+            byte[] bytes = target.GetBytes();
 
             var expectedBytesLength = 1; // WantReply
             expectedBytesLength += 4; // EnvironmentVariable length
@@ -139,7 +144,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
             Assert.AreEqual(_rows, sshDataStream.ReadUInt32());
             Assert.AreEqual(_width, sshDataStream.ReadUInt32());
             Assert.AreEqual(_height, sshDataStream.ReadUInt32());
-            Assert.AreEqual((uint) 0, sshDataStream.ReadUInt32());
+            Assert.AreEqual((uint)0, sshDataStream.ReadUInt32());
 
             Assert.IsTrue(sshDataStream.IsEndOfData);
         }

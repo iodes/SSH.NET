@@ -18,7 +18,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void DerDataConstructorTest()
         {
-            DerData target = new DerData();
+            var target = new DerData();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -29,7 +29,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         public void DerDataConstructorTest1()
         {
             byte[] data = null; // TODO: Initialize to an appropriate value
-            DerData target = new DerData(data);
+            var target = new DerData(data);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -39,7 +39,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void EncodeTest()
         {
-            DerData target = new DerData(); // TODO: Initialize to an appropriate value
+            var target = new DerData(); // TODO: Initialize to an appropriate value
             byte[] expected = null; // TODO: Initialize to an appropriate value
             byte[] actual;
             actual = target.Encode();
@@ -53,8 +53,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ReadBigIntegerTest()
         {
-            DerData target = new DerData(); // TODO: Initialize to an appropriate value
-            BigInteger expected = new BigInteger(); // TODO: Initialize to an appropriate value
+            var target = new DerData(); // TODO: Initialize to an appropriate value
+            var expected = new BigInteger(); // TODO: Initialize to an appropriate value
             BigInteger actual;
             actual = target.ReadBigInteger();
             Assert.AreEqual(expected, actual);
@@ -67,8 +67,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ReadIntegerTest()
         {
-            DerData target = new DerData(); // TODO: Initialize to an appropriate value
-            int expected = 0; // TODO: Initialize to an appropriate value
+            var target = new DerData(); // TODO: Initialize to an appropriate value
+            var expected = 0; // TODO: Initialize to an appropriate value
             int actual;
             actual = target.ReadInteger();
             Assert.AreEqual(expected, actual);
@@ -81,8 +81,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void WriteTest()
         {
-            DerData target = new DerData(); // TODO: Initialize to an appropriate value
-            bool data = false; // TODO: Initialize to an appropriate value
+            var target = new DerData(); // TODO: Initialize to an appropriate value
+            var data = false; // TODO: Initialize to an appropriate value
             target.Write(data);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -93,7 +93,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void WriteTest1()
         {
-            DerData target = new DerData(); // TODO: Initialize to an appropriate value
+            var target = new DerData(); // TODO: Initialize to an appropriate value
             uint data = 0; // TODO: Initialize to an appropriate value
             target.Write(data);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -105,8 +105,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void WriteTest2()
         {
-            DerData target = new DerData(); // TODO: Initialize to an appropriate value
-            BigInteger data = new BigInteger(); // TODO: Initialize to an appropriate value
+            var target = new DerData(); // TODO: Initialize to an appropriate value
+            var data = new BigInteger(); // TODO: Initialize to an appropriate value
             target.Write(data);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -117,7 +117,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void WriteTest3()
         {
-            DerData target = new DerData(); // TODO: Initialize to an appropriate value
+            var target = new DerData(); // TODO: Initialize to an appropriate value
             byte[] data = null; // TODO: Initialize to an appropriate value
             target.Write(data);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -129,8 +129,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void WriteTest4()
         {
-            DerData target = new DerData(); // TODO: Initialize to an appropriate value
-            ObjectIdentifier identifier = new ObjectIdentifier(); // TODO: Initialize to an appropriate value
+            var target = new DerData(); // TODO: Initialize to an appropriate value
+            var identifier = new ObjectIdentifier(); // TODO: Initialize to an appropriate value
             target.Write(identifier);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -141,7 +141,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void WriteTest5()
         {
-            DerData target = new DerData(); // TODO: Initialize to an appropriate value
+            var target = new DerData(); // TODO: Initialize to an appropriate value
             DerData data = null; // TODO: Initialize to an appropriate value
             target.Write(data);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -153,7 +153,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void WriteNullTest()
         {
-            DerData target = new DerData(); // TODO: Initialize to an appropriate value
+            var target = new DerData(); // TODO: Initialize to an appropriate value
             target.WriteNull();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -164,7 +164,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void IsEndOfDataTest()
         {
-            DerData target = new DerData(); // TODO: Initialize to an appropriate value
+            var target = new DerData(); // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.IsEndOfData;
             Assert.Inconclusive("Verify the correctness of this test method.");

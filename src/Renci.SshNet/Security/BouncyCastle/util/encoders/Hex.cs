@@ -21,9 +21,9 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities.Encoders
         }
 
         public static string ToHexString(
-            byte[]	data,
-            int		off,
-            int		length)
+            byte[] data,
+            int off,
+            int length)
         {
             byte[] hex = Encode(data, off, length);
             return Encoding.UTF8.GetString(hex, 0, hex.Length);
@@ -46,11 +46,11 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities.Encoders
          * @return a byte array containing the Hex encoded data.
          */
         public static byte[] Encode(
-            byte[]	data,
-            int		off,
-            int		length)
+            byte[] data,
+            int off,
+            int length)
         {
-            MemoryStream bOut = new MemoryStream(length * 2);
+            var bOut = new MemoryStream(length * 2);
 
             encoder.Encode(data, off, length, bOut);
 
@@ -63,8 +63,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities.Encoders
          * @return the number of bytes produced.
          */
         public static int Encode(
-            byte[]	data,
-            Stream	outStream)
+            byte[] data,
+            Stream outStream)
         {
             return encoder.Encode(data, 0, data.Length, outStream);
         }
@@ -75,10 +75,10 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities.Encoders
          * @return the number of bytes produced.
          */
         public static int Encode(
-            byte[]	data,
-            int		off,
-            int		length,
-            Stream	outStream)
+            byte[] data,
+            int off,
+            int length,
+            Stream outStream)
         {
             return encoder.Encode(data, off, length, outStream);
         }
@@ -91,7 +91,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities.Encoders
         public static byte[] Decode(
             byte[] data)
         {
-            MemoryStream bOut = new MemoryStream((data.Length + 1) / 2);
+            var bOut = new MemoryStream((data.Length + 1) / 2);
 
             encoder.Decode(data, 0, data.Length, bOut);
 
@@ -106,7 +106,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities.Encoders
         public static byte[] Decode(
             string data)
         {
-            MemoryStream bOut = new MemoryStream((data.Length + 1) / 2);
+            var bOut = new MemoryStream((data.Length + 1) / 2);
 
             encoder.DecodeString(data, bOut);
 
@@ -120,8 +120,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Utilities.Encoders
          * @return the number of bytes produced.
          */
         public static int Decode(
-            string	data,
-            Stream	outStream)
+            string data,
+            Stream outStream)
         {
             return encoder.DecodeString(data, outStream);
         }

@@ -29,7 +29,7 @@ namespace Renci.SshNet.Sftp
         /// </summary>
         /// <param name="asyncCallback">The async callback.</param>
         /// <param name="state">The state.</param>
-        public SftpUploadAsyncResult(AsyncCallback asyncCallback, Object state)
+        public SftpUploadAsyncResult(AsyncCallback asyncCallback, object state)
             : base(asyncCallback, state)
         {
         }

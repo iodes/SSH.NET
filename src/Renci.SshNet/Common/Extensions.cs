@@ -44,8 +44,10 @@ namespace Renci.SshNet.Common
             {
                 case ServiceName.UserAuthentication:
                     return SshData.Ascii.GetBytes("ssh-userauth");
+
                 case ServiceName.Connection:
                     return SshData.Ascii.GetBytes("ssh-connection");
+
                 default:
                     throw new NotSupportedException(string.Format("Service name '{0}' is not supported.", serviceName));
             }
@@ -54,12 +56,15 @@ namespace Renci.SshNet.Common
         internal static ServiceName ToServiceName(this byte[] data)
         {
             var sshServiceName = SshData.Ascii.GetString(data, 0, data.Length);
+
             switch (sshServiceName)
             {
                 case "ssh-userauth":
                     return ServiceName.UserAuthentication;
+
                 case "ssh-connection":
                     return ServiceName.Connection;
+
                 default:
                     throw new NotSupportedException(string.Format("Service name '{0}' is not supported.", sshServiceName));
             }
@@ -83,6 +88,7 @@ namespace Renci.SshNet.Common
                 Buffer.BlockCopy(data, 0, buf, 1, data.Length);
                 data = buf;
             }
+
             return data.ToBigInteger();
         }
 
@@ -111,6 +117,7 @@ namespace Renci.SshNet.Common
             {
                 sb.AppendFormat(CultureInfo.CurrentCulture, "0x{0:x2}, ", b);
             }
+
             Debug.WriteLine(sb.ToString());
         }
 
@@ -124,6 +131,7 @@ namespace Renci.SshNet.Common
         {
             if (type == null)
                 return null;
+
             return Activator.CreateInstance(type) as T;
         }
 
@@ -212,6 +220,7 @@ namespace Renci.SshNet.Common
         {
             if (left == null)
                 throw new ArgumentNullException("left");
+
             if (right == null)
                 throw new ArgumentNullException("right");
 
@@ -270,6 +279,7 @@ namespace Renci.SshNet.Common
         {
             if (length <= data.Length)
                 return data;
+
             var newData = new byte[length];
             Buffer.BlockCopy(data, 0, newData, newData.Length - data.Length, data.Length);
             return newData;
@@ -303,6 +313,7 @@ namespace Renci.SshNet.Common
         {
             if (socket == null)
                 return false;
+
             return socket.Connected;
         }
 

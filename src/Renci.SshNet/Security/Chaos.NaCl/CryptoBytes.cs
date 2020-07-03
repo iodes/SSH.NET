@@ -9,10 +9,13 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (x == null)
                 throw new ArgumentNullException("x");
+
             if (y == null)
                 throw new ArgumentNullException("y");
+
             if (x.Length != y.Length)
                 throw new ArgumentException("x.Length must equal y.Length");
+
             return InternalConstantTimeEquals(x, 0, y, 0, x.Length) != 0;
         }
 
@@ -20,8 +23,10 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (x.Array == null)
                 throw new ArgumentNullException("x.Array");
+
             if (y.Array == null)
                 throw new ArgumentNullException("y.Array");
+
             if (x.Count != y.Count)
                 throw new ArgumentException("x.Count must equal y.Count");
 
@@ -32,16 +37,22 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (x == null)
                 throw new ArgumentNullException("x");
+
             if (xOffset < 0)
                 throw new ArgumentOutOfRangeException("xOffset", "xOffset < 0");
+
             if (y == null)
                 throw new ArgumentNullException("y");
+
             if (yOffset < 0)
                 throw new ArgumentOutOfRangeException("yOffset", "yOffset < 0");
+
             if (length < 0)
                 throw new ArgumentOutOfRangeException("length", "length < 0");
+
             if (x.Length - xOffset < length)
                 throw new ArgumentException("xOffset + length > x.Length");
+
             if (y.Length - yOffset < length)
                 throw new ArgumentException("yOffset + length > y.Length");
 
@@ -50,16 +61,19 @@ namespace Renci.SshNet.Security.Chaos.NaCl
 
         private static uint InternalConstantTimeEquals(byte[] x, int xOffset, byte[] y, int yOffset, int length)
         {
-            int differentbits = 0;
-            for (int i = 0; i < length; i++)
+            var differentbits = 0;
+
+            for (var i = 0; i < length; i++)
                 differentbits |= x[xOffset + i] ^ y[yOffset + i];
-            return (1 & (unchecked((uint)differentbits - 1) >> 8));
+
+            return 1 & (unchecked((uint)differentbits - 1) >> 8);
         }
 
         internal static void Wipe(byte[] data)
         {
             if (data == null)
                 throw new ArgumentNullException("data");
+
             InternalWipe(data, 0, data.Length);
         }
 
@@ -67,12 +81,16 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (data == null)
                 throw new ArgumentNullException("data");
+
             if (offset < 0)
                 throw new ArgumentOutOfRangeException("offset");
+
             if (count < 0)
                 throw new ArgumentOutOfRangeException("count", "Requires count >= 0");
+
             if ((uint)offset + (uint)count > (uint)data.Length)
                 throw new ArgumentException("Requires offset + count <= data.Length");
+
             InternalWipe(data, offset, count);
         }
 
@@ -80,6 +98,7 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (data.Array == null)
                 throw new ArgumentNullException("data.Array");
+
             InternalWipe(data.Array, data.Offset, data.Count);
         }
 
@@ -131,15 +150,18 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (data == null)
                 return null;
-            char[] c = new char[data.Length * 2];
+
+            var c = new char[data.Length * 2];
             int b;
-            for (int i = 0; i < data.Length; i++)
+
+            for (var i = 0; i < data.Length; i++)
             {
                 b = data[i] >> 4;
                 c[i * 2] = (char)(55 + b + (((b - 10) >> 31) & -7));
                 b = data[i] & 0xF;
                 c[i * 2 + 1] = (char)(55 + b + (((b - 10) >> 31) & -7));
             }
+
             return new string(c);
         }
 
@@ -149,15 +171,18 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (data == null)
                 return null;
-            char[] c = new char[data.Length * 2];
+
+            var c = new char[data.Length * 2];
             int b;
-            for (int i = 0; i < data.Length; i++)
+
+            for (var i = 0; i < data.Length; i++)
             {
                 b = data[i] >> 4;
                 c[i * 2] = (char)(87 + b + (((b - 10) >> 31) & -39));
                 b = data[i] & 0xF;
                 c[i * 2 + 1] = (char)(87 + b + (((b - 10) >> 31) & -39));
             }
+
             return new string(c);
         }
 
@@ -165,11 +190,15 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (hexString == null)
                 return null;
+
             if (hexString.Length % 2 != 0)
                 throw new FormatException("The hex string is invalid because it has an odd length");
+
             var result = new byte[hexString.Length / 2];
-            for (int i = 0; i < result.Length; i++)
+
+            for (var i = 0; i < result.Length; i++)
                 result[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
+
             return result;
         }
 
@@ -177,6 +206,7 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (data == null)
                 return null;
+
             return Convert.ToBase64String(data);
         }
 
@@ -184,6 +214,7 @@ namespace Renci.SshNet.Security.Chaos.NaCl
         {
             if (s == null)
                 return null;
+
             return Convert.FromBase64String(s);
         }
     }

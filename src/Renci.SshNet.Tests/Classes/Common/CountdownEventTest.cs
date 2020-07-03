@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #if !FEATURE_THREAD_COUNTDOWNEVENT
 using CountdownEvent = Renci.SshNet.Common.CountdownEvent;
 #endif
@@ -96,18 +97,20 @@ namespace Renci.SshNet.Tests.Classes.Common
             var signalCount = 0;
             var expectedSignalCount = _random.Next(5, 20);
 
-            for (var i = 0; i < (expectedSignalCount - 1); i++)
+            for (var i = 0; i < expectedSignalCount - 1; i++)
                 countdownEvent.AddCount();
 
             var threads = new Thread[expectedSignalCount];
+
             for (var i = 0; i < expectedSignalCount; i++)
             {
                 threads[i] = new Thread(() =>
-                    {
-                        Thread.Sleep(sleep);
-                        Interlocked.Increment(ref signalCount);
-                        countdownEvent.Signal();
-                    });
+                {
+                    Thread.Sleep(sleep);
+                    Interlocked.Increment(ref signalCount);
+                    countdownEvent.Signal();
+                });
+
                 threads[i].Start();
             }
 
@@ -135,10 +138,11 @@ namespace Renci.SshNet.Tests.Classes.Common
             var signalCount = 0;
             var expectedSignalCount = _random.Next(5, 20);
 
-            for (var i = 0; i < (expectedSignalCount - 1); i++)
+            for (var i = 0; i < expectedSignalCount - 1; i++)
                 countdownEvent.AddCount();
 
             var threads = new Thread[expectedSignalCount];
+
             for (var i = 0; i < expectedSignalCount; i++)
             {
                 threads[i] = new Thread(() =>
@@ -147,6 +151,7 @@ namespace Renci.SshNet.Tests.Classes.Common
                     Interlocked.Increment(ref signalCount);
                     countdownEvent.Signal();
                 });
+
                 threads[i].Start();
             }
 
@@ -174,10 +179,11 @@ namespace Renci.SshNet.Tests.Classes.Common
             var signalCount = 0;
             var expectedSignalCount = _random.Next(5, 20);
 
-            for (var i = 0; i < (expectedSignalCount - 1); i++)
+            for (var i = 0; i < expectedSignalCount - 1; i++)
                 countdownEvent.AddCount();
 
             var threads = new Thread[expectedSignalCount];
+
             for (var i = 0; i < expectedSignalCount; i++)
             {
                 threads[i] = new Thread(() =>
@@ -186,6 +192,7 @@ namespace Renci.SshNet.Tests.Classes.Common
                     countdownEvent.Signal();
                     Interlocked.Increment(ref signalCount);
                 });
+
                 threads[i].Start();
             }
 
@@ -224,10 +231,11 @@ namespace Renci.SshNet.Tests.Classes.Common
             var signalCount = 0;
             var expectedSignalCount = _random.Next(5, 20);
 
-            for (var i = 0; i < (expectedSignalCount - 1); i++)
+            for (var i = 0; i < expectedSignalCount - 1; i++)
                 countdownEvent.AddCount();
 
             var threads = new Thread[expectedSignalCount];
+
             for (var i = 0; i < expectedSignalCount; i++)
             {
                 threads[i] = new Thread(() =>
@@ -236,6 +244,7 @@ namespace Renci.SshNet.Tests.Classes.Common
                     Interlocked.Increment(ref signalCount);
                     countdownEvent.Signal();
                 });
+
                 threads[i].Start();
             }
 
@@ -263,10 +272,11 @@ namespace Renci.SshNet.Tests.Classes.Common
             var signalCount = 0;
             var expectedSignalCount = _random.Next(5, 20);
 
-            for (var i = 0; i < (expectedSignalCount - 1); i++)
+            for (var i = 0; i < expectedSignalCount - 1; i++)
                 countdownEvent.AddCount();
 
             var threads = new Thread[expectedSignalCount];
+
             for (var i = 0; i < expectedSignalCount; i++)
             {
                 threads[i] = new Thread(() =>
@@ -275,6 +285,7 @@ namespace Renci.SshNet.Tests.Classes.Common
                     Interlocked.Increment(ref signalCount);
                     countdownEvent.Signal();
                 });
+
                 threads[i].Start();
             }
 
@@ -302,10 +313,11 @@ namespace Renci.SshNet.Tests.Classes.Common
             var signalCount = 0;
             var expectedSignalCount = _random.Next(5, 20);
 
-            for (var i = 0; i < (expectedSignalCount - 1); i++)
+            for (var i = 0; i < expectedSignalCount - 1; i++)
                 countdownEvent.AddCount();
 
             var threads = new Thread[expectedSignalCount];
+
             for (var i = 0; i < expectedSignalCount; i++)
             {
                 threads[i] = new Thread(() =>
@@ -314,6 +326,7 @@ namespace Renci.SshNet.Tests.Classes.Common
                     countdownEvent.Signal();
                     Interlocked.Increment(ref signalCount);
                 });
+
                 threads[i].Start();
             }
 

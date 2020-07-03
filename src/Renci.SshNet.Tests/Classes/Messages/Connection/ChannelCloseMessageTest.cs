@@ -19,7 +19,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         [Ignore] // placeholder
         public void ChannelCloseMessageConstructorTest()
         {
-            ChannelCloseMessage target = new ChannelCloseMessage();
+            var target = new ChannelCloseMessage();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -31,7 +31,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         public void ChannelCloseMessageConstructorTest1()
         {
             uint localChannelNumber = 0; // TODO: Initialize to an appropriate value
-            ChannelCloseMessage target = new ChannelCloseMessage(localChannelNumber);
+            var target = new ChannelCloseMessage(localChannelNumber);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

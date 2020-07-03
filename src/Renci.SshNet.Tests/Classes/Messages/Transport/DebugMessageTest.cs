@@ -18,7 +18,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
         [Ignore] // placeholder
         public void DebugMessageConstructorTest()
         {
-            DebugMessage target = new DebugMessage();
+            var target = new DebugMessage();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

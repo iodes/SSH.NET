@@ -24,8 +24,8 @@
         /// </summary>
         public string Description
         {
-            get { return Utf8.GetString(_description, 0, _description.Length); }
-            private set { _description = Utf8.GetBytes(value); }
+            get => Utf8.GetString(_description, 0, _description.Length);
+            private set => _description = Utf8.GetBytes(value);
         }
 
         /// <summary>
@@ -33,8 +33,8 @@
         /// </summary>
         public string Language
         {
-            get { return Utf8.GetString(_language, 0, _language.Length); }
-            private set { _language = Utf8.GetBytes(value); }
+            get => Utf8.GetString(_language, 0, _language.Length);
+            private set => _language = Utf8.GetBytes(value);
         }
 
         /// <summary>
@@ -62,7 +62,6 @@
         /// </summary>
         public ChannelOpenFailureMessage()
         {
-
         }
 
         /// <summary>

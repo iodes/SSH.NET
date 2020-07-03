@@ -20,18 +20,15 @@ namespace Renci.SshNet.Messages.Connection
         /// <value>
         /// The type of the channel to open.
         /// </value>
-        public override string ChannelType
-        {
-            get { return Name; }
-        }
+        public override string ChannelType => Name;
 
         /// <summary>
         /// Gets the originator address.
         /// </summary>
         public string OriginatorAddress
         {
-            get { return Utf8.GetString(_originatorAddress, 0, _originatorAddress.Length); }
-            private set { _originatorAddress = Utf8.GetBytes(value); }
+            get => Utf8.GetString(_originatorAddress, 0, _originatorAddress.Length);
+            private set => _originatorAddress = Utf8.GetBytes(value);
         }
 
         /// <summary>

@@ -48,16 +48,19 @@ namespace Renci.SshNet.Tests.Classes
                 _client.Dispose();
                 _client = null;
             }
+
             if (_forwardedPort != null)
             {
                 _forwardedPort.Dispose();
                 _forwardedPort = null;
             }
+
             if (_channelBindStarted != null)
             {
                 _channelBindStarted.Dispose();
                 _channelBindStarted = null;
             }
+
             if (_channelBindCompleted != null)
             {
                 _channelBindCompleted.Dispose();
@@ -82,7 +85,7 @@ namespace Renci.SshNet.Tests.Classes
             _remoteEndpoint = new IPEndPoint(IPAddress.Parse("193.168.1.5"), random.Next(IPEndPoint.MinPort, IPEndPoint.MaxPort));
             _bindSleepTime = TimeSpan.FromMilliseconds(random.Next(100, 500));
             _userName = random.Next().ToString(CultureInfo.InvariantCulture);
-            _forwardedPort = new ForwardedPortDynamic(_endpoint.Address.ToString(), (uint) _endpoint.Port);
+            _forwardedPort = new ForwardedPortDynamic(_endpoint.Address.ToString(), (uint)_endpoint.Port);
             _sessionException = new Exception();
             _channelBindStarted = new ManualResetEvent(false);
             _channelBindCompleted = new ManualResetEvent(false);
@@ -92,11 +95,11 @@ namespace Renci.SshNet.Tests.Classes
             _forwardedPort.Session = _sessionMock.Object;
 
             _client = new Socket(_endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp)
-                {
-                    ReceiveTimeout = 100,
-                    SendTimeout = 100,
-                    SendBufferSize = 0
-                };
+            {
+                ReceiveTimeout = 100,
+                SendTimeout = 100,
+                SendBufferSize = 0
+            };
         }
 
         private void SetupMocks()
@@ -107,12 +110,14 @@ namespace Renci.SshNet.Tests.Classes
             _sessionMock.Setup(p => p.CreateChannelDirectTcpip()).Returns(_channelMock.Object);
             _channelMock.Setup(p => p.Open(_remoteEndpoint.Address.ToString(), (uint)_remoteEndpoint.Port, _forwardedPort, It.IsAny<Socket>()));
             _channelMock.Setup(p => p.IsOpen).Returns(true);
+
             _channelMock.Setup(p => p.Bind()).Callback(() =>
-                {
-                    _channelBindStarted.Set();
-                    Thread.Sleep(_bindSleepTime);
-                    _channelBindCompleted.Set();
-                });
+            {
+                _channelBindStarted.Set();
+                Thread.Sleep(_bindSleepTime);
+                _channelBindCompleted.Set();
+            });
+
             _channelMock.Setup(p => p.Dispose());
         }
 
@@ -223,24 +228,36 @@ namespace Renci.SshNet.Tests.Classes
 
         private void EstablishSocks4Connection(Socket client)
         {
-            var userNameBytes = Encoding.ASCII.GetBytes(_userName);
-            var addressBytes = _remoteEndpoint.Address.GetAddressBytes();
-            var portBytes = BitConverter.GetBytes((ushort)_remoteEndpoint.Port).Reverse().ToArray();
+            byte[] userNameBytes = Encoding.ASCII.GetBytes(_userName);
+            byte[] addressBytes = _remoteEndpoint.Address.GetAddressBytes();
+            byte[] portBytes = BitConverter.GetBytes((ushort)_remoteEndpoint.Port).Reverse().ToArray();
 
             _client.Connect(_endpoint);
 
             // send SOCKS version
-            client.Send(new byte[] { 0x04 }, 0, 1, SocketFlags.None);
+            client.Send(new byte[]
+            {
+                0x04
+            }, 0, 1, SocketFlags.None);
+
             // send command byte
-            client.Send(new byte[] { 0x00 }, 0, 1, SocketFlags.None);
+            client.Send(new byte[]
+            {
+                0x00
+            }, 0, 1, SocketFlags.None);
+
             // send port
             client.Send(portBytes, 0, portBytes.Length, SocketFlags.None);
             // send address
             client.Send(addressBytes, 0, addressBytes.Length, SocketFlags.None);
             // send user name
             client.Send(userNameBytes, 0, userNameBytes.Length, SocketFlags.None);
+
             // terminate user name with null
-            client.Send(new byte[] { 0x00 }, 0, 1, SocketFlags.None);
+            client.Send(new byte[]
+            {
+                0x00
+            }, 0, 1, SocketFlags.None);
 
             var buffer = new byte[8];
             var bytesRead = SocketAbstraction.Read(client, buffer, 0, buffer.Length, TimeSpan.FromMilliseconds(500));

@@ -22,16 +22,16 @@ namespace Renci.SshNet.Security
         protected override byte[] CalculateHash()
         {
             var keyExchangeHashData = new KeyExchangeHashData
-                {
-                    ClientVersion = Session.ClientVersion,
-                    ServerVersion = Session.ServerVersion,
-                    ClientPayload = _clientPayload,
-                    ServerPayload = _serverPayload,
-                    HostKey = _hostKey,
-                    ClientExchangeValue = _clientExchangeValue,
-                    ServerExchangeValue = _serverExchangeValue,
-                    SharedKey = SharedKey,
-                };
+            {
+                ClientVersion = Session.ClientVersion,
+                ServerVersion = Session.ServerVersion,
+                ClientPayload = _clientPayload,
+                ServerPayload = _serverPayload,
+                HostKey = _hostKey,
+                ClientExchangeValue = _clientExchangeValue,
+                ServerExchangeValue = _serverExchangeValue,
+                SharedKey = SharedKey
+            };
 
             return Hash(keyExchangeHashData.GetBytes());
         }
@@ -50,7 +50,11 @@ namespace Renci.SshNet.Security
             Session.KeyExchangeDhReplyMessageReceived += Session_KeyExchangeDhReplyMessageReceived;
 
             _prime = GroupPrime;
-            _group = new BigInteger(new byte[] { 2 });
+
+            _group = new BigInteger(new byte[]
+            {
+                2
+            });
 
             PopulateClientExchangeValue();
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -22,10 +23,10 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldReturnSecondWhenFirstIsEmpty()
         {
-            var first = Array<byte>.Empty;
-            var second = CreateBuffer(16);
+            byte[] first = Array<byte>.Empty;
+            byte[] second = CreateBuffer(16);
 
-            var actual = Extensions.Concat(first, second);
+            byte[] actual = Extensions.Concat(first, second);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(second, actual);
@@ -35,9 +36,9 @@ namespace Renci.SshNet.Tests.Classes.Common
         public void ShouldReturnSecondWhenFirstIsNull()
         {
             const byte[] first = null;
-            var second = CreateBuffer(16);
+            byte[] second = CreateBuffer(16);
 
-            var actual = Extensions.Concat(first, second);
+            byte[] actual = Extensions.Concat(first, second);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(second, actual);
@@ -46,10 +47,10 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldReturnFirstWhenSecondIsEmpty()
         {
-            var first = CreateBuffer(16);
-            var second = Array<byte>.Empty;
+            byte[] first = CreateBuffer(16);
+            byte[] second = Array<byte>.Empty;
 
-            var actual = Extensions.Concat(first, second);
+            byte[] actual = Extensions.Concat(first, second);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(first, actual);
@@ -58,10 +59,10 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldReturnFirstWhenSecondIsNull()
         {
-            var first = CreateBuffer(16);
+            byte[] first = CreateBuffer(16);
             const byte[] second = null;
 
-            var actual = Extensions.Concat(first, second);
+            byte[] actual = Extensions.Concat(first, second);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(first, actual);
@@ -73,7 +74,7 @@ namespace Renci.SshNet.Tests.Classes.Common
             const byte[] first = null;
             const byte[] second = null;
 
-            var actual = Extensions.Concat(first, second);
+            byte[] actual = Extensions.Concat(first, second);
 
             Assert.IsNull(actual);
         }
@@ -81,10 +82,10 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldConcatSecondToFirstWhenBothAreNotEmpty()
         {
-            var first = CreateBuffer(4);
-            var second = CreateBuffer(2);
+            byte[] first = CreateBuffer(4);
+            byte[] second = CreateBuffer(2);
 
-            var actual = Extensions.Concat(first, second);
+            byte[] actual = Extensions.Concat(first, second);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(first.Length + second.Length, actual.Length);
@@ -101,21 +102,20 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestCategory("Performance")]
         public void Performance_LargeArray_FirstEmpty()
         {
-            var first = Array<byte>.Empty;
-            var second = CreateBuffer(50000);
+            byte[] first = Array<byte>.Empty;
+            byte[] second = CreateBuffer(50000);
             const int runs = 10000;
 
             Performance(first, second, runs);
         }
-
 
         [TestMethod]
         [TestCategory("LongRunning")]
         [TestCategory("Performance")]
         public void Performance_LargeArray_SecondEmpty()
         {
-            var first = CreateBuffer(50000);
-            var second = Array<byte>.Empty;
+            byte[] first = CreateBuffer(50000);
+            byte[] second = Array<byte>.Empty;
             const int runs = 10000;
 
             Performance(first, second, runs);
@@ -126,8 +126,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestCategory("Performance")]
         public void Performance_LargeArray_BothNotEmpty()
         {
-            var first = CreateBuffer(50000);
-            var second = CreateBuffer(20000);
+            byte[] first = CreateBuffer(50000);
+            byte[] second = CreateBuffer(20000);
             const int runs = 10000;
 
             Performance(first, second, runs);
@@ -145,7 +145,7 @@ namespace Renci.SshNet.Tests.Classes.Common
 
             for (var i = 0; i < runs; i++)
             {
-                var result = Extensions.Concat(first, second);
+                byte[] result = Extensions.Concat(first, second);
                 var resultLength = result.Length;
             }
 
@@ -162,7 +162,7 @@ namespace Renci.SshNet.Tests.Classes.Common
 
             for (var i = 0; i < runs; i++)
             {
-                var result = Enumerable.Concat(first, second);
+                IEnumerable<byte> result = Enumerable.Concat(first, second);
                 var resultLength = result.ToArray().Length;
             }
 

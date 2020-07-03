@@ -118,15 +118,19 @@ namespace Renci.SshNet.Messages.Connection
                 case SessionChannelOpenInfo.Name:
                     Info = new SessionChannelOpenInfo(_infoBytes);
                     break;
+
                 case X11ChannelOpenInfo.Name:
                     Info = new X11ChannelOpenInfo(_infoBytes);
                     break;
+
                 case DirectTcpipChannelInfo.NAME:
                     Info = new DirectTcpipChannelInfo(_infoBytes);
                     break;
+
                 case ForwardedTcpipChannelInfo.NAME:
                     Info = new ForwardedTcpipChannelInfo(_infoBytes);
                     break;
+
                 default:
                     throw new NotSupportedException(string.Format(CultureInfo.CurrentCulture, "Channel type '{0}' is not supported.", channelName));
             }

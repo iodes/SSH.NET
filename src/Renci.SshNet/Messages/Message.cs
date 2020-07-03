@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using Renci.SshNet.Common;
 using System.Globalization;
 using Renci.SshNet.Abstractions;
@@ -17,20 +18,15 @@ namespace Renci.SshNet.Messages
         /// <value>
         /// The size of the messages in bytes.
         /// </value>
-        protected override int BufferCapacity
-        {
-            get
-            {
-                return 1; // Message type
-            }
-        }
+        protected override int BufferCapacity => 1; // Message type
 
         /// <summary>
         /// Writes the message to the specified <see cref="SshDataStream"/>.
         /// </summary>
         protected override void WriteBytes(SshDataStream stream)
         {
-            var enumerator = GetType().GetCustomAttributes<MessageAttribute>(true).GetEnumerator();
+            IEnumerator<MessageAttribute> enumerator = GetType().GetCustomAttributes<MessageAttribute>(true).GetEnumerator();
+
             try
             {
                 if (!enumerator.MoveNext())
@@ -73,7 +69,7 @@ namespace Renci.SshNet.Messages
                     WriteBytes(uncompressedDataStream);
 
                     // compress message payload
-                    var compressedMessageData = compressor.Compress(uncompressedDataStream.ToArray());
+                    byte[] compressedMessageData = compressor.Compress(uncompressedDataStream.ToArray());
 
                     // add compressed message payload
                     sshDataStream.Write(compressedMessageData, 0, compressedMessageData.Length);
@@ -84,7 +80,7 @@ namespace Renci.SshNet.Messages
                     WriteBytes(sshDataStream);
                 }
 
-                messageLength = (int) sshDataStream.Length - (outboundPacketSequenceSize + 4 + 1);
+                messageLength = (int)sshDataStream.Length - (outboundPacketSequenceSize + 4 + 1);
 
                 var packetLength = messageLength + 4 + 1;
 
@@ -142,16 +138,18 @@ namespace Renci.SshNet.Messages
 
         private static uint GetPacketDataLength(int messageLength, byte paddingLength)
         {
-            return (uint) (messageLength + paddingLength + 1);
+            return (uint)(messageLength + paddingLength + 1);
         }
 
         private static byte GetPaddingLength(byte paddingMultiplier, long packetLength)
         {
-            var paddingLength = (byte)((-packetLength) & (paddingMultiplier - 1));
+            var paddingLength = (byte)(-packetLength & (paddingMultiplier - 1));
+
             if (paddingLength < paddingMultiplier)
             {
                 paddingLength += paddingMultiplier;
             }
+
             return paddingLength;
         }
 
@@ -163,7 +161,8 @@ namespace Renci.SshNet.Messages
         /// </returns>
         public override string ToString()
         {
-            var enumerator = GetType().GetCustomAttributes<MessageAttribute>(true).GetEnumerator();
+            IEnumerator<MessageAttribute> enumerator = GetType().GetCustomAttributes<MessageAttribute>(true).GetEnumerator();
+
             try
             {
                 if (!enumerator.MoveNext())

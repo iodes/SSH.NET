@@ -29,7 +29,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp
             ulong sid = 0; // TODO: Initialize to an appropriate value
             ulong flag = 0; // TODO: Initialize to an appropriate value
             ulong namemax = 0; // TODO: Initialize to an appropriate value
-            SftpFileSytemInformation target = new SftpFileSytemInformation(bsize, frsize, blocks, bfree, bavail, files, ffree, favail, sid, flag, namemax); // TODO: Initialize to an appropriate value
+            var target = new SftpFileSytemInformation(bsize, frsize, blocks, bfree, bavail, files, ffree, favail, sid, flag, namemax); // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.IsReadOnly;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -53,7 +53,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp
             ulong sid = 0; // TODO: Initialize to an appropriate value
             ulong flag = 0; // TODO: Initialize to an appropriate value
             ulong namemax = 0; // TODO: Initialize to an appropriate value
-            SftpFileSytemInformation target = new SftpFileSytemInformation(bsize, frsize, blocks, bfree, bavail, files, ffree, favail, sid, flag, namemax); // TODO: Initialize to an appropriate value
+            var target = new SftpFileSytemInformation(bsize, frsize, blocks, bfree, bavail, files, ffree, favail, sid, flag, namemax); // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.SupportsSetUid;
             Assert.Inconclusive("Verify the correctness of this test method.");

@@ -2,7 +2,6 @@
 
 namespace Renci.SshNet.Messages
 {
-
     /// <summary>
     /// Indicates that a class represents SSH message. This class cannot be inherited.
     /// </summary>

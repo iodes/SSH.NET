@@ -4,10 +4,7 @@ namespace Renci.SshNet.Sftp.Responses
 {
     internal class SftpVersionResponse : SftpMessage
     {
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.Version; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.Version;
 
         public uint Version { get; set; }
 
@@ -25,6 +22,7 @@ namespace Renci.SshNet.Sftp.Responses
             base.SaveData();
 
             Write(Version);
+
             if (Extentions != null)
                 Write(Extentions);
         }

@@ -128,7 +128,6 @@ namespace Renci.SshNet.Compression
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -152,6 +151,7 @@ namespace Renci.SshNet.Compression
             if (disposing)
             {
                 var compressorStream = _compressorStream;
+
                 if (compressorStream != null)
                 {
                     compressorStream.Dispose();
@@ -159,6 +159,7 @@ namespace Renci.SshNet.Compression
                 }
 
                 var decompressorStream = _decompressorStream;
+
                 if (decompressorStream != null)
                 {
                     decompressorStream.Dispose();
@@ -177,7 +178,6 @@ namespace Renci.SshNet.Compression
         {
             Dispose(false);
         }
-
         #endregion
     }
 }

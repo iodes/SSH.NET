@@ -23,10 +23,7 @@ namespace Renci.SshNet
         /// <summary>
         /// Gets authentication method name
         /// </summary>
-        public override string Name
-        {
-            get { return _requestMessage.MethodName; }
-        }
+        public override string Name => _requestMessage.MethodName;
 
         /// <summary>
         /// Occurs when server prompts for more authentication information.
@@ -102,39 +99,38 @@ namespace Renci.SshNet
             var informationRequestMessage = e.Message;
 
             var eventArgs = new AuthenticationPromptEventArgs(Username,
-                                                              informationRequestMessage.Instruction,
-                                                              informationRequestMessage.Language,
-                                                              informationRequestMessage.Prompts);
+                informationRequestMessage.Instruction,
+                informationRequestMessage.Language,
+                informationRequestMessage.Prompts);
 
             ThreadAbstraction.ExecuteThread(() =>
+            {
+                try
                 {
-                    try
+                    if (AuthenticationPrompt != null)
                     {
-                        if (AuthenticationPrompt != null)
-                        {
-                            AuthenticationPrompt(this, eventArgs);
-                        }
-
-                        var informationResponse = new InformationResponseMessage();
-
-                        foreach (var response in from r in eventArgs.Prompts orderby r.Id ascending select r.Response)
-                        {
-                            informationResponse.Responses.Add(response);
-                        }
-
-                        //  Send information response message
-                        _session.SendMessage(informationResponse);
+                        AuthenticationPrompt(this, eventArgs);
                     }
-                    catch (Exception exp)
+
+                    var informationResponse = new InformationResponseMessage();
+
+                    foreach (var response in from r in eventArgs.Prompts orderby r.Id ascending select r.Response)
                     {
-                        _exception = exp;
-                        _authenticationCompleted.Set();
+                        informationResponse.Responses.Add(response);
                     }
-                });
+
+                    //  Send information response message
+                    _session.SendMessage(informationResponse);
+                }
+                catch (Exception exp)
+                {
+                    _exception = exp;
+                    _authenticationCompleted.Set();
+                }
+            });
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -158,6 +154,7 @@ namespace Renci.SshNet
             if (disposing)
             {
                 var authenticationCompleted = _authenticationCompleted;
+
                 if (authenticationCompleted != null)
                 {
                     _authenticationCompleted = null;
@@ -176,7 +173,6 @@ namespace Renci.SshNet
         {
             Dispose(false);
         }
-
         #endregion
     }
 }

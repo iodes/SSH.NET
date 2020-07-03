@@ -16,8 +16,10 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
             _hostKeyAlgorithm = Encoding.UTF8.GetBytes(hostKeyAlgorithm);
 
             var sshDataStream = new SshDataStream(0);
+
             foreach (var hostKey in hostKeys)
                 sshDataStream.Write(hostKey);
+
             _hostKeys = sshDataStream.ToArray();
 
             return this;
@@ -40,7 +42,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Transport
             var sshDataStream = new SshDataStream(0);
             sshDataStream.WriteByte(KeyExchangeDhGroupExchangeReply.MessageNumber);
             sshDataStream.Write((uint)(4 + _hostKeyAlgorithm.Length + _hostKeys.Length));
-            sshDataStream.Write((uint) _hostKeyAlgorithm.Length);
+            sshDataStream.Write((uint)_hostKeyAlgorithm.Length);
             sshDataStream.Write(_hostKeyAlgorithm, 0, _hostKeyAlgorithm.Length);
             sshDataStream.Write(_hostKeys, 0, _hostKeys.Length);
             sshDataStream.Write(_f);

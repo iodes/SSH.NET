@@ -20,7 +20,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         public void HostKeyEventArgsConstructorTest()
         {
             KeyHostAlgorithm host = null; // TODO: Initialize to an appropriate value
-            HostKeyEventArgs target = new HostKeyEventArgs(host);
+            var target = new HostKeyEventArgs(host);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -31,8 +31,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         public void CanTrustTest()
         {
             KeyHostAlgorithm host = null; // TODO: Initialize to an appropriate value
-            HostKeyEventArgs target = new HostKeyEventArgs(host); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = new HostKeyEventArgs(host); // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.CanTrust = expected;
             actual = target.CanTrust;

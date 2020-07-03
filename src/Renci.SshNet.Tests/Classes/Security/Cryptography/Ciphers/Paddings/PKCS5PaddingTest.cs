@@ -18,10 +18,17 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers.Paddings
         [TestMethod]
         public void Pad_BlockSizeAndInput_LessThanBlockSize()
         {
-            var input = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05};
-            var expected = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x03, 0x03, 0x03};
+            var input = new byte[]
+            {
+                0x01, 0x02, 0x03, 0x04, 0x05
+            };
 
-            var actual = _padding.Pad(8, input);
+            var expected = new byte[]
+            {
+                0x01, 0x02, 0x03, 0x04, 0x05, 0x03, 0x03, 0x03
+            };
+
+            byte[] actual = _padding.Pad(8, input);
 
             Assert.IsTrue(expected.IsEqualTo(actual));
         }
@@ -29,10 +36,17 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers.Paddings
         [TestMethod]
         public void Pad_BlockSizeAndInput_MoreThanBlockSizeButNoMultipleOfBlockSize()
         {
-            var input = new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09 };
-            var expected = new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07 };
+            var input = new byte[]
+            {
+                0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09
+            };
 
-            var actual = _padding.Pad(8, input);
+            var expected = new byte[]
+            {
+                0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07
+            };
+
+            byte[] actual = _padding.Pad(8, input);
 
             Assert.IsTrue(expected.IsEqualTo(actual));
         }
@@ -40,10 +54,17 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers.Paddings
         [TestMethod]
         public void Pad_BlockSizeAndInputAndOffsetAndLength_LessThanBlockSize()
         {
-            var input = new byte[] { 0x0f, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 };
-            var expected = new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05, 0x03, 0x03, 0x03 };
+            var input = new byte[]
+            {
+                0x0f, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06
+            };
 
-            var actual = _padding.Pad(8, input, 1, input.Length - 2);
+            var expected = new byte[]
+            {
+                0x01, 0x02, 0x03, 0x04, 0x05, 0x03, 0x03, 0x03
+            };
+
+            byte[] actual = _padding.Pad(8, input, 1, input.Length - 2);
 
             Assert.IsTrue(expected.IsEqualTo(actual));
         }
@@ -51,10 +72,17 @@ namespace Renci.SshNet.Tests.Classes.Security.Cryptography.Ciphers.Paddings
         [TestMethod]
         public void Pad_BlockSizeAndInputAndOffsetAndLength_MoreThanBlockSizeButNoMultipleOfBlockSize()
         {
-            var input = new byte[] { 0x0f, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10 };
-            var expected = new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07 };
+            var input = new byte[]
+            {
+                0x0f, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10
+            };
 
-            var actual = _padding.Pad(8, input, 1, input.Length - 2);
+            var expected = new byte[]
+            {
+                0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07
+            };
+
+            byte[] actual = _padding.Pad(8, input, 1, input.Length - 2);
 
             Assert.IsTrue(expected.IsEqualTo(actual));
         }

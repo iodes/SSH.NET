@@ -79,10 +79,7 @@
         ///   </item>
         /// </list>
         /// </example>
-        public static IRemotePathTransformation ShellQuote
-        {
-            get { return ShellQuoteTransformation; }
-        }
+        public static IRemotePathTransformation ShellQuote => ShellQuoteTransformation;
 
         /// <summary>
         /// Performs no transformation.
@@ -91,10 +88,7 @@
         /// Recommended for servers that do not require any character to be escaped or enclosed in quotes,
         /// or when paths are guaranteed to never contain any special characters (such as #, &quot;, ', $, ...).
         /// </remarks>
-        public static IRemotePathTransformation None
-        {
-            get { return NoneTransformation; }
-        }
+        public static IRemotePathTransformation None => NoneTransformation;
 
         /// <summary>
         /// Encloses a path in double quotes, and escapes any embedded double quote with a backslash.
@@ -135,9 +129,6 @@
         ///   </item>
         /// </list>
         /// </example>
-        public static IRemotePathTransformation DoubleQuote
-        {
-            get { return DoubleQuoteTransformation; }
-        }
+        public static IRemotePathTransformation DoubleQuote => DoubleQuoteTransformation;
     }
 }

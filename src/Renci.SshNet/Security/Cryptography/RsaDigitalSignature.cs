@@ -36,7 +36,6 @@ namespace Renci.SshNet.Security.Cryptography
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -60,6 +59,7 @@ namespace Renci.SshNet.Security.Cryptography
             if (disposing)
             {
                 var hash = _hash;
+
                 if (hash != null)
                 {
                     hash.Dispose();
@@ -78,7 +78,6 @@ namespace Renci.SshNet.Security.Cryptography
         {
             Dispose(false);
         }
-
         #endregion
     }
 }

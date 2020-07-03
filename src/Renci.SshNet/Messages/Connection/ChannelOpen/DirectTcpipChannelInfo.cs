@@ -21,18 +21,15 @@ namespace Renci.SshNet.Messages.Connection
         /// <value>
         /// The type of the channel to open.
         /// </value>
-        public override string ChannelType
-        {
-            get { return NAME; }
-        }
+        public override string ChannelType => NAME;
 
         /// <summary>
         /// Gets the host to connect.
         /// </summary>
         public string HostToConnect
         {
-            get { return Utf8.GetString(_hostToConnect, 0, _hostToConnect.Length); }
-            private set { _hostToConnect = Utf8.GetBytes(value); }
+            get => Utf8.GetString(_hostToConnect, 0, _hostToConnect.Length);
+            private set => _hostToConnect = Utf8.GetBytes(value);
         }
 
         /// <summary>
@@ -45,8 +42,8 @@ namespace Renci.SshNet.Messages.Connection
         /// </summary>
         public string OriginatorAddress
         {
-            get { return Utf8.GetString(_originatorAddress, 0, _originatorAddress.Length); }
-            private set { _originatorAddress = Utf8.GetBytes(value); }
+            get => Utf8.GetString(_originatorAddress, 0, _originatorAddress.Length);
+            private set => _originatorAddress = Utf8.GetBytes(value);
         }
 
         /// <summary>

@@ -20,7 +20,7 @@ namespace Renci.SshNet.Sftp
         /// </summary>
         /// <param name="asyncCallback">The async callback.</param>
         /// <param name="state">The state.</param>
-        public SftpSynchronizeDirectoriesAsyncResult(AsyncCallback asyncCallback, Object state)
+        public SftpSynchronizeDirectoriesAsyncResult(AsyncCallback asyncCallback, object state)
             : base(asyncCallback, state)
         {
         }

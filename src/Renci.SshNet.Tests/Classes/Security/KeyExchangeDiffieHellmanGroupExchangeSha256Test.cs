@@ -19,7 +19,7 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void KeyExchangeDiffieHellmanGroupExchangeSha256ConstructorTest()
         {
-            KeyExchangeDiffieHellmanGroupExchangeSha256 target = new KeyExchangeDiffieHellmanGroupExchangeSha256();
+            var target = new KeyExchangeDiffieHellmanGroupExchangeSha256();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -30,7 +30,7 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void FinishTest()
         {
-            KeyExchangeDiffieHellmanGroupExchangeSha256 target = new KeyExchangeDiffieHellmanGroupExchangeSha256(); // TODO: Initialize to an appropriate value
+            var target = new KeyExchangeDiffieHellmanGroupExchangeSha256(); // TODO: Initialize to an appropriate value
             target.Finish();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -42,7 +42,7 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void StartTest()
         {
-            KeyExchangeDiffieHellmanGroupExchangeSha256 target = new KeyExchangeDiffieHellmanGroupExchangeSha256(); // TODO: Initialize to an appropriate value
+            var target = new KeyExchangeDiffieHellmanGroupExchangeSha256(); // TODO: Initialize to an appropriate value
             Session session = null; // TODO: Initialize to an appropriate value
             KeyExchangeInitMessage message = null; // TODO: Initialize to an appropriate value
             target.Start(session, message);
@@ -56,7 +56,7 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void NameTest()
         {
-            KeyExchangeDiffieHellmanGroupExchangeSha256 target = new KeyExchangeDiffieHellmanGroupExchangeSha256(); // TODO: Initialize to an appropriate value
+            var target = new KeyExchangeDiffieHellmanGroupExchangeSha256(); // TODO: Initialize to an appropriate value
             string actual;
             actual = target.Name;
             Assert.Inconclusive("Verify the correctness of this test method.");

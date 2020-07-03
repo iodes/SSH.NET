@@ -108,11 +108,11 @@ namespace Renci.SshNet.Tests.Classes.Sftp
             {
                 sftp.Connect();
 
-                string uploadedFileName = Path.GetTempFileName();
-                string remoteFileName = Path.GetRandomFileName();
-                string newFileName = Path.GetRandomFileName();
+                var uploadedFileName = Path.GetTempFileName();
+                var remoteFileName = Path.GetRandomFileName();
+                var newFileName = Path.GetRandomFileName();
 
-                this.CreateTestFile(uploadedFileName, 1);
+                CreateTestFile(uploadedFileName, 1);
 
                 using (var file = File.OpenRead(uploadedFileName))
                 {
@@ -137,9 +137,9 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void DeleteTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
             target.Delete();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -152,10 +152,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void MoveToTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            string destFileName = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var destFileName = string.Empty; // TODO: Initialize to an appropriate value
             target.MoveTo(destFileName);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -168,9 +168,9 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void SetPermissionsTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
             short mode = 0; // TODO: Initialize to an appropriate value
             target.SetPermissions(mode);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -184,10 +184,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void ToStringTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            string expected = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = string.Empty; // TODO: Initialize to an appropriate value
             string actual;
             actual = target.ToString();
             Assert.AreEqual(expected, actual);
@@ -202,9 +202,9 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void UpdateStatusTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
             target.UpdateStatus();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -217,10 +217,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void GroupCanExecuteTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.GroupCanExecute = expected;
             actual = target.GroupCanExecute;
@@ -236,10 +236,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void GroupCanReadTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.GroupCanRead = expected;
             actual = target.GroupCanRead;
@@ -255,10 +255,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void GroupCanWriteTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.GroupCanWrite = expected;
             actual = target.GroupCanWrite;
@@ -274,10 +274,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void GroupIdTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            int expected = 0; // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = 0; // TODO: Initialize to an appropriate value
             int actual;
             target.GroupId = expected;
             actual = target.GroupId;
@@ -293,9 +293,9 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void IsBlockDeviceTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.IsBlockDevice;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -309,9 +309,9 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void IsCharacterDeviceTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.IsCharacterDevice;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -325,9 +325,9 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void IsDirectoryTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.IsDirectory;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -341,9 +341,9 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void IsNamedPipeTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.IsNamedPipe;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -357,9 +357,9 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void IsRegularFileTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.IsRegularFile;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -373,9 +373,9 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void IsSocketTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.IsSocket;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -389,9 +389,9 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void IsSymbolicLinkTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.IsSymbolicLink;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -405,10 +405,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void LastAccessTimeTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            DateTime expected = new DateTime(); // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = new DateTime(); // TODO: Initialize to an appropriate value
             DateTime actual;
             target.LastAccessTime = expected;
             actual = target.LastAccessTime;
@@ -424,10 +424,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void LastAccessTimeUtcTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            DateTime expected = new DateTime(); // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = new DateTime(); // TODO: Initialize to an appropriate value
             DateTime actual;
             target.LastAccessTimeUtc = expected;
             actual = target.LastAccessTimeUtc;
@@ -443,10 +443,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void LastWriteTimeTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            DateTime expected = new DateTime(); // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = new DateTime(); // TODO: Initialize to an appropriate value
             DateTime actual;
             target.LastWriteTime = expected;
             actual = target.LastWriteTime;
@@ -462,10 +462,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void LastWriteTimeUtcTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            DateTime expected = new DateTime(); // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = new DateTime(); // TODO: Initialize to an appropriate value
             DateTime actual;
             target.LastWriteTimeUtc = expected;
             actual = target.LastWriteTimeUtc;
@@ -481,9 +481,9 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void LengthTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
             long actual;
             actual = target.Length;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -497,10 +497,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void OthersCanExecuteTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.OthersCanExecute = expected;
             actual = target.OthersCanExecute;
@@ -516,10 +516,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void OthersCanReadTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.OthersCanRead = expected;
             actual = target.OthersCanRead;
@@ -535,10 +535,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void OthersCanWriteTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.OthersCanWrite = expected;
             actual = target.OthersCanWrite;
@@ -554,10 +554,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void OwnerCanExecuteTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.OwnerCanExecute = expected;
             actual = target.OwnerCanExecute;
@@ -573,10 +573,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void OwnerCanReadTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.OwnerCanRead = expected;
             actual = target.OwnerCanRead;
@@ -592,10 +592,10 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void OwnerCanWriteTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             target.OwnerCanWrite = expected;
             actual = target.OwnerCanWrite;
@@ -611,16 +611,15 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void UserIdTest()
         {
             SftpSession sftpSession = null; // TODO: Initialize to an appropriate value
-            string fullName = string.Empty; // TODO: Initialize to an appropriate value
+            var fullName = string.Empty; // TODO: Initialize to an appropriate value
             SftpFileAttributes attributes = null; // TODO: Initialize to an appropriate value
-            SftpFile target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
-            int expected = 0; // TODO: Initialize to an appropriate value
+            var target = new SftpFile(sftpSession, fullName, attributes); // TODO: Initialize to an appropriate value
+            var expected = 0; // TODO: Initialize to an appropriate value
             int actual;
             target.UserId = expected;
             actual = target.UserId;
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
-
     }
 }

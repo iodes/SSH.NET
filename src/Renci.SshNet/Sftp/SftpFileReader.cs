@@ -20,6 +20,7 @@ namespace Renci.SshNet.Sftp
         /// Holds the size of the file, when available.
         /// </summary>
         private readonly long? _fileSize;
+
         private readonly Dictionary<int, BufferedRead> _queue;
         private readonly WaitHandle[] _waitHandles;
 
@@ -32,10 +33,12 @@ namespace Renci.SshNet.Sftp
         /// Holds a value indicating whether EOF has already been signaled by the SSH server.
         /// </summary>
         private bool _endOfFileReceived;
+
         /// <summary>
         /// Holds a value indicating whether the client has read up to the end of the file.
         /// </summary>
         private bool _isEndOfFileRead;
+
         private readonly SemaphoreLight _semaphore;
         private readonly object _readLock;
 
@@ -73,8 +76,10 @@ namespace Renci.SshNet.Sftp
         {
             if (_disposingOrDisposed)
                 throw new ObjectDisposedException(GetType().FullName);
+
             if (_exception != null)
                 throw _exception;
+
             if (_isEndOfFileRead)
                 throw new SshException("Attempting to read beyond the end of the file.");
 
@@ -93,7 +98,7 @@ namespace Renci.SshNet.Sftp
                 if (_exception != null)
                     throw _exception;
 
-                var data = nextChunk.Data;
+                byte[] data = nextChunk.Data;
 
                 if (nextChunk.Offset == _offset)
                 {
@@ -109,10 +114,11 @@ namespace Renci.SshNet.Sftp
                         // remove processed chunk
                         _queue.Remove(_nextChunkIndex);
                         // update offset
-                        _offset += (ulong) data.Length;
+                        _offset += (ulong)data.Length;
                         // move to next chunk
                         _nextChunkIndex++;
                     }
+
                     // unblock wait in read-ahead
                     _semaphore.Release();
 
@@ -122,7 +128,7 @@ namespace Renci.SshNet.Sftp
                 // when we received an EOF for the next chunk and the size of the file is known, then
                 // we only complete the current chunk if we haven't already read up to the file size;
                 // this way we save an extra round-trip to the server
-                if (data.Length == 0 && _fileSize.HasValue && _offset == (ulong) _fileSize.Value)
+                if (data.Length == 0 && _fileSize.HasValue && _offset == (ulong)_fileSize.Value)
                 {
                     // avoid future reads
                     _isEndOfFileRead = true;
@@ -151,7 +157,8 @@ namespace Renci.SshNet.Sftp
 
             // TODO: break loop and interrupt blocking wait in case of exception
 
-            var read = _sftpSession.RequestRead(_handle, _offset, (uint) bytesToCatchUp);
+            byte[] read = _sftpSession.RequestRead(_handle, _offset, (uint)bytesToCatchUp);
+
             if (read.Length == 0)
             {
                 // process data in read lock to avoid ObjectDisposedException while releasing semaphore
@@ -162,30 +169,34 @@ namespace Renci.SshNet.Sftp
                     if (nextChunk.Data.Length == 0)
                     {
                         _isEndOfFileRead = true;
+
                         // ensure we've not yet disposed the current instance
                         if (!_disposingOrDisposed)
                         {
                             // unblock wait in read-ahead
                             _semaphore.Release();
                         }
+
                         // signal EOF to caller
                         return read;
                     }
 
                     // move reader to error state
                     _exception = new SshException("Unexpectedly reached end of file.");
+
                     // ensure we've not yet disposed the current instance
                     if (!_disposingOrDisposed)
                     {
                         // unblock wait in read-ahead
                         _semaphore.Release();
                     }
+
                     // notify caller of error
                     throw _exception;
                 }
             }
 
-            _offset += (uint) read.Length;
+            _offset += (uint)read.Length;
 
             return read;
         }
@@ -269,6 +280,7 @@ namespace Renci.SshNet.Sftp
                         {
                             Monitor.PulseAll(_readLock);
                         }
+
                         // break the read-ahead loop
                         break;
                     }
@@ -299,11 +311,12 @@ namespace Renci.SshNet.Sftp
                         // if the offset of the read-ahead chunk is greater than that file size, then
                         // we can expect to be reading the last (zero-byte) chunk and switch to synchronous
                         // mode to avoid having multiple read-aheads that read beyond EOF
-                        if (_fileSize != null && (long) _readAheadOffset > _fileSize.Value)
+                        if (_fileSize != null && (long)_readAheadOffset > _fileSize.Value)
                         {
                             var asyncResult = _sftpSession.BeginRead(_handle, _readAheadOffset, _chunkSize, null,
-                                                                     bufferedRead);
-                            var data = _sftpSession.EndRead(asyncResult);
+                                bufferedRead);
+
+                            byte[] data = _sftpSession.EndRead(asyncResult);
                             ReadCompletedCore(bufferedRead, data);
                         }
                         else
@@ -338,12 +351,15 @@ namespace Renci.SshNet.Sftp
             try
             {
                 var waitResult = _sftpSession.WaitAny(_waitHandles, _sftpSession.OperationTimeout);
+
                 switch (waitResult)
                 {
                     case 0: // disposing
                         return false;
+
                     case 1: // semaphore available
                         return true;
+
                     default:
                         throw new NotImplementedException(string.Format(CultureInfo.InvariantCulture, "WaitAny return value '{0}' is not implemented.", waitResult));
                 }
@@ -364,7 +380,7 @@ namespace Renci.SshNet.Sftp
                 return;
             }
 
-            var readAsyncResult = (SftpReadAsyncResult) result;
+            var readAsyncResult = (SftpReadAsyncResult)result;
 
             byte[] data;
 
@@ -380,7 +396,7 @@ namespace Renci.SshNet.Sftp
 
             // a read that completes with a zero-byte result signals EOF
             // but there may be pending reads before that read
-            var bufferedRead = (BufferedRead) readAsyncResult.AsyncState;
+            var bufferedRead = (BufferedRead)readAsyncResult.AsyncState;
             ReadCompletedCore(bufferedRead, data);
         }
 

@@ -20,10 +20,7 @@ namespace Renci.SshNet
         /// <summary>
         /// Gets authentication method name
         /// </summary>
-        public override string Name
-        {
-            get { return "publickey"; }
-        }
+        public override string Name => "publickey";
 
         /// <summary>
         /// Gets the key files used for authentication.
@@ -68,14 +65,14 @@ namespace Renci.SshNet
                     _isSignatureRequired = false;
 
                     var message = new RequestMessagePublicKey(ServiceName.Connection,
-                                                              Username,
-                                                              keyFile.HostKey.Name,
-                                                              keyFile.HostKey.Data);
+                        Username,
+                        keyFile.HostKey.Name,
+                        keyFile.HostKey.Data);
 
                     if (KeyFiles.Count < 2)
                     {
                         //  If only one key file provided then send signature for very first request
-                        var signatureData = new SignatureData(message, session.SessionId).GetBytes();
+                        byte[] signatureData = new SignatureData(message, session.SessionId).GetBytes();
 
                         message.Signature = keyFile.HostKey.Sign(signatureData);
                     }
@@ -90,11 +87,11 @@ namespace Renci.SshNet
                         _authenticationCompleted.Reset();
 
                         var signatureMessage = new RequestMessagePublicKey(ServiceName.Connection,
-                                                                           Username,
-                                                                           keyFile.HostKey.Name,
-                                                                           keyFile.HostKey.Data);
+                            Username,
+                            keyFile.HostKey.Name,
+                            keyFile.HostKey.Data);
 
-                        var signatureData = new SignatureData(message, session.SessionId).GetBytes();
+                        byte[] signatureData = new SignatureData(message, session.SessionId).GetBytes();
 
                         signatureMessage.Signature = keyFile.HostKey.Sign(signatureData);
 
@@ -148,7 +145,6 @@ namespace Renci.SshNet
         }
 
         #region IDisposable Members
-
         private bool _isDisposed;
 
         /// <summary>
@@ -172,6 +168,7 @@ namespace Renci.SshNet
             if (disposing)
             {
                 var authenticationCompleted = _authenticationCompleted;
+
                 if (authenticationCompleted != null)
                 {
                     _authenticationCompleted = null;
@@ -190,7 +187,6 @@ namespace Renci.SshNet
         {
             Dispose(false);
         }
-
         #endregion
 
         private class SignatureData : SshData
@@ -240,7 +236,7 @@ namespace Renci.SshNet
             protected override void SaveData()
             {
                 WriteBinaryString(_sessionId);
-                Write((byte) RequestMessage.AuthenticationMessageCode);
+                Write((byte)RequestMessage.AuthenticationMessageCode);
                 WriteBinaryString(_message.Username);
                 WriteBinaryString(_serviceName);
                 WriteBinaryString(_authenticationMethod);

@@ -24,7 +24,7 @@ namespace Renci.SshNet.Tests.Classes
             {
                 sftp.Connect();
 
-                string remoteFileName = "/root/.profile";
+                var remoteFileName = "/root/.profile";
 
                 using (var ms = new MemoryStream())
                 {
@@ -45,7 +45,8 @@ namespace Renci.SshNet.Tests.Classes
             {
                 sftp.Connect();
 
-                string remoteFileName = "/xxx/eee/yyy";
+                var remoteFileName = "/xxx/eee/yyy";
+
                 using (var ms = new MemoryStream())
                 {
                     sftp.DownloadFile(remoteFileName, ms);
@@ -110,7 +111,7 @@ namespace Renci.SshNet.Tests.Classes
             {
                 sftp.Connect();
                 var filename = Path.GetTempFileName();
-                this.CreateTestFile(filename, 1);
+                CreateTestFile(filename, 1);
                 sftp.UploadFile(File.OpenRead(filename), "test123");
                 var async1 = sftp.BeginListDirectory("/", null, null);
                 var async2 = sftp.BeginDownloadFile("test123", new MemoryStream(), null, null);

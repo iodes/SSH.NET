@@ -14,10 +14,7 @@
         /// <value>
         /// The name of the request.
         /// </value>
-        public string RequestName
-        {
-            get { return Ascii.GetString(_requestName, 0, _requestName.Length); }
-        }
+        public string RequestName => Ascii.GetString(_requestName, 0, _requestName.Length);
 
         /// <summary>
         /// Gets a value indicating whether message reply should be sent..

@@ -15,7 +15,9 @@ namespace Renci.SshNet.Common
         private const byte BITSTRING = 0x03;
         private const byte Octetstring = 0x04;
         private const byte Null = 0x05;
+
         private const byte Objectidentifier = 0x06;
+
         //private const byte EXTERNAL = 0x08;
         //private const byte ENUMERATED = 0x0a;
         private const byte Sequence = 0x10;
@@ -50,13 +52,7 @@ namespace Renci.SshNet.Common
         /// <value>
         /// 	<c>true</c> if end of data is reached; otherwise, <c>false</c>.
         /// </value>
-        public bool IsEndOfData
-        {
-            get
-            {
-                return _readerIndex >= _lastIndex;
-            }
-        }
+        public bool IsEndOfData => _readerIndex >= _lastIndex;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DerData"/> class.
@@ -74,6 +70,7 @@ namespace Renci.SshNet.Common
         public DerData(byte[] data, bool construct = false)
         {
             _data = new List<byte>(data);
+
             if (construct)
             {
                 _lastIndex = _readerIndex + data.Length;
@@ -93,7 +90,7 @@ namespace Renci.SshNet.Common
         public byte[] Encode()
         {
             var length = _data.Count;
-            var lengthBytes = GetLength(length);
+            IEnumerable<byte> lengthBytes = GetLength(length);
 
             _data.InsertRange(0, lengthBytes);
             _data.Insert(0, Constructed | Sequence);
@@ -108,12 +105,13 @@ namespace Renci.SshNet.Common
         public BigInteger ReadBigInteger()
         {
             var type = ReadByte();
+
             if (type != Integer)
                 throw new InvalidOperationException(string.Format("Invalid data type, INTEGER(02) is expected, but was {0}", type.ToString("X2")));
 
             var length = ReadLength();
 
-            var data = ReadBytes(length);
+            byte[] data = ReadBytes(length);
 
             return new BigInteger(data.Reverse());
         }
@@ -125,18 +123,20 @@ namespace Renci.SshNet.Common
         public int ReadInteger()
         {
             var type = ReadByte();
+
             if (type != Integer)
                 throw new InvalidOperationException(string.Format("Invalid data type, INTEGER(02) is expected, but was {0}", type.ToString("X2")));
 
             var length = ReadLength();
 
-            var data = ReadBytes(length);
+            byte[] data = ReadBytes(length);
 
             if (length > 4)
                 throw new InvalidOperationException("Integer type cannot occupy more then 4 bytes");
 
             var result = 0;
             var shift = (length - 1) * 8;
+
             for (var i = 0; i < length; i++)
             {
                 result |= data[i] << shift;
@@ -155,11 +155,12 @@ namespace Renci.SshNet.Common
         public byte[] ReadOctetString()
         {
             var type = ReadByte();
+
             if (type != Octetstring)
                 throw new InvalidOperationException(string.Format("Invalid data type, OCTETSTRING(04) is expected, but was {0}", type.ToString("X2")));
 
             var length = ReadLength();
-            var data = ReadBytes(length);
+            byte[] data = ReadBytes(length);
             return data;
         }
 
@@ -170,11 +171,12 @@ namespace Renci.SshNet.Common
         public byte[] ReadBitString()
         {
             var type = ReadByte();
+
             if (type != BITSTRING)
                 throw new InvalidOperationException(string.Format("Invalid data type, BITSTRING(03) is expected, but was {0}", type.ToString("X2")));
 
             var length = ReadLength();
-            var data = ReadBytes(length);
+            byte[] data = ReadBytes(length);
             return data;
         }
 
@@ -185,11 +187,12 @@ namespace Renci.SshNet.Common
         public byte[] ReadObject()
         {
             var type = ReadByte();
+
             if (type != Objectidentifier)
                 throw new InvalidOperationException(string.Format("Invalid data type, OBJECT(06) is expected, but was {0}", type.ToString("X2")));
 
             var length = ReadLength();
-            var data = ReadBytes(length);
+            byte[] data = ReadBytes(length);
             return data;
         }
 
@@ -210,9 +213,9 @@ namespace Renci.SshNet.Common
         /// <param name="data">UInt32 data to write.</param>
         public void Write(uint data)
         {
-            var bytes = Pack.UInt32ToBigEndian(data);
+            byte[] bytes = Pack.UInt32ToBigEndian(data);
             _data.Add(Integer);
-            var length = GetLength(bytes.Length);
+            IEnumerable<byte> length = GetLength(bytes.Length);
             WriteBytes(length);
             WriteBytes(bytes);
         }
@@ -223,9 +226,9 @@ namespace Renci.SshNet.Common
         /// <param name="data">BigInteger data to write.</param>
         public void Write(BigInteger data)
         {
-            var bytes = data.ToByteArray().Reverse();
+            byte[] bytes = data.ToByteArray().Reverse();
             _data.Add(Integer);
-            var length = GetLength(bytes.Length);
+            IEnumerable<byte> length = GetLength(bytes.Length);
             WriteBytes(length);
             WriteBytes(bytes);
         }
@@ -237,7 +240,7 @@ namespace Renci.SshNet.Common
         public void Write(byte[] data)
         {
             _data.Add(Octetstring);
-            var length = GetLength(data.Length);
+            IEnumerable<byte> length = GetLength(data.Length);
             WriteBytes(length);
             WriteBytes(data);
         }
@@ -249,7 +252,7 @@ namespace Renci.SshNet.Common
         public void WriteBitstring(byte[] data)
         {
             _data.Add(BITSTRING);
-            var length = GetLength(data.Length);
+            IEnumerable<byte> length = GetLength(data.Length);
             WriteBytes(length);
             WriteBytes(data);
         }
@@ -264,6 +267,7 @@ namespace Renci.SshNet.Common
             temp[0] = identifier.Identifiers[0] * 40 + identifier.Identifiers[1];
             Buffer.BlockCopy(identifier.Identifiers, 2 * sizeof(ulong), temp, 1 * sizeof(ulong), (identifier.Identifiers.Length - 2) * sizeof(ulong));
             var bytes = new List<byte>();
+
             foreach (var subidentifier in temp)
             {
                 var item = subidentifier;
@@ -271,16 +275,18 @@ namespace Renci.SshNet.Common
                 var bufferIndex = buffer.Length - 1;
 
                 var current = (byte)(item & 0x7F);
+
                 do
                 {
                     buffer[bufferIndex] = current;
+
                     if (bufferIndex < buffer.Length - 1)
                         buffer[bufferIndex] |= 0x80;
+
                     item >>= 7;
                     current = (byte)(item & 0x7F);
                     bufferIndex--;
-                }
-                while (current > 0);
+                } while (current > 0);
 
                 for (var i = bufferIndex + 1; i < buffer.Length; i++)
                 {
@@ -289,7 +295,7 @@ namespace Renci.SshNet.Common
             }
 
             _data.Add(Objectidentifier);
-            var length = GetLength(bytes.Count);
+            IEnumerable<byte> length = GetLength(bytes.Count);
             WriteBytes(length);
             WriteBytes(bytes);
         }
@@ -301,7 +307,7 @@ namespace Renci.SshNet.Common
         public void WriteObjectIdentifier(byte[] bytes)
         {
             _data.Add(Objectidentifier);
-            var length = GetLength(bytes.Length);
+            IEnumerable<byte> length = GetLength(bytes.Length);
             WriteBytes(length);
             WriteBytes(bytes);
         }
@@ -321,7 +327,7 @@ namespace Renci.SshNet.Common
         /// <param name="data">DerData data to write.</param>
         public void Write(DerData data)
         {
-            var bytes = data.Encode();
+            byte[] bytes = data.Encode();
             _data.AddRange(bytes);
         }
 
@@ -345,8 +351,13 @@ namespace Renci.SshNet.Common
 
                 return data;
             }
-            return new[] { (byte)length };
+
+            return new[]
+            {
+                (byte)length
+            };
         }
+
         /// <summary>
         /// Gets Data Length
         /// </summary>
@@ -369,6 +380,7 @@ namespace Renci.SshNet.Common
                     throw new InvalidOperationException(string.Format("DER length is '{0}' and cannot be more than 4 bytes.", size));
 
                 length = 0;
+
                 for (var i = 0; i < size; i++)
                 {
                     int next = ReadByte();

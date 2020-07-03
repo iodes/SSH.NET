@@ -25,10 +25,10 @@ namespace Renci.SshNet.Tests.Classes
             {
                 sftp.Connect();
 
-                string uploadedFileName = Path.GetTempFileName();
-                string remoteFileName = Path.GetRandomFileName();
+                var uploadedFileName = Path.GetTempFileName();
+                var remoteFileName = Path.GetRandomFileName();
 
-                this.CreateTestFile(uploadedFileName, 1);
+                CreateTestFile(uploadedFileName, 1);
 
                 //  Calculate has value
                 var uploadedHash = CalculateMD5(uploadedFileName);
@@ -38,7 +38,7 @@ namespace Renci.SshNet.Tests.Classes
                     sftp.UploadFile(file, remoteFileName);
                 }
 
-                string downloadedFileName = Path.GetTempFileName();
+                var downloadedFileName = Path.GetTempFileName();
 
                 using (var file = File.OpenWrite(downloadedFileName))
                 {
@@ -68,10 +68,10 @@ namespace Renci.SshNet.Tests.Classes
             {
                 sftp.Connect();
 
-                string uploadedFileName = Path.GetTempFileName();
-                string remoteFileName = "/root/1";
+                var uploadedFileName = Path.GetTempFileName();
+                var remoteFileName = "/root/1";
 
-                this.CreateTestFile(uploadedFileName, 1);
+                CreateTestFile(uploadedFileName, 1);
 
                 using (var file = File.OpenRead(uploadedFileName))
                 {
@@ -98,14 +98,14 @@ namespace Renci.SshNet.Tests.Classes
 
                 var testInfoList = new Dictionary<string, TestInfo>();
 
-                for (int i = 0; i < maxFiles; i++)
+                for (var i = 0; i < maxFiles; i++)
                 {
                     var testInfo = new TestInfo();
                     testInfo.UploadedFileName = Path.GetTempFileName();
                     testInfo.DownloadedFileName = Path.GetTempFileName();
                     testInfo.RemoteFileName = Path.GetRandomFileName();
 
-                    this.CreateTestFile(testInfo.UploadedFileName, maxSize);
+                    CreateTestFile(testInfo.UploadedFileName, maxSize);
 
                     //  Calculate hash value
                     testInfo.UploadedHash = CalculateMD5(testInfo.UploadedFileName);
@@ -130,7 +130,8 @@ namespace Renci.SshNet.Tests.Classes
                 }
 
                 //  Wait for upload to finish
-                bool uploadCompleted = false;
+                var uploadCompleted = false;
+
                 while (!uploadCompleted)
                 {
                     //  Assume upload completed
@@ -145,6 +146,7 @@ namespace Renci.SshNet.Tests.Classes
                             uploadCompleted = false;
                         }
                     }
+
                     Thread.Sleep(500);
                 }
 
@@ -165,6 +167,7 @@ namespace Renci.SshNet.Tests.Classes
                 {
                     var testInfo = testInfoList[remoteFile];
                     testInfo.DownloadedFile = File.OpenWrite(testInfo.DownloadedFileName);
+
                     testInfo.DownloadResult = sftp.BeginDownloadFile(remoteFile,
                         testInfo.DownloadedFile,
                         null,
@@ -174,7 +177,8 @@ namespace Renci.SshNet.Tests.Classes
                 }
 
                 //  Wait for download to finish
-                bool downloadCompleted = false;
+                var downloadCompleted = false;
+
                 while (!downloadCompleted)
                 {
                     //  Assume download completed
@@ -189,6 +193,7 @@ namespace Renci.SshNet.Tests.Classes
                             downloadCompleted = false;
                         }
                     }
+
                     Thread.Sleep(500);
                 }
 
@@ -248,11 +253,11 @@ namespace Renci.SshNet.Tests.Classes
             {
                 sftp.Connect();
 
-                string remoteFileName = Path.GetRandomFileName();
-                string localFileName = Path.GetRandomFileName();
-                bool uploadDelegateCalled = false;
-                bool downloadDelegateCalled = false;
-                bool listDirectoryDelegateCalled = false;
+                var remoteFileName = Path.GetRandomFileName();
+                var localFileName = Path.GetRandomFileName();
+                var uploadDelegateCalled = false;
+                var downloadDelegateCalled = false;
+                var listDirectoryDelegateCalled = false;
                 IAsyncResult asyncResult;
 
                 // Test for BeginUploadFile.
@@ -280,6 +285,7 @@ namespace Renci.SshNet.Tests.Classes
                 // Test for BeginDownloadFile.
 
                 asyncResult = null;
+
                 using (var fileStream = File.OpenWrite(localFileName))
                 {
                     asyncResult = sftp.BeginDownloadFile(remoteFileName, fileStream, delegate(IAsyncResult ar)
@@ -301,6 +307,7 @@ namespace Renci.SshNet.Tests.Classes
                 // Test for BeginListDirectory.
 
                 asyncResult = null;
+
                 asyncResult = sftp.BeginListDirectory(sftp.WorkingDirectory, delegate(IAsyncResult ar)
                 {
                     sftp.EndListDirectory(ar);
@@ -372,7 +379,7 @@ namespace Renci.SshNet.Tests.Classes
                 sftp.Connect();
                 var async1 = sftp.BeginListDirectory("/", null, null);
                 var filename = Path.GetTempFileName();
-                this.CreateTestFile(filename, 100);
+                CreateTestFile(filename, 100);
                 var async2 = sftp.BeginUploadFile(File.OpenRead(filename), "test", null, null);
                 sftp.EndUploadFile(async1);
             }

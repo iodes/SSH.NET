@@ -36,9 +36,9 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         [TestMethod]
         public void Constructor_LocalChannelNumberAndInitialWindowSizeAndMaximumPacketSizeAndInfo()
         {
-            var localChannelNumber = (uint) _random.Next(0, int.MaxValue);
-            var initialWindowSize = (uint) _random.Next(0, int.MaxValue);
-            var maximumPacketSize = (uint) _random.Next(0, int.MaxValue);
+            var localChannelNumber = (uint)_random.Next(0, int.MaxValue);
+            var initialWindowSize = (uint)_random.Next(0, int.MaxValue);
+            var maximumPacketSize = (uint)_random.Next(0, int.MaxValue);
             var info = new DirectTcpipChannelInfo("host", 22, "originator", 25);
 
             var target = new ChannelOpenMessage(localChannelNumber, initialWindowSize, maximumPacketSize, info);
@@ -53,9 +53,9 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         [TestMethod]
         public void Constructor_LocalChannelNumberAndInitialWindowSizeAndMaximumPacketSizeAndInfo_ShouldThrowArgumentNullExceptionWhenInfoIsNull()
         {
-            var localChannelNumber = (uint) _random.Next(0, int.MaxValue);
-            var initialWindowSize = (uint) _random.Next(0, int.MaxValue);
-            var maximumPacketSize = (uint) _random.Next(0, int.MaxValue);
+            var localChannelNumber = (uint)_random.Next(0, int.MaxValue);
+            var initialWindowSize = (uint)_random.Next(0, int.MaxValue);
+            var maximumPacketSize = (uint)_random.Next(0, int.MaxValue);
             ChannelOpenInfo info = null;
 
             try
@@ -77,10 +77,10 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
             var initialWindowSize = (uint)_random.Next(0, int.MaxValue);
             var maximumPacketSize = (uint)_random.Next(0, int.MaxValue);
             var info = new DirectTcpipChannelInfo("host", 22, "originator", 25);
-            var infoBytes = info.GetBytes();
+            byte[] infoBytes = info.GetBytes();
             var target = new ChannelOpenMessage(localChannelNumber, initialWindowSize, maximumPacketSize, info);
 
-            var bytes = target.GetBytes();
+            byte[] bytes = target.GetBytes();
 
             var expectedBytesLength = 1; // Type
             expectedBytesLength += 4; // ChannelType length
@@ -97,10 +97,10 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
             Assert.AreEqual(ChannelOpenMessage.MessageNumber, sshDataStream.ReadByte());
 
             var actualChannelTypeLength = sshDataStream.ReadUInt32();
-            Assert.AreEqual((uint) target.ChannelType.Length, actualChannelTypeLength);
+            Assert.AreEqual((uint)target.ChannelType.Length, actualChannelTypeLength);
 
             var actualChannelType = new byte[actualChannelTypeLength];
-            sshDataStream.Read(actualChannelType, 0, (int) actualChannelTypeLength);
+            sshDataStream.Read(actualChannelType, 0, (int)actualChannelTypeLength);
             Assert.IsTrue(target.ChannelType.SequenceEqual(actualChannelType));
 
             Assert.AreEqual(localChannelNumber, sshDataStream.ReadUInt32());
@@ -122,7 +122,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
             var maximumPacketSize = (uint)_random.Next(0, int.MaxValue);
             var info = new DirectTcpipChannelInfo("host", 22, "originator", 25);
             var target = new ChannelOpenMessage(localChannelNumber, initialWindowSize, maximumPacketSize, info);
-            var bytes = target.GetBytes();
+            byte[] bytes = target.GetBytes();
 
             target.Load(bytes, 1, bytes.Length - 1); // skip message type
 
@@ -149,7 +149,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
             var maximumPacketSize = (uint)_random.Next(0, int.MaxValue);
             var info = new ForwardedTcpipChannelInfo("connected", 25, "originator", 21);
             var target = new ChannelOpenMessage(localChannelNumber, initialWindowSize, maximumPacketSize, info);
-            var bytes = target.GetBytes();
+            byte[] bytes = target.GetBytes();
 
             target.Load(bytes, 1, bytes.Length - 1); // skip message type
 
@@ -176,7 +176,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
             var maximumPacketSize = (uint)_random.Next(0, int.MaxValue);
             var info = new SessionChannelOpenInfo();
             var target = new ChannelOpenMessage(localChannelNumber, initialWindowSize, maximumPacketSize, info);
-            var bytes = target.GetBytes();
+            byte[] bytes = target.GetBytes();
 
             target.Load(bytes, 1, bytes.Length - 1); // skip message type
 
@@ -191,7 +191,6 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
             Assert.AreEqual(info.ChannelType, sessionChannelOpenInfo.ChannelType);
         }
 
-
         [TestMethod]
         public void Load_X11ChannelOpenInfo()
         {
@@ -200,7 +199,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
             var maximumPacketSize = (uint)_random.Next(0, int.MaxValue);
             var info = new X11ChannelOpenInfo("address", 26);
             var target = new ChannelOpenMessage(localChannelNumber, initialWindowSize, maximumPacketSize, info);
-            var bytes = target.GetBytes();
+            byte[] bytes = target.GetBytes();
 
             target.Load(bytes, 1, bytes.Length - 1); // skip message type
 
@@ -224,16 +223,16 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
             var initialWindowSize = (uint)_random.Next(0, int.MaxValue);
             var maximumPacketSize = (uint)_random.Next(0, int.MaxValue);
             var channelName = "dunno_" + _random.Next().ToString(CultureInfo.InvariantCulture);
-            var channelType = _ascii.GetBytes(channelName);
+            byte[] channelType = _ascii.GetBytes(channelName);
 
             var sshDataStream = new SshDataStream(1 + 4 + channelType.Length + 4 + 4 + 4);
             sshDataStream.WriteByte(ChannelOpenMessage.MessageNumber);
-            sshDataStream.Write((uint) channelType.Length);
+            sshDataStream.Write((uint)channelType.Length);
             sshDataStream.Write(channelType, 0, channelType.Length);
             sshDataStream.Write(localChannelNumber);
             sshDataStream.Write(initialWindowSize);
             sshDataStream.Write(maximumPacketSize);
-            var bytes = sshDataStream.ToArray();
+            byte[] bytes = sshDataStream.ToArray();
             var target = new ChannelOpenMessage();
 
             try

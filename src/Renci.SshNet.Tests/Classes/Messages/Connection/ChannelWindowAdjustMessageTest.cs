@@ -19,7 +19,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         [Ignore] // placeholder
         public void ChannelWindowAdjustMessageConstructorTest()
         {
-            ChannelWindowAdjustMessage target = new ChannelWindowAdjustMessage();
+            var target = new ChannelWindowAdjustMessage();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -32,7 +32,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         {
             uint localChannelNumber = 0; // TODO: Initialize to an appropriate value
             uint bytesToAdd = 0; // TODO: Initialize to an appropriate value
-            ChannelWindowAdjustMessage target = new ChannelWindowAdjustMessage(localChannelNumber, bytesToAdd);
+            var target = new ChannelWindowAdjustMessage(localChannelNumber, bytesToAdd);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

@@ -22,7 +22,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         public void ShouldThrowArgumentNullExceptionWhenLeftIsNull()
         {
             const byte[] left = null;
-            var right = CreateBuffer(1);
+            byte[] right = CreateBuffer(1);
 
             try
             {
@@ -39,7 +39,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldThrowArgumentNullExceptionWhenRightIsNull()
         {
-            var left = CreateBuffer(1);
+            byte[] left = CreateBuffer(1);
             const byte[] right = null;
 
             try
@@ -75,23 +75,54 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void ShouldReturnFalseWhenLeftIsNotEqualToRight()
         {
-            Assert.IsFalse(Extensions.IsEqualTo(new byte[] {0x0a}, new byte[] {0x0a, 0x0d}));
-            Assert.IsFalse(Extensions.IsEqualTo(new byte[] {0x0a, 0x0d}, new byte[] {0x0a}));
-            Assert.IsFalse(Extensions.IsEqualTo(new byte[0], new byte[] { 0x0a }));
-            Assert.IsFalse(Extensions.IsEqualTo(new byte[] { 0x0a, 0x0d }, new byte[0]));
+            Assert.IsFalse(Extensions.IsEqualTo(new byte[]
+            {
+                0x0a
+            }, new byte[]
+            {
+                0x0a, 0x0d
+            }));
+
+            Assert.IsFalse(Extensions.IsEqualTo(new byte[]
+            {
+                0x0a, 0x0d
+            }, new byte[]
+            {
+                0x0a
+            }));
+
+            Assert.IsFalse(Extensions.IsEqualTo(new byte[0], new byte[]
+            {
+                0x0a
+            }));
+
+            Assert.IsFalse(Extensions.IsEqualTo(new byte[]
+            {
+                0x0a, 0x0d
+            }, new byte[0]));
         }
 
         [TestMethod]
         public void ShouldReturnTrueWhenLeftIsEqualToRight()
         {
-            Assert.IsTrue(Extensions.IsEqualTo(new byte[] { 0x0a, 0x0d }, new byte[] { 0x0a, 0x0d }));
+            Assert.IsTrue(Extensions.IsEqualTo(new byte[]
+            {
+                0x0a, 0x0d
+            }, new byte[]
+            {
+                0x0a, 0x0d
+            }));
+
             Assert.IsTrue(Extensions.IsEqualTo(new byte[0], new byte[0]));
         }
 
         [TestMethod]
         public void ShouldReturnTrueWhenLeftIsSameAsRight()
         {
-            var left = new byte[] { 0x0d, 0x0d };
+            var left = new byte[]
+            {
+                0x0d, 0x0d
+            };
 
             Assert.IsTrue(Extensions.IsEqualTo(left, left));
         }
@@ -101,20 +132,35 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestCategory("Performance")]
         public void Performance_LargeArray_Equal()
         {
-            var buffer = CreateBuffer(50000);
-            var left = buffer.Concat(new byte[] {0x0a});
-            var right = buffer.Concat(new byte[] {0x0a});
+            byte[] buffer = CreateBuffer(50000);
+
+            byte[] left = buffer.Concat(new byte[]
+            {
+                0x0a
+            });
+
+            byte[] right = buffer.Concat(new byte[]
+            {
+                0x0a
+            });
+
             const int runs = 10000;
 
             Performance(left, right, runs);
         }
+
         [TestMethod]
         [TestCategory("LongRunning")]
         [TestCategory("Performance")]
         public void Performance_LargeArray_NotEqual_DifferentLength()
         {
-            var left = CreateBuffer(50000);
-            var right = left.Concat(new byte[] {0x0a});
+            byte[] left = CreateBuffer(50000);
+
+            byte[] right = left.Concat(new byte[]
+            {
+                0x0a
+            });
+
             const int runs = 10000;
 
             Performance(left, right, runs);
@@ -125,9 +171,18 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestCategory("Performance")]
         public void Performance_LargeArray_NotEqual_SameLength()
         {
-            var buffer = CreateBuffer(50000);
-            var left = buffer.Concat(new byte[] {0x0a});
-            var right = buffer.Concat(new byte[] {0x0b});
+            byte[] buffer = CreateBuffer(50000);
+
+            byte[] left = buffer.Concat(new byte[]
+            {
+                0x0a
+            });
+
+            byte[] right = buffer.Concat(new byte[]
+            {
+                0x0b
+            });
+
             const int runs = 10000;
 
             Performance(left, right, runs);
@@ -138,8 +193,13 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestCategory("Performance")]
         public void Performance_LargeArray_Same()
         {
-            var left = CreateBuffer(50000);
-            var right = left.Concat(new byte[] {0x0a});
+            byte[] left = CreateBuffer(50000);
+
+            byte[] right = left.Concat(new byte[]
+            {
+                0x0a
+            });
+
             const int runs = 10000;
 
             Performance(left, right, runs);

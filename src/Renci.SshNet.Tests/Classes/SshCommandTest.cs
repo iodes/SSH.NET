@@ -9,6 +9,7 @@ using System.Threading;
 #if FEATURE_TPL
 using System.Diagnostics;
 using System.Threading.Tasks;
+
 #endif // FEATURE_TPL
 
 namespace Renci.SshNet.Tests.Classes
@@ -47,7 +48,7 @@ namespace Renci.SshNet.Tests.Classes
                 var testValue = Guid.NewGuid().ToString();
                 var command = client.RunCommand(string.Format("echo {0}", testValue));
                 var result = command.Result;
-                result = result.Substring(0, result.Length - 1);    //  Remove \n character returned by command
+                result = result.Substring(0, result.Length - 1); //  Remove \n character returned by command
 
                 client.Disconnect();
                 #endregion
@@ -73,7 +74,7 @@ namespace Renci.SshNet.Tests.Classes
                 var command = string.Format("echo {0}", testValue);
                 var cmd = client.CreateCommand(command);
                 var result = cmd.Execute();
-                result = result.Substring(0, result.Length - 1);    //  Remove \n character returned by command
+                result = result.Substring(0, result.Length - 1); //  Remove \n character returned by command
 
                 client.Disconnect();
                 #endregion
@@ -95,7 +96,7 @@ namespace Renci.SshNet.Tests.Classes
                 #region Example SshCommand CreateCommand Execute OutputStream
                 client.Connect();
 
-                var cmd = client.CreateCommand("ls -l");   //  very long list
+                var cmd = client.CreateCommand("ls -l"); //  very long list
                 var asynch = cmd.BeginExecute();
 
                 var reader = new StreamReader(cmd.OutputStream);
@@ -103,10 +104,13 @@ namespace Renci.SshNet.Tests.Classes
                 while (!asynch.IsCompleted)
                 {
                     var result = reader.ReadToEnd();
+
                     if (string.IsNullOrEmpty(result))
                         continue;
+
                     Console.Write(result);
                 }
+
                 cmd.EndExecute(asynch);
 
                 client.Disconnect();
@@ -127,7 +131,6 @@ namespace Renci.SshNet.Tests.Classes
             using (var client = new SshClient(host, username, password))
             {
                 #region Example SshCommand CreateCommand Execute ExtendedOutputStream
-
                 client.Connect();
                 var cmd = client.CreateCommand("echo 12345; echo 654321 >&2");
                 var result = cmd.Execute();
@@ -139,7 +142,6 @@ namespace Renci.SshNet.Tests.Classes
                 Console.Write(reader.ReadToEnd());
 
                 client.Disconnect();
-
                 #endregion
 
                 Assert.Inconclusive();
@@ -186,10 +188,12 @@ namespace Renci.SshNet.Tests.Classes
 
                 var cmd = client.CreateCommand(";");
                 cmd.Execute();
+
                 if (string.IsNullOrEmpty(cmd.Error))
                 {
                     Assert.Fail("Operation should fail");
                 }
+
                 Assert.IsTrue(cmd.ExitStatus > 0);
 
                 client.Disconnect();
@@ -205,10 +209,12 @@ namespace Renci.SshNet.Tests.Classes
                 client.Connect();
                 var cmd = client.CreateCommand(";");
                 cmd.Execute();
+
                 if (string.IsNullOrEmpty(cmd.Error))
                 {
                     Assert.Fail("Operation should fail");
                 }
+
                 Assert.IsTrue(cmd.ExitStatus > 0);
 
                 var result = ExecuteTestCommand(client);
@@ -266,7 +272,7 @@ namespace Renci.SshNet.Tests.Classes
                 client.Connect();
 
                 var cmd = client.RunCommand("exit 128");
-                
+
                 Console.WriteLine(cmd.ExitStatus);
 
                 client.Disconnect();
@@ -286,6 +292,7 @@ namespace Renci.SshNet.Tests.Classes
 
                 var cmd = client.CreateCommand("sleep 5s; echo 'test'");
                 var asyncResult = cmd.BeginExecute(null, null);
+
                 while (!asyncResult.IsCompleted)
                 {
                     Thread.Sleep(100);
@@ -309,6 +316,7 @@ namespace Renci.SshNet.Tests.Classes
 
                 var cmd = client.CreateCommand("sleep 5s; ;");
                 var asyncResult = cmd.BeginExecute(null, null);
+
                 while (!asyncResult.IsCompleted)
                 {
                     Thread.Sleep(100);
@@ -333,10 +341,12 @@ namespace Renci.SshNet.Tests.Classes
                 var callbackCalled = false;
 
                 var cmd = client.CreateCommand("sleep 5s; echo 'test'");
+
                 var asyncResult = cmd.BeginExecute(new AsyncCallback((s) =>
                 {
                     callbackCalled = true;
                 }), null);
+
                 while (!asyncResult.IsCompleted)
                 {
                     Thread.Sleep(100);
@@ -359,13 +369,15 @@ namespace Renci.SshNet.Tests.Classes
                 client.Connect();
 
                 var currentThreadId = Thread.CurrentThread.ManagedThreadId;
-                int callbackThreadId = 0;
+                var callbackThreadId = 0;
 
                 var cmd = client.CreateCommand("sleep 5s; echo 'test'");
+
                 var asyncResult = cmd.BeginExecute(new AsyncCallback((s) =>
                 {
                     callbackThreadId = Thread.CurrentThread.ManagedThreadId;
                 }), null);
+
                 while (!asyncResult.IsCompleted)
                 {
                     Thread.Sleep(100);
@@ -382,7 +394,8 @@ namespace Renci.SshNet.Tests.Classes
         /// <summary>
         /// Tests for Issue 563.
         /// </summary>
-        [WorkItem(563), TestMethod]
+        [WorkItem(563)]
+        [TestMethod]
         [TestCategory("integration")]
         public void Test_Execute_Command_Same_Object_Different_Commands()
         {
@@ -426,7 +439,8 @@ namespace Renci.SshNet.Tests.Classes
             }
         }
 
-        [WorkItem(703), TestMethod]
+        [WorkItem(703)]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         [TestCategory("integration")]
         public void Test_EndExecute_Before_BeginExecute()
@@ -447,13 +461,12 @@ namespace Renci.SshNet.Tests.Classes
         [TestCategory("integration")]
         public void BeginExecuteTest()
         {
-            string expected = "123\n";
+            var expected = "123\n";
             string result;
 
             using (var client = new SshClient(Resources.HOST, Resources.USERNAME, Resources.PASSWORD))
             {
                 #region Example SshCommand CreateCommand BeginExecute IsCompleted EndExecute
-
                 client.Connect();
 
                 var cmd = client.CreateCommand("sleep 15s;echo 123"); // Perform long running task
@@ -465,9 +478,9 @@ namespace Renci.SshNet.Tests.Classes
                     //  Waiting for command to complete...
                     Thread.Sleep(2000);
                 }
+
                 result = cmd.EndExecute(asynch);
                 client.Disconnect();
-
                 #endregion
 
                 Assert.IsNotNull(asynch);
@@ -482,24 +495,22 @@ namespace Renci.SshNet.Tests.Classes
             using (var client = new SshClient(Resources.HOST, Resources.USERNAME, Resources.PASSWORD))
             {
                 #region Example SshCommand CreateCommand Error
-
                 client.Connect();
 
                 var cmd = client.CreateCommand(";");
                 cmd.Execute();
+
                 if (!string.IsNullOrEmpty(cmd.Error))
                 {
                     Console.WriteLine(cmd.Error);
                 }
 
                 client.Disconnect();
-
                 #endregion
 
                 Assert.Inconclusive();
             }
         }
-
 
         /// <summary>
         ///A test for BeginExecute
@@ -509,10 +520,10 @@ namespace Renci.SshNet.Tests.Classes
         public void BeginExecuteTest1()
         {
             Session session = null; // TODO: Initialize to an appropriate value
-            string commandText = string.Empty; // TODO: Initialize to an appropriate value
+            var commandText = string.Empty; // TODO: Initialize to an appropriate value
             var encoding = Encoding.UTF8;
-            SshCommand target = new SshCommand(session, commandText, encoding); // TODO: Initialize to an appropriate value
-            string commandText1 = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SshCommand(session, commandText, encoding); // TODO: Initialize to an appropriate value
+            var commandText1 = string.Empty; // TODO: Initialize to an appropriate value
             AsyncCallback callback = null; // TODO: Initialize to an appropriate value
             object state = null; // TODO: Initialize to an appropriate value
             IAsyncResult expected = null; // TODO: Initialize to an appropriate value
@@ -530,13 +541,12 @@ namespace Renci.SshNet.Tests.Classes
         public void CancelAsyncTest()
         {
             Session session = null; // TODO: Initialize to an appropriate value
-            string commandText = string.Empty; // TODO: Initialize to an appropriate value
+            var commandText = string.Empty; // TODO: Initialize to an appropriate value
             var encoding = Encoding.UTF8;
-            SshCommand target = new SshCommand(session, commandText, encoding); // TODO: Initialize to an appropriate value
+            var target = new SshCommand(session, commandText, encoding); // TODO: Initialize to an appropriate value
             target.CancelAsync();
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
-
 
         /// <summary>
         ///A test for Execute
@@ -546,10 +556,10 @@ namespace Renci.SshNet.Tests.Classes
         public void ExecuteTest()
         {
             Session session = null; // TODO: Initialize to an appropriate value
-            string commandText = string.Empty; // TODO: Initialize to an appropriate value
+            var commandText = string.Empty; // TODO: Initialize to an appropriate value
             var encoding = Encoding.UTF8;
-            SshCommand target = new SshCommand(session, commandText, encoding); // TODO: Initialize to an appropriate value
-            string expected = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SshCommand(session, commandText, encoding); // TODO: Initialize to an appropriate value
+            var expected = string.Empty; // TODO: Initialize to an appropriate value
             string actual;
             actual = target.Execute();
             Assert.AreEqual(expected, actual);
@@ -564,11 +574,11 @@ namespace Renci.SshNet.Tests.Classes
         public void ExecuteTest1()
         {
             Session session = null; // TODO: Initialize to an appropriate value
-            string commandText = string.Empty; // TODO: Initialize to an appropriate value
+            var commandText = string.Empty; // TODO: Initialize to an appropriate value
             var encoding = Encoding.UTF8;
-            SshCommand target = new SshCommand(session, commandText, encoding); // TODO: Initialize to an appropriate value
-            string commandText1 = string.Empty; // TODO: Initialize to an appropriate value
-            string expected = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SshCommand(session, commandText, encoding); // TODO: Initialize to an appropriate value
+            var commandText1 = string.Empty; // TODO: Initialize to an appropriate value
+            var expected = string.Empty; // TODO: Initialize to an appropriate value
             string actual;
             actual = target.Execute(commandText1);
             Assert.AreEqual(expected, actual);
@@ -583,10 +593,10 @@ namespace Renci.SshNet.Tests.Classes
         public void CommandTimeoutTest()
         {
             Session session = null; // TODO: Initialize to an appropriate value
-            string commandText = string.Empty; // TODO: Initialize to an appropriate value
+            var commandText = string.Empty; // TODO: Initialize to an appropriate value
             var encoding = Encoding.UTF8;
-            SshCommand target = new SshCommand(session, commandText, encoding); // TODO: Initialize to an appropriate value
-            TimeSpan expected = new TimeSpan(); // TODO: Initialize to an appropriate value
+            var target = new SshCommand(session, commandText, encoding); // TODO: Initialize to an appropriate value
+            var expected = new TimeSpan(); // TODO: Initialize to an appropriate value
             TimeSpan actual;
             target.CommandTimeout = expected;
             actual = target.CommandTimeout;
@@ -602,9 +612,9 @@ namespace Renci.SshNet.Tests.Classes
         public void ErrorTest()
         {
             Session session = null; // TODO: Initialize to an appropriate value
-            string commandText = string.Empty; // TODO: Initialize to an appropriate value
+            var commandText = string.Empty; // TODO: Initialize to an appropriate value
             var encoding = Encoding.UTF8;
-            SshCommand target = new SshCommand(session, commandText, encoding); // TODO: Initialize to an appropriate value
+            var target = new SshCommand(session, commandText, encoding); // TODO: Initialize to an appropriate value
             string actual;
             actual = target.Error;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -618,9 +628,9 @@ namespace Renci.SshNet.Tests.Classes
         public void ResultTest()
         {
             Session session = null; // TODO: Initialize to an appropriate value
-            string commandText = string.Empty; // TODO: Initialize to an appropriate value
+            var commandText = string.Empty; // TODO: Initialize to an appropriate value
             var encoding = Encoding.UTF8;
-            SshCommand target = new SshCommand(session, commandText, encoding); // TODO: Initialize to an appropriate value
+            var target = new SshCommand(session, commandText, encoding); // TODO: Initialize to an appropriate value
             string actual;
             actual = target.Result;
             Assert.Inconclusive("Verify the correctness of this test method.");
@@ -637,8 +647,8 @@ namespace Renci.SshNet.Tests.Classes
 
             try
             {
-#region Example SshCommand RunCommand Parallel
-                System.Threading.Tasks.Parallel.For(0, 10000,
+                #region Example SshCommand RunCommand Parallel
+                Parallel.For(0, 10000,
                     () =>
                     {
                         var client = new SshClient(host, username, password);
@@ -657,8 +667,7 @@ namespace Renci.SshNet.Tests.Classes
                         client.Dispose();
                     }
                 );
-#endregion
-
+                #endregion
             }
             catch (Exception exp)
             {
@@ -672,7 +681,7 @@ namespace Renci.SshNet.Tests.Classes
         {
             try
             {
-                System.Threading.Tasks.Parallel.For(0, 10000,
+                Parallel.For(0, 10000,
                     () =>
                     {
                         var client = new SshClient(Resources.HOST, Resources.USERNAME, Resources.PASSWORD);
@@ -706,7 +715,8 @@ namespace Renci.SshNet.Tests.Classes
             using (var client = new SshClient(Resources.HOST, Resources.USERNAME, Resources.PASSWORD))
             {
                 client.Connect();
-                System.Threading.Tasks.Parallel.For(0, 10000,
+
+                Parallel.For(0, 10000,
                     (counter) =>
                     {
                         var result = ExecuteTestCommand(client);
@@ -726,7 +736,7 @@ namespace Renci.SshNet.Tests.Classes
             var command = string.Format("echo {0}", testValue);
             var cmd = s.CreateCommand(command);
             var result = cmd.Execute();
-            result = result.Substring(0, result.Length - 1);    //  Remove \n character returned by command
+            result = result.Substring(0, result.Length - 1); //  Remove \n character returned by command
             return result.Equals(testValue);
         }
     }

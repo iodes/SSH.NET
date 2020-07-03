@@ -13,10 +13,7 @@ namespace Renci.SshNet.Security
         /// <value>
         /// The size, in bits, of the computed hash code.
         /// </value>
-        protected override int HashSize
-        {
-            get { return 160; }
-        }
+        protected override int HashSize => 160;
 
         /// <summary>
         /// Hashes the specified data bytes.

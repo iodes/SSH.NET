@@ -34,13 +34,17 @@ namespace Renci.SshNet.Tests.Classes
             _netConfClient.OperationTimeout = TimeSpan.FromMilliseconds(_operationTimeout);
 
             var sequence = new MockSequence();
+
             _serviceFactoryMock.InSequence(sequence)
                 .Setup(p => p.CreateSession(_connectionInfo))
                 .Returns(_sessionMock.Object);
+
             _sessionMock.InSequence(sequence).Setup(p => p.Connect());
+
             _serviceFactoryMock.InSequence(sequence)
                 .Setup(p => p.CreateNetConfSession(_sessionMock.Object, _operationTimeout))
                 .Returns(_netConfSessionMock.Object);
+
             _netConfSessionMock.InSequence(sequence).Setup(p => p.Connect());
 
             _netConfClient.Connect();
@@ -50,7 +54,6 @@ namespace Renci.SshNet.Tests.Classes
             _sessionMock = null;
             _connectionInfo = null;
             _serviceFactoryMock = null;
-
         }
 
         protected void Act()

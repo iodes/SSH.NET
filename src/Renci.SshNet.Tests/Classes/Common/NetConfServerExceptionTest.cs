@@ -18,7 +18,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void NetConfServerExceptionConstructorTest()
         {
-            NetConfServerException target = new NetConfServerException();
+            var target = new NetConfServerException();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -28,8 +28,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void NetConfServerExceptionConstructorTest1()
         {
-            string message = string.Empty; // TODO: Initialize to an appropriate value
-            NetConfServerException target = new NetConfServerException(message);
+            var message = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new NetConfServerException(message);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -39,9 +39,9 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void NetConfServerExceptionConstructorTest2()
         {
-            string message = string.Empty; // TODO: Initialize to an appropriate value
+            var message = string.Empty; // TODO: Initialize to an appropriate value
             Exception innerException = null; // TODO: Initialize to an appropriate value
-            NetConfServerException target = new NetConfServerException(message, innerException);
+            var target = new NetConfServerException(message, innerException);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

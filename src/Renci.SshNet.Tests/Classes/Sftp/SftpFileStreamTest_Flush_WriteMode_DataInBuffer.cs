@@ -43,41 +43,49 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         protected override void SetupMocks()
         {
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.RequestOpen(_path, Flags.Read | Flags.Write, false))
-                           .Returns(_handle);
+                .Setup(p => p.RequestOpen(_path, Flags.Read | Flags.Write, false))
+                .Returns(_handle);
+
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.CalculateOptimalReadLength(_bufferSize))
-                           .Returns(_readBufferSize);
+                .Setup(p => p.CalculateOptimalReadLength(_bufferSize))
+                .Returns(_readBufferSize);
+
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.CalculateOptimalWriteLength(_bufferSize, _handle))
-                           .Returns(_writeBufferSize);
+                .Setup(p => p.CalculateOptimalWriteLength(_bufferSize, _handle))
+                .Returns(_writeBufferSize);
+
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.IsOpen)
-                           .Returns(true);
+                .Setup(p => p.IsOpen)
+                .Returns(true);
+
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.RequestWrite(_handle, 0UL, It.IsAny<byte[]>(), 0, _writeBytes1.Length, It.IsAny<AutoResetEvent>(), null))
-                           .Callback<byte[], ulong, byte[], int, int, AutoResetEvent, Action<SftpStatusResponse>>((handle, serverOffset, data, offset, length, wait, writeCompleted)
-                               =>
-                           {
-                               wait.Set();
-                           });
+                .Setup(p => p.RequestWrite(_handle, 0UL, It.IsAny<byte[]>(), 0, _writeBytes1.Length, It.IsAny<AutoResetEvent>(), null))
+                .Callback<byte[], ulong, byte[], int, int, AutoResetEvent, Action<SftpStatusResponse>>((handle, serverOffset, data, offset, length, wait, writeCompleted)
+                    =>
+                {
+                    wait.Set();
+                });
+
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.IsOpen)
-                           .Returns(true);
+                .Setup(p => p.IsOpen)
+                .Returns(true);
+
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.IsOpen)
-                           .Returns(true);
+                .Setup(p => p.IsOpen)
+                .Returns(true);
+
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.IsOpen)
-                           .Returns(true);
+                .Setup(p => p.IsOpen)
+                .Returns(true);
+
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.RequestWrite(_handle, (ulong) _writeBytes1.Length, It.IsAny<byte[]>(), 0, _writeBytes2.Length + _writeBytes3.Length, It.IsAny<AutoResetEvent>(), null))
-                           .Callback<byte[], ulong, byte[], int, int, AutoResetEvent, Action<SftpStatusResponse>>((handle, serverOffset, data, offset, length, wait, writeCompleted)
-                               =>
-                           {
-                               _flushedBytes = data.Take(offset, length);
-                               wait.Set();
-                           });
+                .Setup(p => p.RequestWrite(_handle, (ulong)_writeBytes1.Length, It.IsAny<byte[]>(), 0, _writeBytes2.Length + _writeBytes3.Length, It.IsAny<AutoResetEvent>(), null))
+                .Callback<byte[], ulong, byte[], int, int, AutoResetEvent, Action<SftpStatusResponse>>((handle, serverOffset, data, offset, length, wait, writeCompleted)
+                    =>
+                {
+                    _flushedBytes = data.Take(offset, length);
+                    wait.Set();
+                });
         }
 
         protected override void Arrange()
@@ -85,10 +93,11 @@ namespace Renci.SshNet.Tests.Classes.Sftp
             base.Arrange();
 
             _target = new SftpFileStream(SftpSessionMock.Object,
-                                         _path,
-                                         FileMode.Open,
-                                         FileAccess.ReadWrite,
-                                         (int)_bufferSize);
+                _path,
+                FileMode.Open,
+                FileAccess.ReadWrite,
+                (int)_bufferSize);
+
             _target.Write(_writeBytes1, 0, _writeBytes1.Length);
             _target.Write(_writeBytes2, 0, _writeBytes2.Length);
             _target.Write(_writeBytes3, 0, _writeBytes3.Length);
@@ -103,8 +112,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public void PositionShouldReturnSameValueAsBeforeFlush()
         {
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.IsOpen)
-                           .Returns(true);
+                .Setup(p => p.IsOpen)
+                .Returns(true);
 
             Assert.AreEqual(_writeBytes1.Length + _writeBytes2.Length + _writeBytes3.Length, _target.Position);
 
@@ -114,9 +123,9 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod]
         public void BufferedBytesShouldHaveBeenWrittenToTheServer()
         {
-            var expected = new ArrayBuilder<byte>().Add(_writeBytes2)
-                                                   .Add(_writeBytes3)
-                                                   .Build();
+            byte[] expected = new ArrayBuilder<byte>().Add(_writeBytes2)
+                .Add(_writeBytes3)
+                .Build();
 
             Assert.IsNotNull(_flushedBytes);
             CollectionAssert.AreEqual(expected, _flushedBytes);
@@ -125,18 +134,20 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         [TestMethod]
         public void ReadShouldReadFromServer()
         {
-            var serverBytes = GenerateRandom(5);
+            byte[] serverBytes = GenerateRandom(5);
             var readBytes = new byte[5];
-            var expectedReadBytes = new ArrayBuilder<byte>().Add(new byte[2])
-                                                            .Add(serverBytes.Take(0, 3))
-                                                            .Build();
+
+            byte[] expectedReadBytes = new ArrayBuilder<byte>().Add(new byte[2])
+                .Add(serverBytes.Take(0, 3))
+                .Build();
 
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.IsOpen)
-                           .Returns(true);
+                .Setup(p => p.IsOpen)
+                .Returns(true);
+
             SftpSessionMock.InSequence(MockSequence)
-                           .Setup(p => p.RequestRead(_handle, (ulong) (_writeBytes1.Length + _writeBytes2.Length + _writeBytes3.Length), _readBufferSize))
-                           .Returns(serverBytes);
+                .Setup(p => p.RequestRead(_handle, (ulong)(_writeBytes1.Length + _writeBytes2.Length + _writeBytes3.Length), _readBufferSize))
+                .Returns(serverBytes);
 
             var bytesRead = _target.Read(readBytes, 2, 3);
 

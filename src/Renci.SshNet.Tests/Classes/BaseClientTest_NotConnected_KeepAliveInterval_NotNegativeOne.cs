@@ -79,9 +79,10 @@ namespace Renci.SshNet.Tests.Classes
         {
             _serviceFactoryMock.Setup(p => p.CreateSession(_connectionInfo)).Returns(_sessionMock.Object);
             _sessionMock.Setup(p => p.Connect());
+
             _sessionMock.Setup(p => p.TrySendMessage(It.IsAny<IgnoreMessage>()))
-                        .Returns(true)
-                        .Callback(() => Interlocked.Increment(ref _keepAliveCount));
+                .Returns(true)
+                .Callback(() => Interlocked.Increment(ref _keepAliveCount));
 
             _client.Connect();
 

@@ -26,10 +26,7 @@ namespace Renci.SshNet.Common
         /// <value>
         /// The underlying <see cref="SshDataStream"/> that is used for reading and writing SSH data.
         /// </value>
-        protected SshDataStream DataStream
-        {
-            get { return _stream; }
-        }
+        protected SshDataStream DataStream => _stream;
 
         /// <summary>
         /// Gets a value indicating whether all data from the buffer has been read.
@@ -37,13 +34,7 @@ namespace Renci.SshNet.Common
         /// <value>
         /// <c>true</c> if this instance is end of data; otherwise, <c>false</c>.
         /// </value>
-        protected bool IsEndOfData
-        {
-            get
-            {
-                return _stream.Position >= _stream.Length;
-            }
-        }
+        protected bool IsEndOfData => _stream.Position >= _stream.Length;
 
         /// <summary>
         /// Gets the size of the message in bytes.
@@ -51,10 +42,7 @@ namespace Renci.SshNet.Common
         /// <value>
         /// The size of the messages in bytes.
         /// </value>
-        protected virtual int BufferCapacity
-        {
-            get { return 0; }
-        }
+        protected virtual int BufferCapacity => 0;
 
         /// <summary>
         /// Gets data bytes array.
@@ -131,7 +119,7 @@ namespace Renci.SshNet.Common
         /// <returns>An array of bytes containing the remaining data in the internal buffer.</returns>
         protected byte[] ReadBytes()
         {
-            var bytesLength = (int) (_stream.Length - _stream.Position);
+            var bytesLength = (int)(_stream.Length - _stream.Position);
             var data = new byte[bytesLength];
             _stream.Read(data, 0, bytesLength);
             return data;
@@ -165,9 +153,11 @@ namespace Renci.SshNet.Common
         protected byte ReadByte()
         {
             var byteRead = _stream.ReadByte();
+
             if (byteRead == -1)
                 throw new InvalidOperationException("Attempt to read past the end of the SSH data stream.");
-            return (byte) byteRead;
+
+            return (byte)byteRead;
         }
 
         /// <summary>
@@ -247,12 +237,14 @@ namespace Renci.SshNet.Common
         protected IDictionary<string, string> ReadExtensionPair()
         {
             var result = new Dictionary<string, string>();
+
             while (!IsEndOfData)
             {
                 var extensionName = ReadString(Ascii);
                 var extensionData = ReadString(Ascii);
                 result.Add(extensionName, extensionData);
             }
+
             return result;
         }
 
@@ -296,7 +288,7 @@ namespace Renci.SshNet.Common
         /// <param name="data"><see cref="bool" /> data to write.</param>
         protected void Write(bool data)
         {
-            Write(data ? (byte) 1 : (byte) 0);
+            Write(data ? (byte)1 : (byte)0);
         }
 
         /// <summary>
@@ -387,7 +379,7 @@ namespace Renci.SshNet.Common
         /// <param name="data">extension-pair data to write.</param>
         protected void Write(IDictionary<string, string> data)
         {
-            foreach (var item in data)
+            foreach (KeyValuePair<string, string> item in data)
             {
                 Write(item.Key, Ascii);
                 Write(item.Value, Ascii);

@@ -10,33 +10,30 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto
             this.privateKey = privateKey;
         }
 
-		public bool IsPrivate
+        public bool IsPrivate => privateKey;
+
+        public override bool Equals(
+            object obj)
         {
-            get { return privateKey; }
+            var other = obj as AsymmetricKeyParameter;
+
+            if (other == null)
+            {
+                return false;
+            }
+
+            return Equals(other);
         }
 
-		public override bool Equals(
-			object obj)
-		{
-			AsymmetricKeyParameter other = obj as AsymmetricKeyParameter;
+        protected bool Equals(
+            AsymmetricKeyParameter other)
+        {
+            return privateKey == other.privateKey;
+        }
 
-			if (other == null)
-			{
-				return false;
-			}
-
-			return Equals(other);
-		}
-
-		protected bool Equals(
-			AsymmetricKeyParameter other)
-		{
-			return privateKey == other.privateKey;
-		}
-
-		public override int GetHashCode()
-		{
-			return privateKey.GetHashCode();
-		}
+        public override int GetHashCode()
+        {
+            return privateKey.GetHashCode();
+        }
     }
 }

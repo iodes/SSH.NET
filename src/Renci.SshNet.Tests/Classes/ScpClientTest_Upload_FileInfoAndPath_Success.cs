@@ -57,38 +57,52 @@ namespace Renci.SshNet.Tests.Classes
             var sequence = new MockSequence();
 
             _serviceFactoryMock.InSequence(sequence)
-                               .Setup(p => p.CreateRemotePathDoubleQuoteTransformation())
-                               .Returns(_remotePathTransformationMock.Object);
+                .Setup(p => p.CreateRemotePathDoubleQuoteTransformation())
+                .Returns(_remotePathTransformationMock.Object);
+
             _serviceFactoryMock.InSequence(sequence)
-                               .Setup(p => p.CreateSession(_connectionInfo))
-                               .Returns(_sessionMock.Object);
+                .Setup(p => p.CreateSession(_connectionInfo))
+                .Returns(_sessionMock.Object);
+
             _sessionMock.InSequence(sequence).Setup(p => p.Connect());
             _serviceFactoryMock.InSequence(sequence).Setup(p => p.CreatePipeStream()).Returns(_pipeStreamMock.Object);
             _sessionMock.InSequence(sequence).Setup(p => p.CreateChannelSession()).Returns(_channelSessionMock.Object);
             _channelSessionMock.InSequence(sequence).Setup(p => p.Open());
+
             _remotePathTransformationMock.InSequence(sequence)
-                                         .Setup(p => p.Transform(_remoteDirectory))
-                                         .Returns(_transformedPath);
+                .Setup(p => p.Transform(_remoteDirectory))
+                .Returns(_transformedPath);
+
             _channelSessionMock.InSequence(sequence)
-                               .Setup(p => p.SendExecRequest(string.Format("scp -t -d {0}", _transformedPath)))
-                               .Returns(true);
+                .Setup(p => p.SendExecRequest(string.Format("scp -t -d {0}", _transformedPath)))
+                .Returns(true);
+
             _pipeStreamMock.InSequence(sequence).Setup(p => p.ReadByte()).Returns(0);
             _channelSessionMock.InSequence(sequence).Setup(p => p.SendData(It.IsAny<byte[]>()));
             _pipeStreamMock.InSequence(sequence).Setup(p => p.ReadByte()).Returns(0);
+
             _channelSessionMock.InSequence(sequence)
                 .Setup(p => p.SendData(It.Is<byte[]>(b => b.SequenceEqual(
                     CreateData(string.Format("C0644 {0} {1}\n", _fileInfo.Length, _remoteFile),
-                    _connectionInfo.Encoding)))));
+                        _connectionInfo.Encoding)))));
+
             _pipeStreamMock.InSequence(sequence).Setup(p => p.ReadByte()).Returns(0);
+
             _channelSessionMock.InSequence(sequence)
                 .Setup(
                     p => p.SendData(It.Is<byte[]>(b => b.SequenceEqual(_fileContent.Take(_bufferSize))), 0, _bufferSize));
+
             _channelSessionMock.InSequence(sequence)
                 .Setup(
                     p => p.SendData(It.Is<byte[]>(b => b.Take(0, _fileContent.Length - _bufferSize).SequenceEqual(_fileContent.Take(_bufferSize, _fileContent.Length - _bufferSize))), 0, _fileContent.Length - _bufferSize));
+
             _channelSessionMock.InSequence(sequence)
                 .Setup(
-                    p => p.SendData(It.Is<byte[]>(b => b.SequenceEqual(new byte[] {0}))));
+                    p => p.SendData(It.Is<byte[]>(b => b.SequenceEqual(new byte[]
+                    {
+                        0
+                    }))));
+
             _pipeStreamMock.InSequence(sequence).Setup(p => p.ReadByte()).Returns(0);
             _channelSessionMock.InSequence(sequence).Setup(p => p.Dispose());
             _pipeStreamMock.As<IDisposable>().InSequence(sequence).Setup(p => p.Dispose());
@@ -99,9 +113,10 @@ namespace Renci.SshNet.Tests.Classes
             base.Arrange();
 
             _scpClient = new ScpClient(_connectionInfo, false, _serviceFactoryMock.Object)
-                {
-                    BufferSize = (uint) _bufferSize
-                };
+            {
+                BufferSize = (uint)_bufferSize
+            };
+
             _scpClient.Uploading += (sender, args) => _uploadingRegister.Add(args);
             _scpClient.Connect();
         }
@@ -158,17 +173,20 @@ namespace Renci.SshNet.Tests.Classes
             var content = new byte[length];
 
             for (var i = 0; i < length; i++)
-                content[i] = (byte) random.Next(byte.MinValue, byte.MaxValue);
+                content[i] = (byte)random.Next(byte.MinValue, byte.MaxValue);
+
             return content;
         }
 
         private static string CreateTemporaryFile(byte[] content)
         {
             var tempFile = Path.GetTempFileName();
+
             using (var fs = File.OpenWrite(tempFile))
             {
                 fs.Write(content, 0, content.Length);
             }
+
             return tempFile;
         }
     }

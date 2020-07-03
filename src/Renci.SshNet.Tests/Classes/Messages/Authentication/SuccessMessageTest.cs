@@ -18,7 +18,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Authentication
         [Ignore] // placeholder
         public void SuccessMessageConstructorTest()
         {
-            SuccessMessage target = new SuccessMessage();
+            var target = new SuccessMessage();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

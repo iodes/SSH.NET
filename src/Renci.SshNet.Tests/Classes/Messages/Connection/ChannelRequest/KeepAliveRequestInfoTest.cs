@@ -19,7 +19,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         [Ignore] // placeholder
         public void KeepAliveRequestInfoConstructorTest()
         {
-            KeepAliveRequestInfo target = new KeepAliveRequestInfo();
+            var target = new KeepAliveRequestInfo();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -30,7 +30,7 @@ namespace Renci.SshNet.Tests.Classes.Messages.Connection
         [Ignore] // placeholder
         public void RequestNameTest()
         {
-            KeepAliveRequestInfo target = new KeepAliveRequestInfo(); // TODO: Initialize to an appropriate value
+            var target = new KeepAliveRequestInfo(); // TODO: Initialize to an appropriate value
             string actual;
             actual = target.RequestName;
             Assert.Inconclusive("Verify the correctness of this test method.");

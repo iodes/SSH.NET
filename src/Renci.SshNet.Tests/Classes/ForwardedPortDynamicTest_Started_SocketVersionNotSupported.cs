@@ -89,11 +89,13 @@ namespace Renci.SshNet.Tests.Classes
 
             _forwardedPort = new ForwardedPortDynamic(8122);
             _forwardedPort.Closing += (sender, args) => _closingRegister.Add(args);
+
             _forwardedPort.Exception += (sender, args) =>
-                {
-                    _exceptionRegister.Add(args);
-                    _exceptionFired.Set();
-                };
+            {
+                _exceptionRegister.Add(args);
+                _exceptionFired.Set();
+            };
+
             _forwardedPort.Session = _sessionMock.Object;
             _forwardedPort.Start();
 
@@ -105,7 +107,11 @@ namespace Renci.SshNet.Tests.Classes
 
         private void Act()
         {
-            var buffer = new byte[] {0x07};
+            var buffer = new byte[]
+            {
+                0x07
+            };
+
             _client.Send(buffer, 0, buffer.Length, SocketFlags.None);
 
             // wait for Exception event to be fired as a way to ensure that SOCKS

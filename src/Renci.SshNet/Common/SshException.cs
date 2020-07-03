@@ -1,4 +1,5 @@
 ﻿using System;
+
 #if FEATURE_BINARY_SERIALIZATION
 using System.Runtime.Serialization;
 #endif // FEATURE_BINARY_SERIALIZATION

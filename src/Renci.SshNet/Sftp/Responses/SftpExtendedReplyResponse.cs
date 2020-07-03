@@ -2,10 +2,7 @@
 {
     internal class SftpExtendedReplyResponse : SftpResponse
     {
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.ExtendedReply; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.ExtendedReply;
 
         public SftpExtendedReplyResponse(uint protocolVersion)
             : base(protocolVersion)

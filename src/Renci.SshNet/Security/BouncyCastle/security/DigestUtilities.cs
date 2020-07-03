@@ -7,7 +7,8 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Security
     /// </remarks>
     internal sealed class DigestUtilities
     {
-        private enum DigestAlgorithm {
+        private enum DigestAlgorithm
+        {
             SHA_256
         };
 
@@ -18,14 +19,14 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Security
         public static byte[] DoFinal(
             IDigest digest)
         {
-            byte[] b = new byte[digest.GetDigestSize()];
+            var b = new byte[digest.GetDigestSize()];
             digest.DoFinal(b, 0);
             return b;
         }
 
         public static byte[] DoFinal(
-            IDigest	digest,
-            byte[]	input)
+            IDigest digest,
+            byte[] input)
         {
             digest.BlockUpdate(input, 0, input.Length);
             return DoFinal(digest);

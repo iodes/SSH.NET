@@ -43,7 +43,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp
             _extendedAction = extendedAction;
             return this;
         }
-        
+
         public SftpStatVfsRequestBuilder WithStatusAction(Action<SftpStatusResponse> statusAction)
         {
             _statusAction = statusAction;
@@ -52,8 +52,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
 
         public StatVfsRequest Build()
         {
-            var extendedAction = _extendedAction ?? ((extendedReplyResponse) => { });
-            var statusAction = _statusAction ?? ((statusResponse) => { });
+            Action<SftpExtendedReplyResponse> extendedAction = _extendedAction ?? ((extendedReplyResponse) => { });
+            Action<SftpStatusResponse> statusAction = _statusAction ?? ((statusResponse) => { });
 
             return new StatVfsRequest(_protocolVersion, _requestId, _path, _encoding, extendedAction, statusAction);
         }

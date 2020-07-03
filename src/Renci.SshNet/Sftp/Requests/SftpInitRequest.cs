@@ -2,10 +2,7 @@
 {
     internal class SftpInitRequest : SftpMessage
     {
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.Init; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.Init;
 
         public uint Version { get; private set; }
 

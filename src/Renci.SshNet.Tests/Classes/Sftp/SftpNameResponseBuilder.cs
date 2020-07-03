@@ -33,6 +33,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         {
             for (var i = 0; i < files.Length; i++)
                 _files.Add(files[i]);
+
             return this;
         }
 
@@ -51,10 +52,11 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public SftpNameResponse Build()
         {
             var sftpNameResponse = new SftpNameResponse(_protocolVersion, _encoding)
-                {
-                    ResponseId = _responseId,
-                    Files = _files.ToArray()
-                };
+            {
+                ResponseId = _responseId,
+                Files = _files.ToArray()
+            };
+
             return sftpNameResponse;
         }
     }

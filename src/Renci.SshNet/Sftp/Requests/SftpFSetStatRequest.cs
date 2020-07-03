@@ -7,10 +7,7 @@ namespace Renci.SshNet.Sftp.Requests
     {
         private byte[] _attributesBytes;
 
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.FSetStat; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.FSetStat;
 
         public byte[] Handle { get; private set; }
 
@@ -24,6 +21,7 @@ namespace Renci.SshNet.Sftp.Requests
                 {
                     _attributesBytes = Attributes.GetBytes();
                 }
+
                 return _attributesBytes;
             }
         }

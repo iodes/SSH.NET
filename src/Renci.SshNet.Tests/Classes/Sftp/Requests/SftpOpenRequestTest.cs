@@ -107,7 +107,7 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Requests
         {
             var request = new SftpOpenRequest(_protocolVersion, _requestId, _filename, _encoding, _flags, null, null);
 
-            var bytes = request.GetBytes();
+            byte[] bytes = request.GetBytes();
 
             var expectedBytesLength = 0;
             expectedBytesLength += 4; // Length
@@ -122,16 +122,16 @@ namespace Renci.SshNet.Tests.Classes.Sftp.Requests
 
             var sshDataStream = new SshDataStream(bytes);
 
-            Assert.AreEqual((uint) bytes.Length - 4, sshDataStream.ReadUInt32());
-            Assert.AreEqual((byte) SftpMessageTypes.Open, sshDataStream.ReadByte());
+            Assert.AreEqual((uint)bytes.Length - 4, sshDataStream.ReadUInt32());
+            Assert.AreEqual((byte)SftpMessageTypes.Open, sshDataStream.ReadByte());
             Assert.AreEqual(_requestId, sshDataStream.ReadUInt32());
 
-            Assert.AreEqual((uint) _filenameBytes.Length, sshDataStream.ReadUInt32());
+            Assert.AreEqual((uint)_filenameBytes.Length, sshDataStream.ReadUInt32());
             var actualPath = new byte[_filenameBytes.Length];
             sshDataStream.Read(actualPath, 0, actualPath.Length);
             Assert.IsTrue(_filenameBytes.SequenceEqual(actualPath));
 
-            Assert.AreEqual((uint) _flags, sshDataStream.ReadUInt32());
+            Assert.AreEqual((uint)_flags, sshDataStream.ReadUInt32());
 
             var actualAttributes = new byte[_attributesBytes.Length];
             sshDataStream.Read(actualAttributes, 0, actualAttributes.Length);

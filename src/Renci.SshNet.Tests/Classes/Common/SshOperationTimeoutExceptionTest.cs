@@ -18,7 +18,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void SshOperationTimeoutExceptionConstructorTest()
         {
-            SshOperationTimeoutException target = new SshOperationTimeoutException();
+            var target = new SshOperationTimeoutException();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -28,8 +28,8 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void SshOperationTimeoutExceptionConstructorTest1()
         {
-            string message = string.Empty; // TODO: Initialize to an appropriate value
-            SshOperationTimeoutException target = new SshOperationTimeoutException(message);
+            var message = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new SshOperationTimeoutException(message);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
@@ -39,9 +39,9 @@ namespace Renci.SshNet.Tests.Classes.Common
         [TestMethod]
         public void SshOperationTimeoutExceptionConstructorTest2()
         {
-            string message = string.Empty; // TODO: Initialize to an appropriate value
+            var message = string.Empty; // TODO: Initialize to an appropriate value
             Exception innerException = null; // TODO: Initialize to an appropriate value
-            SshOperationTimeoutException target = new SshOperationTimeoutException(message, innerException);
+            var target = new SshOperationTimeoutException(message, innerException);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

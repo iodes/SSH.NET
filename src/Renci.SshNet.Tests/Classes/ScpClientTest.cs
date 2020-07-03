@@ -3,12 +3,14 @@ using Renci.SshNet.Common;
 using Renci.SshNet.Tests.Common;
 using Renci.SshNet.Tests.Properties;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 #if FEATURE_TPL
 using System.Threading.Tasks;
+
 #endif // FEATURE_TPL
 
 namespace Renci.SshNet.Tests.Classes
@@ -126,7 +128,11 @@ namespace Renci.SshNet.Tests.Classes
             var host = _random.Next().ToString();
             var port = _random.Next(1, 100);
             var userName = _random.Next().ToString();
-            var privateKeys = new[] {GetRsaKey(), GetDsaKey()};
+
+            PrivateKeyFile[] privateKeys = new[]
+            {
+                GetRsaKey(), GetDsaKey()
+            };
 
             var client = new ScpClient(host, port, userName, privateKeys);
             Assert.AreEqual(16 * 1024U, client.BufferSize);
@@ -159,7 +165,11 @@ namespace Renci.SshNet.Tests.Classes
         {
             var host = _random.Next().ToString();
             var userName = _random.Next().ToString();
-            var privateKeys = new[] { GetRsaKey(), GetDsaKey() };
+
+            PrivateKeyFile[] privateKeys = new[]
+            {
+                GetRsaKey(), GetDsaKey()
+            };
 
             var client = new ScpClient(host, userName, privateKeys);
             Assert.AreEqual(16 * 1024U, client.BufferSize);
@@ -230,10 +240,10 @@ namespace Renci.SshNet.Tests.Classes
             {
                 scp.Connect();
 
-                string uploadedFileName = Path.GetTempFileName();
-                string downloadedFileName = Path.GetTempFileName();
+                var uploadedFileName = Path.GetTempFileName();
+                var downloadedFileName = Path.GetTempFileName();
 
-                this.CreateTestFile(uploadedFileName, 1);
+                CreateTestFile(uploadedFileName, 1);
 
                 scp.Upload(new FileInfo(uploadedFileName), Path.GetFileName(uploadedFileName));
 
@@ -263,10 +273,10 @@ namespace Renci.SshNet.Tests.Classes
             {
                 scp.Connect();
 
-                string uploadedFileName = Path.GetTempFileName();
-                string downloadedFileName = Path.GetTempFileName();
+                var uploadedFileName = Path.GetTempFileName();
+                var downloadedFileName = Path.GetTempFileName();
 
-                this.CreateTestFile(uploadedFileName, 1);
+                CreateTestFile(uploadedFileName, 1);
 
                 //  Calculate has value
                 using (var stream = File.OpenRead(uploadedFileName))
@@ -303,10 +313,10 @@ namespace Renci.SshNet.Tests.Classes
             {
                 scp.Connect();
 
-                string uploadedFileName = Path.GetTempFileName();
-                string downloadedFileName = Path.GetTempFileName();
+                var uploadedFileName = Path.GetTempFileName();
+                var downloadedFileName = Path.GetTempFileName();
 
-                this.CreateTestFile(uploadedFileName, 10);
+                CreateTestFile(uploadedFileName, 10);
 
                 scp.Upload(new FileInfo(uploadedFileName), Path.GetFileName(uploadedFileName));
 
@@ -336,10 +346,10 @@ namespace Renci.SshNet.Tests.Classes
             {
                 scp.Connect();
 
-                string uploadedFileName = Path.GetTempFileName();
-                string downloadedFileName = Path.GetTempFileName();
+                var uploadedFileName = Path.GetTempFileName();
+                var downloadedFileName = Path.GetTempFileName();
 
-                this.CreateTestFile(uploadedFileName, 10);
+                CreateTestFile(uploadedFileName, 10);
 
                 //  Calculate has value
                 using (var stream = File.OpenRead(uploadedFileName))
@@ -378,15 +388,18 @@ namespace Renci.SshNet.Tests.Classes
 
                 var uploadDirectory =
                     Directory.CreateDirectory(string.Format("{0}\\{1}", Path.GetTempPath(), Path.GetRandomFileName()));
-                for (int i = 0; i < 3; i++)
+
+                for (var i = 0; i < 3; i++)
                 {
                     var subfolder =
                         Directory.CreateDirectory(string.Format(@"{0}\folder_{1}", uploadDirectory.FullName, i));
-                    for (int j = 0; j < 5; j++)
+
+                    for (var j = 0; j < 5; j++)
                     {
-                        this.CreateTestFile(string.Format(@"{0}\file_{1}", subfolder.FullName, j), 1);
+                        CreateTestFile(string.Format(@"{0}\file_{1}", subfolder.FullName, j), 1);
                     }
-                    this.CreateTestFile(string.Format(@"{0}\file_{1}", uploadDirectory.FullName, i), 1);
+
+                    CreateTestFile(string.Format(@"{0}\file_{1}", uploadDirectory.FullName, i), 1);
                 }
 
                 scp.Upload(uploadDirectory, "uploaded_dir");
@@ -396,16 +409,16 @@ namespace Renci.SshNet.Tests.Classes
 
                 scp.Download("uploaded_dir", downloadDirectory);
 
-                var uploadedFiles = uploadDirectory.GetFiles("*.*", System.IO.SearchOption.AllDirectories);
-                var downloadFiles = downloadDirectory.GetFiles("*.*", System.IO.SearchOption.AllDirectories);
+                FileInfo[] uploadedFiles = uploadDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+                FileInfo[] downloadFiles = downloadDirectory.GetFiles("*.*", SearchOption.AllDirectories);
 
-                var result = from f1 in uploadedFiles
-                    from f2 in downloadFiles
-                    where
-                    f1.FullName.Substring(uploadDirectory.FullName.Length) ==
-                    f2.FullName.Substring(downloadDirectory.FullName.Length)
-                    && CalculateMD5(f1.FullName) == CalculateMD5(f2.FullName)
-                    select f1;
+                IEnumerable<FileInfo> result = from f1 in uploadedFiles
+                                               from f2 in downloadFiles
+                                               where
+                                                   f1.FullName.Substring(uploadDirectory.FullName.Length) ==
+                                                   f2.FullName.Substring(downloadDirectory.FullName.Length)
+                                                   && CalculateMD5(f1.FullName) == CalculateMD5(f2.FullName)
+                                               select f1;
 
                 var counter = result.Count();
 
@@ -423,8 +436,8 @@ namespace Renci.SshNet.Tests.Classes
         public void OperationTimeoutTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            ScpClient target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            TimeSpan expected = new TimeSpan(); // TODO: Initialize to an appropriate value
+            var target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var expected = new TimeSpan(); // TODO: Initialize to an appropriate value
             TimeSpan actual;
             target.OperationTimeout = expected;
             actual = target.OperationTimeout;
@@ -440,7 +453,7 @@ namespace Renci.SshNet.Tests.Classes
         public void BufferSizeTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            ScpClient target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
             uint expected = 0; // TODO: Initialize to an appropriate value
             uint actual;
             target.BufferSize = expected;
@@ -457,9 +470,9 @@ namespace Renci.SshNet.Tests.Classes
         public void UploadTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            ScpClient target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
             DirectoryInfo directoryInfo = null; // TODO: Initialize to an appropriate value
-            string filename = string.Empty; // TODO: Initialize to an appropriate value
+            var filename = string.Empty; // TODO: Initialize to an appropriate value
             target.Upload(directoryInfo, filename);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -472,9 +485,9 @@ namespace Renci.SshNet.Tests.Classes
         public void UploadTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            ScpClient target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
             FileInfo fileInfo = null; // TODO: Initialize to an appropriate value
-            string filename = string.Empty; // TODO: Initialize to an appropriate value
+            var filename = string.Empty; // TODO: Initialize to an appropriate value
             target.Upload(fileInfo, filename);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -487,9 +500,9 @@ namespace Renci.SshNet.Tests.Classes
         public void UploadTest2()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            ScpClient target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
             Stream source = null; // TODO: Initialize to an appropriate value
-            string filename = string.Empty; // TODO: Initialize to an appropriate value
+            var filename = string.Empty; // TODO: Initialize to an appropriate value
             target.Upload(source, filename);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -502,8 +515,8 @@ namespace Renci.SshNet.Tests.Classes
         public void DownloadTest()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            ScpClient target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string directoryName = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var directoryName = string.Empty; // TODO: Initialize to an appropriate value
             DirectoryInfo directoryInfo = null; // TODO: Initialize to an appropriate value
             target.Download(directoryName, directoryInfo);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -517,8 +530,8 @@ namespace Renci.SshNet.Tests.Classes
         public void DownloadTest1()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            ScpClient target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string filename = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var filename = string.Empty; // TODO: Initialize to an appropriate value
             FileInfo fileInfo = null; // TODO: Initialize to an appropriate value
             target.Download(filename, fileInfo);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -532,8 +545,8 @@ namespace Renci.SshNet.Tests.Classes
         public void DownloadTest2()
         {
             ConnectionInfo connectionInfo = null; // TODO: Initialize to an appropriate value
-            ScpClient target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
-            string filename = string.Empty; // TODO: Initialize to an appropriate value
+            var target = new ScpClient(connectionInfo); // TODO: Initialize to an appropriate value
+            var filename = string.Empty; // TODO: Initialize to an appropriate value
             Stream destination = null; // TODO: Initialize to an appropriate value
             target.Download(filename, destination);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
@@ -550,10 +563,11 @@ namespace Renci.SshNet.Tests.Classes
                 scp.Connect();
 
                 var uploadFilenames = new string[20];
-                for (int i = 0; i < uploadFilenames.Length; i++)
+
+                for (var i = 0; i < uploadFilenames.Length; i++)
                 {
                     uploadFilenames[i] = Path.GetTempFileName();
-                    this.CreateTestFile(uploadFilenames[i], 1);
+                    CreateTestFile(uploadFilenames[i], 1);
                 }
 
                 Parallel.ForEach(uploadFilenames,
@@ -568,10 +582,10 @@ namespace Renci.SshNet.Tests.Classes
                         scp.Download(Path.GetFileName(filename), new FileInfo(string.Format("{0}.down", filename)));
                     });
 
-                var result = from file in uploadFilenames
-                             where
-                                 CalculateMD5(file) == CalculateMD5(string.Format("{0}.down", file))
-                             select file;
+                IEnumerable<string> result = from file in uploadFilenames
+                                             where
+                                                 CalculateMD5(file) == CalculateMD5(string.Format("{0}.down", file))
+                                             select file;
 
                 scp.Disconnect();
 
@@ -590,21 +604,21 @@ namespace Renci.SshNet.Tests.Classes
 
                 var uploadFilenames = new string[10];
 
-                for (int i = 0; i < uploadFilenames.Length; i++)
+                for (var i = 0; i < uploadFilenames.Length; i++)
                 {
                     uploadFilenames[i] = Path.GetTempFileName();
-                    this.CreateTestFile(uploadFilenames[i], 1);
+                    CreateTestFile(uploadFilenames[i], 1);
                 }
 
-                var uploadedFiles = uploadFilenames.ToDictionary((filename) => Path.GetFileName(filename), (filename) => 0L);
-                var downloadedFiles = uploadFilenames.ToDictionary((filename) => string.Format("{0}.down", Path.GetFileName(filename)), (filename) => 0L);
+                Dictionary<string?, long> uploadedFiles = uploadFilenames.ToDictionary((filename) => Path.GetFileName(filename), (filename) => 0L);
+                Dictionary<string, long> downloadedFiles = uploadFilenames.ToDictionary((filename) => string.Format("{0}.down", Path.GetFileName(filename)), (filename) => 0L);
 
-                scp.Uploading += delegate (object sender, ScpUploadEventArgs e)
+                scp.Uploading += delegate(object sender, ScpUploadEventArgs e)
                 {
                     uploadedFiles[e.Filename] = e.Uploaded;
                 };
 
-                scp.Downloading += delegate (object sender, ScpDownloadEventArgs e)
+                scp.Downloading += delegate(object sender, ScpDownloadEventArgs e)
                 {
                     downloadedFiles[string.Format("{0}.down", e.Filename)] = e.Downloaded;
                 };
@@ -621,12 +635,12 @@ namespace Renci.SshNet.Tests.Classes
                         scp.Download(Path.GetFileName(filename), new FileInfo(string.Format("{0}.down", filename)));
                     });
 
-                var result = from uf in uploadedFiles
-                             from df in downloadedFiles
-                             where
-                                 string.Format("{0}.down", uf.Key) == df.Key
-                                 && uf.Value == df.Value
-                             select uf;
+                IEnumerable<KeyValuePair<string?, long>> result = from uf in uploadedFiles
+                                                                  from df in downloadedFiles
+                                                                  where
+                                                                      string.Format("{0}.down", uf.Key) == df.Key
+                                                                      && uf.Value == df.Value
+                                                                  select uf;
 
                 scp.Disconnect();
 
@@ -644,10 +658,12 @@ namespace Renci.SshNet.Tests.Classes
                 file.Close();
 
                 var sb = new StringBuilder();
+
                 for (var i = 0; i < retVal.Length; i++)
                 {
                     sb.Append(i.ToString("x2"));
                 }
+
                 return sb.ToString();
             }
         }

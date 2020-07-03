@@ -39,7 +39,7 @@ namespace Renci.SshNet.Security.Cryptography.Ciphers.Modes
             if (inputCount != _blockSize)
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "inputCount must be {0}.", _blockSize));
 
-            for (int i = 0; i < _blockSize; i++)
+            for (var i = 0; i < _blockSize; i++)
             {
                 IV[i] ^= inputBuffer[inputOffset + i];
             }
@@ -75,7 +75,7 @@ namespace Renci.SshNet.Security.Cryptography.Ciphers.Modes
 
             Cipher.DecryptBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
 
-            for (int i = 0; i < _blockSize; i++)
+            for (var i = 0; i < _blockSize; i++)
             {
                 outputBuffer[outputOffset + i] ^= IV[i];
             }

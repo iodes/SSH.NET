@@ -25,14 +25,12 @@ namespace Renci.SshNet.Tests.Common
             {
                 if (_httpRequestParser == null)
                     throw new InvalidOperationException("The proxy is not started.");
+
                 return _httpRequestParser.HttpRequest;
             }
         }
 
-        public IList<byte[]> Responses
-        {
-            get { return _responses; }
-        }
+        public IList<byte[]> Responses => _responses;
 
         public void Start()
         {
@@ -61,8 +59,9 @@ namespace Renci.SshNet.Tests.Common
 
             if (_httpRequestParser.CurrentState == HttpRequestParser.State.Content)
             {
-                foreach (var response in Responses)
+                foreach (byte[] response in Responses)
                     socket.Send(response);
+
                 socket.Shutdown(SocketShutdown.Send);
             }
         }
@@ -86,10 +85,7 @@ namespace Renci.SshNet.Tests.Common
                 _httpRequest = new HttpRequest();
             }
 
-            public HttpRequest HttpRequest
-            {
-                get { return _httpRequest; }
-            }
+            public HttpRequest HttpRequest => _httpRequest;
 
             public State CurrentState { get; private set; }
 
@@ -102,6 +98,7 @@ namespace Renci.SshNet.Tests.Common
                     if (CurrentState == State.RequestLine)
                     {
                         var requestLine = ReadLine(data, ref position);
+
                         if (requestLine != null)
                         {
                             _httpRequest.RequestLine = requestLine;
@@ -112,6 +109,7 @@ namespace Renci.SshNet.Tests.Common
                     if (CurrentState == State.Headers)
                     {
                         var line = ReadLine(data, ref position);
+
                         if (line != null)
                         {
                             if (line.Length == 0)
@@ -129,7 +127,7 @@ namespace Renci.SshNet.Tests.Common
                     {
                         if (position < data.Length)
                         {
-                            var currentContent = _httpRequest.MessageBody;
+                            byte[] currentContent = _httpRequest.MessageBody;
                             var newBufferSize = currentContent.Length + (data.Length - position);
                             var copyBuffer = new byte[newBufferSize];
                             Array.Copy(currentContent, copyBuffer, currentContent.Length);
@@ -146,19 +144,23 @@ namespace Renci.SshNet.Tests.Common
                 for (; position < data.Length; position++)
                 {
                     var b = data[position];
+
                     if (b == '\n')
                     {
-                        var buffer = _buffer.ToArray();
+                        byte[] buffer = _buffer.ToArray();
                         var bytesInLine = buffer.Length;
+
                         // when the previous byte was a CR, then do not include it in line
                         if (buffer.Length > 0 && buffer[buffer.Length - 1] == '\r')
                             bytesInLine -= 1;
+
                         // clear the buffer
                         _buffer.Clear();
                         // move position up one position as we've processed the current byte
                         position++;
                         return Encoding.ASCII.GetString(buffer, 0, bytesInLine);
                     }
+
                     _buffer.Add(b);
                 }
 

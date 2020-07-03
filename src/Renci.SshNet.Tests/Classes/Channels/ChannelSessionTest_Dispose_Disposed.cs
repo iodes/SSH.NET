@@ -47,6 +47,7 @@ namespace Renci.SshNet.Tests.Classes.Channels
             SessionMock.InSequence(sequence).Setup(p => p.ConnectionInfo).Returns(ConnectionInfoMock.Object);
             ConnectionInfoMock.InSequence(sequence).Setup(p => p.RetryAttempts).Returns(1);
             SessionMock.Setup(p => p.SessionSemaphore).Returns(_sessionSemaphore);
+
             SessionMock.InSequence(sequence)
                 .Setup(
                     p =>
@@ -56,40 +57,49 @@ namespace Renci.SshNet.Tests.Classes.Channels
                                     m.LocalChannelNumber == _localChannelNumber &&
                                     m.InitialWindowSize == _localWindowSize && m.MaximumPacketSize == _localPacketSize &&
                                     m.Info is SessionChannelOpenInfo)));
+
             SessionMock.InSequence(sequence)
                 .Setup(p => p.WaitOnHandle(It.IsNotNull<WaitHandle>()))
                 .Callback<WaitHandle>(
                     w =>
-                        {
-                            SessionMock.Raise(
-                                s => s.ChannelOpenConfirmationReceived += null,
-                                new MessageEventArgs<ChannelOpenConfirmationMessage>(
-                                    new ChannelOpenConfirmationMessage(
-                                        _localChannelNumber,
-                                        _remoteWindowSize,
-                                        _remotePacketSize,
-                                        _remoteChannelNumber)));
+                    {
+                        SessionMock.Raise(
+                            s => s.ChannelOpenConfirmationReceived += null,
+                            new MessageEventArgs<ChannelOpenConfirmationMessage>(
+                                new ChannelOpenConfirmationMessage(
+                                    _localChannelNumber,
+                                    _remoteWindowSize,
+                                    _remotePacketSize,
+                                    _remoteChannelNumber)));
+
                         w.WaitOne();
                     });
+
             SessionMock.InSequence(sequence).Setup(p => p.IsConnected).Returns(true);
+
             SessionMock.InSequence(sequence)
                 .Setup(p => p.TrySendMessage(It.Is<ChannelEofMessage>(m => m.LocalChannelNumber == _remoteChannelNumber))).Returns(true);
+
             SessionMock.InSequence(sequence).Setup(p => p.IsConnected).Returns(true);
+
             SessionMock.InSequence(sequence)
                 .Setup(p => p.TrySendMessage(It.Is<ChannelCloseMessage>(m => m.LocalChannelNumber == _remoteChannelNumber))).Returns(true);
+
             SessionMock.InSequence(sequence).Setup(p => p.ConnectionInfo).Returns(ConnectionInfoMock.Object);
             ConnectionInfoMock.InSequence(sequence).Setup(p => p.ChannelCloseTimeout).Returns(_channelCloseTimeout);
+
             SessionMock.InSequence(sequence)
-                       .Setup(p => p.TryWait(It.IsNotNull<WaitHandle>(), _channelCloseTimeout))
-                       .Callback<WaitHandle, TimeSpan>(
-                           (waitHandle, channelCloseTimeout) =>
-                           {
-                               SessionMock.Raise(
-                                   s => s.ChannelCloseReceived += null,
-                                   new MessageEventArgs<ChannelCloseMessage>(new ChannelCloseMessage(_localChannelNumber)));
-                               waitHandle.WaitOne();
-                           })
-                       .Returns(WaitResult.Success);
+                .Setup(p => p.TryWait(It.IsNotNull<WaitHandle>(), _channelCloseTimeout))
+                .Callback<WaitHandle, TimeSpan>(
+                    (waitHandle, channelCloseTimeout) =>
+                    {
+                        SessionMock.Raise(
+                            s => s.ChannelCloseReceived += null,
+                            new MessageEventArgs<ChannelCloseMessage>(new ChannelCloseMessage(_localChannelNumber)));
+
+                        waitHandle.WaitOne();
+                    })
+                .Returns(WaitResult.Success);
         }
 
         protected override void Arrange()
@@ -108,10 +118,7 @@ namespace Renci.SshNet.Tests.Classes.Channels
             _channel.Dispose();
         }
 
-        internal ChannelSession Channel
-        {
-            get { return _channel; }
-        }
+        internal ChannelSession Channel => _channel;
 
         [TestMethod]
         public void ChannelEofMessageShouldBeSentOnce()

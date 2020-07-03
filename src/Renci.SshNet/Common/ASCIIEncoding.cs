@@ -1,5 +1,4 @@
 ﻿#if !FEATURE_ENCODING_ASCII
-
 using System;
 using System.Text;
 

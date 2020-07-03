@@ -9,9 +9,10 @@
         /// tcpip-forward
         /// </summary>
         TcpIpForward,
+
         /// <summary>
         /// cancel-tcpip-forward
         /// </summary>
-        CancelTcpIpForward,
+        CancelTcpIpForward
     }
 }

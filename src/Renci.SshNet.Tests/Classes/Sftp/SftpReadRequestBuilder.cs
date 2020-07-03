@@ -58,8 +58,8 @@ namespace Renci.SshNet.Tests.Classes.Sftp
 
         public SftpReadRequest Build()
         {
-            var dataAction = _dataAction ?? ((dataResponse) => { });
-            var statusAction = _statusAction ?? ((statusResponse) => { });
+            Action<SftpDataResponse> dataAction = _dataAction ?? ((dataResponse) => { });
+            Action<SftpStatusResponse> statusAction = _statusAction ?? ((statusResponse) => { });
 
             return new SftpReadRequest(_protocolVersion, _requestId, _handle, _offset, _length, dataAction, statusAction);
         }

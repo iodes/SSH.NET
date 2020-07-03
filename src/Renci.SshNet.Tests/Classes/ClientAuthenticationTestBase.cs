@@ -8,10 +8,15 @@ namespace Renci.SshNet.Tests.Classes
     public abstract class ClientAuthenticationTestBase : TestBase
     {
         internal Mock<IConnectionInfoInternal> ConnectionInfoMock { get; private set; }
+
         internal Mock<ISession> SessionMock { get; private set; }
+
         internal Mock<IAuthenticationMethod> NoneAuthenticationMethodMock { get; private set; }
+
         internal Mock<IAuthenticationMethod> PasswordAuthenticationMethodMock { get; private set; }
+
         internal Mock<IAuthenticationMethod> PublicKeyAuthenticationMethodMock { get; private set; }
+
         internal Mock<IAuthenticationMethod> KeyboardInteractiveAuthenticationMethodMock { get; private set; }
 
         protected abstract void SetupData();

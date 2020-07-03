@@ -19,7 +19,7 @@ namespace Renci.SshNet.Tests.Classes.Common
         public void ExceptionEventArgsConstructorTest()
         {
             Exception exception = null; // TODO: Initialize to an appropriate value
-            ExceptionEventArgs target = new ExceptionEventArgs(exception);
+            var target = new ExceptionEventArgs(exception);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

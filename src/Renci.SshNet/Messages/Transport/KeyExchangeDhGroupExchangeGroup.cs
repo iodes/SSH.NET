@@ -19,10 +19,7 @@ namespace Renci.SshNet.Messages.Transport
         /// <value>
         /// The safe prime.
         /// </value>
-        public BigInteger SafePrime
-        {
-            get { return _safePrime.ToBigInteger(); }
-        }
+        public BigInteger SafePrime => _safePrime.ToBigInteger();
 
         /// <summary>
         /// Gets or sets the generator for subgroup in GF(p).
@@ -30,10 +27,7 @@ namespace Renci.SshNet.Messages.Transport
         /// <value>
         /// The sub group.
         /// </value>
-        public BigInteger SubGroup
-        {
-            get { return _subGroup.ToBigInteger(); }
-        }
+        public BigInteger SubGroup => _subGroup.ToBigInteger();
 
         /// <summary>
         /// Gets the size of the message in bytes.

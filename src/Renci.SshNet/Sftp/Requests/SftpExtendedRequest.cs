@@ -8,14 +8,11 @@ namespace Renci.SshNet.Sftp.Requests
         private byte[] _nameBytes;
         private string _name;
 
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.Extended; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.Extended;
 
         public string Name
         {
-            get { return _name; }
+            get => _name;
             private set
             {
                 _name = value;

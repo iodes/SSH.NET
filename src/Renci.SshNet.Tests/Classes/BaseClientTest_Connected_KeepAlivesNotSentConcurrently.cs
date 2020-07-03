@@ -52,13 +52,14 @@ namespace Renci.SshNet.Tests.Classes
 
             _serviceFactoryMock.InSequence(_mockSequence).Setup(p => p.CreateSession(_connectionInfo)).Returns(_sessionMock.Object);
             _sessionMock.InSequence(_mockSequence).Setup(p => p.Connect());
+
             _sessionMock.InSequence(_mockSequence).Setup(p => p.TrySendMessage(It.IsAny<IgnoreMessage>()))
-                        .Returns(true)
-                        .Callback(() =>
-                        {
-                            Thread.Sleep(300);
-                            _keepAliveSent.Set();
-                        });
+                .Returns(true)
+                .Callback(() =>
+                {
+                    Thread.Sleep(300);
+                    _keepAliveSent.Set();
+                });
         }
 
         protected void Arrange()
@@ -68,9 +69,10 @@ namespace Renci.SshNet.Tests.Classes
             SetupMocks();
 
             _client = new MyClient(_connectionInfo, false, _serviceFactoryMock.Object)
-                {
-                    KeepAliveInterval = TimeSpan.FromMilliseconds(50d)
-                };
+            {
+                KeepAliveInterval = TimeSpan.FromMilliseconds(50d)
+            };
+
             _client.Connect();
         }
 

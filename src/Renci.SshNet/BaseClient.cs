@@ -37,10 +37,7 @@ namespace Renci.SshNet
         /// <value>
         /// The factory for creating new services.
         /// </value>
-        internal IServiceFactory ServiceFactory
-        {
-            get { return _serviceFactory; }
-        }
+        internal IServiceFactory ServiceFactory => _serviceFactory;
 
         /// <summary>
         /// Gets the connection info.
@@ -56,10 +53,7 @@ namespace Renci.SshNet
                 CheckDisposed();
                 return _connectionInfo;
             }
-            private set
-            {
-                _connectionInfo = value;
-            }
+            private set => _connectionInfo = value;
         }
 
         /// <summary>
@@ -128,6 +122,7 @@ namespace Renci.SshNet
                     // note that if the client is not yet connected, then the timer will be created with the 
                     // new interval when Connect() is invoked
                 }
+
                 _keepAliveInterval = value;
             }
         }
@@ -179,6 +174,7 @@ namespace Renci.SshNet
         {
             if (connectionInfo == null)
                 throw new ArgumentNullException("connectionInfo");
+
             if (serviceFactory == null)
                 throw new ArgumentNullException("serviceFactory");
 
@@ -223,6 +219,7 @@ namespace Renci.SshNet
             OnConnecting();
 
             Session = CreateAndConnectSession();
+
             try
             {
                 // Even though the method we invoke makes you believe otherwise, at this point only
@@ -236,6 +233,7 @@ namespace Renci.SshNet
                 DisposeSession();
                 throw;
             }
+
             StartKeepAliveTimer();
         }
 
@@ -296,6 +294,7 @@ namespace Renci.SshNet
         protected virtual void OnDisconnecting()
         {
             var session = Session;
+
             if (session != null)
             {
                 session.OnDisconnecting();
@@ -311,7 +310,8 @@ namespace Renci.SshNet
 
         private void Session_ErrorOccured(object sender, ExceptionEventArgs e)
         {
-            var handler = ErrorOccurred;
+            EventHandler<ExceptionEventArgs> handler = ErrorOccurred;
+
             if (handler != null)
             {
                 handler(this, e);
@@ -320,15 +320,15 @@ namespace Renci.SshNet
 
         private void Session_HostKeyReceived(object sender, HostKeyEventArgs e)
         {
-            var handler = HostKeyReceived;
+            EventHandler<HostKeyEventArgs> handler = HostKeyReceived;
+
             if (handler != null)
             {
                 handler(this, e);
             }
         }
 
-#region IDisposable Members
-
+        #region IDisposable Members
         private bool _isDisposed;
 
         /// <summary>
@@ -358,8 +358,10 @@ namespace Renci.SshNet
                 if (_ownsConnectionInfo && _connectionInfo != null)
                 {
                     var connectionInfoDisposable = _connectionInfo as IDisposable;
+
                     if (connectionInfoDisposable != null)
                         connectionInfoDisposable.Dispose();
+
                     _connectionInfo = null;
                 }
 
@@ -385,8 +387,7 @@ namespace Renci.SshNet
         {
             Dispose(false);
         }
-
-#endregion
+        #endregion
 
         /// <summary>
         /// Stops the keep-alive timer, and waits until all timer callbacks have been
@@ -486,6 +487,7 @@ namespace Renci.SshNet
         private void DisposeSession()
         {
             var session = Session;
+
             if (session != null)
             {
                 Session = null;

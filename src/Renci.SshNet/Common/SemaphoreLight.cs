@@ -21,7 +21,7 @@ namespace Renci.SshNet.Common
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="initialCount"/> is a negative number.</exception>
         public SemaphoreLight(int initialCount)
         {
-            if (initialCount < 0 )
+            if (initialCount < 0)
                 throw new ArgumentOutOfRangeException("initialCount", "The value cannot be negative.");
 
             _currentCount = initialCount;
@@ -30,7 +30,7 @@ namespace Renci.SshNet.Common
         /// <summary>
         /// Gets the current count of the <see cref="SemaphoreLight"/>.
         /// </summary>
-        public int CurrentCount { get { return _currentCount; } }
+        public int CurrentCount => _currentCount;
 
         /// <summary>
         /// Returns a <see cref="WaitHandle"/> that can be used to wait on the semaphore.
@@ -149,10 +149,11 @@ namespace Renci.SshNet.Common
         public bool Wait(TimeSpan timeout)
         {
             var timeoutInMilliseconds = timeout.TotalMilliseconds;
+
             if (timeoutInMilliseconds < -1d || timeoutInMilliseconds > int.MaxValue)
                 throw new ArgumentOutOfRangeException("timeout", "The timeout must represent a value between -1 and Int32.MaxValue, inclusive.");
 
-            return WaitWithTimeout((int) timeoutInMilliseconds);
+            return WaitWithTimeout((int)timeoutInMilliseconds);
         }
 
         private bool WaitWithTimeout(int timeoutInMilliseconds)
@@ -183,6 +184,7 @@ namespace Renci.SshNet.Common
 
                             var elapsed = Environment.TickCount - startTicks;
                             remainingTimeInMilliseconds -= elapsed;
+
                             if (remainingTimeInMilliseconds < 0)
                                 return false;
                         }
@@ -229,6 +231,7 @@ namespace Renci.SshNet.Common
             if (disposing)
             {
                 var waitHandle = _waitHandle;
+
                 if (waitHandle != null)
                 {
                     waitHandle.Dispose();

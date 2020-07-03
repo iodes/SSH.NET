@@ -1,5 +1,4 @@
 using System;
-
 using Renci.SshNet.Security.Org.BouncyCastle.Math;
 
 namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Parameters
@@ -10,16 +9,16 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Parameters
         private readonly BigInteger d;
 
         public ECPrivateKeyParameters(
-            BigInteger			d,
-            ECDomainParameters	parameters)
+            BigInteger d,
+            ECDomainParameters parameters)
             : this("EC", d, parameters)
         {
         }
 
         public ECPrivateKeyParameters(
-            string				algorithm,
-            BigInteger			d,
-            ECDomainParameters	parameters)
+            string algorithm,
+            BigInteger d,
+            ECDomainParameters parameters)
             : base(algorithm, true, parameters)
         {
             if (d == null)
@@ -28,10 +27,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Parameters
             this.d = d;
         }
 
-        public BigInteger D
-        {
-            get { return d; }
-        }
+        public BigInteger D => d;
 
         public override bool Equals(
             object obj)
@@ -39,7 +35,7 @@ namespace Renci.SshNet.Security.Org.BouncyCastle.Crypto.Parameters
             if (obj == this)
                 return true;
 
-            ECPrivateKeyParameters other = obj as ECPrivateKeyParameters;
+            var other = obj as ECPrivateKeyParameters;
 
             if (other == null)
                 return false;

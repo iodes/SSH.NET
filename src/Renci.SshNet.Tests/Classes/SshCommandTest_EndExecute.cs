@@ -37,9 +37,11 @@ namespace Renci.SshNet.Tests.Classes
 
             _sessionMock.InSequence(seq).Setup(p => p.CreateChannelSession()).Returns(_channelSessionMock.Object);
             _channelSessionMock.InSequence(seq).Setup(p => p.Open());
+
             _channelSessionMock.InSequence(seq).Setup(p => p.SendExecRequest(_commandText))
                 .Returns(true)
                 .Raises(c => c.Closed += null, new ChannelEventArgs(5));
+
             _channelSessionMock.InSequence(seq).Setup(p => p.Dispose());
 
             var asyncResult = _sshCommand.BeginExecute();
@@ -55,9 +57,11 @@ namespace Renci.SshNet.Tests.Classes
 
             _sessionMock.InSequence(seq).Setup(p => p.CreateChannelSession()).Returns(_channelSessionMock.Object);
             _channelSessionMock.InSequence(seq).Setup(p => p.Open());
+
             _channelSessionMock.InSequence(seq).Setup(p => p.SendExecRequest(_commandText))
                 .Returns(true)
                 .Raises(c => c.Closed += null, new ChannelEventArgs(5));
+
             _channelSessionMock.InSequence(seq).Setup(p => p.Dispose());
 
             var asyncResult = _sshCommand.BeginExecute();

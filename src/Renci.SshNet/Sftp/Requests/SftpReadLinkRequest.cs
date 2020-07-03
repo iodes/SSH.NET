@@ -9,15 +9,12 @@ namespace Renci.SshNet.Sftp.Requests
         private byte[] _path;
         private readonly Action<SftpNameResponse> _nameAction;
 
-        public override SftpMessageTypes SftpMessageType
-        {
-            get { return SftpMessageTypes.ReadLink; }
-        }
+        public override SftpMessageTypes SftpMessageType => SftpMessageTypes.ReadLink;
 
         public string Path
         {
-            get { return Encoding.GetString(_path, 0, _path.Length); }
-            private set { _path = Encoding.GetBytes(value); }
+            get => Encoding.GetString(_path, 0, _path.Length);
+            private set => _path = Encoding.GetBytes(value);
         }
 
         public Encoding Encoding { get; private set; }
@@ -65,6 +62,7 @@ namespace Renci.SshNet.Sftp.Requests
         public override void Complete(SftpResponse response)
         {
             var nameResponse = response as SftpNameResponse;
+
             if (nameResponse != null)
             {
                 _nameAction(nameResponse);

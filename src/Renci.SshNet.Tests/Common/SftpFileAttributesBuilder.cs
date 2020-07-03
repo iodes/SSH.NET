@@ -65,24 +65,29 @@ namespace Renci.SshNet.Tests.Common
         {
             if (_lastAccessTime == null)
                 _lastAccessTime = DateTime.MinValue;
+
             if (_lastWriteTime == null)
                 _lastWriteTime = DateTime.MinValue;
+
             if (_size == null)
                 _size = 0;
+
             if (_userId == null)
                 _userId = 0;
+
             if (_groupId == null)
                 _groupId = 0;
+
             if (_permissions == null)
                 _permissions = 0;
 
             return new SftpFileAttributes(_lastAccessTime.Value,
-                                          _lastWriteTime.Value,
-                                          _size.Value,
-                                          _userId.Value,
-                                          _groupId.Value,
-                                          _permissions.Value,
-                                          _extensions);
+                _lastWriteTime.Value,
+                _size.Value,
+                _userId.Value,
+                _groupId.Value,
+                _permissions.Value,
+                _extensions);
         }
     }
 }

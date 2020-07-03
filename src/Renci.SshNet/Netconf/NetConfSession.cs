@@ -38,15 +38,15 @@ namespace Renci.SshNet.NetConf
             : base(session, "netconf", operationTimeout)
         {
             ClientCapabilities = new XmlDocument();
-            ClientCapabilities.LoadXml("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
-                                                "<hello xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">" +
-                                                    "<capabilities>" +
-                                                        "<capability>" +
-                                                            "urn:ietf:params:netconf:base:1.0" +
-                                                        "</capability>" +
-                                                    "</capabilities>" +
-                                                "</hello>");
 
+            ClientCapabilities.LoadXml("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                                       "<hello xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">" +
+                                       "<capabilities>" +
+                                       "<capability>" +
+                                       "urn:ietf:params:netconf:base:1.0" +
+                                       "</capability>" +
+                                       "</capabilities>" +
+                                       "</hello>");
         }
 
         public XmlDocument SendReceiveRpc(XmlDocument rpc, bool automaticMessageIdHandling)
@@ -54,6 +54,7 @@ namespace Renci.SshNet.NetConf
             _data.Clear();
 
             XmlNamespaceManager nsMgr = null;
+
             if (automaticMessageIdHandling)
             {
                 _messageId++;
@@ -61,9 +62,11 @@ namespace Renci.SshNet.NetConf
                 nsMgr.AddNamespace("nc", "urn:ietf:params:xml:ns:netconf:base:1.0");
                 rpc.SelectSingleNode("/nc:rpc/@message-id", nsMgr).Value = _messageId.ToString(CultureInfo.InvariantCulture);
             }
+
             _rpcReply = new StringBuilder();
             _rpcReplyReceived.Reset();
             var reply = new XmlDocument();
+
             if (_usingFramingProtocol)
             {
                 var command = new StringBuilder(rpc.InnerXml.Length + 10);
@@ -81,14 +84,17 @@ namespace Renci.SshNet.NetConf
                 WaitOnHandle(_rpcReplyReceived, OperationTimeout);
                 reply.LoadXml(_rpcReply.ToString());
             }
+
             if (automaticMessageIdHandling)
             {
                 var replyId = rpc.SelectSingleNode("/nc:rpc/@message-id", nsMgr).Value;
+
                 if (replyId != _messageId.ToString(CultureInfo.InvariantCulture))
                 {
                     throw new NetConfServerException("The rpc message id does not match the rpc-reply message id.");
                 }
             }
+
             return reply;
         }
 
@@ -107,17 +113,18 @@ namespace Renci.SshNet.NetConf
         {
             var chunk = Encoding.UTF8.GetString(data);
 
-            if (ServerCapabilities == null)   // This must be server capabilities, old protocol
+            if (ServerCapabilities == null) // This must be server capabilities, old protocol
             {
-                _data.Append(chunk);  
+                _data.Append(chunk);
 
                 if (!chunk.Contains(Prompt))
                 {
                     return;
                 }
+
                 try
                 {
-                    chunk = _data.ToString(); 
+                    chunk = _data.ToString();
                     _data.Clear();
 
                     ServerCapabilities = new XmlDocument();
@@ -131,7 +138,7 @@ namespace Renci.SshNet.NetConf
                 var nsMgr = new XmlNamespaceManager(ServerCapabilities.NameTable);
                 nsMgr.AddNamespace("nc", "urn:ietf:params:xml:ns:netconf:base:1.0");
 
-                _usingFramingProtocol = (ServerCapabilities.SelectSingleNode("/nc:hello/nc:capabilities/nc:capability[text()='urn:ietf:params:netconf:base:1.1']", nsMgr) != null);
+                _usingFramingProtocol = ServerCapabilities.SelectSingleNode("/nc:hello/nc:capabilities/nc:capability[text()='urn:ietf:params:netconf:base:1.1']", nsMgr) != null;
 
                 _serverCapabilitiesConfirmed.Set();
             }
@@ -139,32 +146,36 @@ namespace Renci.SshNet.NetConf
             {
                 var position = 0;
 
-                for (; ; )
+                for (;;)
                 {
                     var match = Regex.Match(chunk.Substring(position), @"\n#(?<length>\d+)\n");
+
                     if (!match.Success)
                     {
                         break;
                     }
+
                     var fractionLength = Convert.ToInt32(match.Groups["length"].Value);
                     _rpcReply.Append(chunk, position + match.Index + match.Length, fractionLength);
                     position += match.Index + match.Length + fractionLength;
                 }
+
                 if (Regex.IsMatch(chunk.Substring(position), @"\n##\n"))
                 {
                     _rpcReplyReceived.Set();
                 }
             }
-            else  // Old protocol
+            else // Old protocol
             {
                 _data.Append(chunk);
 
                 if (!chunk.Contains(Prompt))
                 {
                     return;
+
                     //throw new NetConfServerException("Server XML message does not end with the prompt " + _prompt);
                 }
-                
+
                 chunk = _data.ToString();
                 _data.Clear();
 

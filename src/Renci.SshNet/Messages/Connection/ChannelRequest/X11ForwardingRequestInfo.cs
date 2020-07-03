@@ -18,10 +18,7 @@
         /// <value>
         /// The name of the request.
         /// </value>
-        public override string RequestName
-        {
-            get { return Name; }
-        }
+        public override string RequestName => Name;
 
         /// <summary>
         /// Gets or sets a value indicating whether it is a single connection.
@@ -39,8 +36,8 @@
         /// </value>
         public string AuthenticationProtocol
         {
-            get { return Ascii.GetString(_authenticationProtocol, 0, _authenticationProtocol.Length); }
-            private set { _authenticationProtocol = Ascii.GetBytes(value); }
+            get => Ascii.GetString(_authenticationProtocol, 0, _authenticationProtocol.Length);
+            private set => _authenticationProtocol = Ascii.GetBytes(value);
         }
 
         /// <summary>

@@ -19,7 +19,6 @@ namespace Renci.SshNet.Messages.Transport
         }
 
         #region Message Properties
-
         /// <summary>
         /// Gets session cookie.
         /// </summary>
@@ -120,7 +119,6 @@ namespace Renci.SshNet.Messages.Transport
         /// The reserved value.
         /// </value>
         public uint Reserved { get; set; }
-
         #endregion
 
         /// <summary>
@@ -130,10 +128,7 @@ namespace Renci.SshNet.Messages.Transport
         /// <c>-1</c> to indicate that the size of the message cannot be determined,
         /// or is too costly to calculate.
         /// </value>
-        protected override int BufferCapacity
-        {
-            get { return -1; }
-        }
+        protected override int BufferCapacity => -1;
 
         /// <summary>
         /// Called when type specific data need to be loaded.

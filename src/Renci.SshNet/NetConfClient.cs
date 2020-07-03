@@ -28,15 +28,17 @@ namespace Renci.SshNet
         /// one (-1) milliseconds, which indicates an infinite time-out period.
         /// </value>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> represents a value that is less than -1 or greater than <see cref="Int32.MaxValue"/> milliseconds.</exception>
-        public TimeSpan OperationTimeout {
-            get { return TimeSpan.FromMilliseconds(_operationTimeout); }
+        public TimeSpan OperationTimeout
+        {
+            get => TimeSpan.FromMilliseconds(_operationTimeout);
             set
             {
                 var timeoutInMilliseconds = value.TotalMilliseconds;
+
                 if (timeoutInMilliseconds < -1d || timeoutInMilliseconds > int.MaxValue)
                     throw new ArgumentOutOfRangeException("value", "The timeout must represent a value between -1 and Int32.MaxValue, inclusive.");
 
-                _operationTimeout = (int) timeoutInMilliseconds;
+                _operationTimeout = (int)timeoutInMilliseconds;
             }
         }
 
@@ -46,13 +48,9 @@ namespace Renci.SshNet
         /// <value>
         /// The current NetConf session.
         /// </value>
-        internal INetConfSession NetConfSession
-        {
-            get { return _netConfSession; }
-        }
+        internal INetConfSession NetConfSession => _netConfSession;
 
         #region Constructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="NetConfClient"/> class.
         /// </summary>
@@ -154,7 +152,6 @@ namespace Renci.SshNet
             _operationTimeout = SshNet.Session.Infinite;
             AutomaticMessageIdHandling = true;
         }
-
         #endregion
 
         /// <summary>
@@ -163,10 +160,7 @@ namespace Renci.SshNet
         /// <value>
         /// The NetConf server capabilities.
         /// </value>
-        public XmlDocument ServerCapabilities 
-        {
-            get { return _netConfSession.ServerCapabilities; }
-        }
+        public XmlDocument ServerCapabilities => _netConfSession.ServerCapabilities;
 
         /// <summary>
         /// Gets the NetConf client capabilities.
@@ -174,10 +168,7 @@ namespace Renci.SshNet
         /// <value>
         /// The NetConf client capabilities.
         /// </value>
-        public XmlDocument ClientCapabilities
-        {
-            get { return _netConfSession.ClientCapabilities; }
-        }
+        public XmlDocument ClientCapabilities => _netConfSession.ClientCapabilities;
 
         /// <summary>
         /// Gets or sets a value indicating whether automatic message id handling is
@@ -265,6 +256,7 @@ namespace Renci.SshNet
         private INetConfSession CreateAndConnectNetConfSession()
         {
             var netConfSession = ServiceFactory.CreateNetConfSession(Session, _operationTimeout);
+
             try
             {
                 netConfSession.Connect();

@@ -25,7 +25,7 @@ namespace Renci.SshNet.Tests.Classes.Security
         [Ignore] // placeholder for actual test
         public void NameTest()
         {
-            Algorithm target = CreateAlgorithm(); // TODO: Initialize to an appropriate value
+            var target = CreateAlgorithm(); // TODO: Initialize to an appropriate value
             string actual;
             actual = target.Name;
             Assert.Inconclusive("Verify the correctness of this test method.");

@@ -91,6 +91,7 @@
             Write(Signature != null);
             WriteBinaryString(PublicKeyAlgorithmName);
             WriteBinaryString(PublicKeyData);
+
             if (Signature != null)
                 WriteBinaryString(Signature);
         }

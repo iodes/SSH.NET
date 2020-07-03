@@ -12,7 +12,6 @@ namespace Renci.SshNet.Sftp
     public class SftpFileAttributes
     {
         #region Bitmask constats
-
         private const uint S_IFMT = 0xF000; //  bitmask for the file type bitfields
 
         private const uint S_IFSOCK = 0xC000; //	socket
@@ -52,7 +51,6 @@ namespace Renci.SshNet.Sftp
         private const uint S_IWOTH = 0x0002; //	others have write permission
 
         private const uint S_IXOTH = 0x0001; //	others have execute permission
-
         #endregion
 
         private bool _isBitFiledsBitSet;
@@ -68,40 +66,19 @@ namespace Renci.SshNet.Sftp
         private readonly uint _originalPermissions;
         private readonly IDictionary<string, string> _originalExtensions;
 
-        internal bool IsLastAccessTimeChanged
-        {
-            get { return _originalLastAccessTime != LastAccessTime; }
-        }
+        internal bool IsLastAccessTimeChanged => _originalLastAccessTime != LastAccessTime;
 
-        internal bool IsLastWriteTimeChanged
-        {
-            get { return _originalLastWriteTime != LastWriteTime; }
-        }
+        internal bool IsLastWriteTimeChanged => _originalLastWriteTime != LastWriteTime;
 
-        internal bool IsSizeChanged
-        {
-            get { return _originalSize != Size; }
-        }
+        internal bool IsSizeChanged => _originalSize != Size;
 
-        internal bool IsUserIdChanged
-        {
-            get { return _originalUserId != UserId; }
-        }
+        internal bool IsUserIdChanged => _originalUserId != UserId;
 
-        internal bool IsGroupIdChanged
-        {
-            get { return _originalGroupId != GroupId; }
-        }
+        internal bool IsGroupIdChanged => _originalGroupId != GroupId;
 
-        internal bool IsPermissionsChanged
-        {
-            get { return _originalPermissions != Permissions; }
-        }
+        internal bool IsPermissionsChanged => _originalPermissions != Permissions;
 
-        internal bool IsExtensionsChanged
-        {
-            get { return _originalExtensions != null && Extensions != null && !_originalExtensions.SequenceEqual(Extensions); }
-        }
+        internal bool IsExtensionsChanged => _originalExtensions != null && Extensions != null && !_originalExtensions.SequenceEqual(Extensions);
 
         /// <summary>
         /// Gets or sets the time the current file or directory was last accessed.
@@ -349,45 +326,45 @@ namespace Renci.SshNet.Sftp
             }
             private set
             {
-                _isBitFiledsBitSet = ((value & S_IFMT) == S_IFMT);
+                _isBitFiledsBitSet = (value & S_IFMT) == S_IFMT;
 
-                IsSocket = ((value & S_IFSOCK) == S_IFSOCK);
+                IsSocket = (value & S_IFSOCK) == S_IFSOCK;
 
-                IsSymbolicLink = ((value & S_IFLNK) == S_IFLNK);
+                IsSymbolicLink = (value & S_IFLNK) == S_IFLNK;
 
-                IsRegularFile = ((value & S_IFREG) == S_IFREG);
+                IsRegularFile = (value & S_IFREG) == S_IFREG;
 
-                IsBlockDevice = ((value & S_IFBLK) == S_IFBLK);
+                IsBlockDevice = (value & S_IFBLK) == S_IFBLK;
 
-                IsDirectory = ((value & S_IFDIR) == S_IFDIR);
+                IsDirectory = (value & S_IFDIR) == S_IFDIR;
 
-                IsCharacterDevice = ((value & S_IFCHR) == S_IFCHR);
+                IsCharacterDevice = (value & S_IFCHR) == S_IFCHR;
 
-                IsNamedPipe = ((value & S_IFIFO) == S_IFIFO);
+                IsNamedPipe = (value & S_IFIFO) == S_IFIFO;
 
-                _isUIDBitSet = ((value & S_ISUID) == S_ISUID);
+                _isUIDBitSet = (value & S_ISUID) == S_ISUID;
 
-                _isGroupIDBitSet = ((value & S_ISGID) == S_ISGID);
+                _isGroupIDBitSet = (value & S_ISGID) == S_ISGID;
 
-                _isStickyBitSet = ((value & S_ISVTX) == S_ISVTX);
+                _isStickyBitSet = (value & S_ISVTX) == S_ISVTX;
 
-                OwnerCanRead = ((value & S_IRUSR) == S_IRUSR);
+                OwnerCanRead = (value & S_IRUSR) == S_IRUSR;
 
-                OwnerCanWrite = ((value & S_IWUSR) == S_IWUSR);
+                OwnerCanWrite = (value & S_IWUSR) == S_IWUSR;
 
-                OwnerCanExecute = ((value & S_IXUSR) == S_IXUSR);
+                OwnerCanExecute = (value & S_IXUSR) == S_IXUSR;
 
-                GroupCanRead = ((value & S_IRGRP) == S_IRGRP);
+                GroupCanRead = (value & S_IRGRP) == S_IRGRP;
 
-                GroupCanWrite = ((value & S_IWGRP) == S_IWGRP);
+                GroupCanWrite = (value & S_IWGRP) == S_IWGRP;
 
-                GroupCanExecute = ((value & S_IXGRP) == S_IXGRP);
+                GroupCanExecute = (value & S_IXGRP) == S_IXGRP;
 
-                OthersCanRead = ((value & S_IROTH) == S_IROTH);
+                OthersCanRead = (value & S_IROTH) == S_IROTH;
 
-                OthersCanWrite = ((value & S_IWOTH) == S_IWOTH);
+                OthersCanWrite = (value & S_IWOTH) == S_IWOTH;
 
-                OthersCanExecute = ((value & S_IXOTH) == S_IXOTH);
+                OthersCanExecute = (value & S_IXOTH) == S_IXOTH;
             }
         }
 
@@ -417,7 +394,7 @@ namespace Renci.SshNet.Sftp
                 throw new ArgumentOutOfRangeException("mode");
             }
 
-            var modeBytes = mode.ToString(CultureInfo.InvariantCulture).PadLeft(3, '0').ToCharArray();
+            char[] modeBytes = mode.ToString(CultureInfo.InvariantCulture).PadLeft(3, '0').ToCharArray();
 
             var permission = (modeBytes[0] & 0x0F) * 8 * 8 + (modeBytes[1] & 0x0F) * 8 + (modeBytes[2] & 0x0F);
 
@@ -475,13 +452,13 @@ namespace Renci.SshNet.Sftp
 
             if (IsSizeChanged && IsRegularFile)
             {
-                stream.Write((ulong) Size);
+                stream.Write((ulong)Size);
             }
 
             if (IsUserIdChanged || IsGroupIdChanged)
             {
-                stream.Write((uint) UserId);
-                stream.Write((uint) GroupId);
+                stream.Write((uint)UserId);
+                stream.Write((uint)GroupId);
             }
 
             if (IsPermissionsChanged)
@@ -499,7 +476,7 @@ namespace Renci.SshNet.Sftp
 
             if (IsExtensionsChanged)
             {
-                foreach (var item in Extensions)
+                foreach (KeyValuePair<string, string> item in Extensions)
                 {
                     // TODO: we write as ASCII but read as UTF8 !!!
 
@@ -525,24 +502,24 @@ namespace Renci.SshNet.Sftp
             var modifyTime = DateTime.MinValue;
             IDictionary<string, string> extensions = null;
 
-            if ((flag & 0x00000001) == 0x00000001)   //  SSH_FILEXFER_ATTR_SIZE
+            if ((flag & 0x00000001) == 0x00000001) //  SSH_FILEXFER_ATTR_SIZE
             {
-                size = (long) stream.ReadUInt64();
+                size = (long)stream.ReadUInt64();
             }
 
-            if ((flag & 0x00000002) == 0x00000002)   //  SSH_FILEXFER_ATTR_UIDGID
+            if ((flag & 0x00000002) == 0x00000002) //  SSH_FILEXFER_ATTR_UIDGID
             {
-                userId = (int) stream.ReadUInt32();
+                userId = (int)stream.ReadUInt32();
 
-                groupId = (int) stream.ReadUInt32();
+                groupId = (int)stream.ReadUInt32();
             }
 
-            if ((flag & 0x00000004) == 0x00000004)   //  SSH_FILEXFER_ATTR_PERMISSIONS
+            if ((flag & 0x00000004) == 0x00000004) //  SSH_FILEXFER_ATTR_PERMISSIONS
             {
                 permissions = stream.ReadUInt32();
             }
 
-            if ((flag & 0x00000008) == 0x00000008)   //  SSH_FILEXFER_ATTR_ACMODTIME
+            if ((flag & 0x00000008) == 0x00000008) //  SSH_FILEXFER_ATTR_ACMODTIME
             {
                 var time = stream.ReadUInt32();
                 accessTime = DateTime.FromFileTime((time + 11644473600) * 10000000);
@@ -550,10 +527,11 @@ namespace Renci.SshNet.Sftp
                 modifyTime = DateTime.FromFileTime((time + 11644473600) * 10000000);
             }
 
-            if ((flag & 0x80000000) == 0x80000000)   //  SSH_FILEXFER_ATTR_EXTENDED
+            if ((flag & 0x80000000) == 0x80000000) //  SSH_FILEXFER_ATTR_EXTENDED
             {
-                var extendedCount = (int) stream.ReadUInt32();
+                var extendedCount = (int)stream.ReadUInt32();
                 extensions = new Dictionary<string, string>(extendedCount);
+
                 for (var i = 0; i < extendedCount; i++)
                 {
                     var extensionName = stream.ReadString(SshData.Utf8);

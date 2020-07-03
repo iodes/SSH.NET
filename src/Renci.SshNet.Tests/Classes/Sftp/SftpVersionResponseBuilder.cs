@@ -28,10 +28,11 @@ namespace Renci.SshNet.Tests.Classes.Sftp
         public SftpVersionResponse Build()
         {
             var sftpVersionResponse = new SftpVersionResponse()
-                {
-                    Version = _version,
-                    Extentions = _extensions
-                };
+            {
+                Version = _version,
+                Extentions = _extensions
+            };
+
             return sftpVersionResponse;
         }
     }

@@ -61,7 +61,8 @@ namespace Renci.SshNet.Common
 
             // The m_CompletedState field MUST be set prior calling the callback
             var prevState = Interlocked.Exchange(ref _completedState,
-               completedSynchronously ? StateCompletedSynchronously : StateCompletedAsynchronously);
+                completedSynchronously ? StateCompletedSynchronously : StateCompletedAsynchronously);
+
             if (prevState != StatePending)
                 throw new InvalidOperationException("You can set a result only once");
 
@@ -88,7 +89,7 @@ namespace Renci.SshNet.Common
             {
                 // If the operation isn't done, wait for it
                 AsyncWaitHandle.WaitOne();
-                _asyncWaitHandle = null;  // Allow early GC
+                _asyncWaitHandle = null; // Allow early GC
                 AsyncWaitHandle.Dispose();
             }
 
@@ -100,21 +101,17 @@ namespace Renci.SshNet.Common
         }
 
         #region Implementation of IAsyncResult
-
         /// <summary>
         /// Gets a user-defined object that qualifies or contains information about an asynchronous operation.
         /// </summary>
         /// <returns>A user-defined object that qualifies or contains information about an asynchronous operation.</returns>
-        public object AsyncState { get { return _asyncState; } }
+        public object AsyncState => _asyncState;
 
         /// <summary>
         /// Gets a value that indicates whether the asynchronous operation completed synchronously.
         /// </summary>
         /// <returns>true if the asynchronous operation completed synchronously; otherwise, false.</returns>
-        public bool CompletedSynchronously
-        {
-            get { return _completedState == StateCompletedSynchronously; }
-        }
+        public bool CompletedSynchronously => _completedState == StateCompletedSynchronously;
 
         /// <summary>
         /// Gets a <see cref="WaitHandle"/> that is used to wait for an asynchronous operation to complete.
@@ -128,6 +125,7 @@ namespace Renci.SshNet.Common
                 {
                     var done = IsCompleted;
                     var mre = new ManualResetEvent(done);
+
                     if (Interlocked.CompareExchange(ref _asyncWaitHandle, mre, null) != null)
                     {
                         // Another thread created this object's event; dispose the event we just created
@@ -143,6 +141,7 @@ namespace Renci.SshNet.Common
                         }
                     }
                 }
+
                 return _asyncWaitHandle;
             }
         }
@@ -152,11 +151,7 @@ namespace Renci.SshNet.Common
         /// </summary>
         /// <returns>
         /// <c>true</c> if the operation is complete; otherwise, <c>false</c>.</returns>
-        public bool IsCompleted
-        {
-            get { return _completedState != StatePending; }
-        }
-
+        public bool IsCompleted => _completedState != StatePending;
         #endregion
     }
 
@@ -202,7 +197,7 @@ namespace Renci.SshNet.Common
         public new TResult EndInvoke()
         {
             base.EndInvoke(); // Wait until operation has completed 
-            return _result;  // Return the result (if above didn't throw)
+            return _result; // Return the result (if above didn't throw)
         }
     }
 }
