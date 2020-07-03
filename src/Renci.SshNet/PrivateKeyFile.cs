@@ -551,6 +551,9 @@ namespace Renci.SshNet
                         privateKeyReader.ReadBigInteger());
 
                     break;
+
+                default:
+                    throw new SshException("openssh key type: " + keyType + " is not supported");
             }
 
             //comment, we don't need this but we could log it, not sure if necessary
