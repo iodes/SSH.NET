@@ -416,34 +416,51 @@ namespace Renci.SshNet
             var privateKeySectionBytes = keyReader.ReadBytes(privateKeySectionLength);
 
             //decrypt private key if necessary
-            if (cipherName == "aes256-cbc")
+            switch (cipherName)
             {
-                if (string.IsNullOrEmpty(passPhrase))
-                {
-                    throw new SshPassPhraseNullOrEmptyException("Private key is encrypted but passphrase is empty.");
-                }
-                if (string.IsNullOrEmpty(kdfName) || kdfName != "bcrypt")
-                {
-                    throw new SshException("kdf " + kdfName + " is not supported for openssh key file");
-                }
+                case "aes256-cbc":
+                case "aes256-ctr":
+                    if (string.IsNullOrEmpty(passPhrase))
+                    {
+                        throw new SshPassPhraseNullOrEmptyException("Private key is encrypted but passphrase is empty.");
+                    }
+                    if (string.IsNullOrEmpty(kdfName) || kdfName != "bcrypt")
+                    {
+                        throw new SshException("kdf " + kdfName + " is not supported for openssh key file");
+                    }
 
-                //inspired by the SSHj library (https://github.com/hierynomus/sshj)
-                //apply the kdf to derive a key and iv from the passphrase
-                var passPhraseBytes = Encoding.UTF8.GetBytes(passPhrase);
-                byte[] keyiv = new byte[48];
-                new BCrypt().Pbkdf(passPhraseBytes, salt, rounds, keyiv);
-                byte[] key = new byte[32];
-                Array.Copy(keyiv, 0, key, 0, 32);
-                byte[] iv = new byte[16];
-                Array.Copy(keyiv, 32, iv, 0, 16);
+                    //inspired by the SSHj library (https://github.com/hierynomus/sshj)
+                    //apply the kdf to derive a key and iv from the passphrase
+                    var passPhraseBytes = Encoding.UTF8.GetBytes(passPhrase);
+                    byte[] keyiv = new byte[48];
+                    new BCrypt().Pbkdf(passPhraseBytes, salt, rounds, keyiv);
+                    byte[] key = new byte[32];
+                    Array.Copy(keyiv, 0, key, 0, 32);
+                    byte[] iv = new byte[16];
+                    Array.Copy(keyiv, 32, iv, 0, 16);
 
-                //now that we have the key/iv, use a cipher to decrypt the bytes
-                var cipher = new AesCipher(key, new CbcCipherMode(iv), new PKCS7Padding());
-                privateKeySectionBytes = cipher.Decrypt(privateKeySectionBytes);
-            }
-            else if (cipherName != "none")
-            {
-                throw new SshException("cipher name " + cipherName + " for openssh key file is not supported");
+                    //now that we have the key/iv, use a cipher to decrypt the bytes
+                    CipherMode cipherMode = null;
+
+                    if (cipherName.EndsWith("cbc"))
+                    {
+                        cipherMode = new CbcCipherMode(iv);
+                    }
+                    else if (cipherName.EndsWith("ctr"))
+                    {
+                        cipherMode = new CtrCipherMode(iv);
+                    }
+
+                    var cipher = new AesCipher(key, cipherMode, new PKCS7Padding());
+                    privateKeySectionBytes = cipher.Decrypt(privateKeySectionBytes);
+
+                    break;
+
+                default:
+                    if (cipherName != "none")
+                        throw new SshException("cipher name " + cipherName + " for openssh key file is not supported");
+
+                    break;
             }
 
             //validate private key length
