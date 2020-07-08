@@ -19,6 +19,8 @@ namespace Renci.SshNet
 
             _listener = new Socket(ep.AddressFamily, SocketType.Stream, ProtocolType.Tcp)
             {
+                SendBufferSize = int.MaxValue,
+                ReceiveBufferSize = int.MaxValue,
                 NoDelay = true
             };
 
